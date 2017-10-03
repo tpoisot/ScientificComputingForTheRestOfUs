@@ -8,9 +8,13 @@ points.
 
 ## Getting started
 
-You don't need to install anything! Solving installation issues is discouraging,
-and time consuming. Instead, we rely on [JuliaBox.com](https://juliabox.com/), a
-cloud-bases service to run reproducible documents in the cloud.
+You don't need to install anything! We rely on [JuliaBox.com][jlbox], a
+cloud-based service to run reproducible documents in the cloud. We will use the [Julia][jl] language;
+but you don't need to know anything about it either. We will keep the discussion veery general, and
+not use any of the (very cool!) language-specific features and syntax.
+
+[jlbox]: https://juliabox.com/
+[jl]: http://julialang.org/
 
 ### Setting up a JuliaBox account
 

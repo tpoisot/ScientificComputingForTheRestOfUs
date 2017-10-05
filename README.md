@@ -54,7 +54,7 @@ guidelines][cguid] first, to get you started with setting up a development
 environment. You can always have a look at ["Good first issues"][first], if you
 want some inspiration.
 
-[cguid]: [coc]: https://github.com/tpoisot/IntroScientificComputing/blob/master/CONTRIBUTING.md
+[cguid]: https://github.com/tpoisot/IntroScientificComputing/blob/master/CONTRIBUTING.md
 [first]: https://github.com/tpoisot/IntroScientificComputing/labels/good%20first%20issue
 
 ## Authors

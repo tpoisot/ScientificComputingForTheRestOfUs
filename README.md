@@ -8,23 +8,55 @@ points.
 
 ## A brief overview of the contents
 
+1. Introduction to notebooks (estimated time: 10 minutes)
+
+*(this will be completed later)*
+
 ## Getting started
 
 You don't need to install anything! We rely on [JuliaBox.com][jlbox], a
-cloud-based service to run reproducible documents in the cloud. We will use the [Julia][jl] language;
-but you don't need to know anything about it either. We will keep the discussion veery general, and
-not use any of the (very cool!) language-specific features and syntax.
+cloud-based service to run reproducible documents in the cloud. We will use the
+[Julia][jl] language; but you don't need to know anything about it either. We
+will keep the discussion very general, and not use any of the (very cool!)
+language-specific features and syntax.
 
 [jlbox]: https://juliabox.com/
 [jl]: http://julialang.org/
 
 ### Setting up a JuliaBox account
 
+Go to [juliabox.com][jlbox], and you will be greeted with this login screen:
+
+![JuliaBox login screen, with options to login through LinkedIn, GitHub, and Google](assets/loginscreen.png)
+
+Pick one of the services to login, and you will see the landing page:
+
+![JuliaBox landing page](assets/welcome.png)
+
 ### Adding the repository to your JuliaBox account
+
+For the first time *only*, you will need to clik on the `Sync` tab (fourth from the left in the top menu), and let JuliaBox know where the lessons are. This is done by pasting the URL of this project (`https://github.com/tpoisot/IntroScientificComputing.git`), into the *Git Clone URL* field. When you select the next field (under *Branch*), using either your mouse or the Tab key, the information should autocomplete:
+
+![JuliaBox sync page](assets/adding.png)
+
+After going back to the `Jupyter` tab (first from the left in the top menu), and maybe refreshing the page, you will see a new folder:
+
+![JuliaBox landing page after adding the project](assets/added.png)
+
+Congratulations! Now go click on the folder, and navigate to the *Lessons*.
 
 ### Running the notebooks
 
-## Full contents
+From the *Lessons* folder, simply clicking on a notebook will launch it. We
+suggest you start with the first lesson (`01`), as it contains all you've ever
+wanted to know (and some more) about notebooks.
+
+## Full table of contents
+
+1. Introduction to notebooks
+  - cells and states
+  - order of execution
+  - exporting and saving your work
 
 ## Contributing
 
@@ -51,8 +83,8 @@ being discussed.
 
 If you want to contribute more, then great! Have a look at the [contribution
 guidelines][cguid] first, to get you started with setting up a development
-environment. You can always have a look at ["Good first issues"][first], if you
-want some inspiration.
+environment. You can have a look at ["Good first issues"][first], if you want
+some inspiration.
 
 [cguid]: https://github.com/tpoisot/IntroScientificComputing/blob/master/CONTRIBUTING.md
 [first]: https://github.com/tpoisot/IntroScientificComputing/labels/good%20first%20issue

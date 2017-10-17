@@ -6,11 +6,22 @@ to find an introduction to get you started. The goal of this project is to
 provide reproducible documents you can use to get started on the most important
 points.
 
+This material is aimed at people who have already interacted with a computer
+using a programming language, but want to adopt best practices that make their
+code more robust. One specific challenge in scientific computing is that we care 
+about getting the *right* answer. Therefore, we should adopt practices that make
+us less likely to introduce mistakes, and more likely to catch them. This guide will help
+you with this.
+
+**TODO** onboarding
+
 ## A brief overview of the contents
 
 1. Introduction to notebooks (estimated time: 10 minutes)
-
-*(this will be completed later)*
+1. Controlling the flow
+1. Writing functions
+1. Defensive programming
+1. Debugging strategies and logging
 
 ## Getting started
 

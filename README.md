@@ -8,7 +8,7 @@ points.
 
 This material is aimed at people who have already interacted with a computer
 using a programming language, but want to adopt best practices that make their
-code more robust. One specific challenge in scientific computing is that we care 
+code more robust. One specific challenge in scientific computing is that we care
 about getting the *right* answer. Therefore, we should adopt practices that make
 us less likely to introduce mistakes, and more likely to catch them. This guide will help
 you with this.
@@ -33,34 +33,6 @@ language-specific features and syntax.
 
 [jlbox]: https://juliabox.com/
 [jl]: http://julialang.org/
-
-### Setting up a JuliaBox account
-
-Go to [juliabox.com][jlbox], and you will be greeted with this login screen:
-
-![JuliaBox login screen, with options to login through LinkedIn, GitHub, and Google](assets/loginscreen.png)
-
-Pick one of the services to login, and you will see the landing page:
-
-![JuliaBox landing page](assets/welcome.png)
-
-### Adding the repository to your JuliaBox account
-
-For the first time *only*, you will need to clik on the `Sync` tab (fourth from the left in the top menu), and let JuliaBox know where the lessons are. This is done by pasting the URL of this project (`https://github.com/tpoisot/IntroScientificComputing.git`), into the *Git Clone URL* field. When you select the next field (under *Branch*), using either your mouse or the Tab key, the information should autocomplete:
-
-![JuliaBox sync page](assets/adding.png)
-
-After going back to the `Jupyter` tab (first from the left in the top menu), and maybe refreshing the page, you will see a new folder:
-
-![JuliaBox landing page after adding the project](assets/added.png)
-
-Congratulations! Now go click on the folder, and navigate to the *Lessons*.
-
-### Running the notebooks
-
-From the *Lessons* folder, simply clicking on a notebook will launch it. We
-suggest you start with the first lesson (`01`), as it contains all you've ever
-wanted to know (and some more) about notebooks.
 
 ## Full table of contents
 

@@ -90,7 +90,7 @@ masterpiece.
 
 [goodenough]: http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510
 [best]: http://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1001745
-[pragm]: http://amzn.to/2yBTiY3
+[pragm]: https://www.amazon.ca/Pragmatic-Programmer-Journeyman-Master/dp/020161622X/ref=as_li_ss_tl?ie=UTF8&linkCode=sl1&tag=&linkId=0ff8cca36522d8539b26e536778bbb5e
 
 
 ## Other information

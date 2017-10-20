@@ -15,28 +15,20 @@ you with this.
 
 **TODO** onboarding
 
-## A brief overview of the contents
+And do you want good news? You don't need to install anything! We rely on [the
+Binder project][binder], a cloud-based service to run reproducible documents. We
+will use the [Julia][jl] language; but you don't need to know anything about it
+either. We will keep the discussion very general, and not use any of the (very
+cool!) language-specific features and syntax.
 
-1. Introduction to notebooks (estimated time: 10 minutes)
-1. Controlling the flow
-1. Writing functions
-1. Defensive programming
-1. Debugging strategies and logging
-
-## Getting started
-
-You don't need to install anything! We rely on [JuliaBox.com][jlbox], a
-cloud-based service to run reproducible documents in the cloud. We will use the
-[Julia][jl] language; but you don't need to know anything about it either. We
-will keep the discussion very general, and not use any of the (very cool!)
-language-specific features and syntax.
-
-[jlbox]: https://juliabox.com/
+[binder]: https://beta.mybinder.org/
 [jl]: http://julialang.org/
 
 ## Full table of contents
 
-1. Introduction to notebooks
+You can start each lesson by clicking on its badge (the square thingie) below:
+
+1. [![Lesson 1](https://img.shields.io/badge/Lesson%201-Notebooks-green.svg?style=flat-square)](https://beta.mybinder.org/v2/gh/tpoisot/IntroScientificComputing/master?filepath=lessons%2F01_introduction_to_notebooks.ipynb)
   - cells and states
   - order of execution
   - exporting and saving your work

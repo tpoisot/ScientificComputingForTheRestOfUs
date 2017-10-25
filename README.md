@@ -4,7 +4,7 @@ Good principles in scientific computing can help you write code that is easier
 to maintain, easier to reproduce, and easier to debug. But it can be difficult
 to find an introduction to get you started. The goal of this project is to
 provide reproducible documents you can use to get started on the most important
-points.
+points. You can use these lessons on your own, or as a group.
 
 This material is aimed at people who have already interacted with a computer
 using a programming language, but want to adopt best practices that make their

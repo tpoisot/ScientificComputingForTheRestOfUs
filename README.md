@@ -37,10 +37,10 @@ You can start each lesson by clicking on the links below.
     - cells and states
     - order of execution
     - exporting and saving your work
-1. :arrows_clockwise: Lesson 2 -- the flow of execution
-1. :computer: Lesson 3 -- writing functions
-1. :bug: Lesson 4 -- preventing errors with defensive programming
-1. :hammer: Lesson 5 -- debugging our way out of errors we forgot to prevent
+1. :arrows_clockwise: Lesson 2 - the flow of execution
+1. :computer: Lesson 3 - writing functions
+1. :bug: Lesson 4 - preventing errors with defensive programming
+1. :hammer: Lesson 5 - debugging our way out of errors we forgot to prevent
 
 [l1binder]: https://beta.mybinder.org/v2/gh/tpoisot/IntroScientificComputing/master?filepath=lessons%2F01_introduction_to_notebooks.ipynb
 

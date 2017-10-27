@@ -6,14 +6,17 @@ to find an introduction to get you started. The goal of this project is to
 provide reproducible documents you can use to get started on the most important
 points. You can use these lessons on your own, or as a group.
 
-This material is aimed at people who have already interacted with a computer
-using a programming language, but want to adopt best practices that make their
-code more robust. One specific challenge in scientific computing is that we care
+One specific challenge in scientific computing is that we care
 about getting the *right* answer. A piece of code that crashes is annoying; but
 a piece of code that runs, and give you the wrong answer can compromise your
 science. Therefore, we should adopt practices that make us less likely to
 introduce mistakes, and more likely to catch them. This guide will help you with
 this.
+
+This material is aimed at people who have already interacted with a computer
+using a programming language, but want to adopt best practices that make their
+code more robust. It can also be used to facilitate the onboarding of new people
+in your lab or in your project.
 
 This material is *not* aimed at people with terabytes upon terabytes of data, or
 need to distribute computations across thousands of cores, or need GP-GPU

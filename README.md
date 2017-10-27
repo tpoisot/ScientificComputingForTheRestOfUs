@@ -31,7 +31,7 @@ cool!) language-specific features and syntax.
 
 ## Table of contents
 
-You can start each lesson by clicking on the links below.
+Clicking on the title of each lesson below will launch it in a new window.
 
 1. :notebook: [Lesson 1][l1binder] - using notebooks (approx. 10 minutes)
     - cells and states
@@ -96,3 +96,4 @@ masterpiece.
 ## Other information
 
 [![license](https://img.shields.io/github/license/tpoisot/IntroScientificComputing.svg?style=flat-square)]()
+[![Binder](https://img.shields.io/badge/launch-binder-ff69b4.svg?style=flat-square)](https://beta.mybinder.org/v2/gh/tpoisot/IntroScientificComputing/master?filepath=lessons)

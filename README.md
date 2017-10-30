@@ -111,7 +111,7 @@ some inspiration.
 
 ## Contributors
 
-**Comments, ideas**: @ha0ye @philippbayer @betatim
+**Comments, ideas, feedback**: Hao Ye, Philipp Bayer, Tim Head, Ethan White
 
 ## Want to read more?
 
@@ -123,6 +123,12 @@ computing"][best] might suit you.
 
 Want a more complete thing to read? ["The pragmatic programmer"][pragm] is a
 masterpiece. I have also heard great things about ["Clean code"][cleanc].
+
+If you still have some time, you can read something about [ways to improve user confidence
+in your software][userconf], or ways to [elevate code as a research output][elevate].
+
+[userconf]: https://queens.scholarsportal.info/ojs-archive/index.php/IEE/article/download/5644/5463
+[elevate]: http://www.cell.com/trends/ecology-evolution/abstract/S0169-5347(15)00290-6
 
 [goodenough]: http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510
 [best]: http://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1001745

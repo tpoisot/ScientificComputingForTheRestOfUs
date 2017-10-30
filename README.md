@@ -66,8 +66,26 @@ principles to any language you prefer to use.
 - :information_source: early draft
 
 ### :computer: Lesson 3 - writing functions
+
+- Contents:
+    1. advantages of modular code
+    1. writing functions (and commenting them)
+    1. arguments
+    1. type stability
+    
 ### :bug: Lesson 4 - preventing errors with defensive programming
+
+- Contents:
+    1. defensive programming
+    1. using types as input control
+    1. testing
+    
 ### :hammer: Lesson 5 - debugging our way out of errors we forgot to prevent
+
+- Contents:
+    1. using print
+    1. debugging strategies
+    1. messages, warnings, and errors
 
 [l1binder]: https://beta.mybinder.org/v2/gh/tpoisot/ScientificComputingForTheRestOfUs/master?filepath=lessons%2F01_introduction_to_notebooks.ipynb
 [l2binder]: https://beta.mybinder.org/v2/gh/tpoisot/ScientificComputingForTheRestOfUs/master?filepath=lessons%2F02_flow_of_execution.ipynb

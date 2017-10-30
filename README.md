@@ -1,4 +1,12 @@
-# Introduction to Scientific Computing
+# Scientific Computing (for the rest of us)
+
+One specific challenge, when writing code as a scientist, is that we care *a lot*
+about getting the *right* answer; but of course, the *right* answer is not always obvious.
+So we should be very careful with the code we write. A piece of code that crashes is annoying; but
+a piece of code that runs, and give you the wrong answer can compromise your
+science and your career. This guide will help you adopt practices that make it less likely
+to introduce mistakes in your code, and more likely to catch them. Hopefully, this will
+let all of us write code we can trust more.
 
 Good principles in scientific computing can help you write code that is easier
 to maintain, easier to reproduce, and easier to debug. But it can be difficult
@@ -6,28 +14,28 @@ to find an introduction to get you started. The goal of this project is to
 provide reproducible documents you can use to get started on the most important
 points. You can use these lessons on your own, or as a group.
 
-One specific challenge in scientific computing is that we care
-about getting the *right* answer. A piece of code that crashes is annoying; but
-a piece of code that runs, and give you the wrong answer can compromise your
-science. Therefore, we should adopt practices that make us less likely to
-introduce mistakes, and more likely to catch them. This guide will help you with
-this.
-
 This material is aimed at people who have already interacted with a computer
 using a programming language, but want to adopt best practices that make their
 code more robust. It can also be used to facilitate the onboarding of new people
 in your lab or in your project.
 
-This material is *not* aimed at people with terabytes upon terabytes of data, or
+Scientific computing should not be adressed only to those of us with terabytes
+upon terabytes of data, or the
 need to distribute computations across thousands of cores, or need GP-GPU
-programming. Sorry! But if you do these sort of things, you are more than
-welcome to contribute to these lessons.
+programming. Most of us researchers do not have these needs, and we will not discuss them at
+all here. But if you do these sort of things, you are more than
+welcome to contribute your valuable experience to these lessons.
 
 And do you want good news? You don't need to install anything! We rely on [the
 Binder project][binder], a cloud-based service to run reproducible documents. We
 will use the [Julia][jl] language; but you don't need to know anything about it
 either. We will keep the discussion very general, and not use any of the (very
 cool!) language-specific features and syntax.
+
+In fact, you will see that good practices for scientific computing have very little to
+do with tools and technical things; instead, they rely on thinking about programming in
+a slightly different way. You will be able to apply these principles to any language you
+prefer to use.
 
 [binder]: https://beta.mybinder.org/
 [jl]: http://julialang.org/

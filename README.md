@@ -54,7 +54,8 @@ Clicking on the title of each lesson below will launch it in a new window.
 1. :bug: Lesson 4 - preventing errors with defensive programming
 1. :hammer: Lesson 5 - debugging our way out of errors we forgot to prevent
 
-[l1binder]: https://beta.mybinder.org/v2/gh/tpoisot/IntroScientificComputing/master?filepath=lessons%2F01_introduction_to_notebooks.ipynb
+[l1binder]: https://beta.mybinder.org/v2/gh/tpoisot/ScientificComputingForTheRestOfUs/master?filepath=lessons%2F01_introduction_to_notebooks.ipynb
+[l2binder]: https://beta.mybinder.org/v2/gh/tpoisot/ScientificComputingForTheRestOfUs/master?filepath=lessons%2F02_flow_of_execution.ipynb
 
 ## Contributing
 
@@ -63,29 +64,29 @@ at our [Code of Conduct][coc]. It boils down to *be nice and respectful* -- no
 contribution, no matter how amazing it may be, justifies or excuses bad
 behaviour.
 
-[coc]: https://github.com/tpoisot/IntroScientificComputing/blob/master/CODE_OF_CONDUCT.md
+[coc]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/master/CODE_OF_CONDUCT.md
 
 The first thing you can do is comment on Issues that have the ["Request for
 feedback"][feedback] label. They represent situations for which we are actively
 seeking community feedback, and anyone is always welcome to chime in.
 
-[feedback]: https://github.com/tpoisot/IntroScientificComputing/labels/request%20for%20feedback
+[feedback]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/labels/request%20for%20feedback
 
 If there is a more specific point you would like to raise, you can [create a new
 Issue][new_issue], and explain your idea, critique, or comment. And of course,
 you can always browse the [current Issues][issues], to get a sense of what is
 being discussed.
 
-[new_issue]: https://github.com/tpoisot/IntroScientificComputing/issues/new
-[issues]: https://github.com/tpoisot/IntroScientificComputing/issues
+[new_issue]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new
+[issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues
 
 If you want to contribute more, then great! Have a look at the [contribution
 guidelines][cguid] first, to get you started with setting up a development
 environment. You can have a look at ["Good first issues"][first], if you want
 some inspiration.
 
-[cguid]: https://github.com/tpoisot/IntroScientificComputing/blob/master/CONTRIBUTING.md
-[first]: https://github.com/tpoisot/IntroScientificComputing/labels/good%20first%20issue
+[cguid]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/master/CONTRIBUTING.md
+[first]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/labels/good%20first%20issue
 
 ## Authors
 
@@ -107,5 +108,5 @@ masterpiece. I have also heard great things about ["Clean code"][cleanc].
 
 ## Other information
 
-[![license](https://img.shields.io/github/license/tpoisot/IntroScientificComputing.svg?style=flat-square)]()
-[![Binder](https://img.shields.io/badge/launch-binder-ff69b4.svg?style=flat-square)](https://beta.mybinder.org/v2/gh/tpoisot/IntroScientificComputing/master?filepath=lessons)
+[![license](https://img.shields.io/github/license/tpoisot/ScientificComputingForTheRestOfUs.svg?style=flat-square)]()
+[![Binder](https://img.shields.io/badge/launch-binder-ff69b4.svg?style=flat-square)](https://beta.mybinder.org/v2/gh/tpoisot/ScientificComputingForTheRestOfUs/master?filepath=lessons)

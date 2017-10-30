@@ -109,7 +109,9 @@ some inspiration.
 [cguid]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/master/CONTRIBUTING.md
 [first]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/labels/good%20first%20issue
 
-## Authors
+## Contributors
+
+**Comments, ideas**: @ha0ye @philippbayer @betatim
 
 ## Want to read more?
 

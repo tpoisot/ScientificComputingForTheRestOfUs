@@ -43,19 +43,40 @@ principles to any language you prefer to use.
 
 ## Table of contents
 
-Clicking on the title of each lesson below will launch it in a new window.
 
-1. :notebook: [Lesson 1][l1binder] - using notebooks (approx. 10 minutes)
-    - cells and states
-    - order of execution
-    - exporting and saving your work
-1. :arrows_clockwise: Lesson 2 - the flow of execution
-1. :computer: Lesson 3 - writing functions
-1. :bug: Lesson 4 - preventing errors with defensive programming
-1. :hammer: Lesson 5 - debugging our way out of errors we forgot to prevent
+### :notebook: [Lesson 1][l1binder] - using notebooks
+
+- :checkered_flag: [Start the lesson!][l1binder]
+- :triangular_flag_on_post: [Report issues or give feedback][l1issues]
+- Contents:
+    1. cells and states
+    2. order of execution
+    3. exporting and saving your work
+- :clock1: approx. 10 minutes
+
+### :arrows_clockwise: [Lesson 2][l2binder] - the flow of execution
+
+- :checkered_flag: [Start the lesson!][l2binder]
+- :triangular_flag_on_post: [Report issues or give feedback][l2issues]
+- Contents:
+    1. programming as a language (with only three words!)
+    1. if, for, while - what do they do?
+    1. moving across loops
+- :clock1: approx. 15 minutes
+- :information_source: early draft
+
+### :computer: Lesson 3 - writing functions
+### :bug: Lesson 4 - preventing errors with defensive programming
+### :hammer: Lesson 5 - debugging our way out of errors we forgot to prevent
 
 [l1binder]: https://beta.mybinder.org/v2/gh/tpoisot/ScientificComputingForTheRestOfUs/master?filepath=lessons%2F01_introduction_to_notebooks.ipynb
 [l2binder]: https://beta.mybinder.org/v2/gh/tpoisot/ScientificComputingForTheRestOfUs/master?filepath=lessons%2F02_flow_of_execution.ipynb
+
+[l1issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A1
+[l2issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A2
+[l3issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A3
+[l4issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A4
+[l5issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A5
 
 ## Contributing
 

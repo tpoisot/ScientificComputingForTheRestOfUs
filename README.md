@@ -72,14 +72,14 @@ principles to any language you prefer to use.
     1. writing functions (and commenting them)
     1. arguments
     1. type stability
-    
+
 ### :bug: Lesson 4 - preventing errors with defensive programming
 
 - Contents:
     1. defensive programming
     1. using types as input control
     1. testing
-    
+
 ### :hammer: Lesson 5 - debugging our way out of errors we forgot to prevent
 
 - Contents:

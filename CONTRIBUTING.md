@@ -21,6 +21,9 @@ explicit name*. Something like `lesson2-clarify-while` is helpful. As soon as
 this is done, open a pull request against the `master` branch, so we can keep
 track of what happens.
 
+To see diff and merge issues with notebooks, we recommend
+[nbdime](https://github.com/jupyter/nbdime).
+
 [instjup]: http://jupyter.org/install.html
 [jlinst]: https://julialang.org/downloads/
 [ijulinst]: https://github.com/JuliaLang/IJulia.jl

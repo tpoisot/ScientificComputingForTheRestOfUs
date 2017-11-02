@@ -1,5 +1,7 @@
 # Scientific Computing (for the rest of us)
 
+[![Join the chat at https://gitter.im/ScientificComputingForTheRestOfUs/Lobby](https://badges.gitter.im/ScientificComputingForTheRestOfUs/Lobby.svg)](https://gitter.im/ScientificComputingForTheRestOfUs/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 One specific challenge, when writing code as a scientist, is that we care *a
 lot* about getting the *right* answer; but of course, the *right* answer is not
 always obvious. So we should be very careful with the code we write. A piece of

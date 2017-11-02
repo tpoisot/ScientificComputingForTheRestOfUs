@@ -1,7 +1,5 @@
 # Scientific Computing (for the rest of us)
 
-[![Join the chat at https://gitter.im/ScientificComputingForTheRestOfUs/Lobby](https://badges.gitter.im/ScientificComputingForTheRestOfUs/Lobby.svg)](https://gitter.im/ScientificComputingForTheRestOfUs/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 One specific challenge, when writing code as a scientist, is that we care *a
 lot* about getting the *right* answer; but of course, the *right* answer is not
 always obvious. So we should be very careful with the code we write. A piece of
@@ -44,7 +42,6 @@ principles to any language you prefer to use.
 [jl]: http://julialang.org/
 
 ## Table of contents
-
 
 ### :notebook: [Lesson 1][l1binder] - using notebooks
 
@@ -113,6 +110,12 @@ seeking community feedback, and anyone is always welcome to chime in.
 
 [feedback]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/labels/request%20for%20feedback
 
+If you are not sure about opening an issue, you can use the
+[chatroom][gitterlink]. We'll be glad to have a more informal conversation with
+you!
+
+[gitterlink]: https://gitter.im/ScientificComputingForTheRestOfUs/Lobby
+
 If there is a more specific point you would like to raise, you can [create a new
 Issue][new_issue], and explain your idea, critique, or comment. And of course,
 you can always browse the [current Issues][issues], to get a sense of what is
@@ -159,3 +162,4 @@ in your software][userconf], or ways to [elevate code as a research output][elev
 
 [![license](https://img.shields.io/github/license/tpoisot/ScientificComputingForTheRestOfUs.svg?style=flat-square)]()
 [![Binder](https://img.shields.io/badge/launch-binder-ff69b4.svg?style=flat-square)](https://beta.mybinder.org/v2/gh/tpoisot/ScientificComputingForTheRestOfUs/master?filepath=lessons)
+[![Gitter](https://img.shields.io/gitter/room/ScientificComputingForTheRestOfUs/Lobby.svg?style=flat-square)](https://gitter.im/ScientificComputingForTheRestOfUs/Lobby)

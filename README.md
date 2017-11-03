@@ -64,6 +64,7 @@ principles to any language you prefer to use.
 - Contents:
     1. programming as a language (with only three words!)
     1. if, for, while - what do they do?
+    1. arrays
     1. moving across loops
 - :clock1: approx. 25 minutes
 - :information_source: early draft

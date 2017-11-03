@@ -1,5 +1,9 @@
 # Scientific Computing (for the rest of us)
 
+<p align="center">
+    <b><a href="https://gitter.im/ScientificComputingForTheRestOfUs/Lobby" title="Chat room">Come talk with us on gitter</a>!</b>
+</p>
+
 One specific challenge, when writing code as a scientist, is that we care *a
 lot* about getting the *right* answer; but of course, the *right* answer is not
 always obvious. So we should be very careful with the code we write. A piece of

@@ -24,12 +24,14 @@ using a programming language, but want to adopt best practices that make their
 code more robust. It can also be used to facilitate the onboarding of new people
 in your lab or in your project.
 
-Scientific computing should not be adressed only to those of us with terabytes
-upon terabytes of data, or the need to distribute computations across thousands
-of cores, or need GP-GPU programming. Most of us researchers do not have these
-needs, and we will not discuss them at all here. But if you do these sort of
-things, you are more than welcome to contribute your valuable experience to
-these lessons.
+Scientific computing can be very diverse, ranging from a few-step analysis
+of small data sets to simulations running for weeks on supercomputers.
+We focus on the most common situations that every scientist encounters
+at some stage of a research project: data analyses performed on a standard
+desktop computer. The general ideas and principles that we expose carry over
+to other situations as well, but the concrete tools and methods may not
+be suitable for tasks requiring special hardware such as GPUs or supercomputers,
+or for projects requiring a significant software development effort.
 
 And do you want good news? You don't need to install anything! We rely on [the
 Binder project][binder], a cloud-based service to run reproducible documents. We

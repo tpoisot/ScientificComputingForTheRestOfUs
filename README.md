@@ -143,6 +143,10 @@ some inspiration.
 
 **Comments, ideas, feedback**: Hao Ye, Philipp Bayer, Tim Head, Ethan White
 
+**Lesson contents**: Timothée Poisot
+
+**Other contributions**: Konrad Hinsen
+
 ## Want to read more?
 
 In a rush? Yes you are. We suggest ["Good enough practices in scientific

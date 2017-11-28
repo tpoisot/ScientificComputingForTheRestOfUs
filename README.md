@@ -57,7 +57,7 @@ principles to any language you prefer to use.
     1. cells and states
     2. order of execution
     3. exporting and saving your work
-- :clock1: approx. 10 minutes
+- :clock2: approx. 10 minutes
 
 ### :arrows_clockwise: [Lesson 2][l2binder] - the flow of execution
 
@@ -68,7 +68,7 @@ principles to any language you prefer to use.
     1. if, for, while - what do they do?
     1. arrays
     1. moving across loops
-- :clock1: approx. 25 minutes
+- :clock5: approx. 25 minutes
 - :information_source: usable draft
 
 ### :computer: Lesson 3 - writing functions
@@ -80,7 +80,7 @@ principles to any language you prefer to use.
     1. writing functions (and commenting them)
     1. arguments
     1. type stability
-- :clock1: approx. 30 minutes
+- :clock6: approx. 30 minutes
 - :information_source: early draft
 
 ### :bug: Lesson 4 - preventing errors with defensive programming

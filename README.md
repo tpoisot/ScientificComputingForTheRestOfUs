@@ -69,15 +69,19 @@ principles to any language you prefer to use.
     1. arrays
     1. moving across loops
 - :clock1: approx. 25 minutes
-- :information_source: early draft
+- :information_source: usable draft
 
 ### :computer: Lesson 3 - writing functions
 
+- :checkered_flag: [Start the lesson!][l2binder]
+- :triangular_flag_on_post: [Report issues or give feedback][l3issues]
 - Contents:
     1. advantages of modular code
     1. writing functions (and commenting them)
     1. arguments
     1. type stability
+- :clock1: approx. 30 minutes
+- :information_source: early draft
 
 ### :bug: Lesson 4 - preventing errors with defensive programming
 
@@ -95,6 +99,7 @@ principles to any language you prefer to use.
 
 [l1binder]: https://beta.mybinder.org/v2/gh/tpoisot/ScientificComputingForTheRestOfUs/master?filepath=lessons%2F01_introduction_to_notebooks.ipynb
 [l2binder]: https://beta.mybinder.org/v2/gh/tpoisot/ScientificComputingForTheRestOfUs/master?filepath=lessons%2F02_flow_of_execution.ipynb
+[l2binder]: https://beta.mybinder.org/v2/gh/tpoisot/ScientificComputingForTheRestOfUs/master?filepath=lessons%2F03_writing_functions.ipynb
 
 [l1issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A1
 [l2issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A2

@@ -52,10 +52,10 @@ principles to any language you prefer to use.
 
 ## Table of contents
 
-### :arrows_clockwise: [Lesson 1][l2binder] - the flow of execution
+### 🔃 [Lesson 1][l1] - the flow of execution
 
-- :checkered_flag: [Start the lesson!][l2binder]
-- :triangular_flag_on_post: [Report issues or give feedback][l2issues]
+- :checkered_flag: [Start the lesson!][l1]
+- :triangular_flag_on_post: [Report issues or give feedback][l1issues]
 - Contents:
     1. programming as a language (with only three words!)
     1. if, for, while - what do they do?
@@ -91,10 +91,8 @@ principles to any language you prefer to use.
     1. messages, warnings, and errors
 
 [l1issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A1
+[l1]: /lessons/01_flow_of_execution/
 [l2issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A2
-[l3issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A3
-[l4issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A4
-[l5issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A5
 
 ## Contributing
 

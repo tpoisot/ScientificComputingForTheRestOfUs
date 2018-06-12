@@ -1,4 +1,7 @@
 theme: jekyll-theme-cayman
+
 permalink: pretty
+
 collections:
-  - lessons
+  lessons:
+    output: true

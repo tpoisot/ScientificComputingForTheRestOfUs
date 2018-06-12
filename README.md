@@ -94,7 +94,7 @@ principles to any language you prefer to use.
 [l1]: lessons/01_flow_of_execution/
 
 [l2issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A2
-[l1]: lessons/02_writing_functions/
+[l2]: lessons/02_writing_functions/
 
 ## Contributing
 

@@ -55,13 +55,18 @@ principles to any language you prefer to use.
 ### 🔃 [Lesson 1][l1] - the flow of execution
 
 🏁 [Start the lesson!][l1]
+
 🚩 [Report issues or give feedback][l1issues]
+
 📖 Contents:
-    1. programming as a language (with only three words!)
-    1. if, for, while - what do they do?
-    1. arrays
-    1. moving across loops
+
+1. programming as a language (with only three words!)
+1. if, for, while - what do they do?
+1. arrays
+1. moving across loops
+
 🕔 approx. 25 minutes
+
 📓 usable draft
 
 ### :computer: Lesson 3 - writing functions

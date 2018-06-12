@@ -1,3 +1,6 @@
+---
+title: Writing functions
+---
 
 # Good code is small code
 
@@ -16,7 +19,7 @@ See the [discussions on this lesson on github][l3issues].
 
 [unix]: https://en.wikipedia.org/wiki/Unix_philosophy
 
-## After this lesson, you will be able to ... 
+## After this lesson, you will be able to ...
 
 - ... create functions to automate and repeat tasks
 - ... understand the notions of input and output
@@ -78,49 +81,49 @@ Our function will take an *input*, which is the number of darts we want to throw
 ```julia
 function throw_darts(n::Int64)
     #= Let's create a space to store the results in
-    
+
     The line below will "pre-allocate" a variable called darts.
     Its type is an array, with a single dimension, which contains
-    tuples of two floating point numbers. 
-    
+    tuples of two floating point numbers.
+
     Pre-allocation is useful when the size of objects you maipulate
     increases. It tells the computer to reserve enough space in memory.
-    Also specifying the type of the objects will let the computer 
+    Also specifying the type of the objects will let the computer
     reserve exactly enough space in memory.
     =#
     darts = Array{Tuple{Float64,Float64},1}(n)
-    
+
     #=
-    
+
     Now we can fill the variable with random darts. Julia has
     a nice function called `eachindex`, which is able to iterate
     over all positions in an array (or more broadly, over a
     collection). Using eachindex(darts) is equivalent to
     writing 1:length(darts).
-    
+
     =#
     for i in eachindex(darts)
-        #= 
-        
+        #=
+
         This line uses a little bit of julian notation:
         specifically, adding ... after a variable will
         "unpack" its elements, which lets us store them
-        in a tuple. The same thing can be done with 
-        
+        in a tuple. The same thing can be done with
+
         x, y = rand(2).*2
         darts[i] = (x, y)
-        
+
         =#
         darts[i] = (rand(2).*2...)
     end
-    
+
     #=
-    
-    Finally, we explicitly return the value of darts. This is 
+
+    Finally, we explicitly return the value of darts. This is
     not mandatory (by default julia returns the output of the last
     operation that was done within the function), but being explicit
     is always better than being implicit.
-    
+
     =#
     return darts
 end
@@ -137,15 +140,15 @@ This is done by measuring the distance between the darts and the center of the c
 We can decide that this function will accept as input a first point, another point, and a radius. So the first line will look like:
 
     function is_within_circle(point, center, radius)
-   
+
 Then, we can take the distance between the points as
 
     distance = (point[1]-center[1])^2 + (point[2]-center[2])^2
-  
+
 , and so the point is within the circle if
 
     distance < radius
-    
+
 Let's wrap this up!
 
 
@@ -182,7 +185,7 @@ So far, we have
 1. A way of throwing random darts
 2. A way of knowing which of these darts fall within a circle
 
-The next step is therefore to take each dart, in turn, and see if they are within the circle! We can do this with a loop. There are a few ways of doing it. 
+The next step is therefore to take each dart, in turn, and see if they are within the circle! We can do this with a loop. There are a few ways of doing it.
 
 The first is to pre-allocate an array of Boolean values (`true`/`false`), with as many spots as we have thrown darts, and store the result of the question *Is this dart within the circle?*.
 
@@ -194,44 +197,44 @@ There are probably about another million different ways to do this. Here we will
 ```julia
 function how_many_darts(darts, center, radius)
     #=
-    
+
     Our function will take three inputs:
     1. the darts we generated
     2. the center of the circle
     3. the radius of the circle
-    
+
     =#
-    
+
     #=
-    
+
     We create a variable called `n`, and give it a value of `0`
-    
+
     =#
     n = 0
-    
+
     #=
-    
+
     This loop uses the `for element in collection` syntax: the variable
     `dart` will take every vale in `darts` in turn.
-    
+
     =#
     for dart in darts
-        
+
         #=
-        
+
         Only when the dart is within the circle do we
         add 1 to the counter:
-        
+
         =#
         if is_within_circle(dart, center, radius)
             n = n + 1
         end
     end
-    
+
     #=
-    
+
     Finally, we explicitly return the value of n
-    
+
     =#
     return n
 end

@@ -69,22 +69,22 @@ principles to any language you prefer to use.
 
 📓 usable draft
 
-### 🔃 [Lesson 1][l1] - the flow of execution
+### 🔃 [Lesson 2][l2] - writing functions
 
-🏁 [Start the lesson!][l1]
+🏁 [Start the lesson!][l2]
 
-🚩 [Report issues or give feedback][l1issues]
+🚩 [Report issues or give feedback][l2issues]
 
 📖 Contents:
 
-1. programming as a language (with only three words!)
-1. if, for, while - what do they do?
-1. arrays
-1. moving across loops
+1. advantages of modular code
+1. writing and commenting functions
+1. arguments and keywords
+1. type stability
 
-🕔 approx. 25 minutes
+🕕 approx. 30 minutes
 
-📓 usable draft
+📓 early draft
 
 ### :bug: Lesson 4 - preventing errors with defensive programming
 
@@ -93,8 +93,8 @@ principles to any language you prefer to use.
 [l1issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A1
 [l1]: lessons/01_flow_of_execution/
 
-[l2issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A1
-[l1]: lessons/01_flow_of_execution/
+[l2issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A2
+[l1]: lessons/02_writing_functions/
 
 ## Contributing
 

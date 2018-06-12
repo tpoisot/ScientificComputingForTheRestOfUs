@@ -2,7 +2,7 @@
 title: Writing functions
 ---
 
-# Good code is small code
+## Good code is small code
 
 In the previous lessons, we have seen how to express problems using `for`, `if`, and `while`. In this lesson, we will see how it is possible to *wrap* these instructions in functions. Functions allow you to write code that is modular, can easily be re-used, and (more importantly for us), can easily be tested, validated, and fixed.
 

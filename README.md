@@ -52,7 +52,7 @@ principles to any language you prefer to use.
 
 ## Table of contents
 
-### 🔃 [Lesson 1][l1] - the flow of execution
+### 🔃 The flow of execution
 
 🏁 [Start the lesson!][l1]
 
@@ -69,7 +69,7 @@ principles to any language you prefer to use.
 
 📓 usable draft
 
-### 🔃 [Lesson 2][l2] - writing functions
+### 🔃 Writing functions
 
 🏁 [Start the lesson!][l2]
 
@@ -86,9 +86,9 @@ principles to any language you prefer to use.
 
 📓 early draft
 
-### :bug: Lesson 4 - preventing errors with defensive programming
+### 🐛 Preventing errors with defensive programming
 
-### :hammer: Lesson 5 - debugging our way out of errors we forgot to prevent
+### 🔨 Debugging our way out of errors we forgot to prevent
 
 [l1issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A1
 [l1]: lessons/01_flow_of_execution/

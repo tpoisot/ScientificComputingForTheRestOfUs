@@ -47,7 +47,7 @@ about programming in a slightly different way. You will be able to apply these
 principles to any language you prefer to use.
 
 [nb]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/master/lessons/00_introduction_to_notebooks.ipynb
-[jlobox]: http://juliabox.com/
+[jlbox]: http://juliabox.com/
 [jl]: http://julialang.org/
 
 ## Table of contents

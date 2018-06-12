@@ -8,7 +8,7 @@ One great way to make your code robust is to keep it very simple, and one great 
 See the [discussions on this lesson on github][l2issues].
 [l2issues]: https://github.com/tpoisot/IntroScientificComputing/labels/lesson%3A2
 
-## After this lesson, you will be able to ... 
+## After this lesson, you will be able to ...
 
 - ... express your problems in Boolean terms (true/false)
 - ... create loops and conditionals
@@ -68,7 +68,7 @@ end
 
 This time, we get the right output: `You should bike`. This brings a very important point: we need to be *explicit*; when talking with humans, we can understand (or guess) what the alternative choice is. Computers have no such abilities: everything that happens is the outcome of things we (or others) have written in the code.
 
-In practice, we will want to make decisions based on several factors. This is a thing at which Boolean values excel: we can perform *operations* on them. The most common ones are *not*, *or*, and *and*. 
+In practice, we will want to make decisions based on several factors. This is a thing at which Boolean values excel: we can perform *operations* on them. The most common ones are *not*, *or*, and *and*.
 
 The *not* operation is, quite literaly, the opposite of a statement. For example, if we state "it is true that the coin landed on its head", then *not* this statement is "it is *not* true that the coin landed on its head", which is the same thing as "it is false than the coin landed on its head".
 
@@ -87,7 +87,7 @@ Boolean values can also be *combined*. Coming back to deciding on a mode of tran
 ~~~
 if it rains
     take the subway
-else 
+else
     if the subway is faster than biking
         take the subway
     else
@@ -152,7 +152,7 @@ println("true and true:\t", true && true)
 
 The *for* operation is one of the most common, but also one of the most confusing, ways to tell a computer what to do. This is because it requires to understand a lot of concepts at once; we will walk through each of them.
 
-When talking about *for*, we usually talk about *for loops* or *iteration*. This is because *for* lets you express the fact that you will perform an operation on a (finite) set of elements. Let's start with a perfectly boring yet somewhat instructive example. We can draw five random numbers between 0 and 1, using 
+When talking about *for*, we usually talk about *for loops* or *iteration*. This is because *for* lets you express the fact that you will perform an operation on a (finite) set of elements. Let's start with a perfectly boring yet somewhat instructive example. We can draw five random numbers between 0 and 1, using
 
 ~~~ julia
 rand(5)

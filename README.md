@@ -54,15 +54,15 @@ principles to any language you prefer to use.
 
 ### 🔃 [Lesson 1][l1] - the flow of execution
 
-- :checkered_flag: [Start the lesson!][l1]
-- :triangular_flag_on_post: [Report issues or give feedback][l1issues]
-- Contents:
+🏁 [Start the lesson!][l1]
+🚩 [Report issues or give feedback][l1issues]
+📖 Contents:
     1. programming as a language (with only three words!)
     1. if, for, while - what do they do?
     1. arrays
     1. moving across loops
-- :clock5: approx. 25 minutes
-- :information_source: usable draft
+🕔 approx. 25 minutes
+📓 usable draft
 
 ### :computer: Lesson 3 - writing functions
 
@@ -91,7 +91,7 @@ principles to any language you prefer to use.
     1. messages, warnings, and errors
 
 [l1issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A1
-[l1]: /lessons/01_flow_of_execution/
+[l1]: lessons/01_flow_of_execution/
 [l2issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A2
 
 ## Contributing

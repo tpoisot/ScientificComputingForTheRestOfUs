@@ -33,18 +33,21 @@ to other situations as well, but the concrete tools and methods may not
 be suitable for tasks requiring special hardware such as GPUs or supercomputers,
 or for projects requiring a significant software development effort.
 
-And do you want good news? You don't need to install anything! We rely on [the
-Binder project][binder], a cloud-based service to run reproducible documents. We
-will use the [Julia][jl] language; but you don't need to know anything about it
-either. We will keep the discussion very general, and not use any of the (very
-cool!) language-specific features and syntax.
+And do you want good news? You don't need to install anything! You can run
+everything on [JuliaBox][jlbox], a cloud-based service to run reproducible
+documents as notebooks. If you want to read a short introduction to notebook, we
+have written one [here][nb]. We will use the [Julia][jl] programming language;
+but you don't need to know anything about it either. We will keep the discussion
+very general, and not use any of the (very cool!) language-specific features and
+syntax.
 
 In fact, you will see that good practices for scientific computing have very
 little to do with tools and technical things; instead, they rely on thinking
 about programming in a slightly different way. You will be able to apply these
 principles to any language you prefer to use.
 
-[binder]: https://beta.mybinder.org/
+[nb]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/master/lessons/00_introduction_to_notebooks.ipynb
+[jlobox]: http://juliabox.com/
 [jl]: http://julialang.org/
 
 ## Table of contents
@@ -96,10 +99,6 @@ principles to any language you prefer to use.
     1. using print
     1. debugging strategies
     1. messages, warnings, and errors
-
-[l1binder]: https://beta.mybinder.org/v2/gh/tpoisot/ScientificComputingForTheRestOfUs/master?filepath=lessons%2F01_introduction_to_notebooks.ipynb
-[l2binder]: https://beta.mybinder.org/v2/gh/tpoisot/ScientificComputingForTheRestOfUs/master?filepath=lessons%2F02_flow_of_execution.ipynb
-[l2binder]: https://beta.mybinder.org/v2/gh/tpoisot/ScientificComputingForTheRestOfUs/master?filepath=lessons%2F03_writing_functions.ipynb
 
 [l1issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A1
 [l2issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A2

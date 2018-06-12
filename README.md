@@ -46,7 +46,7 @@ little to do with tools and technical things; instead, they rely on thinking
 about programming in a slightly different way. You will be able to apply these
 principles to any language you prefer to use.
 
-[nb]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/master/lessons/00_introduction_to_notebooks.ipynb
+[nb]: https://nbviewer.jupyter.org/github/tpoisot/ScientificComputingForTheRestOfUs/blob/master/_lessons/00_introduction_to_notebooks.ipynb
 [jlbox]: http://juliabox.com/
 [jl]: http://julialang.org/
 

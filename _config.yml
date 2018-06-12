@@ -5,3 +5,4 @@ permalink: pretty
 collections:
   lessons:
     output: true
+    permalink: /:collection/:name

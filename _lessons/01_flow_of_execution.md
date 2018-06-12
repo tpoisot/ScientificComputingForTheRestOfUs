@@ -1,5 +1,6 @@
 ---
 title: The flow of execution
+layout: page
 ---
 
 ## Programming really *is* a language

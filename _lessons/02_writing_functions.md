@@ -1,5 +1,6 @@
 ---
 title: Writing functions
+layout: page
 ---
 
 ## Good code is small code

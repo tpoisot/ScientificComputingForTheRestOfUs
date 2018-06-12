@@ -52,17 +52,7 @@ principles to any language you prefer to use.
 
 ## Table of contents
 
-### :notebook: [Lesson 1][l1binder] - using notebooks
-
-- :checkered_flag: [Start the lesson!][l1binder]
-- :triangular_flag_on_post: [Report issues or give feedback][l1issues]
-- Contents:
-    1. cells and states
-    2. order of execution
-    3. exporting and saving your work
-- :clock2: approx. 10 minutes
-
-### :arrows_clockwise: [Lesson 2][l2binder] - the flow of execution
+### :arrows_clockwise: [Lesson 1][l2binder] - the flow of execution
 
 - :checkered_flag: [Start the lesson!][l2binder]
 - :triangular_flag_on_post: [Report issues or give feedback][l2issues]

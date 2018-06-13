@@ -59,8 +59,8 @@ In `Julia` (and most other languages), we can declare functions using the follow
 
 ~~~
 function functionname(foo, bar)
-    baz = foo + bar
-    return baz
+  baz = foo + bar
+  return baz
 end
 ~~~
 
@@ -262,21 +262,6 @@ So, how good is our estimate?
 ```julia
 estimate = estimate_pi(100000)
 println("Estimate: $(estimate)\tπ: $(π)")
-```
-
-The following code uses the `Plots` package to see how increasing the number of darts brings us closer to the *real* value of $\pi$:
-
-
-```julia
-using Plots
-N = Int64.(round.(10.^linspace(2, 6, 20), 0))
-estimate = zeros(Float64, length(N))
-for i in eachindex(N)
-    estimate[i] = estimate_pi(N[i])
-end
-plot(N, estimate, lab="Estimation", c=:teal, lw=2, frame=:box)
-hline!([π], lab="π", c=:lightgrey)
-xaxis!(:log10)
 ```
 
 ## Keyword arguments and default values

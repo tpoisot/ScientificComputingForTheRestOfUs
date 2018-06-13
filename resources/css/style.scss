@@ -2,6 +2,10 @@
 ---
 
 * {
+  box-sizing: border-box;
+}
+
+body, html {
   font-family: "IBM Plex Sans";
 }
 
@@ -9,36 +13,54 @@ pre, code {
   font-family: "IBM Plex Mono" !important;
 }
 
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
 html, body {
   margin: 0 0;
   height: 100%;
+  background-color: #f5f6f7;
 }
 
-.sidebar, .content {
+.topbar, .content {
   padding: 2em;
 }
 
 .content {
-  max-width: 800px;
-  float: left;
+  margin-top: 4em;
 }
 
-.sidebar {
-  width: 400px;
-  background-color: #4f4f4f;
-  color: #efefef;
-  height: 100%;
+.topbar {
+  * {
+    display: inline-block;
+  }
+  width: 100%;
   position: fixed;
   top: 0;
-  right: 0;
-  ul, li {
-    list-style: none;
-    padding-left: 0;
-    line-height: 40px;
-    border-bottom: 1px dotted #7f7f7f;
+  padding-top: 1.2em;
+  padding-bottom: 1.2em;
+  background-color: white;
+  text-transform: uppercase;
+  .title, .subtitle {
+    color: rgb(102, 186, 84);
+  }
+  .title {
+    font-weight: 800;
+  }
+  .links {
+    padding-left: 3em;
     a {
-      color: white;
+      padding: 0em 1em;
+      color: #777;
       text-decoration: none;
+      &:hover {
+        color: #444;
+      }
+      &.disabled {
+        color: #ccc;
+      }
     }
   }
 }

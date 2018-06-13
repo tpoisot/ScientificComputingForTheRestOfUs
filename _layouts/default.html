@@ -17,24 +17,19 @@
 
 <body>
 
+  <div class="topbar">
+
+    <span class="title">{{ site.title }}</span> <span class="subtitle">{{ site.subtitle }}</span>
+    <div class="links">
+      <a href="/">Home</a></span>
+      <a href="/lessons/">Lessons</a></span>
+      <a href="#" class="disabled">Capstones</a></span>
+    </div>
+
+  </div>
+
   <div class="content">
     {{ content }}
-  </div>
-  <div class="sidebar">
-    <section>
-      <h2>Navigation</h2>
-      <ul>
-        <li><a href="/">Home</a></li>
-    </ul>
-    </section>
-    <section>
-      <h2>Lessons</h2>
-      <ul>
-      {% for page in site.lessons %}
-        <li><a href="{{ page.url }}">{{ page.title }}</a></li>
-      {% endfor %}
-    </ul>
-    </section>
   </div>
 
   <script src="js/scripts.js"></script>

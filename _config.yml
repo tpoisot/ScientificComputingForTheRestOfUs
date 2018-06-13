@@ -1,8 +1,7 @@
-theme: jekyll-theme-cayman
-
+title: Scientific computing
+subtitle: (for the rest of us)
 permalink: pretty
 
 collections:
   lessons:
     output: true
-    permalink: /:collection/:name

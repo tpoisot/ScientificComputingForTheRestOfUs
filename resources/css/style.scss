@@ -1,0 +1,44 @@
+---
+---
+
+* {
+  font-family: "IBM Plex Sans";
+}
+
+pre, code {
+  font-family: "IBM Plex Mono" !important;
+}
+
+html, body {
+  margin: 0 0;
+  height: 100%;
+}
+
+.sidebar, .content {
+  padding: 2em;
+}
+
+.content {
+  max-width: 800px;
+  float: left;
+}
+
+.sidebar {
+  width: 400px;
+  background-color: #4f4f4f;
+  color: #efefef;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  ul, li {
+    list-style: none;
+    padding-left: 0;
+    line-height: 40px;
+    border-bottom: 1px dotted #7f7f7f;
+    a {
+      color: white;
+      text-decoration: none;
+    }
+  }
+}

@@ -1,0 +1,42 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>{{ site.title }} > {{ page.title}}</title>
+  <meta name="description" content="Scientific computing for the rest of us">
+  <meta name="author" content="Timothée Poisot">
+
+  <link rel="stylesheet" href="/resources/css/style.css">
+
+  <!--[if lt IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+  <div class="content">
+    {{ content }}
+  </div>
+  <div class="sidebar">
+    <section>
+      <h2>Navigation</h2>
+      <ul>
+        <li><a href="/">Home</a></li>
+    </ul>
+    </section>
+    <section>
+      <h2>Lessons</h2>
+      <ul>
+      {% for page in site.lessons %}
+        <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+      {% endfor %}
+    </ul>
+    </section>
+  </div>
+
+  <script src="js/scripts.js"></script>
+</body>
+</html>

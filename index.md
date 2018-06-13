@@ -1,3 +1,8 @@
+---
+layout: page
+title: Index
+---
+
 # Scientific Computing (for the rest of us)
 
 <p align="center">

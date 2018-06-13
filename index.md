@@ -3,12 +3,6 @@ layout: page
 title: Index
 ---
 
-# Scientific Computing (for the rest of us)
-
-<p align="center">
-    <b><a href="https://gitter.im/ScientificComputingForTheRestOfUs/Lobby" title="Chat room">Come talk with us on gitter</a>!</b>
-</p>
-
 One specific challenge, when writing code as a scientist, is that we care *a
 lot* about getting the *right* answer; but of course, the *right* answer is not
 always obvious. So we should be very careful with the code we write. A piece of
@@ -17,12 +11,19 @@ wrong answer can compromise your science and your career. This guide will help
 you adopt practices that make it less likely to introduce mistakes in your code,
 and more likely to catch them. Hopefully, this will let all of us write code we
 can trust more.
+{: .lead}
+
+<p align="center">
+  <b><a href="https://gitter.im/ScientificComputingForTheRestOfUs/Lobby" title="Chat room">Come talk with us on gitter</a>!</b>
+</p>
 
 Good principles in scientific computing can help you write code that is easier
 to maintain, easier to reproduce, and easier to debug. But it can be difficult
 to find an introduction to get you started. The goal of this project is to
 provide reproducible documents you can use to get started on the most important
 points. You can use these lessons on your own, or as a group.
+
+## Who is this material for?
 
 This material is aimed at people who have already interacted with a computer
 using a programming language, but want to adopt best practices that make their

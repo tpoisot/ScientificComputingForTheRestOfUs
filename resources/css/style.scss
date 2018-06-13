@@ -1,12 +1,22 @@
 ---
 ---
 
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i|IBM+Plex+Sans+Condensed:400,400i|IBM+Plex+Sans:400,400i,500,500i');
+
 * {
   box-sizing: border-box;
 }
 
 body, html {
   font-family: "IBM Plex Sans";
+}
+
+b, strong {
+  font-weight: 500;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "IBM Plex Sans Condensed";
 }
 
 pre, code {
@@ -18,10 +28,14 @@ pre {
   word-wrap: break-word;
 }
 
+.lead {
+  font-weight: 500;
+}
+
 html, body {
   margin: 0 0;
   height: 100%;
-  background-color: #f5f6f7;
+  background-color: #f7f8fa;
 }
 
 .topbar, .content {

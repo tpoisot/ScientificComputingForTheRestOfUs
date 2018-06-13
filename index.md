@@ -23,6 +23,10 @@ to find an introduction to get you started. The goal of this project is to
 provide reproducible documents you can use to get started on the most important
 points. You can use these lessons on your own, or as a group.
 
+<p align="center">
+  <b><a href="/lessons/" title="Lesson index">Read the lessons</a>!</b>
+</p>
+
 ## Who is this material for?
 
 This material is aimed at people who have already interacted with a computer
@@ -56,51 +60,6 @@ principles to any language you prefer to use.
 [jlbox]: http://juliabox.com/
 [jl]: http://julialang.org/
 
-## Table of contents
-
-### 🔃 The flow of execution
-
-🏁 [Start the lesson!][l1]
-
-🚩 [Report issues or give feedback][l1issues]
-
-📖 Contents:
-
-1. programming as a language (with only three words!)
-1. if, for, while - what do they do?
-1. arrays
-1. moving across loops
-
-🕔 approx. 25 minutes
-
-📓 usable draft
-
-### 🔃 Writing functions
-
-🏁 [Start the lesson!][l2]
-
-🚩 [Report issues or give feedback][l2issues]
-
-📖 Contents:
-
-1. advantages of modular code
-1. writing and commenting functions
-1. arguments and keywords
-1. type stability
-
-🕕 approx. 30 minutes
-
-📓 early draft
-
-### 🐛 Preventing errors with defensive programming
-
-### 🔨 Debugging our way out of errors we forgot to prevent
-
-[l1issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A1
-[l1]: lessons/01_flow_of_execution/
-
-[l2issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues?q=is%3Aopen+is%3Aissue+label%3Alesson%3A2
-[l2]: lessons/02_writing_functions/
 
 ## Contributing
 

@@ -1,5 +1,16 @@
 - title: The flow of execution
   url: 01_flow_of_execution
+  time: 25 minutes
+  status: Usable draft
   topics:
-    - programming as a language
-    - if, for, while
+    - Programming is a language
+    - What do `if`, `for`, and `while` do?
+    - Moving across arrays
+- title: Writing functions
+  url: 02_writing_functions
+  time: 35 minutes
+  status: Early draft
+  topics:
+    - Writing re-usable code
+    - Arguments and keywords
+    - Type stability

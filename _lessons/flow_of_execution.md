@@ -380,11 +380,11 @@ end
 
 
 ````
+foo
+bar
 bar
 foo
-foo
-foo
-foo
+bar
 ````
 
 
@@ -460,11 +460,11 @@ random_numbers
 
 ````
 5-element Array{Float64,1}:
- 0.772564
- 0.383964
- 0.130308
- 0.378197
- 0.464903
+ 0.00443131
+ 0.665948  
+ 0.721454  
+ 0.376863  
+ 0.530598
 ````
 
 
@@ -520,7 +520,7 @@ random_numbers[1]
 
 
 ````
-0.7725637794031319
+0.004431310485659257
 ````
 
 
@@ -541,7 +541,7 @@ random_numbers[length(random_numbers)]
 
 
 ````
-0.4649029287653057
+0.5305981376673252
 ````
 
 
@@ -559,7 +559,7 @@ random_numbers[end]
 
 
 ````
-0.4649029287653057
+0.5305981376673252
 ````
 
 
@@ -576,7 +576,7 @@ last(random_numbers)
 
 
 ````
-0.4649029287653057
+0.5305981376673252
 ````
 
 
@@ -596,7 +596,7 @@ println(random_numbers[1])
 
 
 ````
-0.7725637794031319
+0.004431310485659257
 ````
 
 
@@ -607,7 +607,7 @@ println(random_numbers[3])
 
 
 ````
-0.13030811036496748
+0.7214537831037926
 ````
 
 
@@ -618,7 +618,7 @@ println(random_numbers[5])
 
 
 ````
-0.4649029287653057
+0.5305981376673252
 ````
 
 
@@ -648,9 +648,9 @@ end
 
 
 ````
-Position 1:	0.7725637794031319
-Position 3:	0.13030811036496748
-Position 5:	0.4649029287653057
+Position 1:	0.004431310485659257
+Position 3:	0.7214537831037926
+Position 5:	0.5305981376673252
 ````
 
 
@@ -772,12 +772,43 @@ A good example of `while` in action is to keep on generating random numbers
 function will generate numbers uniformly distributed between 0 and 1, so we can
 run it for a while (*GET IT?*) to get a sample with an average of about 0.5.
 
+We can for example write it this way:
+
 ````julia
-while
+my_collection = rand(5)
+
+while !(0.499 ≤ mean(my_collection) ≤ 0.501)
+  append!(my_collection, rand(5))
+end
+
+println("μ: $(round(mean(my_collection), 4))")
 ````
 
 
-<pre class="julia-error">
-ERROR: syntax: incomplete: premature end of input
-</pre>
+````
+μ: 0.5001
+````
 
+
+
+
+
+The instruction just after `while`, *i.e.*
+
+~~~
+!(0.499 ≤ mean(my_collection) ≤ 0.501)
+~~~
+
+is worth thinking about. It is a very compact way of running multiple tests at
+once: the mean needs to be larger than 0.499, yet smaller than 0.501, and we
+need to continue *until* this is true (but there is not *until* statement, so we
+use the awkward "while not").
+
+Note that if we were particularly unlucky, we would never get a sequence of
+random numbers that would match this condition! In this case, our computer would
+stubbornly keep running until the heat death of the universe (or until it
+breaks, which in all likelihood will happen earlier).
+
+Writing `while` loops can be a complex exercice, and it is always good to think
+about "exit strategies". These will be discussed in the forthcoming "Advanced
+control flow" capstone lesson.

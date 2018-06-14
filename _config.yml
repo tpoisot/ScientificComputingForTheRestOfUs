@@ -1,8 +1,15 @@
 title: Scientific computing
 subtitle: (for the rest of us)
 permalink: pretty
-exclude: ["_lessons/*.Jmd"]
+exclude: ["*.Jmd"]
 markdown: kramdown
+
+sass:
+  style: :compressed
+  sass_dir: _scss
+
+palette: teal
+# Can be green blue and teal (and that's it for now)
 
 github: https://github.com/tpoisot/ScientificComputingForTheRestOfUs
 

@@ -1,23 +1,16 @@
 ---
 ---
 
-@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700|Roboto+Mono:400,400i,500,500i|Roboto:400,400i,500,500i');
+@import "fonts";
+@import "colors";
+@import "palette-{{site.palette}}";
 
 * {
   box-sizing: border-box;
 }
 
 body, html {
-  font-family: "Roboto";
   overflow-x: hidden;
-}
-
-b, strong {
-  font-weight: 500;
-}
-
-h1, h2, h3, h4, h5, h6, .topbar {
-  font-family: "Roboto Condensed";
 }
 
 h2 {
@@ -29,21 +22,17 @@ h2 {
 }
 
 .title, .subtitle, h1, h2, h3, h4, h5, h6 {
-  color: rgb(102, 186, 84);
+  color: $color-highlights;
 }
 
 .content {
   a {
-    color: rgb(168, 80, 215);
+    color: $color-href;
     text-decoration: none;
     &:hover {
-      color: rgb(165, 60, 222);
+      color: darken($color-href, 5%);
     }
   }
-}
-
-pre, code {
-  font-family: "Roboto Mono" !important;
 }
 
 pre {
@@ -58,7 +47,6 @@ pre {
 html, body {
   margin: 0 0;
   height: 100%;
-  background-color: #f7f7f7;
 }
 
 .topbar, .content {
@@ -71,7 +59,6 @@ html, body {
   margin-top: 4em;
   font-size: 1.1rem;
   line-height: 1.8rem;
-  color: #222;
   p {
     clear: both;
   }
@@ -89,7 +76,6 @@ html, body {
   top: 0;
   padding-top: 1.2em;
   padding-bottom: 1.2em;
-  background-color: white;
   text-transform: uppercase;
   .title {
     font-weight: 700;
@@ -112,8 +98,6 @@ html, body {
 
 .callout {
   border-radius: 4px;
-  border: 1px solid #eee;
-  background-color: #fcfdfe;
   padding: 1em;
 }
 
@@ -138,7 +122,7 @@ p.callout {
 }
 
 pre, code {
-  color: #e69f00;
+  color: $color-code;
 }
 
 pre {
@@ -193,8 +177,6 @@ pre {
 
 .card {
   border-radius: 4px;
-  border: 1px solid #eee;
-  background-color: #fcfdfe;
   padding: 2em 1em;
   width: 31%;
   margin: 1%;

@@ -20,6 +20,14 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Fira Sans Condensed";
 }
 
+h2 {
+  font-weight: 400;
+  margin-top: 3em;
+  &:first-of-type {
+    margin-top: 0em;
+  }
+}
+
 .title, .subtitle, h1, h2, h3, h4, h5, h6 {
   color: rgb(102, 186, 84);
 }

@@ -21,7 +21,7 @@ of execution*.
 - ... express your problems in Boolean terms (true/false)
 - ... create loops and conditionals
 - ... navigate in arrays
-- ... understand the difference between for and while
+- ... understand the difference between `for` and `while`
 
 ## Tossing coins and planning trips
 
@@ -38,13 +38,13 @@ deal of programming is finding out ways to reduce the outcomes to *true*/*false*
 statements.
 
 In fact, there is a name for this type of data: Boolean. In the Boolean world,
-things are either *true*, or *false*, and we decide accordingly. We think in
-Boolean terms without noticing it very often! For example, when wondering if it
-is faster to go to work by bus, or by bike, we are expressing in our own way the
+things are either *true*, or *false*, and we decide accordingly. Very often, we
+think in Boolean terms without noticing it! For example, when wondering if it is
+faster to go to work by bus, or by bike, we are expressing in our own way the
 question of "going to work by bus is faster than by bike, true or false?".
 
 And then, we will of course take a decision based on the outcome of this
-question. "If it is faster to go by bike, then I will go by bus".
+question. "If it is faster to go by bike, then I will go by bike".
 
 Have you noticed that the word *if* appeared a lot in the past few sentences? It
 is because `if` is the first way to control the flow of execution. It is one of
@@ -87,10 +87,13 @@ Uh, weird! Nothing happened.
 Let's think about why. We asked the computer to compare the time by foot and the
 time by bike; if the time by foot is shorter, then we print a line (`println`)
 telling us to walk. But we know that the time by foot is *not* shorter, and so
-does the computer; because we have not been explicit, nothing is done.
+does the computer. And for this reason, whatever is between `if` and `end` is
+*not* executed. Testing that conditions are met are one way to save time -- we
+do not want to run operations that are not useful.
 
-To decide between two things to do, we need to use `if`'s frequent patner:
-`else`. Let's try again:
+In the above example, we gave no alternative to the computer. To decide between
+two (or more) things to do, we need to use `if`'s frequent partner: `else`.
+Let's try again:
 
 ````julia
 time_by_foot = 13
@@ -169,8 +172,8 @@ else
         take the bike
 ~~~
 
-This block above is called a *nested* statement. We start with an *if*, and then
-*within it*, have another *if*. This is not *too* bad, but increasing the
+This block above is called a *nested* statement. We start with an `if`, and then
+*within it*, have another `if`. This is not *too* bad, but increasing the
 nestedness of statements is a very effective way of having too much complexity!
 And too much complexity is, in turn, a great way to introduce mistakes that are
 hard to understand. This is, generally, the opposite of what we want to do.
@@ -178,7 +181,7 @@ hard to understand. This is, generally, the opposite of what we want to do.
 So we can re-word this expression slightly:
 
 ~~~
-if (the subway if faster than the bike) or (it rains)
+if (the subway is faster than the bike) or (it rains)
     take the subway
 else
     take the bike
@@ -262,8 +265,10 @@ You should take the subway
 
 
 Because it rains (`rain = true`), our code is correctly telling us to take the
-subway. Now, what would you change to make it stop raining? And what do you
-expect to see as an output?
+subway.
+
+Now, what would you change to make it stop raining? And what do you expect to
+see as an output? {: .question}
 
 Correct! If you change the `rain = true` to `rain = false`, and re-run the cell,
 the code will tell us to bike, because it is faster.
@@ -351,7 +356,7 @@ end
 foo
 foo
 bar
-foo
+bar
 foo
 ````
 
@@ -413,11 +418,11 @@ random_numbers
 
 ````
 5-element Array{Float64,1}:
- 0.14515  
- 0.0689542
- 0.887617 
- 0.372156 
- 0.0373442
+ 0.313958 
+ 0.0583107
+ 0.509356 
+ 0.758181 
+ 0.0863727
 ````
 
 
@@ -465,7 +470,7 @@ random_numbers[1]
 
 
 ````
-0.1451500509003778
+0.3139577324188616
 ````
 
 
@@ -481,7 +486,7 @@ random_numbers[length(random_numbers)]
 
 
 ````
-0.037344202708929686
+0.08637266629536189
 ````
 
 
@@ -497,7 +502,7 @@ random_numbers[end]
 
 
 ````
-0.037344202708929686
+0.08637266629536189
 ````
 
 
@@ -513,7 +518,7 @@ println(random_numbers[1])
 
 
 ````
-0.1451500509003778
+0.3139577324188616
 ````
 
 
@@ -524,7 +529,7 @@ println(random_numbers[3])
 
 
 ````
-0.8876171073276442
+0.509355707361111
 ````
 
 
@@ -535,7 +540,7 @@ println(random_numbers[5])
 
 
 ````
-0.037344202708929686
+0.08637266629536189
 ````
 
 
@@ -561,9 +566,9 @@ end
 
 
 ````
-Position 1:	0.1451500509003778
-Position 3:	0.8876171073276442
-Position 5:	0.037344202708929686
+Position 1:	0.3139577324188616
+Position 3:	0.509355707361111
+Position 5:	0.08637266629536189
 ````
 
 

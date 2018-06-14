@@ -1,14 +1,15 @@
 ---
 ---
 
-@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i|IBM+Plex+Sans+Condensed:400,400i|IBM+Plex+Sans:400,400i,500,500i');
+@import url('https://fonts.googleapis.com/css?family=Fira+Mono:400,500|Fira+Sans+Extra+Condensed:400,400i|Fira+Sans:400,400i,500,500i');
 
 * {
   box-sizing: border-box;
 }
 
 body, html {
-  font-family: "IBM Plex Sans";
+  font-family: "Fira Sans";
+  overflow-x: hidden;
 }
 
 b, strong {
@@ -16,7 +17,7 @@ b, strong {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "IBM Plex Sans Condensed";
+  font-family: "Fira Sans Condensed";
 }
 
 .title, .subtitle, h1, h2, h3, h4, h5, h6 {
@@ -34,7 +35,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 pre, code {
-  font-family: "IBM Plex Mono" !important;
+  font-family: "Fira Mono" !important;
 }
 
 pre {
@@ -49,7 +50,7 @@ pre {
 html, body {
   margin: 0 0;
   height: 100%;
-  background-color: #f7f8fa;
+  background-color: #f7f7f7;
 }
 
 .topbar, .content {
@@ -70,6 +71,7 @@ html, body {
 
 .topbar {
   box-shadow: 0px 0px 2px #d7d8da;
+  z-index: 100;
   font-size: 0.9rem;
   * {
     display: inline-block;
@@ -125,4 +127,32 @@ p.callout {
 .rightbutton {
   float: right;
   margin-right: 2em;
+}
+
+pre, code {
+  color: rgb(217, 152, 77);
+}
+
+pre {
+  margin: 0px auto;
+  padding: 1em 2em;
+  font-size: 90%;
+  line-height: 1.2rem;
+}
+
+.language-julia {
+  background-color: #fefefe;
+  width: 100vw;
+  transform: translateX(-50%);
+  margin-left: 50%;
+  pre {
+    margin: 0px auto;
+    max-width: 900px;
+    padding: 1em 2em;
+    font-size: 90%;
+    line-height: 1.2rem;
+    code {
+      color: #111 !important;
+    }
+  }
 }

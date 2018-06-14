@@ -2,6 +2,8 @@
   url: 01_flow_of_execution
   time: 25 minutes
   status: Usable draft
+  issue: 12
+  tag: "lesson:1"
   topics:
     - Programming is a language
     - What do `if`, `for`, and `while` do?
@@ -10,7 +12,19 @@
   url: 02_writing_functions
   time: 35 minutes
   status: Early draft
+  issue: 18
+  tag: "lesson:2"
   topics:
     - Writing re-usable code
     - Arguments and keywords
     - Type stability
+- title: Avoiding mistakes
+  url: 03_avoiding_mistakes
+  time: ?? minutes
+  status: In progress
+  issue: 19
+  tag: "lesson:3"
+  topics:
+    - Defensive programming
+    - Tests
+    - ???

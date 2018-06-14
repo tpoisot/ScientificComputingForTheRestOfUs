@@ -1,6 +1,10 @@
 title: Scientific computing
 subtitle: (for the rest of us)
 permalink: pretty
+exclude: ["_lessons/*.Jmd"]
+markdown: kramdown
+
+github: https://github.com/tpoisot/ScientificComputingForTheRestOfUs
 
 collections:
   lessons:

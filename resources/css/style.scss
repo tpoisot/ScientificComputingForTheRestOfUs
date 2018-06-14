@@ -135,7 +135,7 @@ pre, code {
 
 pre {
   margin: 0px auto;
-  padding: 1em 2em;
+  padding: 1em 0em;
   font-size: 90%;
   line-height: 1.2rem;
 }
@@ -181,4 +181,31 @@ pre {
   color: #444;
   margin-left: -8px;
   padding-left: 4px;
+}
+
+.card {
+  border-radius: 4px;
+  border: 1px solid #eee;
+  background-color: #fcfdfe;
+  padding: 2em 1em;
+  width: 46%;
+  margin: 2%;
+  float: left;
+  font-size: 90%;
+  .launch {
+    border-top: 1px solid #efefef;
+    border-bottom: 1px solid #efefef;
+    background-color: #fafbfc;
+    margin-left: -1em;
+    margin-right: -1em;
+    padding: 0.5em;
+    text-align: center;
+    font-weight: 500;
+  }
+  .head {
+    text-align: center;
+    font-weight: 500;
+    font-size: 110%;
+    margin-top: 0em;
+  }
 }

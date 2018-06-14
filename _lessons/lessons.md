@@ -4,11 +4,16 @@ layout: default
 ---
 
 {% for page in site.data.lessons %}
-## {{page.title}}
+<div class="lesson card" markdown="1">
+{{page.title}}
+{: .head}
 
-🏁 [Start the lesson](/lessons/{{page.url}}/)
+[Start the lesson](/lessons/{{page.url}}/)
+{: .launch}
 
-🚩 [Report issues or give feedback][l1issues] **TODO**
+📢 [Give feedback]({{ site.github }}/issues/{{page.issue}}/)
+
+🚩 [See issues]({{ site.github }}/labels/{{page.tag}}/)
 
 🕗 {{page.time}}
 
@@ -16,9 +21,6 @@ layout: default
 
 📖 Key concepts
 {% for topic in page.topics %}
-- {{topic}}
-{% endfor %}
-
-
-
+- {{topic}}{% endfor %}
+</div>
 {% endfor %}

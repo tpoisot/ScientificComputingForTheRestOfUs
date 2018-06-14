@@ -45,7 +45,7 @@ We can decompose this problem into a series of steps. First, we need to generate
 After the following lesson, it is tempting to write:
 
 
-````julia
+```julia
 N = 10
 darts = []
 for i in 1:N
@@ -53,26 +53,7 @@ for i in 1:N
     push!(darts, (x, y))
 end
 darts
-````
-
-
-````
-10-element Array{Any,1}:
- (1.96406, 1.01193)   
- (1.89175, 1.34625)   
- (1.81087, 0.589727)  
- (0.376573, 0.0967192)
- (1.77453, 1.79073)   
- (0.608571, 1.08091)  
- (1.90011, 0.820326)  
- (0.474755, 1.8249)   
- (0.190476, 0.896181) 
- (1.40207, 1.62092)
-````
-
-
-
-
+```
 
 This introduces a few new notations. The `darts = []` instruction creates an *empty* array. This is not the optimal way of approaching this problem, but remember the UNIX philosophy: we'll rewrite this awkard part later. Then we use a `for` loop to throw the darts.
 
@@ -106,7 +87,7 @@ But what if we want to change the number of darts we will generate? What if late
 Our function will take an *input*, which is the number of darts we want to throw, and return an *output*, which is an array of coordinates of where the darts hit. The block below presents *one possible* implementation of such a function, with comments about whats is hapenning in every line:
 
 
-````julia
+```julia
 function throw_darts(n::Int64)
     #= Let's create a space to store the results in
 
@@ -155,16 +136,7 @@ function throw_darts(n::Int64)
     =#
     return darts
 end
-````
-
-
-````
-throw_darts (generic function with 1 method)
-````
-
-
-
-
+```
 
 Now, we can *call* this function, using `throw_darts(10)`. You can experiment changing `10` by other values. For example, how do you throw 124 darts?
 
@@ -189,21 +161,12 @@ Then, we can take the distance between the points as
 Let's wrap this up!
 
 
-````julia
+```julia
 function is_within_circle(point, center, radius)
     distance = (point[1]-center[1])^2 + (point[2]-center[2])^2
     return distance <= radius
 end
-````
-
-
-````
-is_within_circle (generic function with 1 method)
-````
-
-
-
-
+```
 
 There is a more *idiomatic* way of writing this function -- *idiomatic* means that we are using some language-specific ways of expressing operations. In this case, it could be
 
@@ -217,42 +180,13 @@ Writing things in an idiomatic way is *sometimes* better. But it can be more con
 Now, let's apply a few sanity checks to this function (we will see much more of this in the next lesson). We know that the center of the circle is within the circle, that a point above the center at a distance equal to the radius is within the circle, and that a point above the center as a distance greater than the radius is not:
 
 
-````julia
+```julia
 center = (1.0, 1.0)
 radius = 1.0
 println("Case 1: ", is_within_circle(center, center, radius))
-````
-
-
-````
-Case 1: true
-````
-
-
-
-````julia
 println("Case 2: ", is_within_circle((1.0, 2.0), center, radius))
-````
-
-
-````
-Case 2: true
-````
-
-
-
-````julia
 println("Case 3: ", is_within_circle((1.0, 2.1), center, radius))
-````
-
-
-````
-Case 3: false
-````
-
-
-
-
+```
 
 Although these are very simple tests, it seems that our function checks out. So we can move forward. But before we do so, let us take a step back.
 
@@ -270,7 +204,7 @@ Another is to have a counter, starting at `0`, and we add `1` every time a dart 
 There are probably about another million different ways to do this. Here we will write a function using the counter:
 
 
-````julia
+```julia
 function how_many_darts(darts, center, radius)
     #=
 
@@ -314,21 +248,12 @@ function how_many_darts(darts, center, radius)
     =#
     return n
 end
-````
-
-
-````
-how_many_darts (generic function with 1 method)
-````
-
-
-
-
+```
 
 And we're done! Remember, our approximation of $\pi$ is $4\times(n/N)$, where $N$ is the number of darts, and $n$ is the number of hits. So we can finally write a function, specifying $N$, and start to estimate the value of $\pi$:
 
 
-````julia
+```julia
 function estimate_pi(N)
     center = (1.0, 1.0)
     radius = 1.0
@@ -336,35 +261,17 @@ function estimate_pi(N)
     n = how_many_darts(darts, center, radius)
     return 4*n/N
 end
-````
-
-
-````
-estimate_pi (generic function with 1 method)
-````
-
-
-
-
+```
 
 Our function is *building* on the previous, small, functions we wrote. This results in code that is easy to read (we don't have to scroll through multiple screens to see what the function does). Because we have named our functions explicitely, the code is also easy to understand. In the next lesson, we will see that modular code is easy to *test* (and to debug).
 
 So, how good is our estimate?
 
 
-````julia
+```julia
 estimate = estimate_pi(100000)
 println("Estimate: $(estimate)\tπ: $(π)")
-````
-
-
-````
-Estimate: 3.13476	π: π = 3.1415926535897...
-````
-
-
-
-
+```
 
 ## Keyword arguments and default values
 
@@ -379,49 +286,25 @@ An important but often overlooked notion is "type stability". In a nutshell, it 
 The issue with computers (well, one of) is that they give types to everything. While for us, 2, 2.0, and 2.000000...00 are the same thing, this is not the case for our computers. And we need to pay attention to this fact to write code that is reasonably fast. Let's start with a few illustrations:
 
 
-````julia
+```julia
 typeof(0)
-````
+```
 
 
-````
-Int64
-````
-
-
-
-````julia
+```julia
 typeof(0.0)
-````
-
-
-````
-Float64
-````
-
-
-
-
+```
 
 The `typeof` function tells us how the computer is thinking about its argument: `0` is an integer number, and `0.0` is a floating point number.
 
 Now, if I were to ask you what the sum of 0 and 1.0 is, you would not take longer than if I has asked you what the sum of 0.0 and 1.0 is. Is it true for the computer?
 
 
-````julia
+```julia
 time_int_and_float = @elapsed 0 + 1.0
 time_float_and_float = @elapsed 0.0 + 1.0
 println("It takes $(round(time_int_and_float/time_float_and_float,2)) times longer to work with different types!")
-````
-
-
-````
-It takes 1151.45 times longer to work with different types!
-````
-
-
-
-
+```
 
 The exact number may vary, but on my machine, it takes about 1.5 times longer to do the operation with different types. Why is that?
 

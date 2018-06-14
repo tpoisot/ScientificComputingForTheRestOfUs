@@ -1,5 +1,5 @@
 - title: The flow of execution
-  url: 01_flow_of_execution
+  url: flow_of_execution
   time: 25 minutes
   status: Ready!
   issue: 12
@@ -9,7 +9,7 @@
     - What do `if`, `for`, and `while` do?
     - Moving across arrays
 - title: Writing functions
-  url: 02_writing_functions
+  url: writing_functions
   time: 35 minutes
   status: Early draft
   issue: 18
@@ -19,7 +19,7 @@
     - Arguments and keywords
     - Type stability
 - title: Avoiding mistakes
-  url: 03_avoiding_mistakes
+  url: avoiding_mistakes
   time: ?? minutes
   status: In progress
   issue: 19

@@ -492,4 +492,17 @@ println(a)
 
 ## Doing something until something happens
 
-{==TODO==}
+Before moving on, there is an additional construct we can use: `while`. This one
+is *dangerous* (or at the very least *possibly inconvenient*), because it will
+keep on running *until* something happens. Why is not called `until`? Because
+most programming languages have been designed with little regard for the way
+humans think...
+
+A good example of `while` in action is to keep on generating random numbers
+*until* their mean is within a certain range of a desired value. The `rand()`
+function will generate numbers uniformly distributed between 0 and 1, so we can
+run it for a while (*GET IT?*) to get a sample with an average of about 0.5.
+
+```julia
+while
+```

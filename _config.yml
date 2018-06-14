@@ -9,3 +9,5 @@ github: https://github.com/tpoisot/ScientificComputingForTheRestOfUs
 collections:
   lessons:
     output: true
+  capstones:
+    output: true

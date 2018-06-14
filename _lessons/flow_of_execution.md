@@ -382,9 +382,9 @@ end
 ````
 bar
 foo
-bar
-bar
-bar
+foo
+foo
+foo
 ````
 
 
@@ -460,11 +460,11 @@ random_numbers
 
 ````
 5-element Array{Float64,1}:
- 0.548013
- 0.33803 
- 0.738892
- 0.768591
- 0.893183
+ 0.772564
+ 0.383964
+ 0.130308
+ 0.378197
+ 0.464903
 ````
 
 
@@ -520,7 +520,7 @@ random_numbers[1]
 
 
 ````
-0.5480129269336302
+0.7725637794031319
 ````
 
 
@@ -541,7 +541,7 @@ random_numbers[length(random_numbers)]
 
 
 ````
-0.8931833768818167
+0.4649029287653057
 ````
 
 
@@ -559,7 +559,7 @@ random_numbers[end]
 
 
 ````
-0.8931833768818167
+0.4649029287653057
 ````
 
 
@@ -576,7 +576,7 @@ last(random_numbers)
 
 
 ````
-0.8931833768818167
+0.4649029287653057
 ````
 
 
@@ -596,7 +596,7 @@ println(random_numbers[1])
 
 
 ````
-0.5480129269336302
+0.7725637794031319
 ````
 
 
@@ -607,7 +607,7 @@ println(random_numbers[3])
 
 
 ````
-0.73889227465304
+0.13030811036496748
 ````
 
 
@@ -618,7 +618,7 @@ println(random_numbers[5])
 
 
 ````
-0.8931833768818167
+0.4649029287653057
 ````
 
 
@@ -648,9 +648,9 @@ end
 
 
 ````
-Position 1:	0.5480129269336302
-Position 3:	0.73889227465304
-Position 5:	0.8931833768818167
+Position 1:	0.7725637794031319
+Position 3:	0.13030811036496748
+Position 5:	0.4649029287653057
 ````
 
 
@@ -761,4 +761,23 @@ println(a)
 
 ## Doing something until something happens
 
-{==TODO==}
+Before moving on, there is an additional construct we can use: `while`. This one
+is *dangerous* (or at the very least *possibly inconvenient*), because it will
+keep on running *until* something happens. Why is not called `until`? Because
+most programming languages have been designed with little regard for the way
+humans think...
+
+A good example of `while` in action is to keep on generating random numbers
+*until* their mean is within a certain range of a desired value. The `rand()`
+function will generate numbers uniformly distributed between 0 and 1, so we can
+run it for a while (*GET IT?*) to get a sample with an average of about 0.5.
+
+````julia
+while
+````
+
+
+<pre class="julia-error">
+ERROR: syntax: incomplete: premature end of input
+</pre>
+

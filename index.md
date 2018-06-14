@@ -13,9 +13,11 @@ and more likely to catch them. Hopefully, this will let all of us write code we
 can trust more.
 {: .lead}
 
-<p align="center">
-  <b><a href="https://gitter.im/ScientificComputingForTheRestOfUs/Lobby" title="Chat room">Come talk with us on gitter</a>!</b>
-</p>
+[Read the lessons](/lessons/)
+{: .leftbutton .callout}
+
+[Come talk with us on Gitter](https://gitter.im/ScientificComputingForTheRestOfUs/Lobby)
+{: .rightbutton .callout}
 
 Good principles in scientific computing can help you write code that is easier
 to maintain, easier to reproduce, and easier to debug. But it can be difficult
@@ -23,9 +25,6 @@ to find an introduction to get you started. The goal of this project is to
 provide reproducible documents you can use to get started on the most important
 points. You can use these lessons on your own, or as a group.
 
-<p align="center">
-  <b><a href="/lessons/" title="Lesson index">Read the lessons</a>!</b>
-</p>
 
 ## Who is this material for?
 
@@ -43,13 +42,13 @@ to other situations as well, but the concrete tools and methods may not
 be suitable for tasks requiring special hardware such as GPUs or supercomputers,
 or for projects requiring a significant software development effort.
 
-And do you want good news? You don't need to install anything! You can run
-everything on [JuliaBox][jlbox], a cloud-based service to run reproducible
-documents as notebooks. If you want to read a short introduction to notebook, we
-have written one [here][nb]. We will use the [Julia][jl] programming language;
-but you don't need to know anything about it either. We will keep the discussion
-very general, and not use any of the (very cool!) language-specific features and
-syntax.
+We will use the [Julia][jl] programming language; but you don't need to know
+anything about it either. We will keep the discussion very general, and not use
+any of the (very cool!) language-specific features and syntax. And do you want
+good news? You don't need to install anything! You can run everything on
+[JuliaBox][jlbox], a cloud-based service to run reproducible documents as
+notebooks (if you want to read a short introduction to notebook, we have written
+one [here][nb]).
 
 In fact, you will see that good practices for scientific computing have very
 little to do with tools and technical things; instead, they rely on thinking
@@ -135,5 +134,3 @@ Finally, a short [Q&A at *Nature Jobs*][qanda] about this project.
 ## Other information
 
 [![license](https://img.shields.io/github/license/tpoisot/ScientificComputingForTheRestOfUs.svg?style=flat-square)]()
-[![Binder](https://img.shields.io/badge/launch-binder-ff69b4.svg?style=flat-square)](https://beta.mybinder.org/v2/gh/tpoisot/ScientificComputingForTheRestOfUs/master?filepath=lessons)
-[![Gitter](https://img.shields.io/gitter/room/ScientificComputingForTheRestOfUs/Lobby.svg?style=flat-square)](https://gitter.im/ScientificComputingForTheRestOfUs/Lobby)

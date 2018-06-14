@@ -19,6 +19,20 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "IBM Plex Sans Condensed";
 }
 
+.title, .subtitle, h1, h2, h3, h4, h5, h6 {
+  color: rgb(102, 186, 84);
+}
+
+.content {
+  a {
+    color: rgb(168, 80, 215);
+    text-decoration: none;
+    &:hover {
+      color: rgb(165, 60, 222);
+    }
+  }
+}
+
 pre, code {
   font-family: "IBM Plex Mono" !important;
 }
@@ -43,11 +57,20 @@ html, body {
 }
 
 .content {
+  max-width: 900px;
+  margin: 0px auto;
   margin-top: 4em;
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+  color: #222;
+  p {
+    clear: both;
+  }
 }
 
 .topbar {
   box-shadow: 0px 0px 2px #d7d8da;
+  font-size: 0.9rem;
   * {
     display: inline-block;
   }
@@ -58,9 +81,6 @@ html, body {
   padding-bottom: 1.2em;
   background-color: white;
   text-transform: uppercase;
-  .title, .subtitle {
-    color: rgb(102, 186, 84);
-  }
   .title {
     font-weight: 800;
   }
@@ -78,4 +98,31 @@ html, body {
       }
     }
   }
+}
+
+.callout {
+  border-radius: 4px;
+  border: 1px solid #eee;
+  background-color: #fcfdfe;
+  padding: 1em;
+}
+
+p.callout {
+  clear: none;
+}
+
+.leftbutton, .rightbutton {
+  text-align: center;
+  width: 40%;
+  display: table;
+}
+
+.leftbutton {
+  float: left;
+  margin-left: 2em;
+}
+
+.rightbutton {
+  float: right;
+  margin-right: 2em;
 }

@@ -380,6 +380,9 @@ functions:
 
 ```julia
 first(random_numbers)
+```
+
+```julia
 last(random_numbers)
 ```
 

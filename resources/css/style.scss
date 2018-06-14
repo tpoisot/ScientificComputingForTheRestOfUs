@@ -1,14 +1,14 @@
 ---
 ---
 
-@import url('https://fonts.googleapis.com/css?family=Fira+Mono:400,500|Fira+Sans+Extra+Condensed:400,400i|Fira+Sans:400,400i,500,500i');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700|Roboto+Mono:400,400i,500,500i|Roboto:400,400i,500,500i');
 
 * {
   box-sizing: border-box;
 }
 
 body, html {
-  font-family: "Fira Sans";
+  font-family: "Roboto";
   overflow-x: hidden;
 }
 
@@ -16,8 +16,8 @@ b, strong {
   font-weight: 500;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Fira Sans Condensed";
+h1, h2, h3, h4, h5, h6, .topbar {
+  font-family: "Roboto Condensed";
 }
 
 h2 {
@@ -43,7 +43,7 @@ h2 {
 }
 
 pre, code {
-  font-family: "Fira Mono" !important;
+  font-family: "Roboto Mono" !important;
 }
 
 pre {
@@ -69,7 +69,7 @@ html, body {
   max-width: 900px;
   margin: 0px auto;
   margin-top: 4em;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   line-height: 1.8rem;
   color: #222;
   p {
@@ -92,7 +92,7 @@ html, body {
   background-color: white;
   text-transform: uppercase;
   .title {
-    font-weight: 800;
+    font-weight: 700;
   }
   .links {
     padding-left: 3em;

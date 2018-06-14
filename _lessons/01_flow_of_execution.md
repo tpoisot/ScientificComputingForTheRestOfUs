@@ -268,14 +268,28 @@ Because it rains (`rain = true`), our code is correctly telling us to take the
 subway.
 
 Now, what would you change to make it stop raining? And what do you expect to
-see as an output? {: .question}
+see as an output?
+{: .question}
 
-Correct! If you change the `rain = true` to `rain = false`, and re-run the cell,
-the code will tell us to bike, because it is faster.
+Correct! If you change the `rain = true` to `rain = false`, and re-run this
+example, the code will tell us to bike, because it is faster.
+{: .answer}
 
-At this point, it is important to note that there are many, many ways to write the same code. Maybe you would like to ask the question "Is it *not* raining?" instead, or decide which mode of transporation takes the longest time. As long as they give the correct asnwer, all of these formulations are valid. The important thing is that they let you write code that is easy to read, and easy to understand. Maybe nested statements are easier to understand for you. In most cases, this is fine. The most important thing is to write code that prevents you from making mistakes. If you are more confident in your nested statements, then use them!
+At this point, it is important to note that there are many, many ways to write
+the same code. Maybe you would like to ask the question "Is it *not* raining?"
+instead, or decide which mode of transporation takes the longest time. As long
+as they give the correct answer, all of these formulations are valid. The
+important thing is that they let you write code that is easy to read, and easy
+to understand.
 
-Before we move on, there is a final operation on Booleans we need to discuss: *and*. Most programming languages will use `&` or `&&` or `and` to describe it. The *and* operation will look at both statements, and return *true* only if both are *true*:
+What if nested statements are easier to understand for you? Well, this is fine.
+The most important thing is to write code that prevents you from making
+mistakes. If you are more confident in your nested statements, then use them!
+
+Before we move on, there is a final operation on Booleans we need to discuss:
+*and*. Most programming languages will use `&` or `&&` or `and` to describe it.
+The *and* operation will look at both statements, and return *true* only if both
+are *true*:
 
 
 ````julia
@@ -324,20 +338,33 @@ true and true:	true
 
 
 
-**So far**, we have learned about Boolean values, and the *if* operation. Using *if* is a way to look at a statement, and do different things when it is true or false. In a lot of cases, we want to also perform operations on a large number of elements. To do so, we will use the second word: *for*.
+**So far**, we have learned about Boolean values, and the *if* operation. Using
+*if* is a way to look at a statement, and do different things when it is true
+or false. In a lot of cases, we want to also perform operations on a large
+number of elements. To do so, we will use the second word: *for*.
 
 ## Introducing iteration
 
-The *for* operation is one of the most common, but also one of the most confusing, ways to tell a computer what to do. This is because it requires to understand a lot of concepts at once; we will walk through each of them.
+The `for` operation is one of the most common, but also one of the most
+confusing, ways to tell a computer what to do. This is because it requires to
+understand a lot of concepts at once; we will walk through each of them, get
+confused a little bit, then get confused a lot, then get it.
 
-When talking about *for*, we usually talk about *for loops* or *iteration*. This is because *for* lets you express the fact that you will perform an operation on a (finite) set of elements. Let's start with a perfectly boring yet somewhat instructive example. We can draw five random numbers between 0 and 1, using
+When talking about `for`, we usually talk about *for loops* or *iteration*. This
+is because `for` lets you express the fact that you will perform an operation on
+a (finite) set of elements. Let's start with a perfectly boring yet somewhat
+instructive example. We can draw five random numbers between 0 and 1, using
 
-~~~ julia
+``` julia
 rand(5)
-~~~
+```
 
-We might want to print *foo* when a number is lower or equal to 0.5, and *bar* in the rest of the situations:
-
+We might want to print *foo* when a number is lower or equal to 0.5, and *bar*
+in the rest of the situations. Why on Earth would we need to print *foo* and
+*bar*? Because these are nonsense words used as placeholders by programmers. In
+case you want to get all fancy, these are actually called "metasyntactic
+variables". If you want more than two, we suggest *baz*, and then *wibble* and
+*wobble*.
 
 ````julia
 random_numbers = rand(5)
@@ -353,11 +380,11 @@ end
 
 
 ````
-foo
+bar
 foo
 bar
 bar
-foo
+bar
 ````
 
 
@@ -370,9 +397,15 @@ There is quite a lot happening here, so we will go line by line.
 random_numbers = rand(5)
 ~~~
 
-First, we generate 5 random numbers, and put them in a variable called `random_numbers`. It is always a good idea to give very explicit names to variables. To begin with, most code editors will be very good at autocompletion: type a few letters, then hit the *Tab* key, and you will see the possible values.
+First, we generate 5 random numbers, and put them in a variable called
+`random_numbers`. It is always a good idea to give very explicit names to
+variables. To begin with, most code editors will be very good at autocompletion:
+type a few letters, then hit the *Tab* key, and you will see the possible
+values.
 
-Giving plural names to things that have multiple elements is also useful: it helps to have code that reads like plain english. By contrast, variables whose name is singular have a single value in them.
+Giving plural names to things that have multiple elements is also useful: it
+helps to have code that reads like plain english. By contrast, variables whose
+name is singular have a single value in them.
 
 Now we can start the loop itself:
 
@@ -382,17 +415,24 @@ for random_number in random_numbers
 end
 ~~~
 
-This line gives a simple instruction to your computer. It goes something like this:
+This line gives a simple instruction to your computer. Actually, no. It gives a
+bunch of complex instructions to your computer, but it is an easy enough
+instruction for us to *write*, and this is all that matters.
+
+It goes something like this:
 
 1. look at what is inside `random_numbers`
 1. take the first value, and name it `random_number`
 1. do whatever we tell you to do with this variable until you hit `end`
 1. move on to the next value of `random_numbers`, and start again
-1. when you have exhausted the values in `random_numbers`, continue
+1. when you have exhausted the values in `random_numbers`, continue to whatever is *after* the end of the loop
 
-The *for* loop is one of the most difficult construct to understand. We will have a few more examples in this lesson.
+The *for* loop is one of the most difficult construct to understand, because of
+this "change the content of the variable" trickery. We will have a few more
+examples in this lesson.
 
-The final lines we need to look at are in the *inside* of the for loop -- we call this inside thing *the body* for no particular reason.
+The final lines we need to look at are in the *inside* of the loop -- we call
+this inside thing *the body* for no particular reason.
 
 ~~~ julia
 if random_number ≤ 0.5
@@ -402,13 +442,15 @@ else
 end
 ~~~
 
-These lines should be familiar to you now -- your computer will evaluate the statement "`random_number` is lower than or equal to 0.5", and depending on the truthiness of it, will print either *foo* or *bar*.
-
-At this point, you are likely wondering why foo and bar. Good question! No one really knows.
+These lines should be familiar to you now -- your computer will evaluate the
+statement "`random_number` is lower than or equal to 0.5", and depending on the
+truthiness of it, will print either *foo* or *bar*.
 
 ## Navigating arrays
 
-Before we move on to a more interesting use of iteration, it is worth understanding what exactly is in the `random_numbers` object. Let's display it:
+Before we move on to a more interesting use of iteration, it is worth
+understanding what exactly is in the `random_numbers` object. Let's display it
+again:
 
 
 ````julia
@@ -418,19 +460,23 @@ random_numbers
 
 ````
 5-element Array{Float64,1}:
- 0.313958 
- 0.0583107
- 0.509356 
- 0.758181 
- 0.0863727
+ 0.548013
+ 0.33803 
+ 0.738892
+ 0.768591
+ 0.893183
 ````
 
 
 
 
 
-This type of object is an *array*; it may help to think of an array as a shelf, in which every compartment can store one thing. You can have shelves with a single row, a single column, or both rows and columns. In *Julia*, arrays are by default columns, and this is important for applications like linear algebra. Arrays have all sorts of properties, the most important being their *length*:
-
+This type of object is an *array*; it may help to think of an array as a shelf,
+in which every compartment can store one thing. You can have shelves with a
+single row, a single column, or both rows and columns. In *Julia*, arrays are by
+default columns, and this is important for applications like linear algebra
+(they behave as vectors). Arrays have all sorts of properties, the most
+important being their *length*:
 
 ````julia
 length(random_numbers)
@@ -445,7 +491,8 @@ length(random_numbers)
 
 
 
-This tells us that our "self" has five compartments, so we can store five things in it. We can also ask what its *size* is:
+This tells us that our "shelf" has five compartments, so we can store five
+things in it. We can also ask what its *size* is:
 
 
 ````julia
@@ -461,8 +508,11 @@ size(random_numbers)
 
 
 
-The output is `(5,)` - this is the computer way of telling us that this array has 5 positions in its first *dimension* (columns), and no positions in its second dimension: this is a column with five rows. We can also access any *position* we like; this is aking to asking "computer, give me the content of the 1st compartment":
-
+The output is `(5,)` - this is the computer way of telling us that this array
+has 5 positions in its first *dimension*, and no positions in its second
+dimension: this is a column with five rows. We can also access any *position* we
+like; this is akin to asking "computer, give me the content of the 1st
+compartment":
 
 ````julia
 random_numbers[1]
@@ -470,15 +520,20 @@ random_numbers[1]
 
 
 ````
-0.3139577324188616
+0.5480129269336302
 ````
 
 
 
 
 
-*Julia* starts counting from 1. *R* and *MatLab* do it too, but *python* and *C* start counting from 0. These are conventions that each language adopted. We can also ask what the *last* position contains:
+Some languages, like *Julia*, *R*, and *MatLab*, start counting from 1, but
+*python* and *C* start counting from 0. These are conventions that each language
+adopted. Everyone thinks the other camp is wrong, and it's one of these
+surprisingly bitter (considering how utterly unimportant they are) divides in
+the computer science world.
 
+We can *also ask what the *last* position contains:
 
 ````julia
 random_numbers[length(random_numbers)]
@@ -486,15 +541,17 @@ random_numbers[length(random_numbers)]
 
 
 ````
-0.08637266629536189
+0.8931833768818167
 ````
 
 
 
 
 
-The way to read this instruction is as follows: get me the element at position `length(random_numbers)`. We know that the length of `random_numbers` is `5`, so this will return the 5th position. *Julia* has a quite pretty way of getting the last element of most collections:
-
+The way to read this instruction is as follows: get me the element at position
+`length(random_numbers)`. We know that the length of `random_numbers` is `5`, so
+this will return the 5th position. *Julia* has a quite pretty way of getting the
+last element of most collections:
 
 ````julia
 random_numbers[end]
@@ -502,14 +559,35 @@ random_numbers[end]
 
 
 ````
-0.08637266629536189
+0.8931833768818167
 ````
 
 
 
 
 
-Being able to access elements by their position can be very useful. Our `random_numbers` array has five elements, and we only want to print the odd-numbered ones. One way to do this would be to call then individually:
+An extra bit of [syntactic sugar][sugar] in *Julia* are the two following
+functions:
+
+````julia
+first(random_numbers)
+last(random_numbers)
+````
+
+
+````
+0.8931833768818167
+````
+
+
+
+
+
+[sugar]: https://en.wikipedia.org/wiki/Syntactic_sugar
+
+Being able to access elements by their position can be very useful. Our
+`random_numbers` array has five elements, and we only want to print the
+odd-numbered ones. One way to do this would be to call then individually:
 
 
 ````julia
@@ -518,7 +596,7 @@ println(random_numbers[1])
 
 
 ````
-0.3139577324188616
+0.5480129269336302
 ````
 
 
@@ -529,7 +607,7 @@ println(random_numbers[3])
 
 
 ````
-0.509355707361111
+0.73889227465304
 ````
 
 
@@ -540,42 +618,47 @@ println(random_numbers[5])
 
 
 ````
-0.08637266629536189
+0.8931833768818167
 ````
 
 
 
 
 
-Of course, this is only reasonable if we have a very small number of things to do. But what if we want to iterate over hundreds, or thousandths of values? We need a more efficient strategy.
+Of course, this is only reasonable if we have a very small number of things to
+do. But what if we want to iterate over hundreds, or thousands of values? We
+need a more efficient strategy.
 
 ## Iterating over values
 
-We know that a number is even if the statement `x % 2 == 0`, where `%` is integer division. We can also say that a number is even if the remainder of its integer division by two is *not* 0: `x % 2 != 0`.
+We know that a number is even if the statement `x % 2 == 0`, where `%` is
+integer division. We can also say that a number is even if the remainder of its
+integer division by two is *not* 0: `x % 2 != 0`.
 
 Let's go:
 
 
 ````julia
-for i in 1:length(random_numbers)
-    if i % 2 != 0
-        println("Position $i:\t", random_numbers[i])
-    end
+for i in 1:length(random_numbers) # We could also write `in eachindex(random_numbers)`
+  if i % 2 != 0
+    println("Position $i:\t", random_numbers[i])
+  end
 end
 ````
 
 
 ````
-Position 1:	0.3139577324188616
-Position 3:	0.509355707361111
-Position 5:	0.08637266629536189
+Position 1:	0.5480129269336302
+Position 3:	0.73889227465304
+Position 5:	0.8931833768818167
 ````
 
 
 
 
 
-We can "read" this snippet (a *snippet* is the affectionate name given to a litle chunk of code; a *chunk* is a much uglier name for "a piece") as
+We can "read" this snippet (a *snippet* is the affectionate name given to a
+litle chunk of code; a *chunk* is a much uglier name for "a piece") as
 
 ~~~
 there is a variable i
@@ -594,7 +677,8 @@ for element in collection
 end
 ~~~
 
-There is an important notion to mention: the *scope*. The scope is the parts of your program in which a variable exists. Let's look at this hypothetical code:
+There is an important notion to mention: the *scope*. The scope is the parts of
+your program in which a variable exists. Let's look at this hypothetical code:
 
 ~~~ julia
 for i in 1:3
@@ -602,7 +686,8 @@ for i in 1:3
 end
 ~~~
 
-It will take the values 1, 2, and 3, and put them in the variable `i`, one at a time. This is like writing
+It will take the values 1, 2, and 3, and put them in the variable `i`, one at a
+time. This is like writing
 
 ~~~ julia
 i = 1
@@ -641,9 +726,12 @@ ERROR: UndefVarError: i not defined
 
 
 
-What happens is that the variable `i` only exists within the `for` loop! This might seem problematic at first, but it is actually much cleaner: this avoid polluting your workspace with a lot of variables that are not really relevant.
+What happens is that the variable `i` only exists within the `for` loop! This
+might seem problematic at first, but it is actually much cleaner: this avoid
+polluting your workspace with a lot of variables that are not really relevant.
 
-This is true for all variables created within a loop: in the following code, `a` is not defined outside of the loop:
+This is true for all variables created within a loop: in the following code, `a`
+is not defined outside of the loop:
 
 ~~~ julia
 for i in 1:3
@@ -651,8 +739,8 @@ for i in 1:3
 end
 ~~~
 
-If you want a variable to be accessible *outside* a loop, you can simply create it before:
-
+If you want a variable to be accessible *outside* a loop, you can simply create
+it before:
 
 ````julia
 a = 0

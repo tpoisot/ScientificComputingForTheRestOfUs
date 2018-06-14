@@ -119,6 +119,11 @@ masterpiece. I have also heard great things about ["Clean code"][cleanc].
 If you still have some time, you can read something about [ways to improve user confidence
 in your software][userconf], or ways to [elevate code as a research output][elevate].
 
+[Code is Science][codeissci] is a very nice project about making peer review of scientific code more common. They have a list of [issues you can tackle][cisissues] to help!
+
+[codeissci]: http://www.codeisscience.com/
+[cisissues]: https://github.com/yochannah/code-is-science/issues/
+
 Finally, a short [Q&A at *Nature Jobs*][qanda] about this project.
 
 [qanda]: https://web.archive.org/web/20171114145519/http://blogs.nature.com/naturejobs/2017/11/10/techblog-timothee-poisot-data-science-for-the-rest-of-us/

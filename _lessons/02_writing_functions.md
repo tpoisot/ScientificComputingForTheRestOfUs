@@ -26,7 +26,7 @@ See the [discussions on this lesson on github][l3issues].
 - ... understand the notions of input and output
 - ... understand what type stability is
 
-## What is the value of $\pi$ anyways?
+## What is the value of π anyways?
 
 There is a nifty algorithm to estimate the value of $\pi$. We start by drawing a square, and the length of its sides is 2. Two what? Two arbitrary units, it doesn't really matter. The circle inscribed within this circle has a radius of $r = 1$ (arbitrary unit). And therefore, this inscribed circle has an area of $\pi \times r^2=\pi$ (arbitrary units squared).
 
@@ -167,6 +167,7 @@ There is a more *idiomatic* way of writing this function -- *idiomatic* means th
     end
 
 Writing things in an idiomatic way is *sometimes* better. But it can be more confusing for people with less familiarity with the language, or more difficult to maintain (unless profusely commented) in the long term.
+{: .opinion}
 
 Now, let's apply a few sanity checks to this function (we will see much more of this in the next lesson). We know that the center of the circle is within the circle, that a point above the center at a distance equal to the radius is within the circle, and that a point above the center as a distance greater than the radius is not:
 

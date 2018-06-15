@@ -11,7 +11,7 @@ sass:
   style: :compressed
   sass_dir: _scss
 
-palette: teal
+palette: scru
 # Can be teal (and that's it for now)
 
 github: https://github.com/tpoisot/ScientificComputingForTheRestOfUs

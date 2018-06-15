@@ -1,6 +1,14 @@
 - title: Advanced control flow
   url: advanced_control_flow
-  time: 5 minutes
+  status: In preparation
+  issue: 00
+  tag: "TODO"
+  topics:
+    - Programming is a language
+    - What do `if`, `for`, and `while` do?
+    - Moving across arrays
+- title: Map, filter, reduce
+  url: map_filter_reduce
   status: In preparation
   issue: 00
   tag: "TODO"

@@ -370,11 +370,11 @@ variables". If you want more than two, we suggest *baz*, and then *wibble* and
 random_numbers = rand(5)
 
 for random_number in random_numbers
-    if random_number ≤ 0.5
-        println("foo")
-    else
-        println("bar")
-    end
+  if random_number ≤ 0.5
+    println("foo")
+  else
+    println("bar")
+  end
 end
 ````
 
@@ -382,9 +382,9 @@ end
 ````
 foo
 bar
-foo
-foo
 bar
+bar
+foo
 ````
 
 
@@ -460,11 +460,11 @@ random_numbers
 
 ````
 5-element Array{Float64,1}:
- 0.243983
- 0.850895
- 0.44044 
- 0.201127
- 0.806958
+ 0.355443
+ 0.615714
+ 0.842088
+ 0.955516
+ 0.086789
 ````
 
 
@@ -520,7 +520,7 @@ random_numbers[1]
 
 
 ````
-0.24398349124593177
+0.3554428987672451
 ````
 
 
@@ -541,7 +541,7 @@ random_numbers[length(random_numbers)]
 
 
 ````
-0.8069581883899681
+0.08678900665539713
 ````
 
 
@@ -559,7 +559,7 @@ random_numbers[end]
 
 
 ````
-0.8069581883899681
+0.08678900665539713
 ````
 
 
@@ -575,7 +575,7 @@ first(random_numbers)
 
 
 ````
-0.24398349124593177
+0.3554428987672451
 ````
 
 
@@ -586,7 +586,7 @@ last(random_numbers)
 
 
 ````
-0.8069581883899681
+0.08678900665539713
 ````
 
 
@@ -606,7 +606,7 @@ println(random_numbers[1])
 
 
 ````
-0.24398349124593177
+0.3554428987672451
 ````
 
 
@@ -617,7 +617,7 @@ println(random_numbers[3])
 
 
 ````
-0.4404401988742772
+0.842088309804373
 ````
 
 
@@ -628,7 +628,7 @@ println(random_numbers[5])
 
 
 ````
-0.8069581883899681
+0.08678900665539713
 ````
 
 
@@ -658,9 +658,9 @@ end
 
 
 ````
-Position 1:	0.24398349124593177
-Position 3:	0.4404401988742772
-Position 5:	0.8069581883899681
+Position 1:	0.3554428987672451
+Position 3:	0.842088309804373
+Position 5:	0.08678900665539713
 ````
 
 
@@ -796,7 +796,7 @@ println("μ: $(round(mean(my_collection), 4))")
 
 
 ````
-μ: 0.501
+μ: 0.4998
 ````
 
 

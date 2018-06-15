@@ -5,6 +5,7 @@
 @import "colors";
 @import "palette-{{site.palette}}";
 @import "callouts";
+@import "code";
 
 * {
   box-sizing: border-box;
@@ -41,11 +42,6 @@ h3, h4, h5, h6 {
       color: darken($color-href, 5%);
     }
   }
-}
-
-pre {
-  white-space: pre-wrap;
-  word-wrap: break-word;
 }
 
 .lead {
@@ -127,53 +123,6 @@ p.callout {
 .rightbutton {
   float: right;
   margin-right: 2em;
-}
-
-pre, code {
-  color: $color-code;
-}
-
-pre {
-  margin: 0px auto;
-  padding: 1em 0em;
-  font-size: 90%;
-  line-height: 1.2rem;
-}
-
-.language-julia {
-  background-color: #fefefe;
-  border-top: 1px solid #f3f3f3;
-  border-bottom: 1px solid #f3f3f3;
-  width: 100vw;
-  transform: translateX(-50%);
-  margin-left: 50%;
-  pre {
-    margin: 0px auto;
-    max-width: 1100px;
-    padding: 1em 2em;
-    font-size: 90%;
-    line-height: 1.2rem;
-    code {
-      color: #111;
-    }
-  }
-}
-
-.cm {
-  color: #555;
-  font-style: italic;
-}
-.k {
-  color: #009e73;
-}
-.mi, .mf {
-  color: #d55e00;
-}
-.o {
-  color: #56b4e9;
-}
-.s {
-  color: #cc79a7;
 }
 
 .card {

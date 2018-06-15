@@ -1,0 +1,27 @@
+@mixin callout($color, $name) {
+    color: lighten($color, 3%);
+    line-height: 1.25em;
+    &::before {
+      content: $name;
+      background-color: $color;
+      color: $color-bg;
+      text-transform: uppercase;
+      font-variant: small-caps;
+      border-radius: 3px;
+      padding: 0em 3px;
+      margin-right: 10px;
+      font-size: 89%;
+    }
+}
+
+.opinion {
+  @include callout($color-highlights, "opinion");
+}
+
+.danger {
+  @include callout($color-danger, "danger");
+}
+
+.warning {
+  @include callout($color-warning, "warning");
+}

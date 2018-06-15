@@ -251,11 +251,11 @@ variables". If you want more than two, we suggest *baz*, and then *wibble* and
 random_numbers = rand(5)
 
 for random_number in random_numbers
-    if random_number ≤ 0.5
-        println("foo")
-    else
-        println("bar")
-    end
+  if random_number ≤ 0.5
+    println("foo")
+  else
+    println("bar")
+  end
 end
 ```
 

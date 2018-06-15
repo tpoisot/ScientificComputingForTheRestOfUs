@@ -380,10 +380,10 @@ end
 
 
 ````
+bar
 foo
 bar
-bar
-bar
+foo
 foo
 ````
 
@@ -460,11 +460,11 @@ random_numbers
 
 ````
 5-element Array{Float64,1}:
- 0.355443
- 0.615714
- 0.842088
- 0.955516
- 0.086789
+ 0.653793
+ 0.497509
+ 0.640401
+ 0.250322
+ 0.230182
 ````
 
 
@@ -520,7 +520,7 @@ random_numbers[1]
 
 
 ````
-0.3554428987672451
+0.6537929395907054
 ````
 
 
@@ -541,7 +541,7 @@ random_numbers[length(random_numbers)]
 
 
 ````
-0.08678900665539713
+0.23018249029156745
 ````
 
 
@@ -559,7 +559,7 @@ random_numbers[end]
 
 
 ````
-0.08678900665539713
+0.23018249029156745
 ````
 
 
@@ -575,7 +575,7 @@ first(random_numbers)
 
 
 ````
-0.3554428987672451
+0.6537929395907054
 ````
 
 
@@ -586,7 +586,7 @@ last(random_numbers)
 
 
 ````
-0.08678900665539713
+0.23018249029156745
 ````
 
 
@@ -606,7 +606,7 @@ println(random_numbers[1])
 
 
 ````
-0.3554428987672451
+0.6537929395907054
 ````
 
 
@@ -617,7 +617,7 @@ println(random_numbers[3])
 
 
 ````
-0.842088309804373
+0.6404010155604463
 ````
 
 
@@ -628,7 +628,7 @@ println(random_numbers[5])
 
 
 ````
-0.08678900665539713
+0.23018249029156745
 ````
 
 
@@ -658,9 +658,9 @@ end
 
 
 ````
-Position 1:	0.3554428987672451
-Position 3:	0.842088309804373
-Position 5:	0.08678900665539713
+Position 1:	0.6537929395907054
+Position 3:	0.6404010155604463
+Position 5:	0.23018249029156745
 ````
 
 
@@ -796,7 +796,7 @@ println("μ: $(round(mean(my_collection), 4))")
 
 
 ````
-μ: 0.4998
+μ: 0.5003
 ````
 
 
@@ -814,11 +814,11 @@ once: the mean needs to be larger than 0.499, yet smaller than 0.501, and we
 need to continue *until* this is true (but there is not *until* statement, so we
 use the awkward "while not").
 
-Note that if we were particularly unlucky, we would never get a sequence of
-random numbers that would match this condition! In this case, our computer would
-stubbornly keep running until the heat death of the universe (or until it
-breaks, which in all likelihood will happen earlier).
+{: .danger}
 
-Writing `while` loops can be a complex exercice, and it is always good to think
-about "exit strategies". These will be discussed in the forthcoming "Advanced
-control flow" capstone lesson.
+If we are particularly unlucky, we would never get a sequence of random numbers
+that would match this condition! In this case, our computer would stubbornly
+keep running until the heat death of the universe (or until it breaks, which in
+all likelihood will happen earlier). Writing `while` loops can be a complex
+exercice, and it is always good to think about "exit strategies". These will be
+discussed in the forthcoming "Advanced control flow" capstone lesson.

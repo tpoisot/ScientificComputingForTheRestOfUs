@@ -4,6 +4,9 @@ permalink: pretty
 exclude: ["*.Jmd"]
 markdown: kramdown
 
+readingspeed: 120
+# Number of words per minute (lowered from the usual 180, because of technical content)
+
 sass:
   style: :compressed
   sass_dir: _scss

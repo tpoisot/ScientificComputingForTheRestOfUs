@@ -15,9 +15,9 @@ layout: default
 
 🚩 [See issues]({{ site.github }}/labels/{{page.tag}}/)
 
-🕗 {{page.time}}
-
 ℹ️ {{page.status}}
+
+{% for lesson in site.lessons %}{% if lesson.title == page.title %}{% assign words = lesson.content | number_of_words %}{% if words < site.readingspeed %}🕗 1 min{% else %}🕗 {{ words | divided_by: site.readingspeed }} mins{% endif %}{% endif %}{% endfor %}
 
 📖 Key concepts
 {% for topic in page.topics %}

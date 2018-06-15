@@ -25,7 +25,6 @@ to find an introduction to get you started. The goal of this project is to
 provide reproducible documents you can use to get started on the most important
 points. You can use these lessons on your own, or as a group.
 
-
 ## Who is this material for?
 
 This material is aimed at people who have already interacted with a computer
@@ -47,8 +46,8 @@ anything about it either. We will keep the discussion very general, and not use
 any of the (very cool!) language-specific features and syntax. And do you want
 good news? You don't need to install anything! You can run everything on
 [JuliaBox][jlbox], a cloud-based service to run reproducible documents as
-notebooks (if you want to read a short introduction to notebook, we have written
-one [here][nb]).
+notebooks (if you want to read a short introduction to notebooks, we have
+written one [here][nb]).
 
 In fact, you will see that good practices for scientific computing have very
 little to do with tools and technical things; instead, they rely on thinking
@@ -59,6 +58,54 @@ principles to any language you prefer to use.
 [jlbox]: http://juliabox.com/
 [jl]: http://julialang.org/
 
+## How to use this material
+
+The best way to read this material is to keep a window with either
+[JuliaBox][jlbox] or a terminal running *Julia* open, and **type** the code. It
+is tempting to copy and paste, but typing the code actually matters.
+
+Snippets of code that are *important* are on a white background, like so:
+
+~~~ julia
+[rand(i) for i in 1:5]
+~~~
+
+Bits of code of lower importance (pseudocode or code you are not meant to type),
+as well as the output of the *important* parts of code, are presented this way:
+
+~~~
+for each_element in vector
+  function(each_element)
+end
+~~~
+
+Throughout the lessons, we have added some asides -- they are ranked in order of
+importance. "Opinions" are points we would like to raise for the reader's
+consideration, and can be ignored. Example:
+
+{: .opinion}
+
+People who think it's OK to criticize others based on their choice of language,
+OS, text editor, etc, should go home and think about what they did. They should
+not make themselves a cup of tea; tea is for good people.
+
+"Warnings" are points that can be important, but not necessarily as a novice. It
+is worth keeping a mental note of them, especially in the long term. Example:
+
+{: .warning}
+
+Any time you are about to comment on people's choice of tools, ask yourself
+whether this is really necessary, and the answer is usually "no". The Good Tool
+is the one that works for its user.
+
+"Dangers" are really important point, that can prove especially dangerous or
+risky to everyone. They are worth reading a few times over. Example:
+
+{: .danger}
+
+For real tho, this toxic behaviour is driving brilliant people away, and should
+never be tolerated. Disliking Windows has not made anyone edgy or cool since
+1998.
 
 ## Contributing
 

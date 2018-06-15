@@ -1,5 +1,5 @@
 @mixin callout($color, $name) {
-    color: lighten($color, 3%);
+    color: lighten($color, 1%);
     line-height: 1.25em;
     &::before {
       content: $name;

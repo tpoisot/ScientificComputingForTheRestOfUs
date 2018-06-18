@@ -19,5 +19,7 @@ github: https://github.com/tpoisot/ScientificComputingForTheRestOfUs
 collections:
   lessons:
     output: true
+    permalink: /:collection/:title
   capstones:
     output: true
+    permalink: /:collection/:title

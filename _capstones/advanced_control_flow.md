@@ -1,5 +1,6 @@
 ---
 title: Advanced control flow
+slug: advanced_control_flow
 layout: page
 ---
 

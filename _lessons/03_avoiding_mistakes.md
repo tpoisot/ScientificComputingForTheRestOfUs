@@ -1,5 +1,6 @@
 ---
 title: Avoiding mistakes
+slug: avoiding_mistakes
 layout: page
 ---
 

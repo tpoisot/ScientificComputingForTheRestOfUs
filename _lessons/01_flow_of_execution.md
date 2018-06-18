@@ -1,6 +1,10 @@
 ---
 title: The flow of execution
+slug: flow_of_execution
 layout: page
+meta:
+  issue: 12
+  label: "lesson:flow"
 ---
 
 ## Programming really *is* a language
@@ -70,13 +74,17 @@ speaks. We will write quite a lot of it.
 
 Now, let's give this a try - before you do, what do you think will happen?
 
-```julia
+````julia
 time_by_foot = 13
 time_by_bike = 4
 if time_by_foot < time_by_bike
     println("You should walk")
 end
-```
+````
+
+
+
+
 
 Uh, weird! Nothing happened.
 
@@ -91,7 +99,7 @@ In the above example, we gave no alternative to the computer. To decide between
 two (or more) things to do, we need to use `if`'s frequent partner: `else`.
 Let's try again:
 
-```julia
+````julia
 time_by_foot = 13
 time_by_bike = 4
 if time_by_foot < time_by_bike
@@ -99,7 +107,16 @@ if time_by_foot < time_by_bike
 else
     println("You should bike")
 end
-```
+````
+
+
+````
+You should bike
+````
+
+
+
+
 
 This time, we get the right output: `You should bike`. This brings a very
 important point: we need to be *explicit*; when talking with humans, we can
@@ -119,10 +136,29 @@ the same thing as "it is false than the coin landed on its head".
 Most programming languages use `!x` to mean *not x*. If we run the code below,
 what you do think will happen?
 
-```julia
+````julia
 println(!true)
+````
+
+
+````
+false
+````
+
+
+
+````julia
 println(!false)
-```
+````
+
+
+````
+true
+````
+
+
+
+
 
 Adding `!` in front of a statement will return the *other* Boolean value.
 
@@ -160,19 +196,58 @@ There is a new word here: *or*. The *or* operator will look at both statements
 true. Let's have a look:
 
 
-```julia
+````julia
 println("true or false:\t", true || false)
+````
+
+
+````
+true or false:	true
+````
+
+
+
+````julia
 println("false or false:\t", false || false)
+````
+
+
+````
+false or false:	false
+````
+
+
+
+````julia
 println("false or true:\t", false || true)
+````
+
+
+````
+false or true:	true
+````
+
+
+
+````julia
 println("true or true:\t", true || true)
-```
+````
+
+
+````
+true or true:	true
+````
+
+
+
+
 
 Most programming languages will use `||` or `or` or `|` to write the *or*
 operation. We can now fine tune our code, to decide between the subway and the
 bike, as a function of the weather. Run the cell below: what do you expect?
 
 
-```julia
+````julia
 time_by_subway = 8
 time_by_bike = 4
 rain = true
@@ -182,7 +257,16 @@ if (time_by_subway < time_by_bike) | rain
 else
     println("You should bike")
 end
-```
+````
+
+
+````
+You should take the subway
+````
+
+
+
+
 
 Because it rains (`rain = true`), our code is correctly telling us to take the
 subway.
@@ -212,12 +296,51 @@ The *and* operation will look at both statements, and return *true* only if both
 are *true*:
 
 
-```julia
+````julia
 println("true and false:\t", true && false)
+````
+
+
+````
+true and false:	false
+````
+
+
+
+````julia
 println("false and false:\t", false && false)
+````
+
+
+````
+false and false:	false
+````
+
+
+
+````julia
 println("false and true:\t", false && true)
+````
+
+
+````
+false and true:	false
+````
+
+
+
+````julia
 println("true and true:\t", true && true)
-```
+````
+
+
+````
+true and true:	true
+````
+
+
+
+
 
 **So far**, we have learned about Boolean values, and the *if* operation. Using
 *if* is a way to look at a statement, and do different things when it is true
@@ -247,7 +370,7 @@ case you want to get all fancy, these are actually called "metasyntactic
 variables". If you want more than two, we suggest *baz*, and then *wibble* and
 *wobble*.
 
-```julia
+````julia
 random_numbers = rand(5)
 
 for random_number in random_numbers
@@ -257,7 +380,20 @@ for random_number in random_numbers
     println("bar")
   end
 end
-```
+````
+
+
+````
+bar
+bar
+foo
+bar
+foo
+````
+
+
+
+
 
 There is quite a lot happening here, so we will go line by line.
 
@@ -321,9 +457,23 @@ understanding what exactly is in the `random_numbers` object. Let's display it
 again:
 
 
-```julia
+````julia
 random_numbers
-```
+````
+
+
+````
+5-element Array{Float64,1}:
+ 0.506618  
+ 0.84807   
+ 0.426062  
+ 0.996487  
+ 0.00977496
+````
+
+
+
+
 
 This type of object is an *array*; it may help to think of an array as a shelf,
 in which every compartment can store one thing. You can have shelves with a
@@ -332,17 +482,35 @@ default columns, and this is important for applications like linear algebra
 (they behave as vectors). Arrays have all sorts of properties, the most
 important being their *length*:
 
-```julia
+````julia
 length(random_numbers)
-```
+````
+
+
+````
+5
+````
+
+
+
+
 
 This tells us that our "shelf" has five compartments, so we can store five
 things in it. We can also ask what its *size* is:
 
 
-```julia
+````julia
 size(random_numbers)
-```
+````
+
+
+````
+(5,)
+````
+
+
+
+
 
 The output is `(5,)` - this is the computer way of telling us that this array
 has 5 positions in its first *dimension*, and no positions in its second
@@ -350,9 +518,18 @@ dimension: this is a column with five rows. We can also access any *position* we
 like; this is akin to asking "computer, give me the content of the 1st
 compartment":
 
-```julia
+````julia
 random_numbers[1]
-```
+````
+
+
+````
+0.5066178466062619
+````
+
+
+
+
 
 Some languages, like *Julia*, *R*, and *MatLab*, start counting from 1, but
 *python* and *C* start counting from 0. These are conventions that each language
@@ -362,29 +539,63 @@ the computer science world.
 
 We can *also ask what the *last* position contains:
 
-```julia
+````julia
 random_numbers[length(random_numbers)]
-```
+````
+
+
+````
+0.00977496415595236
+````
+
+
+
+
 
 The way to read this instruction is as follows: get me the element at position
 `length(random_numbers)`. We know that the length of `random_numbers` is `5`, so
 this will return the 5th position. *Julia* has a quite pretty way of getting the
 last element of most collections:
 
-```julia
+````julia
 random_numbers[end]
-```
+````
+
+
+````
+0.00977496415595236
+````
+
+
+
+
 
 An extra bit of [syntactic sugar][sugar] in *Julia* are the two following
 functions:
 
-```julia
+````julia
 first(random_numbers)
-```
+````
 
-```julia
+
+````
+0.5066178466062619
+````
+
+
+
+````julia
 last(random_numbers)
-```
+````
+
+
+````
+0.00977496415595236
+````
+
+
+
+
 
 [sugar]: https://en.wikipedia.org/wiki/Syntactic_sugar
 
@@ -393,11 +604,40 @@ Being able to access elements by their position can be very useful. Our
 odd-numbered ones. One way to do this would be to call then individually:
 
 
-```julia
+````julia
 println(random_numbers[1])
+````
+
+
+````
+0.5066178466062619
+````
+
+
+
+````julia
 println(random_numbers[3])
+````
+
+
+````
+0.42606195584667295
+````
+
+
+
+````julia
 println(random_numbers[5])
-```
+````
+
+
+````
+0.00977496415595236
+````
+
+
+
+
 
 Of course, this is only reasonable if we have a very small number of things to
 do. But what if we want to iterate over hundreds, or thousands of values? We
@@ -412,13 +652,24 @@ integer division by two is *not* 0: `x % 2 != 0`.
 Let's go:
 
 
-```julia
+````julia
 for i in 1:length(random_numbers) # We could also write `in eachindex(random_numbers)`
   if i % 2 != 0
     println("Position $i:\t", random_numbers[i])
   end
 end
-```
+````
+
+
+````
+Position 1:	0.5066178466062619
+Position 3:	0.42606195584667295
+Position 5:	0.00977496415595236
+````
+
+
+
+
 
 We can "read" this snippet (a *snippet* is the affectionate name given to a
 litle chunk of code; a *chunk* is a much uglier name for "a piece") as
@@ -461,13 +712,33 @@ i = 3
 Right? So let's try. What do you think will happen if you run the cell below?
 
 
-```julia
+````julia
 for i in 1:3
     println(i)
 end
+````
+
+
+````
+1
+2
+3
+````
+
+
+
+````julia
 
 println(i)
-```
+````
+
+
+<pre class="julia-error">
+ERROR: UndefVarError: i not defined
+</pre>
+
+
+
 
 What happens is that the variable `i` only exists within the `for` loop! This
 might seem problematic at first, but it is actually much cleaner: this avoid
@@ -485,13 +756,22 @@ end
 If you want a variable to be accessible *outside* a loop, you can simply create
 it before:
 
-```julia
+````julia
 a = 0
 for i in 1:3
     a = i
 end
 println(a)
-```
+````
+
+
+````
+3
+````
+
+
+
+
 
 ## Doing something until something happens
 
@@ -508,7 +788,7 @@ run it for a while (*GET IT?*) to get a sample with an average of about 0.5.
 
 We can for example write it this way:
 
-```julia
+````julia
 my_collection = rand(5)
 
 while !(0.499 ≤ mean(my_collection) ≤ 0.501)
@@ -516,7 +796,16 @@ while !(0.499 ≤ mean(my_collection) ≤ 0.501)
 end
 
 println("μ: $(round(mean(my_collection), 4))")
-```
+````
+
+
+````
+μ: 0.4991
+````
+
+
+
+
 
 The instruction just after `while`, *i.e.*
 

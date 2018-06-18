@@ -1,6 +1,10 @@
 ---
 title: Writing functions
+slug: writing_functions
 layout: page
+meta:
+  issue: 18
+  label: "lesson:functions"
 ---
 
 ## Good code is small code

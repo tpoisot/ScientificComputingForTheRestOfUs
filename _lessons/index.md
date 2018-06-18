@@ -3,17 +3,21 @@ permalink: /lessons/index.html
 layout: default
 ---
 
-{% for page in site.data.lessons %}
+{% for page in site.lessons %}
+
+{% if page.url contains "index.html" %}
+{% else %}
+
 <div class="lesson card" markdown="1">
 {{page.title}}
 {: .head}
 
-[Start the lesson](/lessons/{{page.url}}/)
+[Start the lesson]({{page.url}})
 {: .launch}
 
-📢 [Give feedback]({{ site.github }}/issues/{{page.issue}}/)
+📢 [Give feedback]({{ site.github }}/issues/{{page.meta.issue}}/)
 
-🚩 [See issues]({{ site.github }}/labels/{{page.tag}}/)
+🚩 [See issues]({{ site.github }}/labels/{{page.meta.label}}/)
 
 ℹ️ {{page.status}}
 
@@ -23,4 +27,5 @@ layout: default
 {% for topic in page.topics %}
 - {{topic}}{% endfor %}
 </div>
+{% endif %}
 {% endfor %}

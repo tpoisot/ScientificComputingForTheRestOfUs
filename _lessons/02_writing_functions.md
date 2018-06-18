@@ -1,5 +1,6 @@
 ---
 title: Writing functions
+slug: writing_functions
 layout: page
 ---
 
@@ -71,16 +72,16 @@ darts
 
 ````
 10-element Array{Any,1}:
- (0.744474, 0.278358)
- (0.784014, 1.5047)  
- (1.26043, 1.62454)  
- (1.18557, 0.0712817)
- (0.120458, 1.08276) 
- (0.215774, 1.0391)  
- (1.7704, 0.803973)  
- (1.93549, 0.61175)  
- (1.23395, 1.32131)  
- (0.851731, 1.13903)
+ (1.32658, 1.79499)  
+ (0.244239, 1.15899) 
+ (0.550889, 1.48036) 
+ (0.642751, 0.182378)
+ (1.35001, 1.21265)  
+ (0.865277, 1.86457) 
+ (1.85263, 1.2513)   
+ (0.375797, 1.84525) 
+ (1.72857, 1.9991)   
+ (0.598741, 1.69745)
 ````
 
 
@@ -422,7 +423,7 @@ println("Estimate: $(estimate)\tπ: $(π)")
 
 
 ````
-Estimate: 3.13388	π: π = 3.1415926535897...
+Estimate: 3.14048	π: π = 3.1415926535897...
 ````
 
 
@@ -564,7 +565,7 @@ println("It takes $(round(time_int_and_float/time_float_and_float,2)) times long
 
 
 ````
-It takes 1141.67 times longer to work with different types!
+It takes 1100.63 times longer to work with different types!
 ````
 
 

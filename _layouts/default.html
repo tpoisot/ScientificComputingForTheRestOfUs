@@ -48,6 +48,14 @@
 
   </div>
 
+  {% if page.url contains "lessons" %}
+  <div class="sidebar">
+    <a target="_blank" href="https://gitter.im/ScientificComputingForTheRestOfUs/Lobby" class="item">G</a>
+    <a target="_blank" href="{{ site.github }}/issues/{{page.meta.issue}}/" class="item">F</a>
+    <a target="_blank" href="{{ site.github }}/labels/{{page.meta.label}}/" class="item">H</a>
+  </div>
+  {% endif %}
+
   <div class="content">
     {{ content }}
   </div>

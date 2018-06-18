@@ -2,6 +2,9 @@
 title: Avoiding mistakes
 slug: avoiding_mistakes
 layout: page
+meta:
+  issue: 19
+  label: "lesson:defensive"
 ---
 
 ## We can't avoid mistakes

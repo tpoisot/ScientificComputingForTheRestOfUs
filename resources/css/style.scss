@@ -180,5 +180,22 @@ p.callout {
     padding-top: 0.7em;
     margin-left: 1em;
     margin-bottom: 1em;
+    color: $color-href;
+    .desc {
+      display: inline-block;
+      visibility: collapse;
+    }
+    &:hover {
+      color: $color-highlights;
+      background: lighten($color-bg, 3%);
+      .desc {
+        display: inline-block;
+        visibility: visible;
+        position: absolute;
+        right: -8.5em;
+        width: 8em;
+        text-align: left;
+      }
+    }
   }
 }

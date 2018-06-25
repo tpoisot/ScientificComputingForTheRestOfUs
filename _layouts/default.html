@@ -10,6 +10,7 @@
 
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css">
   <link rel="stylesheet" href="/resources/css/style.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
 
   <!--[if lt IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
@@ -50,9 +51,9 @@
 
   {% if page.url contains "lessons" %}
   <div class="sidebar">
-    <a target="_blank" href="https://gitter.im/ScientificComputingForTheRestOfUs/Lobby" class="item">G</a>
-    <a target="_blank" href="{{ site.github }}/issues/{{page.meta.issue}}/" class="item">F</a>
-    <a target="_blank" href="{{ site.github }}/labels/{{page.meta.label}}/" class="item">H</a>
+    <a target="_blank" href="https://gitter.im/ScientificComputingForTheRestOfUs/Lobby" class="item" title="Chat with us on gitter"><i class="fab fa-gitter"></i><span class="desc">Chat with us!</span></a>
+    <a target="_blank" href="{{ site.github }}/issues/{{page.meta.issue}}/" class="item" title="Give feedback"><i class="far fa-comments"></i><span class="desc">Give us feedback!</span></a>
+    <a target="_blank" href="{{ site.github }}/labels/{{page.meta.label}}/" class="item" title="Help improve this lesson"><i class="far fa-file-alt"></i><span class="desc">Help us improve!</span></a>
   </div>
   {% endif %}
 

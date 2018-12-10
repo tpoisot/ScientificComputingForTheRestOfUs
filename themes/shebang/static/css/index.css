@@ -1,0 +1,38 @@
+@import url("https://fonts.googleapis.com/css?family=Overpass+Mono:400,600|Overpass:300,300i,400,400i,600,600i,700,700i");
+html, body {
+  font-family: "Overpass";
+  margin: 0 0;
+  padding: 0 0; }
+
+code {
+  font-family: "Overpass Mono"; }
+
+section#navigation {
+  background-color: #fafafa;
+  padding: 4px;
+  line-height: 60px;
+  font-size: 18px; }
+  section#navigation img {
+    vertical-align: top;
+    padding-right: 4px; }
+  section#navigation * {
+    display: inline-block; }
+
+section#content {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 1em; }
+
+code {
+  color: #777; }
+
+code.language-julia {
+  color: #123456; }
+  code.language-julia::before {
+    content: "> ";
+    width: 1.2em;
+    margin-left: -1.2em;
+    color: black;
+    font-weight: 600; }
+
+/*# sourceMappingURL=index.css.map */

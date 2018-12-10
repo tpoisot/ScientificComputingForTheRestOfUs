@@ -1,7 +1,7 @@
 ---
 title: Avoiding mistakes
 slug: avoiding_mistakes
-layout: page
+weight: 3
 meta:
   issue: 19
   label: "lesson:defensive"
@@ -21,21 +21,12 @@ to work in a way that protects everyone against mistakes.
 
 Let's start with this function, for example:
 
-````julia
+```julia
 function diversity_test1(a)
   x = [i/sum(a) for i in a]
   return -sum(p.*log.(p))./log(length(a))
 end
-````
-
-
-````
-diversity_test1 (generic function with 1 method)
-````
-
-
-
-
+```
 
 What is this function doing? Who knows? Well, it takes an array of values, and
 them calculates Pielou's diversity index ($J = \left(-\sum
@@ -63,21 +54,12 @@ Naming things explicitely is always better: it makes the code easier to read.
 
 Our first order of business should therefore be to rename this function:
 
-````julia
+```julia
 function pielou(a)
   x = [i/sum(a) for i in a]
   return -sum(p.*log.(p))./log(length(a))
 end
-````
-
-
-````
-pielou (generic function with 1 method)
-````
-
-
-
-
+```
 
 This is not really sufficient, but this is a large improvement. If you come back
 to code using this function in a week, or in six months, you will be able to
@@ -100,21 +82,12 @@ key element of effective documentation!
 
 Our second task will be to re-write this function to use the more explicit name:
 
-````julia
+```julia
 function pielou(abundances)
   x = [i/sum(abundances) for i in abundances]
   return -sum(p.*log.(p))./log(length(abundances))
 end
-````
-
-
-````
-pielou (generic function with 1 method)
-````
-
-
-
-
+```
 
 ## Using the wrong arguments
 

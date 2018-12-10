@@ -1,10 +1,12 @@
 ---
 title: Writing functions
 slug: writing_functions
+weight: 2
 layout: page
 meta:
   issue: 18
   label: "lesson:functions"
+tags: [modular design, type stability]
 ---
 
 ## Good code is small code

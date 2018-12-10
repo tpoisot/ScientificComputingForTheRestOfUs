@@ -1,0 +1,9 @@
+{{ define "main" }}
+
+{{ .Content }}
+
+{{ range .Pages }}
+{{- partial "resource.html" . -}}
+{{ end }}
+
+{{ end }}

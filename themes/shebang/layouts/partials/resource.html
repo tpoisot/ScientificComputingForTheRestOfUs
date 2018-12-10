@@ -1,0 +1,16 @@
+<section class="resource">
+    <h1>{{ .Title }}</h1>
+
+    <div class="read"><a href="{{.Permalink}}">Read the lesson</a></div>
+    <div class="readingtime">{{div .WordCount .Site.Params.readingSpeed}} minutes</div>
+
+    <div class="summary">{{ .Summary }}</div>
+    <div class="keywords"><h2>Key concepts</h2>
+        {{ with .Params.tags }}
+        {{ range . }}
+        <span class="keyword">{{ . }}</span>
+        {{ end }}
+        {{ end }}
+    </div>
+
+</section>

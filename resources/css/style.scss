@@ -66,46 +66,6 @@ html, body {
   }
 }
 
-.topbar {
-  box-shadow: 0px 0px 2px #d7d8da;
-  height: 5em;
-  z-index: 100;
-  font-size: 1.0rem;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  line-height: 2em;
-  padding: 1.5em 6em;
-  * {
-    display: inline-block;
-  }
-  img {
-    position: absolute;
-    top: 0.5em;
-    left: 0.5em;
-    width: 4em;
-    height: 4em;
-  }
-  text-transform: uppercase;
-  .title {
-    font-weight: 500;
-  }
-  .links {
-    padding-left: 3em;
-    float: right;
-    a {
-      padding: 0em 1em;
-      color: #777;
-      text-decoration: none;
-      &:hover {
-        color: #444;
-      }
-      &.disabled {
-        color: #ccc;
-      }
-    }
-  }
-}
 
 .callout {
   border-radius: 4px;

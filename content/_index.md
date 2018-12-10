@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Index
 ---
 
@@ -11,13 +10,10 @@ wrong answer can compromise your science and your career. This guide will help
 you adopt practices that make it less likely to introduce mistakes in your code,
 and more likely to catch them. Hopefully, this will let all of us write code we
 can trust more.
-{: .lead}
 
 [Read the lessons](/lessons/)
-{: .leftbutton .callout}
 
 [Come talk with us on Gitter](https://gitter.im/ScientificComputingForTheRestOfUs/Lobby)
-{: .rightbutton .callout}
 
 Good principles in scientific computing can help you write code that is easier
 to maintain, easier to reproduce, and easier to debug. But it can be difficult

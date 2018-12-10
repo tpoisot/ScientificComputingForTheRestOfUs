@@ -1,0 +1,11 @@
+baseURL = "http://sciencecomputing.io/"
+languageCode = "en-us"
+preserveTaxonomyNames = true
+theme = "shebang"
+
+[params]
+  readingSpeed = 120
+  githubUser = "tpoisot"
+  githubRepo = "ScientificComputingForTheRestOfUs"
+  title = "Scientific computing"
+  subtitle = "(for the rest of us)"

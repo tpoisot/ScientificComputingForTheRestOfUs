@@ -1,14 +1,23 @@
-@import url("https://fonts.googleapis.com/css?family=Overpass+Mono:400,600|Overpass:300,300i,400,400i,600,600i,700,700i");
+@import url("https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed:300,300i,400,400i,500,500i|Barlow:400,400i,500,500i,600,600i");
 html, body {
-  font-family: "Overpass";
+  font-family: "Barlow";
+  font-size: 16px;
   margin: 0 0;
-  padding: 0 0; }
+  padding: 0 0;
+  background-color: #fafafa; }
+
+h1, h2, h3, h4 {
+  font-family: "Barlow Semi Condensed";
+  font-weight: 500;
+  color: #227066; }
 
 code {
-  font-family: "Overpass Mono"; }
+  font-family: "Hack"; }
 
 section#navigation {
-  background-color: #fafafa;
+  background-color: #ffffff;
+  font-family: "Barlow Semi Condensed";
+  box-shadow: 0px 0px 2px #d7d8da;
   padding: 4px;
   line-height: 60px;
   font-size: 18px; }
@@ -19,20 +28,49 @@ section#navigation {
     display: inline-block; }
 
 section#content {
-  max-width: 900px;
+  max-width: 1000px;
+  color: #1e1e1e;
   margin: 20px auto;
-  padding: 1em; }
+  padding: 1em;
+  line-height: 1.8rem;
+  font-size: 1.1rem; }
+  section#content p code {
+    font-size: 0.95rem; }
+  section#content a {
+    text-decoration: none;
+    color: #76a665; }
+    section#content a:hover {
+      background-color: ligten(#76a665, 20%); }
 
-code {
-  color: #777; }
+pre {
+  font-size: 0.9rem;
+  line-height: 1.5rem; }
+  pre code {
+    color: #777; }
+    pre code .cm {
+      color: #555;
+      font-style: italic; }
+    pre code .k {
+      color: #009e73; }
+    pre code .mi, pre code .mf {
+      color: #d55e00; }
+    pre code .o {
+      color: #56b4e9; }
+    pre code .s {
+      color: #cc79a7; }
 
 code.language-julia {
   color: #123456; }
   code.language-julia::before {
-    content: "> ";
-    width: 1.2em;
-    margin-left: -1.2em;
-    color: black;
-    font-weight: 600; }
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f120";
+    margin-right: 1em;
+    font-size: 0.7rem;
+    width: 1.8rem;
+    text-align: center;
+    display: inline-block;
+    margin-left: -3.5em;
+    color: #76a665; }
 
 /*# sourceMappingURL=index.css.map */

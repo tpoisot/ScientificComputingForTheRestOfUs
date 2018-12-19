@@ -170,7 +170,7 @@ function throw_darts(n::Int64)
         x, y = rand(2).*2
         darts[i] = (x, y)
         =#
-        darts[i] = (rand(2).*2...)
+        darts[i] = rand(2).*2.0
     end
 
     #=

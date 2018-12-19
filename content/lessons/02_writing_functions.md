@@ -2,11 +2,9 @@
 title: Writing functions
 slug: writing_functions
 weight: 2
-layout: page
 meta:
   issue: 18
   label: "lesson:functions"
-tags: [modular design, type stability]
 ---
 
 ## Good code is small code
@@ -77,16 +75,16 @@ darts
 
 ````
 10-element Array{Any,1}:
- (0.920845, 1.81077)
- (1.12498, 1.65589)
- (1.63268, 0.0170531)
- (0.0364038, 0.201788)
- (1.50951, 0.358622)
- (1.85845, 1.1841)
- (0.333359, 0.291215)
- (1.10509, 0.448103)
- (1.21288, 1.49679)
- (1.38533, 0.196536)
+ (0.9513928056605034, 0.3684729245180667)  
+ (1.0309789101073354, 1.2630537222205107)  
+ (1.68803832367694, 1.1260211104672617)    
+ (1.9207506819307136, 1.9214872629473145)  
+ (1.0157017298130033, 1.0055798003904877)  
+ (0.44346670257120957, 1.6938392159419609) 
+ (1.3858033189229912, 0.8136490152752005)  
+ (0.7200544968360094, 0.7883568658859761)  
+ (1.6918713455569936, 0.8260243670773821)  
+ (0.050912446390397825, 0.1753957985532928)
 ````
 
 
@@ -191,7 +189,7 @@ function throw_darts(n::Int64)
         x, y = rand(2).*2
         darts[i] = (x, y)
         =#
-        darts[i] = (rand(2).*2...)
+        darts[i] = rand(2).*2.0
     end
 
     #=
@@ -423,14 +421,27 @@ So, how good is our estimate?
 
 ````julia
 estimate = estimate_pi(100000)
+````
+
+
+<pre class="julia-error">
+ERROR: MethodError: no method matching Array&#123;Tuple&#123;Float64,Float64&#125;,1&#125;&#40;::Int64&#41;
+Closest candidates are:
+  Array&#123;Tuple&#123;Float64,Float64&#125;,1&#125;&#40;&#41; where T at boot.jl:413
+  Array&#123;Tuple&#123;Float64,Float64&#125;,1&#125;&#40;&#33;Matched::UndefInitializer, &#33;Matched::Int64&#41; where T at boot.jl:394
+  Array&#123;Tuple&#123;Float64,Float64&#125;,1&#125;&#40;&#33;Matched::UndefInitializer, &#33;Matched::Int64...&#41; where &#123;T, N&#125; at boot.jl:400
+  ...
+</pre>
+
+
+````julia
 println("Estimate: $(estimate)\tπ: $(π)")
 ````
 
 
-````
-Estimate: 3.15172	π: π = 3.1415926535897...
-````
-
+<pre class="julia-error">
+ERROR: UndefVarError: estimate not defined
+</pre>
 
 
 
@@ -496,10 +507,9 @@ my_log_function(2.0; b=e)
 ````
 
 
-````
-0.6931471805599453
-````
-
+<pre class="julia-error">
+ERROR: UndefVarError: e not defined
+</pre>
 
 
 
@@ -569,10 +579,14 @@ println("It takes $(round(time_int_and_float/time_float_and_float,2)) times long
 ````
 
 
-````
-It takes 1055.77 times longer to work with different types!
-````
-
+<pre class="julia-error">
+ERROR: MethodError: no method matching round&#40;::Float64, ::Int64&#41;
+Closest candidates are:
+  round&#40;::Float64, &#33;Matched::RoundingMode&#123;:Nearest&#125;&#41; at float.jl:368
+  round&#40;::Float64, &#33;Matched::RoundingMode&#123;:Up&#125;&#41; at float.jl:366
+  round&#40;::Float64, &#33;Matched::RoundingMode&#123;:Down&#125;&#41; at float.jl:364
+  ...
+</pre>
 
 
 

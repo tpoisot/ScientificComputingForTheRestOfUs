@@ -1,8 +1,7 @@
 ---
 title: The flow of execution
-weight: 1
 slug: flow_of_execution
-layout: page
+weight: 1
 meta:
   issue: 12
   label: "lesson:flow"
@@ -388,8 +387,8 @@ end
 bar
 bar
 foo
-bar
 foo
+bar
 ````
 
 
@@ -465,11 +464,11 @@ random_numbers
 
 ````
 5-element Array{Float64,1}:
- 0.506618  
- 0.84807   
- 0.426062  
- 0.996487  
- 0.00977496
+ 0.6516598456711429 
+ 0.5914547227297182 
+ 0.4241721370621683 
+ 0.08799908567030679
+ 0.7826268747525469
 ````
 
 
@@ -525,7 +524,7 @@ random_numbers[1]
 
 
 ````
-0.5066178466062619
+0.6516598456711429
 ````
 
 
@@ -546,7 +545,7 @@ random_numbers[length(random_numbers)]
 
 
 ````
-0.00977496415595236
+0.7826268747525469
 ````
 
 
@@ -564,7 +563,7 @@ random_numbers[end]
 
 
 ````
-0.00977496415595236
+0.7826268747525469
 ````
 
 
@@ -580,7 +579,7 @@ first(random_numbers)
 
 
 ````
-0.5066178466062619
+0.6516598456711429
 ````
 
 
@@ -591,7 +590,7 @@ last(random_numbers)
 
 
 ````
-0.00977496415595236
+0.7826268747525469
 ````
 
 
@@ -611,7 +610,7 @@ println(random_numbers[1])
 
 
 ````
-0.5066178466062619
+0.6516598456711429
 ````
 
 
@@ -622,7 +621,7 @@ println(random_numbers[3])
 
 
 ````
-0.42606195584667295
+0.4241721370621683
 ````
 
 
@@ -633,7 +632,7 @@ println(random_numbers[5])
 
 
 ````
-0.00977496415595236
+0.7826268747525469
 ````
 
 
@@ -663,9 +662,9 @@ end
 
 
 ````
-Position 1:	0.5066178466062619
-Position 3:	0.42606195584667295
-Position 5:	0.00977496415595236
+Position 1:	0.6516598456711429
+Position 3:	0.4241721370621683
+Position 5:	0.7826268747525469
 ````
 
 
@@ -767,7 +766,7 @@ println(a)
 
 
 ````
-3
+0
 ````
 
 
@@ -795,15 +794,23 @@ my_collection = rand(5)
 while !(0.499 ≤ mean(my_collection) ≤ 0.501)
   append!(my_collection, rand(5))
 end
+````
+
+
+<pre class="julia-error">
+ERROR: UndefVarError: mean not defined
+</pre>
+
+
+````julia
 
 println("μ: $(round(mean(my_collection), 4))")
 ````
 
 
-````
-μ: 0.4991
-````
-
+<pre class="julia-error">
+ERROR: UndefVarError: mean not defined
+</pre>
 
 
 

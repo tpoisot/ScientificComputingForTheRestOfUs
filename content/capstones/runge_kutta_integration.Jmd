@@ -4,8 +4,36 @@ slug: runge_kutta_integration
 weight: 1
 ---
 
-## Escaping loops
+$$y(t+\frac{h}{2}) = y(t)+\frac{h}{2}f\left(t, y(t)\right)$$
 
-- break
-- continue
-- next
+$$y'(t+\frac{h}{2}) = f\left(t+\frac{h}{2}, y(t+\frac{h}{2})\right)$$
+
+$$y(t+h) = y(t) + h y'(t+\frac{h}{2})$$
+
+
+```julia
+function logistic(t, u; r=1.0, q=0.5)
+  return u*(r-q*u)
+end
+```
+
+```julia
+function rk2(t0, u0, f; h=0.5, t=200.0, p...)
+  T = typeof(t0)[]
+  U = typeof(u0)[]
+  push!(T, t0)
+  push!(U, u0)
+  for (i,ti) in enumerate(t0+h:h:t)
+    y_th2 = U[i] + 0.5*h * f(ti, U[i]; p...)
+    yprime_th2 = f(ti+0.5*h, y_th2; p...)
+    y_th = U[i] + h*yprime_th2
+    push!(T, ti)
+    push!(U, y_th)
+  end
+  return (T, U)
+end
+```
+
+```julia
+rk2(0.0, 0.0001, logistic; t=15.0)
+```

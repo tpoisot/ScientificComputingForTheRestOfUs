@@ -21,6 +21,8 @@ to find an introduction to get you started. The goal of this project is to
 provide reproducible documents you can use to get started on the most important
 points. You can use these lessons on your own, or as a group.
 
+**TODO** difference between lessons / capstones / primers
+
 ## Who is this material for?
 
 This material is aimed at people who have already interacted with a computer

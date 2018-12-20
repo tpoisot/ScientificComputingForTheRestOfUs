@@ -18,7 +18,10 @@ giving the derivative at time $t$, a timestep $h$ at which to evaluate $f$, and
 an initial quantity $y$. There are multiple notations, but for this lesson we
 will adopt $y(t)$ for the value of $y$ at time $t$. The second-order Runge-Kutta
 method (RK2) works by evaluating the derivative at time $t+h/2$, and using this
-information to correct
+information to correct the initial assessment. This helps (very moderately) in
+problems where $y$ varies a lot over short periods of time.
+
+In practice, RK2 is described by the following system of equations:
 
 $$y(t+\frac{h}{2}) = y(t)+\frac{h}{2}f\left(t, y(t)\right)$$
 
@@ -26,6 +29,17 @@ $$y'(t+\frac{h}{2}) = f\left(t+\frac{h}{2}, y(t+\frac{h}{2})\right)$$
 
 $$y(t+h) = y(t) + h y'(t+\frac{h}{2})$$
 
+But before we start writing this in code, let's think about the function we want
+to integrate for a minute or two. In this example, we will use the situation of
+two or more species competing for space or any other resource. The general
+equation of this system is:
+
+$$\frac{1}{N_i}\frac{d}{dt}N_i = r_i - \sum_j\alpha(ij)N_j$$
+
+Every species grows at rate $r_i$, and species $j$ prevents the growth of
+species $i$ at a *per capita* rate of $\alpha(ij)$. There are a number of
+parameters we may want to change: the number of species, the matrix giving
+competition strengths, and the initial populations sizes.
 
 ````julia
 function logistic(t, u; r=1.0, q=0.5)

@@ -39,7 +39,25 @@ $$\frac{1}{N_i}\frac{d}{dt}N_i = r_i - \sum_j\alpha(ij)N_j$$
 Every species grows at rate $r_i$, and species $j$ prevents the growth of
 species $i$ at a *per capita* rate of $\alpha(ij)$. There are a number of
 parameters we may want to change: the number of species, the matrix giving
-competition strengths, and the initial populations sizes.
+competition strengths, and the initial populations sizes. We may also want to
+substitute another problem later, instead of working on the competition model.
+For this reason, it is better to write a fonction which is as general as
+possible.
+
+We know that all of our problems (*i.e.* all of our models) will have two things
+in common: they will require the time $t$, and the value $y$; the rest can go in
+keyword arguments. This gives us a template to write the function for the
+competitive model:
+
+```julia
+function competitive_model(t::Float64, y::Vector{Float64}; r=1.0, α=1.0)
+  return vec(r.*y .- sum(α .* (y .* y'); dims=2))
+end
+```
+
+There are *many* things that can go wrong with this function: it can
+
+**TODO**
 
 ```julia
 function logistic(t, u; r=1.0, q=0.5)

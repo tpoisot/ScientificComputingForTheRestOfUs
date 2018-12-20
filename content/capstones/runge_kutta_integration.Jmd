@@ -4,6 +4,25 @@ slug: runge_kutta_integration
 weight: 1
 ---
 
+Numerical integration, the search for solutions of differential equations, is a
+hallmark of scientific computing. In this lesson, we will see how we can apply
+multipe concepts to write our own routine for the second-order Runge-Kutta
+method. In practice, it is *never* recommended to write one's own routine for
+numerical integration, as there are specific packages to handle this task. In
+Julia, this is
+[`DifferentialEquations.jl`](http://docs.juliadiffeq.org/latest/). This being
+said, writing a Runge-Kutta method is an interesting exercise.
+
+Glossing over a few details, numerical integration requires a function $f$,
+giving the derivative at time $t$, a timestep $h$ at which to evaluate $f$, and
+an initial quantity $y$. There are multiple notations, but for this lesson we
+will adopt $y(t)$ for the value of $y$ at time $t$. The second-order Runge-Kutta
+method (RK2) works by evaluating the derivative at time $t+h/2$, and using this
+information to correct the initial assessment. This helps (very moderately) in
+problems where $y$ varies a lot over short periods of time.
+
+In practice, RK2 is described by the following system of equations:
+
 $$y(t+\frac{h}{2}) = y(t)+\frac{h}{2}f\left(t, y(t)\right)$$
 
 $$y'(t+\frac{h}{2}) = f\left(t+\frac{h}{2}, y(t+\frac{h}{2})\right)$$

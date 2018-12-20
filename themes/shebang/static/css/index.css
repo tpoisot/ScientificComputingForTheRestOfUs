@@ -4,7 +4,7 @@ html, body {
   font-size: 16px;
   margin: 0 0;
   padding: 0 0;
-  background-color: #fafafa; }
+  background-color: #fcfcfc; }
 
 h1, h2, h3, h4 {
   font-family: "Barlow Semi Condensed";
@@ -72,5 +72,23 @@ code.language-julia {
     display: inline-block;
     margin-left: -3.5em;
     color: #76a665; }
+
+section.intro {
+  margin-bottom: 4em; }
+
+section.resource {
+  font-size: 90%;
+  background-color: #fefefe;
+  border: 1px solid #f1f1f1;
+  padding: 0;
+  margin-bottom: 3em; }
+  section.resource h1 {
+    margin-top: 0em;
+    padding: 0.6em;
+    background-color: #f5f5f5; }
+    section.resource h1 .lessonlink {
+      float: right; }
+  section.resource .read, section.resource .readingtime, section.resource .summary, section.resource .keywords {
+    padding: 0.6em; }
 
 /*# sourceMappingURL=index.css.map */

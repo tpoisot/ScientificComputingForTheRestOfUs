@@ -1,9 +1,5 @@
 <section class="resource">
-    <h1>{{ .Title }}</h1>
-
-    <div class="read"><a href="{{.Permalink}}">Read the lesson</a></div>
-    <div class="readingtime">{{div .WordCount .Site.Params.readingSpeed}} minutes</div>
-
+    <h1>{{ .Title }} <a href="{{ .Permalink }}" class="lessonlink"><i class="fas fa-play-circle"></i> Start!</a></h1>
     <div class="summary">{{ .Summary }}</div>
     <div class="keywords"><h2>Key concepts</h2>
         {{ with .Params.tags }}
@@ -12,5 +8,6 @@
         {{ end }}
         {{ end }}
     </div>
+    <div class="readingtime"><i class="fas fa-stopwatch"></i> {{div .WordCount .Site.Params.readingSpeed}} minutes</div>
 
 </section>

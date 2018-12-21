@@ -2,6 +2,8 @@
 title: Avoiding mistakes
 slug: avoiding_mistakes
 weight: 3
+status: construction
+concepts: [defensive programming, writing functions, assertion, unit testing]
 meta:
   issue: 19
   label: "lesson:defensive"

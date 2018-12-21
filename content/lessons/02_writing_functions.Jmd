@@ -1,6 +1,7 @@
 ---
 title: Writing functions
 slug: writing_functions
+concepts: [writing functions, type stability]
 weight: 2
 meta:
   issue: 18

@@ -1,0 +1,15 @@
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>
+  <article>
+{{ $type := .Type }}
+{{ range $key, $value := .Data.Terms.Alphabetical }}
+    {{ $name := .Name }}
+    {{ $count := .Count }}
+    {{ with $.Site.GetPage (printf "/%s/%s" $type $name) }}
+    <div class="term--link">
+        <a href="{{ .Permalink }}" title="All content for {{ $name}}">{{ $name }}</a> ({{ len .Pages }})
+    </div>
+    {{ end }}
+{{ end }}
+</article>
+{{ end }}

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed:300,300i,400,400i,500,500i|Barlow:400,400i,500,500i,600,600i");
 html, body {
   font-family: "Barlow";
@@ -20,18 +21,38 @@ section#navigation {
   box-shadow: 0px 0px 2px #d7d8da;
   padding: 4px;
   line-height: 60px;
-  font-size: 18px; }
+  font-size: 18px;
+  position: fixed;
+  background-color: white;
+  top: 0;
+  width: 100vw;
+  z-index: 9999; }
+  section#navigation .main {
+    float: right;
+    margin: 0px 1em; }
+  section#navigation a {
+    text-decoration: none;
+    color: black;
+    padding: 0em 1em; }
   section#navigation img {
     vertical-align: top;
     padding-right: 4px; }
   section#navigation * {
     display: inline-block; }
+  section#navigation .title {
+    color: #227066;
+    font-weight: 500; }
+  section#navigation .subtitle {
+    font-weight: 300; }
+  section#navigation .header {
+    text-transform: uppercase; }
 
 section#content {
   max-width: 900px;
   color: #1e1e1e;
   margin: 20px auto;
   padding: 1em;
+  padding-top: 5em;
   line-height: 1.8rem;
   font-size: 1.1rem; }
   section#content p code {
@@ -120,5 +141,31 @@ figure {
       margin: 0 0;
       color: #4c4e4e;
       font-weight: 400; }
+
+#status {
+  color: #555;
+  border-radius: 4px;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 4em; }
+  #status.construction {
+    background: #ffecec;
+    border: 1px solid #f5aca6; }
+    #status.construction .status-message::before {
+      content: "This lesson is in construction — it is most likely unfinished; you are welcome to contribute by opening an issue if you see areas you can improve."; }
+  #status.draft {
+    background: #fff8c4;
+    border: 1px solid #f2c779; }
+    #status.draft .status-message::before {
+      content: "This lesson is a draft — it is usable and 90% finished, but some concepts may not presented in the most efficient way."; }
+  #status.overhaul {
+    background: #e3f7fc;
+    border: 1px solid #8ed9f6; }
+    #status.overhaul .status-message::before {
+      content: "This lesson is being re-written. Content may not be up to date."; }
+  #status a {
+    float: right;
+    color: #555 !important; }
 
 /*# sourceMappingURL=index.css.map */

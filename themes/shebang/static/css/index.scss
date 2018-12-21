@@ -25,12 +25,36 @@ section#navigation {
   padding: 4px;
   line-height: 60px;
   font-size: 18px;
+  position: fixed;
+  background-color: white;
+  top: 0;
+  width: 100vw;
+  z-index: 9999;
+  .main {
+    float: right;
+    margin: 0px 1em;
+  }
+  a {
+    text-decoration: none;
+    color: black;
+    padding: 0em 1em;
+  }
   img {
     vertical-align: top;
     padding-right: 4px;
   }
   * {
     display: inline-block;
+  }
+  .title {
+    color: #227066;
+    font-weight: 500;
+  }
+  .subtitle {
+    font-weight: 300;
+  }
+  .header {
+    text-transform: uppercase;
   }
 }
 
@@ -39,6 +63,7 @@ section#content {
   color: rgb(30, 30, 30);
   margin: 20px auto;
   padding: 1em;
+  padding-top: 5em;
   line-height: 1.8rem;
   font-size: 1.1rem;
   p {
@@ -155,5 +180,40 @@ figure {
       color: rgb(76, 78, 78);
       font-weight: 400;
     }
+  }
+}
+
+
+#status{
+  color: #555;
+  border-radius: 4px;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 4em;
+  &.construction {
+    background:#ffecec;
+    border:1px solid #f5aca6;
+    .status-message::before {
+      content: "This lesson is in construction — it is most likely unfinished; you are welcome to contribute by opening an issue if you see areas you can improve.";
+    }
+  }
+  &.draft {
+    background:#fff8c4;
+    border:1px solid #f2c779;
+    .status-message::before {
+      content: "This lesson is a draft — it is usable and 90% finished, but some concepts may not presented in the most efficient way.";
+    }
+  }
+  &.overhaul {
+    background:#e3f7fc;
+    border:1px solid #8ed9f6;
+    .status-message::before {
+      content: "This lesson is being re-written. Content may not be up to date.";
+    }
+  }
+  a {
+    float: right;
+    color: #555 !important;
   }
 }

@@ -2,6 +2,7 @@
 title: The flow of execution
 slug: flow_of_execution
 weight: 1
+concepts: [control flow, Booleans, iteration]
 meta:
   issue: 12
   label: "lesson:flow"

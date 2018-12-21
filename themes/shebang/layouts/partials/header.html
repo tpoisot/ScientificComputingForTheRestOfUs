@@ -1,6 +1,14 @@
 <section id="navigation">
     <img src="/logo.png" height=60px width=60px></img>
-    <a href="/lessons/">Lessons</a>
-    <a href="/capstones/">Capstones</a>
-    <a href="/primers/">Primers</a>
+    <span class="header">
+        <span class="title">{{ .Site.Params.title }}</span>
+        <span class="subtitle">{{ .Site.Params.subtitle }}</span>
+    </span>
+    <span class="main">
+        <a href="/">Home</a>
+        <a href="/lessons/">Lessons</a>
+        <a href="/capstones/">Capstones</a>
+        <a href="/primers/">Primers</a>
+        <a href="/concepts/">Concepts</a>
+    </span>
 </section>

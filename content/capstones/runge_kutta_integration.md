@@ -2,9 +2,10 @@
 title: Runge-Kutta integration
 slug: runge_kutta_integration
 weight: 1
+status: draft
 packages:
   - Plots.jl
-topics:
+concepts:
   - writing functions
   - numerical precision
   - arrays
@@ -74,7 +75,7 @@ competitive_model (generic function with 1 method)
 There are *many* things that can go wrong with this function -- so we may want
 to add a few checks before we call it. This is an interesting exercise to do,
 and you can re-read through the lesson on [avoiding mistakes]({{< ref
-"lessons/03_avoiding_mistakes.md" >}}) to refresh your memory. For now, we will
+"/lessons/03_avoiding_mistakes.md" >}}) to refresh your memory. For now, we will
 use this basic (but unsafe) version.
 
 Let's try! If we have a single species, and we give it an initial population
@@ -285,7 +286,7 @@ plot!(t, u, c=:teal, lab="RK2")
 {{< figure src="../figures/runge_kutta_integration_8_1.svg" title="Using a second-order Runge-Kutta method is changing the result quite a lot. Although the naive method is finding the correct endpoint, it is underestimating the growth at first."  >}}
 
 
-And now, we can use this function to
+And now, we can use this function to simulate the dynamics of many, many populations:
 
 ````julia
 N = 200
@@ -297,6 +298,3 @@ rk2(u0, competitive_model; r=r, α=α, h=0.01, t=1.0=>50.0) |> x -> plot(x, c=:g
 
 
 {{< figure src="../figures/runge_kutta_integration_9_1.svg"  >}}
-
-
-**TODO** with r varying over time

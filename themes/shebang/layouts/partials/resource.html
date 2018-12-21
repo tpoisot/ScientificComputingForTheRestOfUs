@@ -1,24 +1,25 @@
 <section class="resource">
     <h1>{{ .Title }} <a href="{{ .Permalink }}" class="lessonlink"><i class="fas fa-play-circle"></i> Start!</a></h1>
     <div class="summary">{{ .Summary }}</div>
-    <div class="packages listicle">
-        <i class="fas fa-tags"></i> <b>Key concepts:</b>
-        {{ with .Params.topics }}
-        {{ range . }}
-        <span class="package listicleitem">{{ . }}</span>
-        {{ end }}
-        {{ end }}
-    </div>
+
+    {{ with .Params.concepts }}
+        <div class="packages listicle">
+            <i class="fas fa-tags"></i> <b>Key concepts:</b>
+            {{ range . }}
+            <span class="package listicleitem">{{ . }}</span>
+            {{ end }}
+        </div>
+    {{ end }}
     <div class="readingtime listicle">
         <i class="fas fa-stopwatch"></i> <b>Reading time:</b> {{div .WordCount .Site.Params.readingSpeed}} minutes
     </div>
-    <div class="keywords listicle">
-        <i class="fas fa-box"></i> <b>Extra packages:</b>
-        {{ with .Params.packages }}
-        {{ range . }}
-        <span class="keyword listicleitem"><code>{{ . }}</code></span>
-        {{ end }}
-        {{ end }}
-    </div>
+    {{ with .Params.packages }}
+        <div class="keywords listicle">
+            <i class="fas fa-box"></i> <b>Extra packages:</b>
+            {{ range . }}
+            <span class="keyword listicleitem"><code>{{ . }}</code></span>
+            {{ end }}
+        </div>
+    {{ end }}
 
 </section>

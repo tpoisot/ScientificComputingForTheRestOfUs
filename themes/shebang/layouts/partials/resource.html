@@ -1,13 +1,24 @@
 <section class="resource">
     <h1>{{ .Title }} <a href="{{ .Permalink }}" class="lessonlink"><i class="fas fa-play-circle"></i> Start!</a></h1>
     <div class="summary">{{ .Summary }}</div>
-    <div class="keywords"><h2>Key concepts</h2>
-        {{ with .Params.tags }}
+    <div class="packages listicle">
+        <i class="fas fa-tags"></i> <b>Key concepts:</b>
+        {{ with .Params.topics }}
         {{ range . }}
-        <span class="keyword">{{ . }}</span>
+        <span class="package listicleitem">{{ . }}</span>
         {{ end }}
         {{ end }}
     </div>
-    <div class="readingtime"><i class="fas fa-stopwatch"></i> {{div .WordCount .Site.Params.readingSpeed}} minutes</div>
+    <div class="readingtime listicle">
+        <i class="fas fa-stopwatch"></i> <b>Reading time:</b> {{div .WordCount .Site.Params.readingSpeed}} minutes
+    </div>
+    <div class="keywords listicle">
+        <i class="fas fa-box"></i> <b>Extra packages:</b>
+        {{ with .Params.packages }}
+        {{ range . }}
+        <span class="keyword listicleitem"><code>{{ . }}</code></span>
+        {{ end }}
+        {{ end }}
+    </div>
 
 </section>

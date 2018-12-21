@@ -2,6 +2,12 @@
 title: Runge-Kutta integration
 slug: runge_kutta_integration
 weight: 1
+packages:
+  - Plots.jl
+topics:
+  - writing functions
+  - numerical precision
+  - arrays
 ---
 
 Numerical integration, the search for solutions of differential equations, is a
@@ -55,15 +61,41 @@ function competitive_model(t::Float64, y::Vector{Float64}; r=1.0, α=1.0)
 end
 ```
 
-There are *many* things that can go wrong with this function: it can
+There are *many* things that can go wrong with this function -- so we may want
+to add a few checks before we call it. This is an interesting exercise to do,
+and you can re-read through the lesson on [avoiding mistakes]({{< ref
+"lessons/03_avoiding_mistakes.md" >}}) to refresh your memory. For now, we will
+use this basic (but unsafe) version.
 
-**TODO**
+Let's try! If we have a single species, and we give it an initial population
+lower than $r/\alpha$, then it should grow:
 
 ```julia
-function logistic(t, u; r=1.0, q=0.5)
-  return u*(r-q*u)
-end
+competitive_model(0.0, [0.1]; r=0.5, α=1.0)
 ```
+
+Nothing stops us from running this function a few times, to figure out if it
+gives the correct dynamics:
+
+```julia
+population = zeros(Float64, 50)
+population[1] = 1e-2
+for i in 2:length(population)
+  population[i] = population[i-1] + competitive_model(0.0, [population[i-1]]; r=0.5, α=0.3)[1]
+end
+population
+```
+
+We can plot this:
+
+```julia
+using Plots
+plot(population, c=:black, leg=false)
+```
+
+Note that at this time we do not use $t$ (you can try changing the value of $t$,
+it has no impact on the result), and note also that this function returns the
+*derivative*, *i.e.* the absolute change in population size.
 
 ```julia
 function rk2(t0, u0, f; h=0.5, t=200.0, p...)

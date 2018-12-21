@@ -88,7 +88,7 @@ section.resource {
     background-color: #f5f5f5; }
     section.resource h1 .lessonlink {
       float: right; }
-  section.resource .read, section.resource .readingtime, section.resource .summary, section.resource .keywords {
+  section.resource .listicle, section.resource .summary {
     padding: 0.6em; }
 
 /*# sourceMappingURL=index.css.map */

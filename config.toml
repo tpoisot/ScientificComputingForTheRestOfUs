@@ -3,6 +3,8 @@ languageCode = "en-us"
 preserveTaxonomyNames = true
 theme = "shebang"
 
+staticDir = ["static/figures"]
+
 [params]
   readingSpeed = 120
   githubUser = "tpoisot"

@@ -2,6 +2,12 @@
 title: Runge-Kutta integration
 slug: runge_kutta_integration
 weight: 1
+packages:
+  - Plots.jl
+topics:
+  - writing functions
+  - numerical precision
+  - arrays
 ---
 
 Numerical integration, the search for solutions of differential equations, is a
@@ -64,20 +70,84 @@ competitive_model (generic function with 1 method)
 
 
 
-There are *many* things that can go wrong with this function: it can
+There are *many* things that can go wrong with this function -- so we may want
+to add a few checks before we call it. This is an interesting exercise to do,
+and you can re-read through the lesson on [avoiding mistakes]({{< ref
+"lessons/03_avoiding_mistakes.md" >}}) to refresh your memory. For now, we will
+use this basic (but unsafe) version.
+
+Let's try! If we have a single species, and we give it an initial population
+lower than $r/\alpha$, then it should grow:
 
 ````julia
-function logistic(t, u; r=1.0, q=0.5)
-  return u*(r-q*u)
+competitive_model(0.0, [0.1]; r=0.5, α=1.0)
+````
+
+
+````
+1-element Array{Float64,1}:
+ 0.04
+````
+
+
+
+
+
+Nothing stops us from running this function a few times, to figure out if it
+gives the correct dynamics:
+
+````julia
+population = zeros(Float64, 50)
+population[1] = 1e-2
+for i in 2:length(population)
+  population[i] = population[i-1] + competitive_model(0.0, [population[i-1]]; r=0.5, α=0.3)[1]
 end
+population
 ````
 
 
 ````
-logistic (generic function with 1 method)
+50-element Array{Float64,1}:
+ 0.01               
+ 0.01497            
+ 0.02238776973      
+ 0.03343129092495495
+ 0.04981164102355973
+ 0.0739731016609016 
+ 0.10931804656055216
+ 0.16039193924968373
+ 0.23287023662164333
+ 0.33303679080119897
+ ⋮                  
+ 1.6666666609274734 
+ 1.66666666379707   
+ 1.6666666652318685 
+ 1.6666666659492675 
+ 1.6666666663079672 
+ 1.666666666487317  
+ 1.666666666576992  
+ 1.6666666666218295 
+ 1.666666666644248
 ````
 
 
+
+
+
+We can plot this:
+
+````julia
+using Plots
+plot(population, c=:black, leg=false)
+````
+
+
+{{< figure src="../figures/runge_kutta_integration_4_1.svg"  >}}
+
+
+Note that at this time we do not use $t$ (you can try changing the value of $t$,
+it has no impact on the result), and note also that this function returns the
+*derivative*, *i.e.* the absolute change in population size.
 
 ````julia
 function rk2(t0, u0, f; h=0.5, t=200.0, p...)
@@ -108,12 +178,7 @@ rk2(0.0, 0.0001, logistic; t=15.0)
 ````
 
 
-````
-([0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5  …  10.5, 11.0, 11.5, 
-12.0, 12.5, 13.0, 13.5, 14.0, 14.5, 15.0], [0.0001, 0.000162495, 0.00026404
-3, 0.000429039, 0.000697104, 0.00113257, 0.00183985, 0.00298823, 0.00485182
-, 0.00787356  …  1.18113, 1.40832, 1.59266, 1.72918, 1.82405, 1.88736, 1.
-92854, 1.95492, 1.97166, 1.98222])
-````
-
+<pre class="julia-error">
+ERROR: UndefVarError: logistic not defined
+</pre>
 

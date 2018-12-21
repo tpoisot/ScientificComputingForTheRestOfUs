@@ -138,7 +138,7 @@ We can plot this:
 
 ````julia
 using Plots
-plot(population, c=:black, leg=false)
+plot(population, c=:black, leg=false, size=(900,300))
 ````
 
 

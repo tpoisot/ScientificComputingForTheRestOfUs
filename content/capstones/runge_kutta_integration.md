@@ -138,11 +138,14 @@ We can plot this:
 
 ````julia
 using Plots
-plot(population, c=:black, leg=false, size=(900,300))
+plot(population,
+  c=:orange, lw=2, leg=false, xlab="Time", ylab="Population size",
+  xlim=(0,50), ylim=(0,2), frame=:origin
+  )
 ````
 
 
-{{< figure src="../figures/runge_kutta_integration_4_1.svg"  >}}
+{{< figure src="../figures/runge_kutta_integration_4_1.svg" title="Results of the simulation with a naive approach, where we simply add the output of the function to the original value. In this situation, because the problem is simple, it gives reasonable results."  >}}
 
 
 Note that at this time we do not use $t$ (you can try changing the value of $t$,

@@ -120,3 +120,25 @@ section.resource {
     padding: 0.6em;
   }
 }
+
+figure {
+  width: 100%;
+  background-color: white;
+  border: 1px solid #f1f1f1;
+  padding: 1em;
+  margin: 2em 0em;
+  img {
+    width: 70%;
+    margin: 1em 15%;
+  }
+  figcaption {
+    margin: -1em -1em;
+    padding: 1em;
+    background-color: #f5f5f5;
+    h4 {
+      margin: 0 0;
+      color: rgb(76, 78, 78);
+      font-weight: 400;
+    }
+  }
+}

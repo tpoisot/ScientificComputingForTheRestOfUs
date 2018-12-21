@@ -8,6 +8,7 @@ topics:
   - writing functions
   - numerical precision
   - arrays
+  - varargs
 ---
 
 Numerical integration, the search for solutions of differential equations, is a
@@ -96,27 +97,121 @@ plot(population,
   )
 ```
 
-Note that at this time we do not use $t$ (you can try changing the value of $t$,
-it has no impact on the result), and note also that this function returns the
-*derivative*, *i.e.* the absolute change in population size.
+So far, so good! Our simple functions works Well Enough &trade;, so we can start
+thinking about the RK2 integrator. We want our RK2 integrator (a function named
+`rk2`) to return two values: an array of times, going from $t_0$ to $t_f$ by
+steps of $h$, and an array of population sizes at every point. This means that
+we can start thinking about the arguments: `t=(t0,tf)` is a tuple with the
+beginning and end time; `h` is the integration step. None of these have obvious
+defaults, but we will still put them as default, keyword arguments, to make sure
+that we can run our function with a minimum number of keystrokes. If this seems
+contradictory to the best practices we mentionned in some lessons, it's because
+it really is! But best practices are not laws, and sometimes it is worth
+applying critical judgement.
 
-```julia
-function rk2(t0, u0, f; h=0.5, t=200.0, p...)
-  T = typeof(t0)[]
-  U = typeof(u0)[]
-  push!(T, t0)
-  push!(U, u0)
-  for (i,ti) in enumerate(t0+h:h:t)
-    y_th2 = U[i] + 0.5*h * f(ti, U[i]; p...)
-    yprime_th2 = f(ti+0.5*h, y_th2; p...)
-    y_th = U[i] + h*yprime_th2
-    push!(T, ti)
-    push!(U, y_th)
-  end
-  return (T, U)
+Our function will therefore look something like
+
+```raw
+function rk2(;t=0.0=>100.0, h=0.1)
+  # something
+  # something else
+  T = collect(t.first:h:t.second)
+  return something, T
 end
 ```
 
-```julia
-rk2(0.0, 0.0001, logistic; t=15.0)
+The notation we use for `t` is called a `Pair` (and is covered in the Julia
+documentation). The next step is to think about the "meat" of the function: for
+every timestep, we want to apply the RK2 equations that are given early in this
+lesson. Assuming that the current population is stored at position `i` of an
+object called `U`, this would look like:
+
+```raw
+y_th2 = U[i] .+ 0.5*h .* f(ti, U[i]; p...)
+yprime_th2 = f(ti+0.5*h, y_th2; p...)
+y_th = U[i] .+ h*yprime_th2
+U[i+1] = y_th
 ```
+
+There are a few things worth looking at here. First, note that we use the `.`
+notation, to make sure that operations are vectorized. Second, we call the `f`
+function (which here would be our `competitive_model` function) using an
+argument called `p...`. This syntax allows a function to *capture keyword
+arguments, and pass them to another function. Let's have a look:
+
+```julia
+function a(x; y=2.0, z=3.0)
+  return x + y + z
+end
+function b(x; k...)
+  return a(x; k...)
+end
+
+b(1.0) # Should be 6
+```
+
+```julia
+b(1.0; y=0.0) # Should be 4
+```
+
+In short, this allows passing "all the keyword arguments" from a function to
+another. This is really useful in our context, because although we currently use
+the competition model, we may want to change it later, possibly to something
+that accepts different keyword arguments! This gives us the two extra parameters
+we need to add to `rk2`: the function `f`, and the term to catch arguments `p...`.
+
+```raw
+function rk2(f; t=0.0=>100.0, h=0.1, p...)
+  # something
+  for some things
+    y_th2 = U[i] .+ 0.5*h .* f(ti, U[i]; p...)
+    yprime_th2 = f(ti+0.5*h, y_th2; p...)
+    y_th = U[i] .+ h*yprime_th2
+    U[i+1] = y_th
+  end
+  # something else
+  T = collect(t.first:h:t.second)
+  return U T
+end
+```
+
+Believe it or not, this is almost finished! All we need is to set a value for
+`U`, and to iterate over all values of `T`:
+
+```julia
+function rk2(u0, f; t=0.0=>100.0, h=0.1, p...)
+  T = collect(t.first:h:t.second)
+  U = typeof(u0)[]
+  push!(U, u0)
+  for (i,ti) in enumerate(T[2:end])
+    y_th2 = U[i] + 0.5*h * f(ti, U[i]; p...)
+    yprime_th2 = f(ti+0.5*h, y_th2; p...)
+    y_th = U[i] + h*yprime_th2
+    push!(U, y_th)
+  end
+  return (T, hcat(U...)')
+end
+```
+
+Let's try to run the same example as before:
+
+```julia; fig_cap="Using a second-order Runge-Kutta method is changing the result quite a lot. Although the naive method is finding the correct endpoint, it is underestimating the growth at first."
+t, u = rk2([0.01], competitive_model; t=1.0=>50.0, r=0.5, α=0.3)
+plot(population,
+  c=:orange, lw=2, lab="Naive method", xlab="Time", ylab="Population size",
+  xlim=(0,50), ylim=(0,2), frame=:origin
+  )
+plot!(t, u, c=:teal, lab="RK2")
+```
+
+And now, we can use this function to
+
+```julia
+N = 200
+α = rand(Float64, (N, N))
+u0 = rand(Float64, N).*0.01
+r = rand(Float64, N)
+rk2(u0, competitive_model; r=r, α=α, h=0.01, t=1.0=>50.0) |> x -> plot(x, c=:grey, leg=false)
+```
+
+**TODO** with r varying over time

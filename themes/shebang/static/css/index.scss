@@ -98,6 +98,21 @@ code.language-julia {
   }
 }
 
+code.language-raw {
+  &::before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f121";
+    margin-right: 1em;
+    font-size: 0.7rem;
+    width: 1.8rem;
+    text-align: center;
+    display: inline-block;
+    margin-left: -3.5em;
+    color: #76a665;
+  }
+}
+
 section.intro {
   margin-bottom: 4em;
 }

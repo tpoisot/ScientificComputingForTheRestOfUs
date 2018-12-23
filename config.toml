@@ -2,6 +2,8 @@ baseURL = "http://sciencecomputing.io/"
 languageCode = "en-us"
 preserveTaxonomyNames = true
 theme = "shebang"
+pygmentsCodeFences = true
+pygmentsUseClasses = true
 
 [params]
   readingSpeed = 120

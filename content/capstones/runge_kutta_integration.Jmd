@@ -9,7 +9,7 @@ concepts:
   - writing functions
   - numerical precision
   - arrays
-  - varargs
+  - keyword arguments
 ---
 
 Numerical integration, the search for solutions of differential equations, is a
@@ -39,27 +39,32 @@ $$y(t+h) = y(t) + h y'(t+\frac{h}{2})$$
 
 But before we start writing this in code, let's think about the function we want
 to integrate for a minute or two. In this example, we will use the situation of
-two or more species competing for space or any other resource. The general
-equation of this system is:
+two species, one of which ($x$) is a prey, the other ($y$) a predator. The equations we use
+to model this system are:
 
-$$\frac{1}{N_i}\frac{d}{dt}N_i = r_i - \sum_j\alpha(ij)N_j$$
+$$\frac{x'}{x} = r - γ y$$
+$$\frac{y'}{y} = \beta x - δ$$
 
-Every species grows at rate $r_i$, and species $j$ prevents the growth of
-species $i$ at a *per capita* rate of $\alpha(ij)$. There are a number of
-parameters we may want to change: the number of species, the matrix giving
-competition strengths, and the initial populations sizes. We may also want to
-substitute another problem later, instead of working on the competition model.
-For this reason, it is better to write a fonction which is as general as
-possible.
+In other words, the prey grows at rate $r$. Every unit of predator removes
+$\gamma$ units of prey, which are converted into $\beta$ unit of predators;
+finally, predators decay at rate $\delta$.
+
+Most of these parameters are things we might want to change, so our function
+should be able to accept them as parameters. We may also want to substitute
+another problem later, instead of working on the competition model. For this
+reason, it is better to write a fonction which is as general as possible.
 
 We know that all of our problems (*i.e.* all of our models) will have two things
-in common: they will require the time $t$, and the value $y$; the rest can go in
+in common: they will require the time $t$, and the value $u$; the rest can go in
 keyword arguments. This gives us a template to write the function for the
 competitive model:
 
 ```julia
-function competitive_model(t::Float64, y::Vector{Float64}; r=1.0, α=1.0)
-  return vec(r.*y .- sum(α .* (y .* y'); dims=2))
+function predation(t::Float64, u::Vector{Float64}; r=1.0, γ=1.0, β=1.0, δ=1.0)
+  x, y = u
+  dx = x*r-γ*x*y
+  dy = β*x*y-δ*y
+  return [dx, dy]
 end
 ```
 
@@ -69,46 +74,46 @@ and you can re-read through the lesson on [avoiding mistakes]({{< ref
 "/lessons/03_avoiding_mistakes.md" >}}) to refresh your memory. For now, we will
 use this basic (but unsafe) version.
 
-Let's try! If we have a single species, and we give it an initial population
-lower than $r/\alpha$, then it should grow:
+Let's try! If we have a single species (the preys), and we give it any initial
+population larger than 0, then it should grow (and the population of the
+predator should not change):
 
 ```julia
-competitive_model(0.0, [0.1]; r=0.5, α=1.0)
+predation(0.0, [0.1, 0.0])
 ```
 
 Nothing stops us from running this function a few times, to figure out if it
 gives the correct dynamics:
 
 ```julia
-population = zeros(Float64, 50)
-population[1] = 1e-2
-for i in 2:length(population)
-  population[i] = population[i-1] + competitive_model(0.0, [population[i-1]]; r=0.5, α=0.3)[1]
+u0 = [0.1, 0.1]
+population = [u0]
+for i in 2:30
+  push!(population, population[i-1] + predation(0.0, population[i-1]))
 end
-population
 ```
 
 We can plot this:
 
-```julia; fig_cap="Results of the simulation with a naive approach, where we simply add the output of the function to the original value. In this situation, because the problem is simple, it gives reasonable results."
+```julia; fig_cap="Even with a simple model, our naive integration scheme causes the population to crash. This is why we need to use a more robust integration method!"
 using Plots
-plot(population,
-  c=:orange, lw=2, leg=false, xlab="Time", ylab="Population size",
-  xlim=(0,50), ylim=(0,2), frame=:origin
+plot(hcat(population...)[1,:], c=:teal, lab="Prey",
+  xlim=(0,30), ylim=(0,5), frame=:origin,
+  xlab="Time", ylab="Abundance"
   )
+plot!(hcat(population...)[2,:], c=:purple, lab="Predator")
 ```
 
-So far, so good! Our simple functions works Well Enough &trade;, so we can start
-thinking about the RK2 integrator. We want our RK2 integrator (a function named
-`rk2`) to return two values: an array of times, going from $t_0$ to $t_f$ by
-steps of $h$, and an array of population sizes at every point. This means that
-we can start thinking about the arguments: `t=(t0,tf)` is a tuple with the
-beginning and end time; `h` is the integration step. None of these have obvious
-defaults, but we will still put them as default, keyword arguments, to make sure
-that we can run our function with a minimum number of keystrokes. If this seems
-contradictory to the best practices we mentionned in some lessons, it's because
-it really is! But best practices are not laws, and sometimes it is worth
-applying critical judgement.
+We obviously need to start thinking about the RK2 integrator! We want our RK2
+integrator (a function named `rk2`) to return two values: an array of times,
+going from $t_0$ to $t_f$ by steps of $h$, and an array of population sizes at
+every point. This means that we can start thinking about the arguments:
+`t=(t0,tf)` is a tuple with the beginning and end time; `h` is the integration
+step. None of these have obvious defaults, but we will still put them as
+default, keyword arguments, to make sure that we can run our function with a
+minimum number of keystrokes. If this seems contradictory to the best practices
+we mentionned in some lessons, it's because it really is! But best practices are
+not laws, and sometimes it is worth applying critical judgement.
 
 Our function will therefore look something like
 
@@ -136,7 +141,7 @@ U[i+1] = y_th
 
 There are a few things worth looking at here. First, note that we use the `.`
 notation, to make sure that operations are vectorized. Second, we call the `f`
-function (which here would be our `competitive_model` function) using an
+function (which here would be our `predation` function) using an
 argument called `p...`. This syntax allows a function to *capture keyword
 arguments, and pass them to another function. Let's have a look:
 
@@ -196,21 +201,36 @@ end
 
 Let's try to run the same example as before:
 
-```julia; fig_cap="Using a second-order Runge-Kutta method is changing the result quite a lot. Although the naive method is finding the correct endpoint, it is underestimating the growth at first."
-t, u = rk2([0.01], competitive_model; t=1.0=>50.0, r=0.5, α=0.3)
-plot(population,
-  c=:orange, lw=2, lab="Naive method", xlab="Time", ylab="Population size",
-  xlim=(0,50), ylim=(0,2), frame=:origin
+```julia; fig_cap="Using a second-order Runge-Kutta method, we can get the correct result. This predation model is not very complex, but it illustrates really well the importance of taking numerical integration seriously!"
+t, u = rk2([0.1, 0.2], predation; t=1.0=>30.0, r=0.9, h=0.05)
+plot(t, u[:,1], c=:teal, lab="Prey",
+  xlim=(0,30), ylim=(0,5), frame=:origin,
+  xlab="Time", ylab="Abundance"
   )
-plot!(t, u, c=:teal, lab="RK2")
+plot!(t, u[:,2], c=:purple, lab="Predator")
 ```
 
-And now, we can use this function to simulate the dynamics of many, many populations:
+Notice that we had previously not used $t$ in the integration -- but because our
+function is general, we can add something like a seasonal effect on the
+intensity of predation -- specifically, the effect of the predator on the prey
+is a sinusoidal function of time, with "high" and "low" seasons.
 
 ```julia
-N = 200
-α = rand(Float64, (N, N))
-u0 = rand(Float64, N).*0.01
-r = rand(Float64, N)
-rk2(u0, competitive_model; r=r, α=α, h=0.01, t=1.0=>50.0) |> x -> plot(x, c=:grey, leg=false)
+function seasonal_predation(t::Float64, u::Vector{Float64}; r=1.0, γ=1.0, β=1.0, δ=1.0)
+  x, y = u
+  dx = x*r-(γ+sin(2.0*t)*0.15)*x*y
+  dy = β*x*y-δ*y
+  return [dx, dy]
+end
+```
+
+This require no changes to the code to produce the figure:
+
+```julia; fig_cap="Because we have written a general function, generating a new result is as simple as changing the name of the function we want to integrate (and adding the correct keyword arguments, if needed)!"
+t, u = rk2([0.1, 0.2], seasonal_predation; t=1.0=>200.0, r=0.9, h=1e-2)
+plot(t, u[:,1], c=:teal, lab="Prey",
+  xlim=(0,50), ylim=(0,5), frame=:origin,
+  xlab="Time", ylab="Abundance"
+  )
+plot!(t, u[:,2], c=:purple, lab="Predator")
 ```

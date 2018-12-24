@@ -36,8 +36,10 @@ section#navigation {
   }
   a {
     text-decoration: none;
+    text-transform: lowercase;
+    font-variant: small-caps;
     color: rgb(79, 79, 79);
-    padding: 0em 1em;
+    padding: 0em 0.5em;
     &.active {
       color: black;
     }
@@ -164,6 +166,15 @@ section.resource {
   .listicle, .summary {
     padding: 0.6em;
   }
+  .package {
+    background-color: #f0f0f0;
+    border: 1px solid #e6e6e6;
+    color: #767676;
+    font-size: 90%;
+    padding: 2px;
+    border-radius: 4px;
+    margin-right: 5px;
+  }
 }
 
 figure {
@@ -248,7 +259,7 @@ figure {
     &::before {
       content: "\f0eb";
       background-color: lighten(rgb(98, 137, 190), 20%);
-      border: 1px solid rgb(98, 137, 190);
+      border: 1px solid lighten(rgb(98, 137, 190), 10%);
     }
   }
   &.warning {
@@ -256,7 +267,7 @@ figure {
     &::before {
       content: "\f12a";
       background-color: lighten(rgb(231, 147, 69), 20%);
-      border: 1px solid rgb(231, 147, 69);
+      border: 1px solid lighten(rgb(231, 147, 69), 10%);
     }
   }
   &.danger {
@@ -264,7 +275,7 @@ figure {
     &::before {
       content: "\f05e";
       background-color: lighten(rgb(204, 76, 53), 20%);
-      border: 1px solid rgb(204, 76, 53);
+      border: 1px solid lighten(rgb(204, 76, 53), 10%);
     }
   }
 }

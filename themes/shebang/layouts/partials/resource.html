@@ -3,10 +3,10 @@
     <div class="summary">{{ .Summary }}</div>
 
     {{ with .Params.concepts }}
-        <div class="packages listicle">
+        <div class="keywords listicle">
             <i class="fas fa-tags"></i> <b>Key concepts:</b>
             {{ range . }}
-            <span class="package listicleitem">{{ . }}</span>
+            <span class="keyword listicleitem">{{ . }}</span>
             {{ end }}
         </div>
     {{ end }}
@@ -14,10 +14,10 @@
         <i class="fas fa-stopwatch"></i> <b>Reading time:</b> {{div .WordCount .Site.Params.readingSpeed}} minutes
     </div>
     {{ with .Params.packages }}
-        <div class="keywords listicle">
+        <div class="packages listicle">
             <i class="fas fa-box"></i> <b>Extra packages:</b>
             {{ range . }}
-            <span class="keyword listicleitem"><code>{{ . }}</code></span>
+            <span class="package listicleitem"><code>{{ . }}</code></span>
             {{ end }}
         </div>
     {{ end }}

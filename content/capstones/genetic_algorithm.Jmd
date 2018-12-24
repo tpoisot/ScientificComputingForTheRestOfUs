@@ -109,8 +109,16 @@ for generation in 1:500
   end
   maxfit = findmax(ω.(population, problem))
   push!(fit, maxfit[1])
+  maxfit[1] == 1.0 && break
 end
+```
 
+The `break` syntax (and short-circuit operators) is covered in the [Advanced
+control flow primer]({{> "/primers/advanced_control_flow.md" <}}). In short,
+whenever the population has a mutant whose fitness is 1, we don't need to keep
+running, and so the code will stop.
+
+```julia
 final_fit = ω.(population, problem)
 println(population[last(findmax(final_fit))])
 

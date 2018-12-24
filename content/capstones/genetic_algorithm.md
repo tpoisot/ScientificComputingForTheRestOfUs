@@ -110,26 +110,26 @@ reproduction(initial_guesses, ω.(initial_guesses, problem))
 
 ````
 500-element Array{String,1}:
- "v?,kghbpekyrg-"
- ",x.mgoesuofub,"
- "a? ,nomrwdvzgt"
- "vhrh-nkt! ee,n"
- "?k-zex,jt,epji"
- "nevts jmptx?aw"
- "yhe-fsslo akws"
- "gf?? mwee?edga"
- "?zmfbxanq xxwj"
- " d,aiupe ?ehoi"
+ "jpst !k,!?dgq!"
+ "qhxuofod xxpcd"
+ "ksybloykqcahgn"
+ "ojjt-ytzui,lri"
+ "mmtpdofod?qgdm"
+ "h!kz-utlfosues"
+ "wqa-ueqi?irxrt"
+ "esq,mbtcyv,dgg"
+ "jwgq,!eohqwrts"
+ "qffpxhs-kaz,kl"
  ⋮               
- "yirmajy!r.wtbg"
- "q.syqlespwvzue"
- "u? ,nuhoyuzw?v"
- "wax.cj g,wf-gm"
- "hhc-wwbwmiwyvh"
- "bm b,cba,ttkox"
- "obmy hye!ln-gx"
- "!noaabko?lhtrv"
- "-k-zex,jt,ectm"
+ "l bmz-f qcahgn"
+ "iwao,rv?tqrugy"
+ "wgaclrzaicxnbh"
+ "uh!qegbot,qw k"
+ "qffpxikmstbgit"
+ "pdwnpa!z-lagct"
+ "nwao,rv?tqrug "
+ "svfm?iyzbkulsy"
+ "scohtseo-pdfuz"
 ````
 
 
@@ -176,8 +176,20 @@ for generation in 1:500
   end
   maxfit = findmax(ω.(population, problem))
   push!(fit, maxfit[1])
+  maxfit[1] == 1.0 && break
 end
+````
 
+
+
+
+
+The `break` syntax (and short-circuit operators) is covered in the [Advanced
+control flow primer]({{> "/primers/advanced_control_flow.md" <}}). In short,
+whenever the population has a mutant whose fitness is 1, we don't need to keep
+running, and so the code will stop.
+
+````julia
 final_fit = ω.(population, problem)
 println(population[last(findmax(final_fit))])
 ````
@@ -199,4 +211,4 @@ yaxis!((0,1))
 ````
 
 
-{{< figure src="../figures/genetic_algorithm_9_1.svg" title="Fitness of the best solution increases over time. Genetic algorithm is an efficient heuristic to rapidly explore a large search space."  >}}
+{{< figure src="../figures/genetic_algorithm_10_1.svg"  >}}

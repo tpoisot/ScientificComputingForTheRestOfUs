@@ -32,8 +32,10 @@ section#navigation {
     margin: 0px 1em; }
   section#navigation a {
     text-decoration: none;
+    text-transform: lowercase;
+    font-variant: small-caps;
     color: #4f4f4f;
-    padding: 0em 1em; }
+    padding: 0em 0.5em; }
     section#navigation a.active {
       color: black; }
   section#navigation img {
@@ -128,6 +130,14 @@ section.resource {
       float: right; }
   section.resource .listicle, section.resource .summary {
     padding: 0.6em; }
+  section.resource .package {
+    background-color: #f0f0f0;
+    border: 1px solid #e6e6e6;
+    color: #767676;
+    font-size: 90%;
+    padding: 2px;
+    border-radius: 4px;
+    margin-right: 5px; }
 
 figure {
   width: 100%;
@@ -196,18 +206,18 @@ figure {
     .callout.opinion::before {
       content: "\f0eb";
       background-color: #aabfdc;
-      border: 1px solid #6289be; }
+      border: 1px solid #86a4cd; }
   .callout.warning {
     color: #e79345; }
     .callout.warning::before {
       content: "\f12a";
       background-color: #f3c79f;
-      border: 1px solid #e79345; }
+      border: 1px solid #edad72; }
   .callout.danger {
     color: #cc4c35; }
     .callout.danger::before {
       content: "\f05e";
       background-color: #e19486;
-      border: 1px solid #cc4c35; }
+      border: 1px solid #d6705e; }
 
 /*# sourceMappingURL=index.css.map */

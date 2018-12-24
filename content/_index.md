@@ -91,8 +91,7 @@ consideration, and can be ignored. Example:
 
 {{< callout opinion >}}
 People who think it's OK to criticize others based on their choice of language,
-OS, text editor, etc, should go home and think about what they did. They should
-not make themselves a cup of tea; tea is for good people.
+OS, text editor, etc, should go home and think about what they did.
 {{< /callout >}}
 
 "Warnings" are points that can be important, but not necessarily as a novice. It

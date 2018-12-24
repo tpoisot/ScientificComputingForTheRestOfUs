@@ -5,7 +5,11 @@ using Weave
 
 const content_folder = joinpath(pwd(), "content")
 
-run(`sass themes/shebang/static/css/index.scss themes/shebang/static/css/index.css`)
+scss_files = ["configuration", "index"]
+for scss_file in scss_files
+    run(`sass themes/shebang/static/css/$(scss_file).scss themes/shebang/static/css/$(scss_file).css`)
+end
+
 
 for content_type in ["lessons", "primers", "capstones"]
     this_content_folder = joinpath(content_folder, content_type)

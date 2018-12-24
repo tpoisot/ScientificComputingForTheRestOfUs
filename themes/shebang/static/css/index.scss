@@ -5,13 +5,13 @@ html, body {
   font-size: 16px;
   margin: 0 0;
   padding: 0 0;
-  background-color: rgb(252, 252, 252);
+  background-color: var(--color-bg);
 }
 
 h1, h2, h3, h4 {
   font-family: "Barlow Semi Condensed";
   font-weight: 500;
-  color: #227066;
+  color: var(--color-title);
 }
 
 code {
@@ -52,7 +52,7 @@ section#navigation {
     display: inline-block;
   }
   .title {
-    color: #227066;
+    color: var(--color-title);
     font-weight: 500;
   }
   .subtitle {
@@ -65,7 +65,7 @@ section#navigation {
 
 section#content {
   max-width: 870px;
-  color: rgb(30, 30, 30);
+  color: var(--color-fg);
   margin: 20px auto;
   padding: 1em;
   padding-top: 5em;
@@ -78,9 +78,9 @@ section#content {
   }
   a {
     text-decoration: none;
-    color: #76a665;
+    color: var(--color-copy-a);
     &:hover {
-      background-color: ligten(#76a665, 20%);
+      font-weight: bold;
     }
   }
 }
@@ -124,8 +124,7 @@ code.language-julia {
     text-align: center;
     display: inline-block;
     margin-left: -3.5em;
-    //background-color: rgb(227, 227, 227);
-    color: #76a665;
+    color: var(--color-accent);
   }
 }
 
@@ -141,7 +140,7 @@ code.language-raw {
     text-align: center;
     display: inline-block;
     margin-left: -3.5em;
-    color: #76a665;
+    color: var(--color-accent);
   }
 }
 
@@ -151,14 +150,14 @@ section.intro {
 
 section.resource {
   font-size: 90%;
-  background-color: #fefefe;
-  border: 1px solid #f1f1f1;
+  background-color: var(--color-lighter);
+  border: 1px solid var(--color-medium);
   padding: 0;
   margin-bottom: 3em;
   h1 {
     margin-top: 0em;
     padding: 0.6em;
-    background-color: #f5f5f5;
+    background-color: var(--color-light);
     .lessonlink {
       float: right;
     }
@@ -167,9 +166,8 @@ section.resource {
     padding: 0.6em;
   }
   .package {
-    background-color: #f0f0f0;
-    border: 1px solid #e6e6e6;
-    color: #767676;
+    background-color: var(--color-medium);
+    color: var(--color-lighter);
     font-size: 90%;
     padding: 2px;
     border-radius: 4px;
@@ -178,11 +176,11 @@ section.resource {
 }
 
 figure {
-  width: 100%;
+  width: 95%;
   background-color: white;
-  border: 1px solid #f1f1f1;
+  border: 1px solid var(--color-medium);
   padding: 1em;
-  margin: 2em 0em;
+  margin: 2em auto;
   img {
     width: 70%;
     margin: 1em 15%;
@@ -190,7 +188,7 @@ figure {
   figcaption {
     margin: -1em -1em;
     padding: 1em;
-    background-color: #f5f5f5;
+    background-color: var(--color-light);
     h4 {
       margin: 0 0;
       color: rgb(76, 78, 78);
@@ -208,22 +206,22 @@ figure {
   padding: 10px;
   margin-bottom: 4em;
   &.construction {
-    background:#ffecec;
-    border:1px solid #f5aca6;
+    background:var(--color-construction-bg);
+    border:1px solid var(--color-construction-border);
     .status-message::before {
       content: "This lesson is in construction — it is most likely unfinished; you are welcome to contribute by opening an issue if you see areas you can improve.";
     }
   }
   &.draft {
-    background:#fff8c4;
-    border:1px solid #f2c779;
+    background:var(--color-draft-bg);
+    border:1px solid var(--color-draft-border);
     .status-message::before {
       content: "This lesson is a draft — it is usable and 90% finished, but some concepts may not presented in the most efficient way.";
     }
   }
   &.overhaul {
-    background:#e3f7fc;
-    border:1px solid #8ed9f6;
+    background:var(--color-overhaul-bg);
+    border:1px solid var(--color-overhaul-border);
     .status-message::before {
       content: "This lesson is being re-written. Content may not be up to date.";
     }

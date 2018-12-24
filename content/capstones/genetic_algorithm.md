@@ -49,7 +49,7 @@ end
 
 
 ````
-0.0
+0.07142857142857142
 ````
 
 
@@ -110,26 +110,26 @@ reproduction(initial_guesses, ω.(initial_guesses, problem))
 
 ````
 500-element Array{String,1}:
- "jpst !k,!?dgq!"
- "qhxuofod xxpcd"
- "ksybloykqcahgn"
- "ojjt-ytzui,lri"
- "mmtpdofod?qgdm"
- "h!kz-utlfosues"
- "wqa-ueqi?irxrt"
- "esq,mbtcyv,dgg"
- "jwgq,!eohqwrts"
- "qffpxhs-kaz,kl"
+ "doudj?yrkyb ,x"
+ "u? tf-,he-?rwn"
+ " b!ighflhw ,?h"
+ "v xcdnaeuquwps"
+ "luav!eigzwedms"
+ "yea?,!o-z?lqyi"
+ "itgiw!r-a ddzw"
+ "mwco.lo!tnitgp"
+ "izx?,horzfcumk"
+ "yaec,wc-ypuq?n"
  ⋮               
- "l bmz-f qcahgn"
- "iwao,rv?tqrugy"
- "wgaclrzaicxnbh"
- "uh!qegbot,qw k"
- "qffpxikmstbgit"
- "pdwnpa!z-lagct"
- "nwao,rv?tqrug "
- "svfm?iyzbkulsy"
- "scohtseo-pdfuz"
+ "hladm, wqy!.ck"
+ "wgeeywtyixnbgl"
+ "wnff-d.?.,drco"
+ "g-ywv a.glemj-"
+ "rjwnofyqo?pw?x"
+ "ej!f!m,orscv.q"
+ "ykwopky?ecocir"
+ "luav!eigztfgab"
+ " guzxx?i! liz-"
 ````
 
 

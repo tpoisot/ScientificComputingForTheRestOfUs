@@ -16,7 +16,7 @@ Intro to GA
 Definition of the problem: MacBeth line
 
 ```julia
-problem = lowercase("What, you egg? Young fry of treachery!")
+problem = lowercase("What, you egg?")
 ```
 
 Initial solution
@@ -60,4 +60,63 @@ then mutation:
 parents = sample(initial_guesses, StatsBase.weights(Ω), 2; replace=false)
 cutoff = rand(1:length(problem))
 offspring = first(parents)[1:cutoff] * last(parents)[cutoff+1:end]
+```
+
+Now, we want to automate the process a bit, so function
+
+```julia
+function reproduction(pool, Ω)
+  offspring = copy(pool)
+  for i in eachindex(offspring)
+    parents = sample(pool, weights(Ω), 2; replace=false)
+    cutoff = rand(1:length(first(parents)))
+    offspring[i] = first(parents)[1:cutoff] * last(parents)[cutoff+1:end]
+  end
+  return offspring
+end
+
+reproduction(initial_guesses, ω.(initial_guesses, problem))
+```
+
+Next step is to have mutations
+
+```julia
+function mutation(genome, μ, search_space)
+  splitted = split(genome, "")
+  for i in 1:length(splitted)
+    if rand() ≤ μ
+      splitted[i] = rand(search_space)
+    end
+  end
+  return reduce(*, splitted)
+end
+```
+
+We can start wrapping it up:
+
+```julia; fig_cap="Fitness of the best solution increases over time. Genetic algorithm is an efficient heuristic to rapidly explore a large search space."
+problem = lowercase("What, you egg?")
+search_space = split("abcdefghijklmnopqrstuvwxyz ?,!", "")
+population = [reduce(*, sample(search_space, length(problem), replace=true)) for i in 1:300]
+
+fit = []
+
+for generation in 1:500
+  global population
+  population = reproduction(population, ω.(population, problem))
+  for i in eachindex(population)
+    population[i] = mutation(population[i], 0.01, search_space)
+  end
+  maxfit = findmax(ω.(population, problem))
+  push!(fit, maxfit[1])
+end
+
+final_fit = ω.(population, problem)
+println(population[last(findmax(final_fit))])
+
+plot(fit,
+  leg=false, xlab="Step", ylab="Maximal fitness",
+  frame=:origin, c=:purple, lw=2
+  )
+yaxis!((0,1))
 ```

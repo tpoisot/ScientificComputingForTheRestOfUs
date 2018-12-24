@@ -68,7 +68,7 @@ section#content {
 pre {
   font-size: 0.9rem;
   line-height: 1.5rem;
-  white-space: pre-line; }
+  white-space: pre-wrap; }
   pre code {
     color: #777; }
     pre code .cm {

@@ -11,9 +11,17 @@ concepts:
   - control flow
 ---
 
-Intro to GA
+Genetic algorithm is a heuristic that takes heavy inspiration from evolutionary
+biology, to explore a space of parameters rapidly and converge to an optimum.
+Every solution is a "genome", and the combinations can undergo mutation and
+recombination. By simulating a process of reproduction, over sufficiently many
+generation, this heuristic usually gives very good results. It is also simple to
+implement, and this is what we will do!
 
-Definition of the problem: MacBeth line
+**TODO** description of GA steps
+
+To illustrate how genetic algorithms work, we will attempt to reproduce this
+wonderful line from Shakespeare's Macbeth: *What, you egg?*.
 
 ````julia
 problem = lowercase("What, you egg?")
@@ -23,19 +31,30 @@ problem = lowercase("What, you egg?")
 
 
 
-Initial solution
+The first thing we need to decide is the initial state of our population; in
+this case, we will draw a random string of characters (and to simplify our task,
+we will use a reduced subset of all possible characters):
 
 ````julia
 using StatsBase
 search_space = split("abcdefghijklmnopqrstuvwxyz !?,.-", "")
 initial_guess = reduce(*, sample(search_space, length(problem), replace=true))
+println(initial_guess)
+````
+
+
+````
+k,s-xjwef?voov
 ````
 
 
 
 
 
-fitness function
+This first solution is one *genome*, and every position on the string is a
+*gene*. This is, quite obviously, a bit far from the string we want to
+reproduce. How far? We can calculate a *fitness* for this genome, which in this
+situation is the average number of correct letters.
 
 ````julia
 using Statistics
@@ -49,14 +68,16 @@ end
 
 
 ````
-0.07142857142857142
+0.0
 ````
 
 
 
 
 
-Generating a lot of initial guesses
+The fitness of this genome is 0.0. We can increase the
+number of individuals in our population, by generating a *lot* of initial
+guesses:
 
 ````julia
 initial_guesses = [reduce(*, sample(search_space, length(problem), replace=true)) for i in 1:500];
@@ -66,7 +87,7 @@ initial_guesses = [reduce(*, sample(search_space, length(problem), replace=true)
 
 
 
-We can view the fitness distribution:
+Once this is done, we can view their fitness distribution:
 
 ````julia
 using Plots
@@ -74,7 +95,7 @@ scatter(sort(ω.(initial_guesses, problem)), leg=false, c=:grey, msw=0.0)
 ````
 
 
-{{< figure src="../figures/genetic_algorithm_5_1.svg" title="TODO"  >}}
+{{< figure src="../figures/genetic_algorithm_5_1.svg" title="Fitness of the initial solutions. Although quite a lot of the genomes are a very low fitness, recombination and mutation will improve this over time."  >}}
 
 
 Picking the next generation -- pair of parents, recombination at random point,
@@ -110,26 +131,26 @@ reproduction(initial_guesses, ω.(initial_guesses, problem))
 
 ````
 500-element Array{String,1}:
- "doudj?yrkyb ,x"
- "u? tf-,he-?rwn"
- " b!ighflhw ,?h"
- "v xcdnaeuquwps"
- "luav!eigzwedms"
- "yea?,!o-z?lqyi"
- "itgiw!r-a ddzw"
- "mwco.lo!tnitgp"
- "izx?,horzfcumk"
- "yaec,wc-ypuq?n"
+ "wmh!qiusgk,!mz"
+ "bd!pxkmftzk.ii"
+ "luhhscu enkngt"
+ "-q-viacfhmnq-w"
+ "ojy.tgjor?jdi?"
+ "r y.,wqn vqppa"
+ "yqo.agyfe .fqh"
+ "k-s,xiyg.?cyq?"
+ "sibo,zq bswuyb"
+ ",qzo!af?,jkyr?"
  ⋮               
- "hladm, wqy!.ck"
- "wgeeywtyixnbgl"
- "wnff-d.?.,drco"
- "g-ywv a.glemj-"
- "rjwnofyqo?pw?x"
- "ej!f!m,orscv.q"
- "ykwopky?ecocir"
- "luav!eigztfgab"
- " guzxx?i! liz-"
+ "cdqp s-.k moto"
+ "sbvc,bwofdpxbw"
+ " g,yboopxsowv?"
+ ".kaehseln-  gb"
+ "k?w.,n.po oat-"
+ "hpsv,-?k.nx,na"
+ "r ovtyyspkedi?"
+ "jhbtxqcq?imnix"
+ "krue,.wts ftg?"
 ````
 
 

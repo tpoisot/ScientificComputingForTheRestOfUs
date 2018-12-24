@@ -76,16 +76,16 @@ darts
 
 ````
 10-element Array{Any,1}:
- (1.0728515744115272, 1.8707435750186212)  
- (1.227199756176372, 1.714156754683204)    
- (1.3617403951665676, 0.25500305670060097) 
- (1.8007077025102651, 0.5365111209814017)  
- (1.5539507937852792, 0.9801032165306527)  
- (0.3907748262462074, 0.1111888937916703)  
- (0.023410395457407418, 0.5130420246127572)
- (1.1103012892262893, 0.5970223695877186)  
- (1.541871987367836, 1.6620310763462274)   
- (0.7261190034787961, 0.9800522631893722)
+ (0.1465973468389068, 0.09736026374748219) 
+ (0.04569960501586401, 1.0888014047268948) 
+ (1.7725151265872863, 0.19561732539023424) 
+ (1.7529633551119321, 0.17255804829920107) 
+ (0.014487453628998281, 1.3001592654733907)
+ (1.4612594098803586, 1.509576739642057)   
+ (0.8402190806163325, 1.1917185001854826)  
+ (1.2397866280748455, 0.3987312388995692)  
+ (1.033878113595038, 1.6778738507043314)   
+ (1.3986108039545693, 1.893113480019815)
 ````
 
 
@@ -106,11 +106,11 @@ take its first *argument*, and add its second argument at the end. Wait, hold
 on. What's an argument? It's something you give to a function, to get it to do
 its work. We will go into this deeply in a few moments.
 
-{: .opinion}
-
+{{% callout opinion %}}
 Our initial intuition of writing this code "as is", *i.e.* not within a
 function, is valid. It is often easier to experiment with different ways of
 expressing a problem, then wrap it up nicely in a function.
+{{% /callout %}}
 
 This code works. But it is kind of messy. There is a `N` variable, which is
 declared even though it is unlikely we will need it (because we can get it from
@@ -271,10 +271,11 @@ function idiomatic_is_within_circle(point, center, radius)
 end
 ~~~
 
+{{% callout opinion %}}
 Writing things in an idiomatic way is *sometimes* better. But it can be more
 confusing for people with less familiarity with the language, or more difficult
 to maintain (unless profusely commented) in the long term.
-{: .opinion}
+{{% /callout %}}
 
 Now, let's apply a few sanity checks to this function (we will see much more of
 this in the next lesson). We know that the center of the circle is within the
@@ -419,7 +420,6 @@ see that modular code is easy to *test* (and to debug).
 
 So, how good is our estimate?
 
-
 ````julia
 estimate = estimate_pi(100000)
 ````
@@ -453,13 +453,13 @@ In all functions thus far, we *had* to give all the values of all arguments.
 Sometimes, it make sense to have some arguments take a default value, which we
 can change when we need to, but will remain constant otherwise.
 
-{: .warning}
-
+{{% callout warning %}}
 Giving default values can save some time, but it means you don't need to *think*
 quite as much about the parameters you are using. And thinking is a pretty big
 part of research. For this reason, we think that default values should not be
 used for parameters that are central to the analysis, but should instead be
 reserved for things like filenames, number of iterations, etc.
+{{% /callout %}}
 
 Let's say we want to write a quite poorly thought-out function to get the
 logarithm of any number in any base. *Julia* has a `log` function, which can be
@@ -517,12 +517,12 @@ ERROR: UndefVarError: e not defined
 
 then the value of `b` will be fixed (to $e$), and the function will use this.
 
-{: .opinion}
-
+{{% callout opinion %}}
 Some languages allow/require to use `;` to separate keywords and non-keywords
 arguments. It is a good idea, and we recommend using it even when *calling* the
 functions: `my_log_function(2.0; n=2.0)` -- this makes it clear to see where the
 keywords arguments are.
+{{% /callout %}}
 
 ## A note on type stability
 

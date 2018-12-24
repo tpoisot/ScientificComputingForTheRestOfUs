@@ -86,6 +86,7 @@ section#content {
 pre {
   font-size: 0.9rem;
   line-height: 1.5rem;
+  white-space: pre-line;
   code {
     color: #777;
     .cm {
@@ -219,5 +220,51 @@ figure {
   a {
     float: right;
     color: #555 !important;
+  }
+}
+
+.callout {
+  border-radius: 0.1rem;
+  background-color: white;
+  border: 1px solid #f5f5f5;
+  padding: 1rem;
+  p {
+    display: inline;
+  }
+  &::before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: white;
+    margin-right: 0.5em;
+    font-size: 0.9rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 1.65rem;
+    text-align: center;
+    display: inline-block;
+  }
+  &.opinion {
+    color: rgb(98, 137, 190);
+    &::before {
+      content: "\f0eb";
+      background-color: lighten(rgb(98, 137, 190), 20%);
+      border: 1px solid rgb(98, 137, 190);
+    }
+  }
+  &.warning {
+    color: rgb(231, 147, 69);
+    &::before {
+      content: "\f12a";
+      background-color: lighten(rgb(231, 147, 69), 20%);
+      border: 1px solid rgb(231, 147, 69);
+    }
+  }
+  &.danger {
+    color: rgb(204, 76, 53);
+    &::before {
+      content: "\f05e";
+      background-color: lighten(rgb(204, 76, 53), 20%);
+      border: 1px solid rgb(204, 76, 53);
+    }
   }
 }

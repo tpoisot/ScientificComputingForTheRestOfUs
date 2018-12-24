@@ -89,29 +89,29 @@ Throughout the lessons, we have added some asides -- they are ranked in order of
 importance. "Opinions" are points we would like to raise for the reader's
 consideration, and can be ignored. Example:
 
-{: .opinion}
-
+{{< callout opinion >}}
 People who think it's OK to criticize others based on their choice of language,
 OS, text editor, etc, should go home and think about what they did. They should
 not make themselves a cup of tea; tea is for good people.
+{{< /callout >}}
 
 "Warnings" are points that can be important, but not necessarily as a novice. It
 is worth keeping a mental note of them, especially in the long term. Example:
 
-{: .warning}
-
+{{< callout warning >}}
 Any time you are about to comment on people's choice of tools, ask yourself
 whether this is really necessary, and the answer is usually "no". The Good Tool
 is the one that works for its user.
+{{< /callout >}}
 
 "Dangers" are really important point, that can prove especially dangerous or
 risky to everyone. They are worth reading a few times over. Example:
 
-{: .danger}
-
+{{< callout danger >}}
 For real tho, this toxic behaviour is driving brilliant people away, and should
 never be tolerated. Disliking Windows has not made anyone edgy or cool since
 1998.
+{{< /callout >}}
 
 ## Contributing
 

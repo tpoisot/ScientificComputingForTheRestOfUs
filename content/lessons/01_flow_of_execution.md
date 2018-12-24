@@ -385,10 +385,10 @@ end
 
 
 ````
+bar
 foo
 foo
-bar
-bar
+foo
 foo
 ````
 
@@ -465,11 +465,11 @@ random_numbers
 
 ````
 5-element Array{Float64,1}:
- 0.49405762690949007
- 0.05184119685127775
- 0.5426124175459539 
- 0.8818038156665806 
- 0.26401206069461813
+ 0.8374981193446203
+ 0.3615883125259043
+ 0.3391153548641206
+ 0.3818395851581917
+ 0.2448207801994664
 ````
 
 
@@ -525,7 +525,7 @@ random_numbers[1]
 
 
 ````
-0.49405762690949007
+0.8374981193446203
 ````
 
 
@@ -546,7 +546,7 @@ random_numbers[length(random_numbers)]
 
 
 ````
-0.26401206069461813
+0.2448207801994664
 ````
 
 
@@ -564,7 +564,7 @@ random_numbers[end]
 
 
 ````
-0.26401206069461813
+0.2448207801994664
 ````
 
 
@@ -580,7 +580,7 @@ first(random_numbers)
 
 
 ````
-0.49405762690949007
+0.8374981193446203
 ````
 
 
@@ -591,7 +591,7 @@ last(random_numbers)
 
 
 ````
-0.26401206069461813
+0.2448207801994664
 ````
 
 
@@ -611,7 +611,7 @@ println(random_numbers[1])
 
 
 ````
-0.49405762690949007
+0.8374981193446203
 ````
 
 
@@ -622,7 +622,7 @@ println(random_numbers[3])
 
 
 ````
-0.5426124175459539
+0.3391153548641206
 ````
 
 
@@ -633,7 +633,7 @@ println(random_numbers[5])
 
 
 ````
-0.26401206069461813
+0.2448207801994664
 ````
 
 
@@ -663,9 +663,9 @@ end
 
 
 ````
-Position 1:	0.49405762690949007
-Position 3:	0.5426124175459539
-Position 5:	0.26401206069461813
+Position 1:	0.8374981193446203
+Position 3:	0.3391153548641206
+Position 5:	0.2448207801994664
 ````
 
 
@@ -827,11 +827,12 @@ once: the mean needs to be larger than 0.499, yet smaller than 0.501, and we
 need to continue *until* this is true (but there is not *until* statement, so we
 use the awkward "while not").
 
-{: .danger}
-
+{{% callout danger %}}
 If we are particularly unlucky, we would never get a sequence of random numbers
 that would match this condition! In this case, our computer would stubbornly
 keep running until the heat death of the universe (or until it breaks, which in
 all likelihood will happen earlier). Writing `while` loops can be a complex
 exercice, and it is always good to think about "exit strategies". These will be
-discussed in the forthcoming "Advanced control flow" capstone lesson.
+discussed in the ["Advanced control flow"]({{< ref
+"/primers/advanced_control_flow.md" >}}) primer.
+{{% /callout %}}

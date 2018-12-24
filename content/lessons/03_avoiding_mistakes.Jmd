@@ -67,11 +67,11 @@ This is not really sufficient, but this is a large improvement. If you come back
 to code using this function in a week, or in six months, you will be able to
 understand what this function does simply by reading its name.
 
-{: .opinion}
-
+{{% callout opinion %}}
 Most languages have "styleguides" (some have several), that explain how to write
 code and name things. [*Julia*'s][jlsg] is short, and makes sense. We will
 mostly follow it, except when we won't. These are "guides", not laws.
+{{% /callout %}}
 
 [jlsg]: https://docs.julialang.org/en/latest/manual/style-guide/
 

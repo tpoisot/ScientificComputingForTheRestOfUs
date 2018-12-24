@@ -67,7 +67,8 @@ section#content {
 
 pre {
   font-size: 0.9rem;
-  line-height: 1.5rem; }
+  line-height: 1.5rem;
+  white-space: pre-line; }
   pre code {
     color: #777; }
     pre code .cm {
@@ -171,5 +172,42 @@ figure {
   #status a {
     float: right;
     color: #555 !important; }
+
+.callout {
+  border-radius: 0.1rem;
+  background-color: white;
+  border: 1px solid #f5f5f5;
+  padding: 1rem; }
+  .callout p {
+    display: inline; }
+  .callout::before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: white;
+    margin-right: 0.5em;
+    font-size: 0.9rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 1.65rem;
+    text-align: center;
+    display: inline-block; }
+  .callout.opinion {
+    color: #6289be; }
+    .callout.opinion::before {
+      content: "\f0eb";
+      background-color: #aabfdc;
+      border: 1px solid #6289be; }
+  .callout.warning {
+    color: #e79345; }
+    .callout.warning::before {
+      content: "\f12a";
+      background-color: #f3c79f;
+      border: 1px solid #e79345; }
+  .callout.danger {
+    color: #cc4c35; }
+    .callout.danger::before {
+      content: "\f05e";
+      background-color: #e19486;
+      border: 1px solid #cc4c35; }
 
 /*# sourceMappingURL=index.css.map */

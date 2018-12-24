@@ -85,7 +85,6 @@ then mutation:
 parents = sample(initial_guesses, StatsBase.weights(Ω), 2; replace=false)
 cutoff = rand(1:length(problem))
 offspring = first(parents)[1:cutoff] * last(parents)[cutoff+1:end]
-@info ω(offspring, problem)
 ````
 
 

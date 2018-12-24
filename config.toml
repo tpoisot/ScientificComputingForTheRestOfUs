@@ -5,6 +5,33 @@ theme = "shebang"
 pygmentsCodeFences = true
 pygmentsUseClasses = true
 
+[menu]
+  [[menu.main]]
+    identifier = "home"
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    identifier = "lessons"
+    name = "Lessons"
+    url = "/lessons/"
+    weight = 2
+  [[menu.main]]
+    identifier = "capstones"
+    name = "Capstones"
+    url = "/capstones/"
+    weight = 3
+  [[menu.main]]
+    identifier = "primers"
+    name = "Primers"
+    url = "/primers/"
+    weight = 4
+  [[menu.main]]
+    identifier = "concepts"
+    name = "Concepts"
+    url = "/concepts/"
+    weight = 5
+
 [params]
   readingSpeed = 120
   githubUser = "tpoisot"

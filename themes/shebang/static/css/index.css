@@ -32,8 +32,10 @@ section#navigation {
     margin: 0px 1em; }
   section#navigation a {
     text-decoration: none;
-    color: black;
+    color: #4f4f4f;
     padding: 0em 1em; }
+    section#navigation a.active {
+      color: black; }
   section#navigation img {
     vertical-align: top;
     padding-right: 4px; }
@@ -48,7 +50,7 @@ section#navigation {
     text-transform: uppercase; }
 
 section#content {
-  max-width: 900px;
+  max-width: 870px;
   color: #1e1e1e;
   margin: 20px auto;
   padding: 1em;
@@ -81,7 +83,7 @@ pre {
       color: #cc79a7; }
 
 code.language-julia {
-  color: #123456; }
+  color: black; }
   code.language-julia::before {
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
@@ -94,17 +96,19 @@ code.language-julia {
     margin-left: -3.5em;
     color: #76a665; }
 
-code.language-raw::before {
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  content: "\f121";
-  margin-right: 1em;
-  font-size: 0.7rem;
-  width: 1.8rem;
-  text-align: center;
-  display: inline-block;
-  margin-left: -3.5em;
-  color: #76a665; }
+code.language-raw {
+  color: #3e3e3e; }
+  code.language-raw::before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f121";
+    margin-right: 1em;
+    font-size: 0.7rem;
+    width: 1.8rem;
+    text-align: center;
+    display: inline-block;
+    margin-left: -3.5em;
+    color: #76a665; }
 
 section.intro {
   margin-bottom: 4em; }

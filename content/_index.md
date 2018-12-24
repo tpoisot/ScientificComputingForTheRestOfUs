@@ -69,12 +69,20 @@ Snippets of code that are *important* are on a white background, like so:
 ~~~
 
 Bits of code of lower importance (pseudocode or code you are not meant to type),
-as well as the output of the *important* parts of code, are presented this way:
+are presented this way:
 
-~~~
+~~~ raw
 for each_element in vector
   function(each_element)
 end
+~~~
+
+Finally, the output of code is presented this way:
+
+~~~
+2-element Array{Float64,1}:
+ 0.1
+ 0.0
 ~~~
 
 Throughout the lessons, we have added some asides -- they are ranked in order of

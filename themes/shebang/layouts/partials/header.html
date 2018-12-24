@@ -5,10 +5,14 @@
         <span class="subtitle">{{ .Site.Params.subtitle }}</span>
     </span>
     <span class="main">
-        <a href="/">Home</a>
-        <a href="/lessons/">Lessons</a>
-        <a href="/capstones/">Capstones</a>
-        <a href="/primers/">Primers</a>
-        <a href="/concepts/">Concepts</a>
+        {{ $currentPage := . }}
+        {{ range .Site.Menus.main }}
+        <a class="sidebar-nav-item{{if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }} active{{end}}" href="{{ .URL }}" title="{{ .Title }}">{{ .Name }}</a>
+        {{ end }}
     </span>
+    <nav class="sidebar-nav">
+
+
+</nav>
+
 </section>

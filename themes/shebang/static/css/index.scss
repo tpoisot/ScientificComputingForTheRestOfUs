@@ -36,8 +36,11 @@ section#navigation {
   }
   a {
     text-decoration: none;
-    color: black;
+    color: rgb(79, 79, 79);
     padding: 0em 1em;
+    &.active {
+      color: black;
+    }
   }
   img {
     vertical-align: top;
@@ -59,7 +62,7 @@ section#navigation {
 }
 
 section#content {
-  max-width: 900px;
+  max-width: 870px;
   color: rgb(30, 30, 30);
   margin: 20px auto;
   padding: 1em;
@@ -107,7 +110,7 @@ pre {
 
 
 code.language-julia {
-  color: #123456;
+  color: black;
   &::before {
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
@@ -124,6 +127,7 @@ code.language-julia {
 }
 
 code.language-raw {
+  color: rgb(62, 62, 62);
   &::before {
     font-family: "Font Awesome 5 Free";
     font-weight: 900;

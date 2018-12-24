@@ -1,10 +1,10 @@
 ---
 title: Runge-Kutta integration
 slug: runge_kutta_integration
-weight: 1
+weight: 2
 status: draft
 packages:
-  - Plots.jl
+  - Plots
 concepts:
   - writing functions
   - numerical precision

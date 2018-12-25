@@ -25,8 +25,6 @@ step for the mutation of offspring. There are an almost infinite number of
 variations at each of these steps, but we will limit ourselves to a simple case
 here.
 
-## Illustration
-
 To illustrate how genetic algorithms work, we will attempt to reproduce
 this wonderful line from Shakespeare's Macbeth: *What, you egg?*.
 
@@ -56,7 +54,7 @@ println(initial_guess)
 
 
 ````
-odzrslut,m!ymy
+hxc!msymj!mdrw
 ````
 
 
@@ -80,14 +78,14 @@ end
 
 
 ````
-0.0
+0.07142857142857142
 ````
 
 
 
 
 
-The fitness of this genome is 0.0. We can increase the
+The fitness of this genome is 0.07142857142857142. We can increase the
 number of individuals in our population, by generating a *lot* of initial
 guesses:
 
@@ -143,26 +141,26 @@ reproduction(initial_guesses, ω.(initial_guesses, problem))
 
 ````
 500-element Array{String,1}:
- ".psx,n?pfjdlwq"
- "ytadfo?lokgwbb"
- "kqch-uvcko.ogq"
- "wkg.yafaa pw,u"
- "vhqihk-tt?ityb"
- ".zollsijvmpfgm"
- "uhog?sbxh!!dsz"
- "wv!xzgvrmohf!y"
- "ebavv-mkkv glw"
- "ebavv-mkutjtpz"
+ "yy,s?haveaqxea"
+ "ufztxm?jpsa.gl"
+ "ih!di dnsqt l?"
+ "cnztkudu.v?qc?"
+ "pb-y -ya. ypta"
+ " jxj,caeunldcw"
+ "pkytu pjfvloka"
+ "thjdd.s,?fjsoe"
+ "yy,s?h?yu?zhhd"
+ "yqa.etl-nenwmb"
  ⋮               
- "bb.twazix?dcn-"
- "ytadf-yvuy!rxu"
- "kqch-uathba?wh"
- "wfaamvfrseglmo"
- "lfaxfku,k.rihd"
- " hxtopy,nh.?bg"
- ".zollsijvzqb?x"
- "rsdza-pjz!!gyv"
- "d!cz,t,jt oqya"
+ "eya ?,f ? pvmm"
+ ".mj,yt-o dye j"
+ "yh!v!,xaw,mmbj"
+ "wkrudmcpj pn-v"
+ "eya jzd!yqm.fo"
+ "wqirj-pi.bj b."
+ "zputec?!jwjgsk"
+ "q?,,dqjfuwou?v"
+ "aew,whfrhieauh"
 ````
 
 

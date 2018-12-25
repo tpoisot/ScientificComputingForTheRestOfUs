@@ -3,9 +3,8 @@ language: julia
 julia:
   - 1.0
 
-addons:
-  apt:
-    update: true
+install:
+  - gem install sass
 
 stages:
   - build
@@ -20,7 +19,6 @@ jobs:
       script: julia compile.jl
     - stage: install
       script:
-        - gem install sass
         - wget https://github.com/gohugoio/hugo/releases/download/v0.53/hugo_0.53_Linux-64bit.deb
         - sudo dpkg -i hugo*.deb
     - stage: render

@@ -1,4 +1,10 @@
 language: julia
 julia:
   - 1.0
+addons:
+  apt:
+    update: true
+before_install:
+  - sudo apt-get install -y hugo
+  - sudo apt-get install -y sass
 script: julia compile.jl

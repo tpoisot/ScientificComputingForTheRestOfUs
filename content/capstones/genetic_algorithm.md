@@ -18,13 +18,25 @@ recombination. By simulating a process of reproduction, over sufficiently many
 generation, this heuristic usually gives very good results. It is also simple to
 implement, and this is what we will do!
 
-**TODO** description of GA steps
+A genetic algorithm works by measuring the fitness of a solution (*i.e.* its fit
+to a problem we have defined). We can then pick solution for "reproduction",
+which involves recombination at various points in the "genome", and finally a
+step for the mutation of offspring. There are an almost infinite number of
+variations at each of these steps, but we will limit ourselves to a simple case
+here.
 
-To illustrate how genetic algorithms work, we will attempt to reproduce this
-wonderful line from Shakespeare's Macbeth: *What, you egg?*.
+## Illustration
+
+To illustrate how genetic algorithms work, we will attempt to reproduce
+this wonderful line from Shakespeare's Macbeth: *What, you egg?*.
 
 ````julia
-problem = lowercase("What, you egg?")
+const problem = lowercase("What, you egg?")
+````
+
+
+````
+"what, you egg?"
 ````
 
 
@@ -32,8 +44,8 @@ problem = lowercase("What, you egg?")
 
 
 The first thing we need to decide is the initial state of our population; in
-this case, we will draw a random string of characters (and to simplify our task,
-we will use a reduced subset of all possible characters):
+this case, we will draw a random string of characters. To simplify our task, we
+will use a reduced subset of all possible characters). We could make our
 
 ````julia
 using StatsBase
@@ -44,7 +56,7 @@ println(initial_guess)
 
 
 ````
-hzljuhyery!,br
+odzrslut,m!ymy
 ````
 
 
@@ -68,14 +80,14 @@ end
 
 
 ````
-0.07142857142857142
+0.0
 ````
 
 
 
 
 
-The fitness of this genome is 0.07142857142857142. We can increase the
+The fitness of this genome is 0.0. We can increase the
 number of individuals in our population, by generating a *lot* of initial
 guesses:
 
@@ -131,26 +143,26 @@ reproduction(initial_guesses, ω.(initial_guesses, problem))
 
 ````
 500-element Array{String,1}:
- "fs!mlhboxu w!n"
- "pun-npy.!k-blw"
- "brineggifivso-"
- "pbjnhng .lz-gc"
- "pun-nphp-veo?l"
- "rajklb!pf denw"
- "nykrhhycwqnxqe"
- "umsnp-elu qqsg"
- "?m.ws?yafyuzgp"
- "zsah! o-arcqwd"
+ ".psx,n?pfjdlwq"
+ "ytadfo?lokgwbb"
+ "kqch-uvcko.ogq"
+ "wkg.yafaa pw,u"
+ "vhqihk-tt?ityb"
+ ".zollsijvmpfgm"
+ "uhog?sbxh!!dsz"
+ "wv!xzgvrmohf!y"
+ "ebavv-mkkv glw"
+ "ebavv-mkutjtpz"
  ⋮               
- "ehnznsyacy.hag"
- "s!bge!tvtkz-gc"
- ", a?cue-bwcg?b"
- "zsah! o-zibfjs"
- "vdi ,uddgjcui-"
- "!-vlo! mtmmezg"
- "pun-npzo-llud?"
- "wbcqmwdddcigki"
- "wcxwv?la,lungp"
+ "bb.twazix?dcn-"
+ "ytadf-yvuy!rxu"
+ "kqch-uathba?wh"
+ "wfaamvfrseglmo"
+ "lfaxfku,k.rihd"
+ " hxtopy,nh.?bg"
+ ".zollsijvzqb?x"
+ "rsdza-pjz!!gyv"
+ "d!cz,t,jt oqya"
 ````
 
 

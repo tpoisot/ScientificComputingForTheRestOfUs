@@ -18,18 +18,23 @@ recombination. By simulating a process of reproduction, over sufficiently many
 generation, this heuristic usually gives very good results. It is also simple to
 implement, and this is what we will do!
 
-**TODO** description of GA steps
+A genetic algorithm works by measuring the fitness of a solution (*i.e.* its fit
+to a problem we have defined). We can then pick solution for "reproduction",
+which involves recombination at various points in the "genome", and finally a
+step for the mutation of offspring. There are an almost infinite number of
+variations at each of these steps, but we will limit ourselves to a simple case
+here.
 
-To illustrate how genetic algorithms work, we will attempt to reproduce this
-wonderful line from Shakespeare's Macbeth: *What, you egg?*.
+To illustrate how genetic algorithms work, we will attempt to reproduce
+this wonderful line from Shakespeare's Macbeth: *What, you egg?*.
 
 ```julia
-problem = lowercase("What, you egg?")
+const problem = lowercase("What, you egg?")
 ```
 
 The first thing we need to decide is the initial state of our population; in
-this case, we will draw a random string of characters (and to simplify our task,
-we will use a reduced subset of all possible characters):
+this case, we will draw a random string of characters. To simplify our task, we
+will use a reduced subset of all possible characters). We could make our
 
 ```julia
 using StatsBase

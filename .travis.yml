@@ -1,0 +1,4 @@
+language: julia
+julia:
+  - 1.0
+script: julia compile.jl

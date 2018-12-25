@@ -218,5 +218,11 @@ figure {
       content: "\f05e";
       background-color: #e19486;
       border: 1px solid #d6705e; }
+  .callout.information {
+    color: #4ab355; }
+    .callout.information::before {
+      content: "\f075";
+      background-color: #91d298;
+      border: 1px solid #6dc376; }
 
 /*# sourceMappingURL=index.css.map */

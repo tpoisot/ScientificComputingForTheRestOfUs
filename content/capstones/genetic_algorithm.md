@@ -54,7 +54,7 @@ println(initial_guess)
 
 
 ````
-hxc!msymj!mdrw
+lpez!chbtbr.rj
 ````
 
 
@@ -78,14 +78,14 @@ end
 
 
 ````
-0.07142857142857142
+0.0
 ````
 
 
 
 
 
-The fitness of this genome is 0.07142857142857142. We can increase the
+The fitness of this genome is 0.0. We can increase the
 number of individuals in our population, by generating a *lot* of initial
 guesses:
 
@@ -141,26 +141,26 @@ reproduction(initial_guesses, ω.(initial_guesses, problem))
 
 ````
 500-element Array{String,1}:
- "yy,s?haveaqxea"
- "ufztxm?jpsa.gl"
- "ih!di dnsqt l?"
- "cnztkudu.v?qc?"
- "pb-y -ya. ypta"
- " jxj,caeunldcw"
- "pkytu pjfvloka"
- "thjdd.s,?fjsoe"
- "yy,s?h?yu?zhhd"
- "yqa.etl-nenwmb"
+ "nvlsk yty.tg c"
+ "t.j c vj, cbtj"
+ "wysc.ayz??nu-a"
+ "lwarnsdw,huiml"
+ "hhsc.x.rgrenmg"
+ "wysc.xmrr,,ke "
+ "ezbl.--nnh.-rp"
+ "q!bg,sbzsrb,w."
+ "lwarnsdw,huffg"
+ "ohan eavmsyucs"
  ⋮               
- "eya ?,f ? pvmm"
- ".mj,yt-o dye j"
- "yh!v!,xaw,mmbj"
- "wkrudmcpj pn-v"
- "eya jzd!yqm.fo"
- "wqirj-pi.bj b."
- "zputec?!jwjgsk"
- "q?,,dqjfuwou?v"
- "aew,whfrhieauh"
+ "wypm jy?rontkv"
+ "ygjtqe!yuypukw"
+ "!ttqxucbn rqz?"
+ "ygjtqe!yi oukw"
+ "wgyewndvar!gvs"
+ "xxjxff.xzhvhdx"
+ "dwapmckvkn-a.f"
+ ".f?cp.apnpxri."
+ "wyscayibf x-i."
 ````
 
 

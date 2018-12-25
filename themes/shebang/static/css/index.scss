@@ -276,4 +276,12 @@ figure {
       border: 1px solid lighten(rgb(204, 76, 53), 10%);
     }
   }
+  &.information {
+    color: rgb(74, 179, 85);
+    &::before {
+      content: "\f075";
+      background-color: lighten(rgb(74, 179, 85), 20%);
+      border: 1px solid lighten(rgb(74, 179, 85), 10%);
+    }
+  }
 }

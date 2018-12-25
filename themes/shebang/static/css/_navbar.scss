@@ -1,0 +1,22 @@
+nav {
+    background-color: var(--color-medium);
+}
+nav.bottom {
+    background-color: var(--color-light);
+    position: sticky;
+    top: 0;
+    padding: 0rem 0rem;
+    text-align: center;
+    height: 2.4rem;
+    padding-top: 1rem;
+    line-height: 1rem;
+    font-size: 1rem;
+    a {
+        padding: 1rem;
+        line-height: 1rem;
+        font-size: 1rem;
+        &.active {
+            border-bottom: 4px solid red;
+        }
+    }
+}

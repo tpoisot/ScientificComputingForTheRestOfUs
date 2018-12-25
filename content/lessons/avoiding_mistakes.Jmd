@@ -66,15 +66,111 @@ the argument is an array of numbers.
 But with the definition of signal-to-noise ratio we picked, it only makes sense
 to apply this function when all elements of `x` are *non-negative*. So this is
 the first thing our function should check. But instead of changing the function,
-we will first *test* its behavior:
+we will first *test* its behavior.
+
+{{% callout information %}}
+This process, starting by the tests and writing the function after, is called
+*test-driven development*. It is not the only way to proceed, but we think it is
+an interesting practice to experiment with.
+{{% /callout %}}
+
+Let's start by documenting our "normal" behavior: calling the function with only
+positive or null numbers should not give any warning or error message:
 
 ```julia
 using Test
-@test_throws ArgumentError snr([-1.0, 1.0, 2.0])
 @test_nowarn snr([0.0, 1.0, 2.0])
 ```
 
+This test is *passing*: running the function with this argument gives no warning
+(because the function currently does nothing, but that is besides the point).
+And we also want our function to return an error when we call it with negative
+arguments:
+
+```julia
+@test_throws DomainError snr([-1.0, 1.0, 2.0])
+```
+
+Well, this one, predictabily, is failing! So here is our first step: we need to
+add something to our function to make it return a `DomainError` -- this is a
+way to tell our user that something is not quite right with the arguments.
+
+{{% callout information %}}
+Julia, like most modern languages, has a well developed system for throwing
+errors, and when you write code that becomes a little bit complex, or is meant
+to be used by others, it is worth spending some time reading it.
+{{% /callout %}}
+
+We can add a line checking the sign of the smallest value of `x` -- if this is
+lower than 0 (and specifically, of the `zero` value of the type `T` of the
+elements), then we *throw* an error.
+
+```julia
+function snr(x::Vector{T}) where {T <: Number}
+  minimum(x) .< zero(T) && throw(DomainError(minimum(x), "all values passed must be positive or null."))
+end
+```
+
+Note that our error is *informative*: it gives a message explaining what went
+wrong. Now that we have added this line, we need to make sure that *both* our
+tests pass!
+
+```julia
+@test_nowarn snr([0.0, 1.0, 2.0])
+@test_throws DomainError snr([-1.0, 1.0, 2.0])
+```
+
+Yeah! Now, because our function involves calculating a standard deviation, we
+may want to restrict its application to inputs with more than 3 elements. This
+is also something we can test, and throw an error:
+
+```julia
+function snr(x::Vector{T}) where {T <: Number}
+  length(x) < 3 && throw(ArgumentError("A minimum of three values must be provided."))
+  minimum(x) .< zero(T) && throw(DomainError(minimum(x), "all values passed must be positive or null."))
+end
+```
+
+And now, let's run *all of the previous tests*, but also a new one.
+
+```julia
+@test_nowarn snr([0.0, 1.0, 2.0])
+@test_throws DomainError snr([-1.0, 1.0, 2.0])
+@test_throws ArgumentError snr([1.0, 1.0])
+```
+
+At this point, our function still does nothing. In fact, it does *less* than
+nothing, since it will refuse to run in some situations. This practice is
+generally refered to as *defensive programming*: we want to perform the actual
+computation only when we are confident that the conditions to run it are met.
+
+For now, we have done enough work. Let's work on the code later, and we will
+instead improve the "interface" of our function.
+
 ## Confusing interface
+
+{{% callout opinion %}}
+This entire section is a matter of opinions -- we encourage you to have a look
+at your favorite language's manual of style. [Julia has
+one](https://docs.julialang.org/en/v1/manual/style-guide/index.html) which we
+think is good, and we generally follow, except when we don't.
+{{% /callout %}}
+
+As it is written, our function does not have a particularly explicit name. Maybe
+`snr` makes sense to us because it is fresh in our mind; but will it still be
+true in a week? A month? Let's instead aim for something more explicit:
+`signaltonoiseratio`.
+
+```julia
+function signaltonoiseratio(x::Vector{T}) where {T <: Number}
+  length(x) < 3 && throw(ArgumentError("A minimum of three values must be provided."))
+  minimum(x) .< zero(T) && throw(DomainError(minimum(x), "all values passed must be positive or null."))
+end
+```
+
+It is longer, but it is also more explicity. And in most cases, typing `sign`
+and pressing `Tab` will autocomplete to the full function name, so there is
+minimal effort involved.
 
 ## Mistakes in the code
 

@@ -6,7 +6,7 @@ concepts: [control flow]
 weight: 1
 ---
 
-In the [first lesson]({{< ref "/lessons/01_flow_of_execution.md">}}), we have
+In the [first lesson]({{< ref "/lessons/control_flow.md">}}), we have
 presented the flow of execution as something largely unescapable. In practice,
 there are two important operations we may want to perform: skip an iteration, or
 stop the iteration process entirely. In this primer, we will see how this can be
@@ -71,13 +71,13 @@ end
 
 
 ````
-0.9
-0.55
-0.9
-0.75
-0.63
-0.37
-0.63
+0.92
+0.88
+0.95
+0.4
+0.91
+0.76
+0.89
 ````
 
 

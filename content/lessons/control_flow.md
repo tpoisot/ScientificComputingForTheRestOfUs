@@ -1,6 +1,5 @@
 ---
 title: The flow of execution
-slug: flow_of_execution
 weight: 1
 concepts: [control flow, Booleans, iteration]
 meta:
@@ -386,8 +385,8 @@ end
 
 ````
 bar
-bar
 foo
+bar
 foo
 bar
 ````
@@ -414,11 +413,11 @@ name is singular have a single value in them.
 
 Now we can start the loop itself:
 
-~~~ julia
+```raw
 for random_number in random_numbers
     # Content of the loop
 end
-~~~
+```
 
 This line gives a simple instruction to your computer. Actually, no. It gives a
 bunch of complex instructions to your computer, but it is an easy enough
@@ -439,13 +438,13 @@ examples in this lesson.
 The final lines we need to look at are in the *inside* of the loop -- we call
 this inside thing *the body* for no particular reason.
 
-~~~ julia
+```raw
 if random_number ≤ 0.5
     println("foo")
 else
     println("bar")
 end
-~~~
+```
 
 These lines should be familiar to you now -- your computer will evaluate the
 statement "`random_number` is lower than or equal to 0.5", and depending on the
@@ -465,11 +464,11 @@ random_numbers
 
 ````
 5-element Array{Float64,1}:
- 0.6126180466859987 
- 0.809757823837763  
- 0.21597303591000583
- 0.09424770541764937
- 0.6247850897404186
+ 0.94071770234629  
+ 0.2256632889797432
+ 0.9211672998789837
+ 0.4124168173098022
+ 0.5667059090384401
 ````
 
 
@@ -525,7 +524,7 @@ random_numbers[1]
 
 
 ````
-0.6126180466859987
+0.94071770234629
 ````
 
 
@@ -546,7 +545,7 @@ random_numbers[length(random_numbers)]
 
 
 ````
-0.6247850897404186
+0.5667059090384401
 ````
 
 
@@ -564,7 +563,7 @@ random_numbers[end]
 
 
 ````
-0.6247850897404186
+0.5667059090384401
 ````
 
 
@@ -580,7 +579,7 @@ first(random_numbers)
 
 
 ````
-0.6126180466859987
+0.94071770234629
 ````
 
 
@@ -591,7 +590,7 @@ last(random_numbers)
 
 
 ````
-0.6247850897404186
+0.5667059090384401
 ````
 
 
@@ -611,7 +610,7 @@ println(random_numbers[1])
 
 
 ````
-0.6126180466859987
+0.94071770234629
 ````
 
 
@@ -622,7 +621,7 @@ println(random_numbers[3])
 
 
 ````
-0.21597303591000583
+0.9211672998789837
 ````
 
 
@@ -633,7 +632,7 @@ println(random_numbers[5])
 
 
 ````
-0.6247850897404186
+0.5667059090384401
 ````
 
 
@@ -663,9 +662,9 @@ end
 
 
 ````
-Position 1:	0.6126180466859987
-Position 3:	0.21597303591000583
-Position 5:	0.6247850897404186
+Position 1:	0.94071770234629
+Position 3:	0.9211672998789837
+Position 5:	0.5667059090384401
 ````
 
 

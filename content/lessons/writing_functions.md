@@ -1,6 +1,5 @@
 ---
 title: Writing functions
-slug: writing_functions
 concepts: [writing functions, type stability, keyword arguments]
 weight: 2
 meta:
@@ -63,7 +62,7 @@ $(0,2)$ will be save us almost four keystrokes!
 After the following lesson, it is tempting to write:
 
 
-```julia
+````julia
 N = 10
 darts = []
 for i in 1:N
@@ -71,7 +70,26 @@ for i in 1:N
     push!(darts, (x, y))
 end
 darts
-```
+````
+
+
+````
+10-element Array{Any,1}:
+ (0.18100883327596362, 1.222530344352903) 
+ (1.8338913283782698, 1.245127734877006)  
+ (1.3225258301255964, 0.6016744278059871) 
+ (1.0132479720099385, 0.20264329292731675)
+ (0.8315592630701181, 1.9250147929498915) 
+ (1.487271492497508, 0.42356620715905313) 
+ (0.22562121829159087, 1.5585120576805647)
+ (0.15450633663882307, 1.5501525581369697)
+ (1.779759246999408, 1.8203299948773544)  
+ (0.8059009283762375, 0.92557868987311)
+````
+
+
+
+
 
 This introduces a few new notations. The `darts = []` instruction creates an
 *empty* array. This is not the optimal way of approaching this problem, but
@@ -138,7 +156,7 @@ darts hit. The block below presents *one possible* implementation of such a
 function, with comments about whats is hapenning in every line:
 
 
-```julia
+````julia
 function throw_darts(n::Int64)
     #=
     Let's create a space to store the results in
@@ -182,7 +200,16 @@ function throw_darts(n::Int64)
     =#
     return darts
 end
-```
+````
+
+
+````
+throw_darts (generic function with 1 method)
+````
+
+
+
+
 
 Now, we can *call* this function, using `throw_darts(10)`. You can experiment
 changing `10` by other values. For example, how do you throw 124 darts?
@@ -217,12 +244,21 @@ Then, we can take the distance between the points as
 Let's wrap this up!
 
 
-```julia
+````julia
 function is_within_circle(point, center, radius)
   distance = (point[1]-center[1])^2 + (point[2]-center[2])^2
   return distance <= radius
 end
-```
+````
+
+
+````
+is_within_circle (generic function with 1 method)
+````
+
+
+
+
 
 There is a more *idiomatic* way of writing this function -- *idiomatic* means
 that we are using some language-specific ways of expressing operations. In this
@@ -247,13 +283,42 @@ within the circle, and that a point above the center as a distance greater than
 the radius is not:
 
 
-```julia
+````julia
 center = (1.0, 1.0)
 radius = 1.0
 println("Case 1: ", is_within_circle(center, center, radius))
+````
+
+
+````
+Case 1: true
+````
+
+
+
+````julia
 println("Case 2: ", is_within_circle((1.0, 2.0), center, radius))
+````
+
+
+````
+Case 2: true
+````
+
+
+
+````julia
 println("Case 3: ", is_within_circle((1.0, 2.1), center, radius))
-```
+````
+
+
+````
+Case 3: false
+````
+
+
+
+
 
 Although these are very simple tests, it seems that our function checks out. So
 we can move forward. But before we do so, let us take a step back.
@@ -277,7 +342,7 @@ There are probably about another million different ways to do this. Here we will
 write a function using the counter:
 
 
-```julia
+````julia
 function how_many_darts(darts, center, radius)
     #=
     Our function will take three inputs:
@@ -311,14 +376,23 @@ function how_many_darts(darts, center, radius)
     =#
     return n
 end
-```
+````
+
+
+````
+how_many_darts (generic function with 1 method)
+````
+
+
+
+
 
 And we're done! Remember, our approximation of $\pi$ is $4\times(n/N)$, where
 $N$ is the number of darts, and $n$ is the number of hits. So we can finally
 write a function, specifying $N$, and start to estimate the value of $\pi$:
 
 
-```julia
+````julia
 function estimate_pi(N)
   center = (1.0, 1.0)
   radius = 1.0
@@ -326,7 +400,16 @@ function estimate_pi(N)
   n = how_many_darts(darts, center, radius)
   return 4*n/N
 end
-```
+````
+
+
+````
+estimate_pi (generic function with 1 method)
+````
+
+
+
+
 
 Our function is *building* on the previous, small, functions we wrote. This
 results in code that is easy to read (we don't have to scroll through multiple
@@ -336,10 +419,32 @@ see that modular code is easy to *test* (and to debug).
 
 So, how good is our estimate?
 
-```julia
+````julia
 estimate = estimate_pi(100000)
+````
+
+
+<pre class="julia-error">
+ERROR: MethodError: no method matching Array&#123;Tuple&#123;Float64,Float64&#125;,1&#125;&#40;::Int64&#41;
+Closest candidates are:
+  Array&#123;Tuple&#123;Float64,Float64&#125;,1&#125;&#40;&#41; where T at boot.jl:413
+  Array&#123;Tuple&#123;Float64,Float64&#125;,1&#125;&#40;&#33;Matched::UndefInitializer, &#33;Matched::Int64&#41; where T at boot.jl:394
+  Array&#123;Tuple&#123;Float64,Float64&#125;,1&#125;&#40;&#33;Matched::UndefInitializer, &#33;Matched::Int64...&#41; where &#123;T, N&#125; at boot.jl:400
+  ...
+</pre>
+
+
+````julia
 println("Estimate: $(estimate)\tπ: $(π)")
-```
+````
+
+
+<pre class="julia-error">
+ERROR: UndefVarError: estimate not defined
+</pre>
+
+
+
 
 ## Keyword arguments and default values
 
@@ -361,27 +466,53 @@ called with `log(b,n)` to get $\text{log}_b(n)$. We would like to write a
 function to get the $\text{log}_2$ by default, but still be able to change the
 base if we need.
 
-```julia
+````julia
 function my_log_function(n; b=2.0)
   return log(b,n)
 end
-```
+````
+
+
+````
+my_log_function (generic function with 1 method)
+````
+
+
+
+
 
 We have declared the arguments of this function differently: `n` is a
 *non-keyword* argument, because it makes no sense to fix a default value. On the
 other hand, `b` has a default value of `2.0`. If we call this function using,
 for example,
 
-```julia
+````julia
 my_log_function(2.0)
-```
+````
+
+
+````
+1.0
+````
+
+
+
+
 
 then the computer will see that we have not asked for a specific value of `b`,
 and use the default. But if we use the following syntax,
 
-```julia
+````julia
 my_log_function(2.0; b=e)
-```
+````
+
+
+<pre class="julia-error">
+ERROR: UndefVarError: e not defined
+</pre>
+
+
+
 
 then the value of `b` will be fixed (to $e$), and the function will use this.
 
@@ -409,14 +540,29 @@ for our computers. And we need to pay attention to this fact to write code that
 is reasonably fast. Let's start with a few illustrations:
 
 
-```julia
+````julia
 typeof(0)
-```
+````
 
 
-```julia
+````
+Int64
+````
+
+
+
+````julia
 typeof(0.0)
-```
+````
+
+
+````
+Float64
+````
+
+
+
+
 
 The `typeof` function tells us how the computer is thinking about its argument:
 `0` is an integer number, and `0.0` is a floating point number.
@@ -426,11 +572,24 @@ longer than if I has asked you what the sum of 0.0 and 1.0 is. Is it true for
 the computer?
 
 
-```julia
+````julia
 time_int_and_float = @elapsed 0 + 1.0
 time_float_and_float = @elapsed 0.0 + 1.0
 println("It takes $(round(time_int_and_float/time_float_and_float,2)) times longer to work with different types!")
-```
+````
+
+
+<pre class="julia-error">
+ERROR: MethodError: no method matching round&#40;::Float64, ::Int64&#41;
+Closest candidates are:
+  round&#40;::Float64, &#33;Matched::RoundingMode&#123;:Nearest&#125;&#41; at float.jl:368
+  round&#40;::Float64, &#33;Matched::RoundingMode&#123;:Up&#125;&#41; at float.jl:366
+  round&#40;::Float64, &#33;Matched::RoundingMode&#123;:Down&#125;&#41; at float.jl:364
+  ...
+</pre>
+
+
+
 
 The exact number may vary, but on my machine, it takes about 1.5 times longer to
 do the operation with different types. Why is that?

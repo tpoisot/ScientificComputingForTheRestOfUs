@@ -44,7 +44,7 @@ println(initial_guess)
 
 
 ````
-k,s-xjwef?voov
+hzljuhyery!,br
 ````
 
 
@@ -68,14 +68,14 @@ end
 
 
 ````
-0.0
+0.07142857142857142
 ````
 
 
 
 
 
-The fitness of this genome is 0.0. We can increase the
+The fitness of this genome is 0.07142857142857142. We can increase the
 number of individuals in our population, by generating a *lot* of initial
 guesses:
 
@@ -95,7 +95,7 @@ scatter(sort(ω.(initial_guesses, problem)), leg=false, c=:grey, msw=0.0)
 ````
 
 
-{{< figure src="../figures/genetic_algorithm_5_1.svg" title="Fitness of the initial solutions. Although quite a lot of the genomes are a very low fitness, recombination and mutation will improve this over time."  >}}
+{{< figure src="../figures/genetic_algorithm_5_1.svg" title="Fitness of the initial solutions. Although quite a lot of the genomes have a very low fitness, recombination and mutation will improve this over time."  >}}
 
 
 Picking the next generation -- pair of parents, recombination at random point,
@@ -131,26 +131,26 @@ reproduction(initial_guesses, ω.(initial_guesses, problem))
 
 ````
 500-element Array{String,1}:
- "wmh!qiusgk,!mz"
- "bd!pxkmftzk.ii"
- "luhhscu enkngt"
- "-q-viacfhmnq-w"
- "ojy.tgjor?jdi?"
- "r y.,wqn vqppa"
- "yqo.agyfe .fqh"
- "k-s,xiyg.?cyq?"
- "sibo,zq bswuyb"
- ",qzo!af?,jkyr?"
+ "fs!mlhboxu w!n"
+ "pun-npy.!k-blw"
+ "brineggifivso-"
+ "pbjnhng .lz-gc"
+ "pun-nphp-veo?l"
+ "rajklb!pf denw"
+ "nykrhhycwqnxqe"
+ "umsnp-elu qqsg"
+ "?m.ws?yafyuzgp"
+ "zsah! o-arcqwd"
  ⋮               
- "cdqp s-.k moto"
- "sbvc,bwofdpxbw"
- " g,yboopxsowv?"
- ".kaehseln-  gb"
- "k?w.,n.po oat-"
- "hpsv,-?k.nx,na"
- "r ovtyyspkedi?"
- "jhbtxqcq?imnix"
- "krue,.wts ftg?"
+ "ehnznsyacy.hag"
+ "s!bge!tvtkz-gc"
+ ", a?cue-bwcg?b"
+ "zsah! o-zibfjs"
+ "vdi ,uddgjcui-"
+ "!-vlo! mtmmezg"
+ "pun-npzo-llud?"
+ "wbcqmwdddcigki"
+ "wcxwv?la,lungp"
 ````
 
 

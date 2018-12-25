@@ -71,7 +71,7 @@ end
 There are *many* things that can go wrong with this function -- so we may want
 to add a few checks before we call it. This is an interesting exercise to do,
 and you can re-read through the lesson on [avoiding mistakes]({{< ref
-"/lessons/03_avoiding_mistakes.md" >}}) to refresh your memory. For now, we will
+"/lessons/avoiding_mistakes.md" >}}) to refresh your memory. For now, we will
 use this basic (but unsafe) version.
 
 Let's try! If we have a single species (the preys), and we give it any initial

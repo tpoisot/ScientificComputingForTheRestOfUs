@@ -1,6 +1,5 @@
 ---
 title: The flow of execution
-slug: flow_of_execution
 weight: 1
 concepts: [control flow, Booleans, iteration]
 meta:
@@ -282,11 +281,11 @@ name is singular have a single value in them.
 
 Now we can start the loop itself:
 
-~~~ julia
+```raw
 for random_number in random_numbers
     # Content of the loop
 end
-~~~
+```
 
 This line gives a simple instruction to your computer. Actually, no. It gives a
 bunch of complex instructions to your computer, but it is an easy enough
@@ -307,13 +306,13 @@ examples in this lesson.
 The final lines we need to look at are in the *inside* of the loop -- we call
 this inside thing *the body* for no particular reason.
 
-~~~ julia
+```raw
 if random_number ≤ 0.5
     println("foo")
 else
     println("bar")
 end
-~~~
+```
 
 These lines should be familiar to you now -- your computer will evaluate the
 statement "`random_number` is lower than or equal to 0.5", and depending on the

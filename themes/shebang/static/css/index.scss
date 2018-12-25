@@ -1,67 +1,28 @@
 @import url('https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed:300,300i,400,400i,500,500i|Barlow:400,400i,500,500i,600,600i');
 
 html, body {
-  font-family: "Barlow";
-  font-size: 16px;
+  font-family: var(--font-main);
+  font-size: var(--font-size);
   margin: 0 0;
   padding: 0 0;
   background-color: var(--color-bg);
 }
 
 h1, h2, h3, h4 {
-  font-family: "Barlow Semi Condensed";
-  font-weight: 500;
+  font-family: var(--font-title);
+  font-weight: 400;
   color: var(--color-title);
 }
 
-code {
-  font-family: "Hack";
+b, strong {
+  font-weight: 500;
 }
 
-section#navigation {
-  background-color: #ffffff;
-  font-family: "Barlow Semi Condensed";
-  box-shadow: 0px 0px 2px #d7d8da;
-  padding: 4px;
-  line-height: 60px;
-  font-size: 18px;
-  position: fixed;
-  background-color: white;
-  top: 0;
-  width: 100vw;
-  z-index: 9999;
-  .main {
-    float: right;
-    margin: 0px 1em;
-  }
-  a {
-    text-decoration: none;
-    text-transform: lowercase;
-    font-variant: small-caps;
-    color: rgb(79, 79, 79);
-    padding: 0em 0.5em;
-    &.active {
-      color: black;
-    }
-  }
-  img {
-    vertical-align: top;
-    padding-right: 4px;
-  }
-  * {
-    display: inline-block;
-  }
-  .title {
-    color: var(--color-title);
-    font-weight: 500;
-  }
-  .subtitle {
-    font-weight: 300;
-  }
-  .header {
-    text-transform: uppercase;
-  }
+code {
+  font-family: var(--font-code);
 }
+
+@import "navigation";
 
 section#content {
   max-width: 870px;
@@ -69,18 +30,13 @@ section#content {
   margin: 20px auto;
   padding: 1em;
   padding-top: 5em;
-  line-height: 1.8rem;
-  font-size: 1.1rem;
-  p {
-    code {
-      font-size: 0.95rem;
-    }
-  }
+  line-height: var(--font-copy-lh);
+  font-size: var(--font-copy-size);
   a {
     text-decoration: none;
     color: var(--color-copy-a);
     &:hover {
-      font-weight: bold;
+      background-color: var(--color-light);
     }
   }
 }

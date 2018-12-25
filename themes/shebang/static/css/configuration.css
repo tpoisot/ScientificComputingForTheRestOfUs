@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,300,300i|Roboto+Mono:400,400i,500,500i|Roboto:400,400i,500,500i&subset=greek,greek-ext");
 :root {
   --color-warning: orange;
   --color-danger: red;
@@ -18,5 +19,14 @@
   --color-draft-border: hsl(48, 25%, 50%);
   --color-construction-bg: hsl(2, 25%, 80%);
   --color-construction-border: hsl(2, 25%, 50%); }
+
+:root {
+  --font-main: "Roboto";
+  --font-title: "Roboto Condensed";
+  --font-code: "Roboto Mono";
+  --font-size: 16px;
+  --font-copy-size: 16px;
+  --font-lh: 20px;
+  --font-copy-lh: 26px; }
 
 /*# sourceMappingURL=configuration.css.map */

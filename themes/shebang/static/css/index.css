@@ -1,23 +1,26 @@
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed:300,300i,400,400i,500,500i|Barlow:400,400i,500,500i,600,600i");
 html, body {
-  font-family: "Barlow";
-  font-size: 16px;
+  font-family: var(--font-main);
+  font-size: var(--font-size);
   margin: 0 0;
   padding: 0 0;
   background-color: var(--color-bg); }
 
 h1, h2, h3, h4 {
-  font-family: "Barlow Semi Condensed";
-  font-weight: 500;
+  font-family: var(--font-title);
+  font-weight: 400;
   color: var(--color-title); }
 
+b, strong {
+  font-weight: 500; }
+
 code {
-  font-family: "Hack"; }
+  font-family: var(--font-code); }
 
 section#navigation {
-  background-color: #ffffff;
-  font-family: "Barlow Semi Condensed";
+  font-family: var(--font-title);
+  font-weight: 300;
   box-shadow: 0px 0px 2px #d7d8da;
   padding: 4px;
   line-height: 60px;
@@ -57,15 +60,13 @@ section#content {
   margin: 20px auto;
   padding: 1em;
   padding-top: 5em;
-  line-height: 1.8rem;
-  font-size: 1.1rem; }
-  section#content p code {
-    font-size: 0.95rem; }
+  line-height: var(--font-copy-lh);
+  font-size: var(--font-copy-size); }
   section#content a {
     text-decoration: none;
     color: var(--color-copy-a); }
     section#content a:hover {
-      font-weight: bold; }
+      background-color: var(--color-light); }
 
 pre {
   font-size: 0.9rem;

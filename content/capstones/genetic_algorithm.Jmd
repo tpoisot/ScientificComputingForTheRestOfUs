@@ -135,7 +135,7 @@ end
 ```
 
 The `break` syntax (and short-circuit operators) is covered in the [Advanced
-control flow primer]({{> "/primers/advanced_control_flow.md" <}}). In short,
+control flow primer]({{> ref "/primers/advanced_control_flow.md" <}}). In short,
 whenever the population has a mutant whose fitness is 1, we don't need to keep
 running, and so the code will stop.
 

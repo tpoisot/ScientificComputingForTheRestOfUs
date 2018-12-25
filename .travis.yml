@@ -7,16 +7,10 @@ addons:
   apt:
     update: true
 
-before_install:
-  - gem install sass
-
-install:
-  - https://github.com/gohugoio/hugo/releases/download/v0.53/hugo_0.53_Linux-64bit.deb
-  - sudo dpkg -i hugo*.deb
-
 stages:
   - build
-  - compile
+  - install
+  - render
   - name: deploy
     if: branch=master
 
@@ -24,7 +18,12 @@ jobs:
   include:
     - stage: build
       script: julia compile.jl
-    - stage: compile
+    - stage: install
+      script:
+        - gem install sass
+        - wget https://github.com/gohugoio/hugo/releases/download/v0.53/hugo_0.53_Linux-64bit.deb
+        - sudo dpkg -i hugo*.deb
+    - stage: render
       script: hugo
     - stage: deploy
       script: |

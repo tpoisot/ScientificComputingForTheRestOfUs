@@ -17,8 +17,6 @@ values based on them. After reading the lesson on [Control flow]({{< ref
 and `while`. But most tasks can actually be adressed using an approach which is
 even more simple: map/filter/reduce.
 
-Let's say we want to 
-
 ## Map
 
 ````julia

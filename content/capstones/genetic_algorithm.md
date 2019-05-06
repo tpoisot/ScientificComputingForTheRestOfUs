@@ -1,16 +1,3 @@
----
-title: Genetic algorithm
-weight: 1
-status: construction
-packages:
-  - Plots
-  - StatsBase
-  - Statistics
-concepts:
-  - arrays
-  - control flow
----
-
 Genetic algorithm is a heuristic that takes heavy inspiration from evolutionary
 biology, to explore a space of parameters rapidly and converge to an optimum.
 Every solution is a "genome", and the combinations can undergo mutation and
@@ -54,7 +41,7 @@ println(initial_guess)
 
 
 ````
-lpez!chbtbr.rj
+!?mzqnwu.-cyjn
 ````
 
 
@@ -100,12 +87,12 @@ initial_guesses = [reduce(*, sample(search_space, length(problem), replace=true)
 Once this is done, we can view their fitness distribution:
 
 ````julia
-using Plots
+using StatsPlots
 scatter(sort(ω.(initial_guesses, problem)), leg=false, c=:grey, msw=0.0)
 ````
 
 
-{{< figure src="../figures/genetic_algorithm_5_1.svg" title="Fitness of the initial solutions. Although quite a lot of the genomes have a very low fitness, recombination and mutation will improve this over time."  >}}
+{{< figure src="../figures/genetic_algorithm_5_1.png" title="Fitness of the initial solutions. Although quite a lot of the genomes have a very low fitness, recombination and mutation will improve this over time."  >}}
 
 
 Picking the next generation -- pair of parents, recombination at random point,
@@ -116,6 +103,11 @@ then mutation:
 parents = sample(initial_guesses, StatsBase.weights(Ω), 2; replace=false)
 cutoff = rand(1:length(problem))
 offspring = first(parents)[1:cutoff] * last(parents)[cutoff+1:end]
+````
+
+
+````
+"acitexoogbqark"
 ````
 
 
@@ -141,26 +133,26 @@ reproduction(initial_guesses, ω.(initial_guesses, problem))
 
 ````
 500-element Array{String,1}:
- "nvlsk yty.tg c"
- "t.j c vj, cbtj"
- "wysc.ayz??nu-a"
- "lwarnsdw,huiml"
- "hhsc.x.rgrenmg"
- "wysc.xmrr,,ke "
- "ezbl.--nnh.-rp"
- "q!bg,sbzsrb,w."
- "lwarnsdw,huffg"
- "ohan eavmsyucs"
+ "vhqyx-yyb eoge"
+ "wrpidmxn?egcoc"
+ "lk k,ty,u.ubng"
+ "woou,gy qheafr"
+ "w,an-bxbueiiaz"
+ "wrpidmxn?!q.sz"
+ "yf-an.yes-xfwa"
+ "ohgte?q?twuucu"
+ "lk k,jxq!j!hyv"
+ "jetkd !h- chc?"
  ⋮               
- "wypm jy?rontkv"
- "ygjtqe!yuypukw"
- "!ttqxucbn rqz?"
- "ygjtqe!yi oukw"
- "wgyewndvar!gvs"
- "xxjxff.xzhvhdx"
- "dwapmckvkn-a.f"
- ".f?cp.apnpxri."
- "wyscayibf x-i."
+ "n.tvlxy?pab,zf"
+ "r?-kfty,u.ubng"
+ "kaui-kaok?shkl"
+ "v?gkvyn-f-lkoj"
+ "qlamtnq.k ,ppi"
+ "q-gp,ljwgvjdso"
+ "drijgzeolevh.p"
+ "jbjt-kaok?sfkk"
+ "eaaqufgu.q,wth"
 ````
 
 
@@ -216,7 +208,7 @@ end
 
 
 The `break` syntax (and short-circuit operators) is covered in the [Advanced
-control flow primer]({{> "/primers/advanced_control_flow.md" <}}). In short,
+control flow primer]({{> ref "/primers/advanced_control_flow.md" <}}). In short,
 whenever the population has a mutant whose fitness is 1, we don't need to keep
 running, and so the code will stop.
 
@@ -242,4 +234,4 @@ yaxis!((0,1))
 ````
 
 
-{{< figure src="../figures/genetic_algorithm_10_1.svg"  >}}
+{{< figure src="../figures/genetic_algorithm_10_1.png"  >}}

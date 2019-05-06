@@ -1,12 +1,3 @@
----
-title: Writing functions
-concepts: [writing functions, type stability, keyword arguments]
-weight: 2
-meta:
-  issue: 18
-  label: "lesson:functions"
----
-
 ## Good code is small code
 
 In the previous lessons, we have seen how to express problems using `for`, `if`,
@@ -75,16 +66,16 @@ darts
 
 ````
 10-element Array{Any,1}:
- (0.8415675054854441, 0.9270293063711446)  
- (1.1670837996106629, 1.7987151808674104)  
- (1.99121357508238, 1.87611008581794)      
- (0.7314061705202328, 0.6566590014225953)  
- (0.6308786519903355, 0.813743298353562)   
- (0.7062348364616313, 1.3212693402536067)  
- (0.43617139625611356, 1.8583154678826315) 
- (0.8706268617419313, 1.1688523378684743)  
- (1.3493986148583454, 0.5852566242974095)  
- (0.019618448592392923, 1.1230503232694504)
+ (1.7126648094447092, 0.31903338702966577) 
+ (1.1420874702609827, 0.9097275484507117)  
+ (0.5278296241009928, 1.2915300278153494)  
+ (1.8769551232162875, 0.027655187851029606)
+ (1.0684049325924327, 1.2745828418663936)  
+ (1.464453003261708, 1.875858809110503)    
+ (0.4255070128923002, 0.8661875507869254)  
+ (1.3280724464571954, 1.4454807828934841)  
+ (1.8857694956418296, 0.5920201271466028)  
+ (0.03015205342392635, 0.25410851787954014)
 ````
 
 
@@ -427,9 +418,9 @@ estimate = estimate_pi(100000)
 <pre class="julia-error">
 ERROR: MethodError: no method matching Array&#123;Tuple&#123;Float64,Float64&#125;,1&#125;&#40;::Int64&#41;
 Closest candidates are:
-  Array&#123;Tuple&#123;Float64,Float64&#125;,1&#125;&#40;&#41; where T at boot.jl:413
-  Array&#123;Tuple&#123;Float64,Float64&#125;,1&#125;&#40;&#33;Matched::UndefInitializer, &#33;Matched::Int64&#41; where T at boot.jl:394
-  Array&#123;Tuple&#123;Float64,Float64&#125;,1&#125;&#40;&#33;Matched::UndefInitializer, &#33;Matched::Int64...&#41; where &#123;T, N&#125; at boot.jl:400
+  Array&#123;Tuple&#123;Float64,Float64&#125;,1&#125;&#40;&#41; where T at boot.jl:421
+  Array&#123;Tuple&#123;Float64,Float64&#125;,1&#125;&#40;&#33;Matched::UndefInitializer, &#33;Matched::Int64&#41; where T at boot.jl:402
+  Array&#123;Tuple&#123;Float64,Float64&#125;,1&#125;&#40;&#33;Matched::UndefInitializer, &#33;Matched::Int64...&#41; where &#123;T, N&#125; at boot.jl:408
   ...
 </pre>
 
@@ -582,9 +573,9 @@ println("It takes $(round(time_int_and_float/time_float_and_float,2)) times long
 <pre class="julia-error">
 ERROR: MethodError: no method matching round&#40;::Float64, ::Int64&#41;
 Closest candidates are:
-  round&#40;::Float64, &#33;Matched::RoundingMode&#123;:Nearest&#125;&#41; at float.jl:368
-  round&#40;::Float64, &#33;Matched::RoundingMode&#123;:Up&#125;&#41; at float.jl:366
-  round&#40;::Float64, &#33;Matched::RoundingMode&#123;:Down&#125;&#41; at float.jl:364
+  round&#40;::Float64, &#33;Matched::RoundingMode&#123;:Nearest&#125;&#41; at float.jl:370
+  round&#40;::Float64, &#33;Matched::RoundingMode&#123;:Up&#125;&#41; at float.jl:368
+  round&#40;::Float64, &#33;Matched::RoundingMode&#123;:Down&#125;&#41; at float.jl:366
   ...
 </pre>
 

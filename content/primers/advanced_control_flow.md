@@ -1,11 +1,3 @@
----
-title: Advanced control flow
-slug: advanced_control_flow
-layout: page
-concepts: [control flow]
-weight: 1
----
-
 In the [first lesson]({{< ref "/lessons/control_flow.md">}}), we have
 presented the flow of execution as something largely unescapable. In practice,
 there are two important operations we may want to perform: skip an iteration, or
@@ -71,11 +63,9 @@ end
 
 
 ````
-0.62
-0.76
-0.64
-0.37
-0.85
+0.56
+0.78
+0.79
 ````
 
 

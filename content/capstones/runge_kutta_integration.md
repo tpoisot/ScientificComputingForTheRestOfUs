@@ -1,17 +1,3 @@
----
-title: Runge-Kutta integration
-slug: runge_kutta_integration
-weight: 2
-status: draft
-packages:
-  - Plots
-concepts:
-  - writing functions
-  - numerical precision
-  - arrays
-  - keyword arguments
----
-
 Numerical integration, the search for solutions of differential equations, is a
 hallmark of scientific computing. In this lesson, we will see how we can apply
 multipe concepts to write our own routine for the second-order Runge-Kutta
@@ -120,7 +106,7 @@ end
 We can plot this:
 
 ````julia
-using Plots
+using StatsPlots
 plot(hcat(population...)[1,:], c=:teal, lab="Prey",
   xlim=(0,30), ylim=(0,5), frame=:origin,
   xlab="Time", ylab="Abundance"
@@ -129,7 +115,7 @@ plot!(hcat(population...)[2,:], c=:purple, lab="Predator")
 ````
 
 
-{{< figure src="../figures/runge_kutta_integration_4_1.svg" title="Even with a simple model, our naive integration scheme causes the population to crash. This is why we need to use a more robust integration method!"  >}}
+{{< figure src="../figures/runge_kutta_integration_4_1.png" title="Even with a simple model, our naive integration scheme causes the population to crash. This is why we need to use a more robust integration method!"  >}}
 
 
 We obviously need to start thinking about the RK2 integrator! We want our RK2
@@ -264,7 +250,7 @@ plot!(t, u[:,2], c=:purple, lab="Predator")
 ````
 
 
-{{< figure src="../figures/runge_kutta_integration_8_1.svg" title="Using a second-order Runge-Kutta method, we can get the correct result. This predation model is not very complex, but it illustrates really well the importance of taking numerical integration seriously!"  >}}
+{{< figure src="../figures/runge_kutta_integration_8_1.png" title="Using a second-order Runge-Kutta method, we can get the correct result. This predation model is not very complex, but it illustrates really well the importance of taking numerical integration seriously!"  >}}
 
 
 Notice that we had previously not used $t$ in the integration -- but because our
@@ -302,4 +288,4 @@ plot!(t, u[:,2], c=:purple, lab="Predator")
 ````
 
 
-{{< figure src="../figures/runge_kutta_integration_10_1.svg" title="Because we have written a general function, generating a new result is as simple as changing the name of the function we want to integrate (and adding the correct keyword arguments, if needed)!"  >}}
+{{< figure src="../figures/runge_kutta_integration_10_1.png" title="Because we have written a general function, generating a new result is as simple as changing the name of the function we want to integrate (and adding the correct keyword arguments, if needed)!"  >}}

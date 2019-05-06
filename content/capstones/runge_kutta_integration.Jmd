@@ -4,7 +4,7 @@ slug: runge_kutta_integration
 weight: 2
 status: draft
 packages:
-  - Plots
+  - StatsPlots
 concepts:
   - writing functions
   - numerical precision
@@ -96,7 +96,7 @@ end
 We can plot this:
 
 ```julia; fig_cap="Even with a simple model, our naive integration scheme causes the population to crash. This is why we need to use a more robust integration method!"
-using Plots
+using StatsPlots
 plot(hcat(population...)[1,:], c=:teal, lab="Prey",
   xlim=(0,30), ylim=(0,5), frame=:origin,
   xlab="Time", ylab="Abundance"

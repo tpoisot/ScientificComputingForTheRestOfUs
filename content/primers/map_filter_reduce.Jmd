@@ -4,7 +4,7 @@ slug: map_filter_reduce
 layout: page
 status: construction
 concepts: [map filter reduce]
-weight: 2
+weight: 3
 ---
 
 A *lot* of computing tasks involve going through arrays, or collections, of

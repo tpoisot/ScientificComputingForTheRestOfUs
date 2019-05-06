@@ -3,7 +3,7 @@ title: Genetic algorithm
 weight: 1
 status: construction
 packages:
-  - Plots
+  - StatsPlots
   - StatsBase
   - Statistics
 concepts:
@@ -69,7 +69,7 @@ initial_guesses = [reduce(*, sample(search_space, length(problem), replace=true)
 Once this is done, we can view their fitness distribution:
 
 ```julia; fig_cap="Fitness of the initial solutions. Although quite a lot of the genomes have a very low fitness, recombination and mutation will improve this over time."
-using Plots
+using StatsPlots
 scatter(sort(ω.(initial_guesses, problem)), leg=false, c=:grey, msw=0.0)
 ```
 

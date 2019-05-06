@@ -1,12 +1,3 @@
----
-title: The flow of execution
-weight: 1
-concepts: [control flow, Booleans, iteration]
-meta:
-  issue: 12
-  label: "lesson:flow"
----
-
 ## Programming really *is* a language
 
 But if you understand three words, you will be able to hold a good conversation
@@ -384,10 +375,10 @@ end
 
 
 ````
+foo
 bar
-foo
-foo
-foo
+bar
+bar
 bar
 ````
 
@@ -464,11 +455,11 @@ random_numbers
 
 ````
 5-element Array{Float64,1}:
- 0.5111247071296965 
- 0.18939922397144549
- 0.07604927399718964
- 0.2637106339898969 
- 0.5729970752730669
+ 0.21054797737371178
+ 0.9224662589536379 
+ 0.6096525404854314 
+ 0.9684168700116775 
+ 0.6166567135811234
 ````
 
 
@@ -524,7 +515,7 @@ random_numbers[1]
 
 
 ````
-0.5111247071296965
+0.21054797737371178
 ````
 
 
@@ -545,7 +536,7 @@ random_numbers[length(random_numbers)]
 
 
 ````
-0.5729970752730669
+0.6166567135811234
 ````
 
 
@@ -563,7 +554,7 @@ random_numbers[end]
 
 
 ````
-0.5729970752730669
+0.6166567135811234
 ````
 
 
@@ -579,7 +570,7 @@ first(random_numbers)
 
 
 ````
-0.5111247071296965
+0.21054797737371178
 ````
 
 
@@ -590,7 +581,7 @@ last(random_numbers)
 
 
 ````
-0.5729970752730669
+0.6166567135811234
 ````
 
 
@@ -610,7 +601,7 @@ println(random_numbers[1])
 
 
 ````
-0.5111247071296965
+0.21054797737371178
 ````
 
 
@@ -621,7 +612,7 @@ println(random_numbers[3])
 
 
 ````
-0.07604927399718964
+0.6096525404854314
 ````
 
 
@@ -632,7 +623,7 @@ println(random_numbers[5])
 
 
 ````
-0.5729970752730669
+0.6166567135811234
 ````
 
 
@@ -662,9 +653,9 @@ end
 
 
 ````
-Position 1:	0.5111247071296965
-Position 3:	0.07604927399718964
-Position 5:	0.5729970752730669
+Position 1:	0.21054797737371178
+Position 3:	0.6096525404854314
+Position 5:	0.6166567135811234
 ````
 
 

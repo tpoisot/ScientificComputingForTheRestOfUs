@@ -1,3 +1,13 @@
+---
+title: Optimization
+slug: optimization
+layout: page
+status: construction
+concepts:
+  - optimization
+  - profiling
+weight: 2
+---
 
 ````julia
 function initial_mutation(x)

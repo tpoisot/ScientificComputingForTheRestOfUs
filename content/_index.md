@@ -11,17 +11,20 @@ you adopt practices that make it less likely to introduce mistakes in your code,
 and more likely to catch them. Hopefully, this will let all of us write code we
 can trust more.**
 
-[Read the lessons](/lessons/)
-
-[Come talk with us on Gitter](https://gitter.im/ScientificComputingForTheRestOfUs/Lobby)
-
 Good principles in scientific computing can help you write code that is easier
 to maintain, easier to reproduce, and easier to debug. But it can be difficult
 to find an introduction to get you started. The goal of this project is to
 provide reproducible documents you can use to get started on the most important
 points. You can use these lessons on your own, or as a group.
 
-**TODO** difference between lessons / capstones / primers
+The content is divided in three categories: [lessons](/lessons/),
+[capstones](/capstones/) and [primers](/primers/). We recommend starting by the
+lessons - they will provide basic information. Capstones are examples of
+real-life application of the content of lessons. Finally, primers are very short
+bits of additional information, which can be browsed at any time.
+
+[Come talk with us on Gitter](https://gitter.im/ScientificComputingForTheRestOfUs/Lobby)
+
 
 ## Who is this material for?
 
@@ -62,7 +65,7 @@ The best way to read this material is to keep a window with either
 [JuliaBox][jlbox] or a terminal running *Julia* open, and **type** the code. It
 is tempting to copy and paste, but typing the code actually matters.
 
-Snippets of code that are *important* are on a white background, like so:
+Snippets of code that are *important* are presented this way:
 
 ~~~ julia
 [rand(i) for i in 1:5]
@@ -112,6 +115,12 @@ never be tolerated. Disliking Windows has not made anyone edgy or cool since
 1998.
 {{< /callout >}}
 
+## Workshop
+
+This material can be given in a workshop format, ideally over one and a half
+day, covering several lessons and one capstone example. Please contact [Timothée
+Poisot](mailto:timothee.poisot@umontreal.ca) for more information.
+
 ## Contributing
 
 There are a number of ways to contribute. Before you start, please have a look
@@ -151,9 +160,9 @@ some inspiration.
 
 ## Contributors
 
-**Comments, ideas, feedback**: Hao Ye, Philipp Bayer, Tim Head, Ethan White
-
 **Lesson contents**: Timothée Poisot
+
+**Comments, ideas, feedback**: Hao Ye, Philipp Bayer, Tim Head, Ethan White
 
 **Other contributions**: Konrad Hinsen
 
@@ -190,4 +199,4 @@ Finally, a short [Q&A at *Nature Jobs*][qanda] about this project.
 
 ## Other information
 
-[![license](https://img.shields.io/github/license/tpoisot/ScientificComputingForTheRestOfUs.svg?style=flat-square)]()
+![license](https://img.shields.io/github/license/tpoisot/ScientificComputingForTheRestOfUs.svg?style=flat-square)

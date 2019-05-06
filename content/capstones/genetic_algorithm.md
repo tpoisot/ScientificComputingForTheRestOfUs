@@ -1,3 +1,16 @@
+---
+title: Genetic algorithm
+weight: 1
+status: construction
+packages:
+  - StatsPlots
+  - StatsBase
+  - Statistics
+concepts:
+  - arrays
+  - control flow
+---
+
 Genetic algorithm is a heuristic that takes heavy inspiration from evolutionary
 biology, to explore a space of parameters rapidly and converge to an optimum.
 Every solution is a "genome", and the combinations can undergo mutation and
@@ -41,7 +54,7 @@ println(initial_guess)
 
 
 ````
-awe?wyyb!uadkc
+,bpbhotlxddj q
 ````
 
 
@@ -65,14 +78,14 @@ end
 
 
 ````
-0.07142857142857142
+0.0
 ````
 
 
 
 
 
-The fitness of this genome is 0.07142857142857142. We can increase the
+The fitness of this genome is 0.0. We can increase the
 number of individuals in our population, by generating a *lot* of initial
 guesses:
 
@@ -107,7 +120,7 @@ offspring = first(parents)[1:cutoff] * last(parents)[cutoff+1:end]
 
 
 ````
-",zdcbwy.u lzue"
+"vew.rpnitusxgm"
 ````
 
 
@@ -133,26 +146,26 @@ reproduction(initial_guesses, ω.(initial_guesses, problem))
 
 ````
 500-element Array{String,1}:
- "wvakecqwsyv.zt"
- "ggyqyyyzkyxv,i"
- "q.aspjdorl,hm?"
- "jpfiq npl!x. y"
- " !oggusoe!,pzt"
- "ti.ncrmfpffwil"
- "bqqupjdpsprgzm"
- "hy-,lwyl.roz?d"
- "gyab!qscmcruvn"
- "u,risf- ucyoer"
+ "-.lm,gvrc ?.kj"
+ "ileg!kmatfjxae"
+ "xmna,k-tbx.wgo"
+ "xleh,vzdxt!-fx"
+ "igluvxock?ages"
+ "-ktqz!qeunvkkw"
+ "quezg dlqc!yfw"
+ "tpuohe ?uvbgpb"
+ "dxs-- tskguvio"
+ " vatbfyuwseohn"
  ⋮               
- "qpnipuyw-jvv!o"
- "wuc, ?r gbesbo"
- "ekfnyqxoullfgm"
- "wjk,dj!apakzgi"
- "zibg,ty.j wab?"
- "jadw vns.fkak,"
- "w.lunswamhrfgs"
- "w,c?-sy.j wz.q"
- "woc.htycyuep-t"
+ "dxs-- zftkbgpb"
+ "oufroq ?hq,vmf"
+ "qfgduna!zjddn?"
+ "zsx?.iyag? wux"
+ "fjij.ka,ftw!ec"
+ "aipk,otxboatud"
+ "-.lm,kt?qee?!l"
+ "o.wtnns.d?clve"
+ "w,uy lb. adrw?"
 ````
 
 

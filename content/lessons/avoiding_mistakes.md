@@ -1,3 +1,14 @@
+---
+title: Avoiding mistakes
+weight: 3
+status: construction
+concepts: [defensive programming, writing functions, assertion, unit testing]
+packages: [Test, Statistics]
+meta:
+  issue: 19
+  label: "lesson:defensive"
+---
+
 ## We can't avoid mistakes
 
 But we can work as cautiously as possible, to make sure we catch them in time.

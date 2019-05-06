@@ -1,3 +1,15 @@
+---
+title: Map, filter, reduce
+slug: map_filter_reduce
+layout: page
+status: construction
+concepts:
+  - map
+  - filter
+  - reduce
+weight: 3
+---
+
 A *lot* of computing tasks involve going through arrays, or collections, of
 values, and selecting some of them, applying transformations, and returning
 values based on them. After reading the lesson on [Control flow]({{< ref

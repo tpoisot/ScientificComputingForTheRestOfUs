@@ -1,3 +1,17 @@
+---
+title: Runge-Kutta integration
+slug: runge_kutta_integration
+weight: 2
+status: draft
+packages:
+  - StatsPlots
+concepts:
+  - writing functions
+  - numerical precision
+  - arrays
+  - keyword arguments
+---
+
 Numerical integration, the search for solutions of differential equations, is a
 hallmark of scientific computing. In this lesson, we will see how we can apply
 multipe concepts to write our own routine for the second-order Runge-Kutta

@@ -1,0 +1,17 @@
+---
+title: Parallel computing
+slug: parallelcomputing
+layout: page
+status: construction
+concepts:
+  - optimization
+  - parallel computing
+packages:
+  - Distributed
+weight: 4
+---
+
+```julia
+using Distributed
+addprocs(2)
+```

@@ -26,11 +26,6 @@ pygmentsUseClasses = true
     name = "Primers"
     url = "/primers/"
     weight = 4
-  [[menu.main]]
-    identifier = "concepts"
-    name = "Concepts"
-    url = "/concepts/"
-    weight = 5
 
 [params]
   readingSpeed = 120

@@ -3,7 +3,10 @@ title: Map, filter, reduce
 slug: map_filter_reduce
 layout: page
 status: construction
-concepts: [map filter reduce]
+concepts:
+  - map
+  - filter
+  - reduce
 weight: 3
 ---
 

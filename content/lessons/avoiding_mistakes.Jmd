@@ -1,6 +1,6 @@
 ---
 title: Avoiding mistakes
-weight: 3
+weight: 4
 status: construction
 concepts: [defensive programming, writing functions, assertion, unit testing]
 packages: [Test, Statistics]

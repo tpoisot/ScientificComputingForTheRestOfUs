@@ -1,6 +1,6 @@
 ---
 title: The flow of execution
-weight: 1
+weight: 2
 concepts: [control flow, Booleans, iteration]
 meta:
   issue: 12

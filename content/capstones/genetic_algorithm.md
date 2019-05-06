@@ -41,7 +41,7 @@ println(initial_guess)
 
 
 ````
-!?mzqnwu.-cyjn
+h uw-,gqemtrfl
 ````
 
 
@@ -107,7 +107,7 @@ offspring = first(parents)[1:cutoff] * last(parents)[cutoff+1:end]
 
 
 ````
-"acitexoogbqark"
+"f?tr,orfvopflm"
 ````
 
 
@@ -133,26 +133,26 @@ reproduction(initial_guesses, ω.(initial_guesses, problem))
 
 ````
 500-element Array{String,1}:
- "vhqyx-yyb eoge"
- "wrpidmxn?egcoc"
- "lk k,ty,u.ubng"
- "woou,gy qheafr"
- "w,an-bxbueiiaz"
- "wrpidmxn?!q.sz"
- "yf-an.yes-xfwa"
- "ohgte?q?twuucu"
- "lk k,jxq!j!hyv"
- "jetkd !h- chc?"
+ "f?tr,orfvop-ty"
+ "wnvne!eqfvv!r?"
+ "ezo-clgvuviczz"
+ "qw-ahwctpqwvnx"
+ "lc ,qlkpqiwvd."
+ "mkh?r?yuprv..,"
+ "nihnx,cduoam!u"
+ "ltixm ghjhivrh"
+ "imayziyedzxa!t"
+ "zvrtizaxowwgtg"
  ⋮               
- "n.tvlxy?pab,zf"
- "r?-kfty,u.ubng"
- "kaui-kaok?shkl"
- "v?gkvyn-f-lkoj"
- "qlamtnq.k ,ppi"
- "q-gp,ljwgvjdso"
- "drijgzeolevh.p"
- "jbjt-kaok?sfkk"
- "eaaqufgu.q,wth"
+ "wg!wm oqq m,r-"
+ "qqpieemlxg!zmm"
+ "w fw!oajdwylw?"
+ "qqpw,!rl,ji?.p"
+ "zhwf? nxvvv!r?"
+ "u-cemilogz!lyo"
+ "oeolqgv?eergcs"
+ "pp,ylv fszvroe"
+ "xsmzpuajc,eu!l"
 ````
 
 

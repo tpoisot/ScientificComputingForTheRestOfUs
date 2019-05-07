@@ -44,6 +44,9 @@ section#content {
   padding-top: 5em;
   line-height: var(--font-copy-lh);
   font-size: var(--font-copy-size);
+  img {
+    max-width: 100%;
+  }
   a {
     text-decoration: none;
     color: var(--color-copy-a);

@@ -119,8 +119,8 @@ never be tolerated. Disliking Windows has not made anyone edgy or cool since
 
 ## Workshop
 
-This material can be given in a workshop format, ideally over one and a half
-day, covering several lessons and one capstone example. Please contact [Timothée
+This material can be given in a workshop format, ideally over two days, covering
+several lessons and one or two capstone examples. Please contact [Timothée
 Poisot](mailto:timothee.poisot@umontreal.ca) for more information.
 
 ## Contributing

@@ -235,4 +235,15 @@ figure {
       font-weight: 400;
       font-family: var(--font-main); }
 
+table {
+  border-collapse: collapse;
+  width: 100%; }
+  table thead {
+    color: var(--color-bg);
+    background-color: var(--color-fg); }
+  table th, table td {
+    padding: 0.3em; }
+  table tbody tr:nth-child(odd) {
+    background-color: var(--color-lightest); }
+
 /*# sourceMappingURL=index.css.map */

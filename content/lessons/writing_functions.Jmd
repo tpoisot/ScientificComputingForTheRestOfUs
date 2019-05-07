@@ -425,10 +425,15 @@ longer than if I has asked you what the sum of 0.0 and 1.0 is. Is it true for
 the computer?
 
 
+```julia; echo=false; results="hidden"
+time_int_and_float = @elapsed 0 + 1.0
+time_float_and_float = @elapsed 0.0 + 1.0
+```
+
 ```julia
 time_int_and_float = @elapsed 0 + 1.0
 time_float_and_float = @elapsed 0.0 + 1.0
-println("It takes $(round(time_int_and_float/time_float_and_float,2)) times longer to work with different types!")
+println("It takes $(round(time_int_and_float/time_float_and_float; digits=2)) times longer to work with different types!")
 ```
 
 The exact number may vary, but on my machine, it takes about 1.5 times longer to

@@ -15,7 +15,15 @@ for content_type in ["lessons", "primers", "capstones"]
     this_content_folder = joinpath(content_folder, content_type)
     raw_files = filter(x -> endswith(x, ".Jmd"), readdir(this_content_folder))
     for this_file in raw_files
-        @info this_file
-        weave(joinpath(this_content_folder, this_file), doctype="hugo")
+        target_file = replace(this_file, ".Jmd" => ".md")
+        file_time = mtime(joinpath(this_content_folder, this_file))
+        trgt_time = mtime(joinpath(this_content_folder, target_file))
+
+        if file_time > trgt_time
+            @info "Updating:   $(joinpath(content_type, target_file))"
+            weave(joinpath(this_content_folder, this_file), doctype="hugo")
+        else
+            @info "Up-to-date: $(joinpath(content_type, target_file))"
+        end
     end
 end

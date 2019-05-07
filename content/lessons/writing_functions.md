@@ -75,16 +75,16 @@ darts
 
 ````
 10-element Array{Any,1}:
- (0.285780337581909, 1.6450991222255906)   
- (1.8710568636588558, 1.5929915473470548)  
- (1.773043178324048, 1.1955711454755993)   
- (1.8553608044490386, 1.5402386312576488)  
- (0.9190369924896258, 0.6793741051741238)  
- (1.8186359974774358, 0.27704238618621035) 
- (0.8161705054334663, 0.016853782322249877)
- (0.4459149386370722, 1.139666061737902)   
- (1.86887933744105, 1.6423620300313617)    
- (1.1207835421297045, 1.0695608972832749)
+ (0.5471507699024025, 1.5853329418735789)  
+ (0.4968611297014256, 0.7623897039164715)  
+ (0.47656567486907475, 0.10132778429059552)
+ (1.847027101984334, 1.3712906144692383)   
+ (1.2413207049719484, 1.5109139383983892)  
+ (1.9273272793963958, 1.222774089370759)   
+ (0.314314570787964, 1.6363971613450592)   
+ (1.2568988353571542, 0.4314810563066871)  
+ (1.3349801808073032, 1.2270965491674124)  
+ (0.9629364319033984, 1.6691236520913932)
 ````
 
 
@@ -572,21 +572,18 @@ longer than if I has asked you what the sum of 0.0 and 1.0 is. Is it true for
 the computer?
 
 
+
 ````julia
 time_int_and_float = @elapsed 0 + 1.0
 time_float_and_float = @elapsed 0.0 + 1.0
-println("It takes $(round(time_int_and_float/time_float_and_float,2)) times longer to work with different types!")
+println("It takes $(round(time_int_and_float/time_float_and_float; digits=2)) times longer to work with different types!")
 ````
 
 
-<pre class="julia-error">
-ERROR: MethodError: no method matching round&#40;::Float64, ::Int64&#41;
-Closest candidates are:
-  round&#40;::Float64, &#33;Matched::RoundingMode&#123;:Nearest&#125;&#41; at float.jl:370
-  round&#40;::Float64, &#33;Matched::RoundingMode&#123;:Up&#125;&#41; at float.jl:368
-  round&#40;::Float64, &#33;Matched::RoundingMode&#123;:Down&#125;&#41; at float.jl:366
-  ...
-</pre>
+````
+It takes 1.47 times longer to work with different types!
+````
+
 
 
 

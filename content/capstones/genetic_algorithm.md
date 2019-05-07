@@ -47,16 +47,51 @@ will use a reduced subset of all possible characters). We could make our
 
 ````julia
 using StatsBase
+````
+
+
+<pre class="julia-error">
+ERROR: On worker 2:
+ArgumentError: Package StatsBase &#91;2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91&#93; is required but does not seem to be installed:
+ - Run &#96;Pkg.instantiate&#40;&#41;&#96; to install all recorded dependencies.
+
+_require at ./loading.jl:929
+require at ./loading.jl:858
+#2 at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.1/Distributed/src/Distributed.jl:77
+#116 at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.1/Distributed/src/process_messages.jl:276
+run_work_thunk at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.1/Distributed/src/process_messages.jl:56
+run_work_thunk at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.1/Distributed/src/process_messages.jl:65
+#102 at ./task.jl:259
+#remotecall_wait#154&#40;::Base.Iterators.Pairs&#123;Union&#123;&#125;,Union&#123;&#125;,Tuple&#123;&#125;,NamedTuple&#123;&#40;&#41;,Tuple&#123;&#125;&#125;&#125;, ::Function, ::Function, ::Distributed.Worker&#41; at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.1/Distributed/src/remotecall.jl:421
+remotecall_wait&#40;::Function, ::Distributed.Worker&#41; at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.1/Distributed/src/remotecall.jl:412
+#remotecall_wait#157&#40;::Base.Iterators.Pairs&#123;Union&#123;&#125;,Union&#123;&#125;,Tuple&#123;&#125;,NamedTuple&#123;&#40;&#41;,Tuple&#123;&#125;&#125;&#125;, ::Function, ::Function, ::Int64&#41; at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.1/Distributed/src/remotecall.jl:433
+remotecall_wait&#40;::Function, ::Int64&#41; at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.1/Distributed/src/remotecall.jl:433
+&#40;::getfield&#40;Distributed, Symbol&#40;&quot;##1#3&quot;&#41;&#41;&#123;Base.PkgId&#125;&#41;&#40;&#41; at ./task.jl:259
+
+...and 1 more exception&#40;s&#41;.
+
+</pre>
+
+
+````julia
 search_space = split("abcdefghijklmnopqrstuvwxyz !?,.-", "")
 initial_guess = reduce(*, sample(search_space, length(problem), replace=true))
+````
+
+
+<pre class="julia-error">
+ERROR: UndefVarError: sample not defined
+</pre>
+
+
+````julia
 println(initial_guess)
 ````
 
 
-````
-mxgel!eoseaskd
-````
-
+<pre class="julia-error">
+ERROR: UndefVarError: initial_guess not defined
+</pre>
 
 
 
@@ -77,15 +112,17 @@ end
 ````
 
 
-````
-0.07142857142857142
-````
+<pre class="julia-error">
+ERROR: UndefVarError: initial_guess not defined
+</pre>
 
 
 
 
-
-The fitness of this genome is 0.07142857142857142. We can increase the
+The fitness of this genome is <pre class="julia-error">
+ERROR: UndefVarError: initial_guess not defined
+</pre>
+. We can increase the
 number of individuals in our population, by generating a *lot* of initial
 guesses:
 
@@ -94,6 +131,10 @@ initial_guesses = [reduce(*, sample(search_space, length(problem), replace=true)
 ````
 
 
+<pre class="julia-error">
+ERROR: UndefVarError: sample not defined
+</pre>
+
 
 
 
@@ -101,11 +142,42 @@ Once this is done, we can view their fitness distribution:
 
 ````julia
 using StatsPlots
+````
+
+
+<pre class="julia-error">
+ERROR: On worker 2:
+ArgumentError: Package StatsPlots &#91;f3b207a7-027a-5e70-b257-86293d7955fd&#93; is required but does not seem to be installed:
+ - Run &#96;Pkg.instantiate&#40;&#41;&#96; to install all recorded dependencies.
+
+_require at ./loading.jl:929
+require at ./loading.jl:858
+#2 at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.1/Distributed/src/Distributed.jl:77
+#116 at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.1/Distributed/src/process_messages.jl:276
+run_work_thunk at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.1/Distributed/src/process_messages.jl:56
+run_work_thunk at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.1/Distributed/src/process_messages.jl:65
+#102 at ./task.jl:259
+#remotecall_wait#154&#40;::Base.Iterators.Pairs&#123;Union&#123;&#125;,Union&#123;&#125;,Tuple&#123;&#125;,NamedTuple&#123;&#40;&#41;,Tuple&#123;&#125;&#125;&#125;, ::Function, ::Function, ::Distributed.Worker&#41; at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.1/Distributed/src/remotecall.jl:421
+remotecall_wait&#40;::Function, ::Distributed.Worker&#41; at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.1/Distributed/src/remotecall.jl:412
+#remotecall_wait#157&#40;::Base.Iterators.Pairs&#123;Union&#123;&#125;,Union&#123;&#125;,Tuple&#123;&#125;,NamedTuple&#123;&#40;&#41;,Tuple&#123;&#125;&#125;&#125;, ::Function, ::Function, ::Int64&#41; at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.1/Distributed/src/remotecall.jl:433
+remotecall_wait&#40;::Function, ::Int64&#41; at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.1/Distributed/src/remotecall.jl:433
+&#40;::getfield&#40;Distributed, Symbol&#40;&quot;##1#3&quot;&#41;&#41;&#123;Base.PkgId&#125;&#41;&#40;&#41; at ./task.jl:259
+
+...and 1 more exception&#40;s&#41;.
+
+</pre>
+
+
+````julia
 scatter(sort(ω.(initial_guesses, problem)), leg=false, c=:grey, msw=0.0)
 ````
 
 
-{{< figure src="../figures/genetic_algorithm_5_1.png" title="Fitness of the initial solutions. Although quite a lot of the genomes have a very low fitness, recombination and mutation will improve this over time."  >}}
+<pre class="julia-error">
+ERROR: UndefVarError: initial_guesses not defined
+</pre>
+
+
 
 
 Picking the next generation -- pair of parents, recombination at random point,
@@ -113,16 +185,33 @@ then mutation:
 
 ````julia
 Ω = ω.(initial_guesses, problem)
+````
+
+
+<pre class="julia-error">
+ERROR: UndefVarError: initial_guesses not defined
+</pre>
+
+
+````julia
 parents = sample(initial_guesses, StatsBase.weights(Ω), 2; replace=false)
+````
+
+
+<pre class="julia-error">
+ERROR: UndefVarError: StatsBase not defined
+</pre>
+
+
+````julia
 cutoff = rand(1:length(problem))
 offspring = first(parents)[1:cutoff] * last(parents)[cutoff+1:end]
 ````
 
 
-````
-"kxnl,gbb!uc-mp"
-````
-
+<pre class="julia-error">
+ERROR: UndefVarError: parents not defined
+</pre>
 
 
 
@@ -144,30 +233,9 @@ reproduction(initial_guesses, ω.(initial_guesses, problem))
 ````
 
 
-````
-500-element Array{String,1}:
- "omaf,jkxmgvxj!"
- "ngdluvr.mex,gk"
- "don,qj?quu, va"
- "yjowmpolu-ggd."
- "ngdluvr.mex.fc"
- "era!t-yqipiqu."
- "donwmpolu-iqus"
- "dszoimyg f.q-o"
- "w,tdd.?qpyyrsm"
- " !qd uuonhbisi"
- ⋮               
- "mildbysishhvnt"
- "riacpuyawy.u,c"
- "szek trm.dagja"
- "ipapsi ubxgghn"
- "y!jnhi ubxgghn"
- "a?hscetgauekgr"
- "eocm,h?owvqlmz"
- "lwc !trm. xzvn"
- "whx!mbc.i sxr?"
-````
-
+<pre class="julia-error">
+ERROR: UndefVarError: initial_guesses not defined
+</pre>
 
 
 
@@ -201,6 +269,15 @@ We can start wrapping it up:
 problem = lowercase("What, you egg?")
 search_space = split("abcdefghijklmnopqrstuvwxyz ?,!", "")
 population = [reduce(*, sample(search_space, length(problem), replace=true)) for i in 1:300]
+````
+
+
+<pre class="julia-error">
+ERROR: UndefVarError: sample not defined
+</pre>
+
+
+````julia
 
 fit = []
 
@@ -217,6 +294,10 @@ end
 ````
 
 
+<pre class="julia-error">
+ERROR: UndefVarError: population not defined
+</pre>
+
 
 
 
@@ -227,14 +308,22 @@ running, and so the code will stop.
 
 ````julia
 final_fit = ω.(population, problem)
+````
+
+
+<pre class="julia-error">
+ERROR: UndefVarError: population not defined
+</pre>
+
+
+````julia
 println(population[last(findmax(final_fit))])
 ````
 
 
-````
-what, you egg?
-````
-
+<pre class="julia-error">
+ERROR: UndefVarError: final_fit not defined
+</pre>
 
 
 ````julia
@@ -243,8 +332,20 @@ plot(fit,
   leg=false, xlab="Step", ylab="Maximal fitness",
   frame=:origin, c=:purple, lw=2
   )
+````
+
+
+<pre class="julia-error">
+ERROR: UndefVarError: plot not defined
+</pre>
+
+
+````julia
 yaxis!((0,1))
 ````
 
 
-{{< figure src="../figures/genetic_algorithm_10_1.png"  >}}
+<pre class="julia-error">
+ERROR: UndefVarError: yaxis&#33; not defined
+</pre>
+

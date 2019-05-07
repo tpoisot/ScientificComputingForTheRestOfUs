@@ -1,6 +1,6 @@
 using Pkg
 Pkg.activate(".")
-Pkg.instantiate()
+#Pkg.instantiate()
 
 using Weave
 
@@ -16,6 +16,6 @@ for content_type in ["lessons", "primers", "capstones"]
     raw_files = filter(x -> endswith(x, ".Jmd"), readdir(this_content_folder))
     for this_file in raw_files
         @info this_file
-        weave(joinpath(this_content_folder, this_file), doctype="hugo")
+#        weave(joinpath(this_content_folder, this_file), doctype="hugo")
     end
 end

@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed:300,300i,400,400i,500,500i|Barlow:400,400i,500,500i,600,600i');
+@import "callouts";
+@import "code";
 
 html, body {
   font-family: var(--font-main);
@@ -10,12 +11,12 @@ html, body {
 
 h1, h2, h3, h4 {
   font-family: var(--font-title);
-  font-weight: 400;
+  font-weight: 300;
   color: var(--color-title);
 }
 
 b, strong {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 code {
@@ -25,10 +26,10 @@ code {
 @import "navigation";
 
 section#content {
-  max-width: 870px;
+  max-width: 800px;
   color: var(--color-fg);
-  margin: 20px auto;
-  padding: 1em;
+  margin: 2em auto;
+  padding: 2em;
   padding-top: 5em;
   line-height: var(--font-copy-lh);
   font-size: var(--font-copy-size);
@@ -36,107 +37,57 @@ section#content {
     text-decoration: none;
     color: var(--color-copy-a);
     &:hover {
-      background-color: var(--color-very-lighter);
+      background-color: var(--color-lighter);
     }
   }
 }
 
-pre {
-  font-size: 0.9rem;
-  line-height: 1.5rem;
-  white-space: pre-wrap;
-  code {
-    color: #777;
-    .cm {
-      color: #555;
-      font-style: italic;
-    }
-    .k {
-      color: #009e73;
-    }
-    .mi, .mf {
-      color: #d55e00;
-    }
-    .o {
-      color: #56b4e9;
-    }
-    .s {
-      color: #cc79a7;
-    }
-  }
-}
-
-
-
-code.language-julia {
-  color: black;
-  &::before {
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    content: "\f120";
-    margin-right: 1em;
-    font-size: 0.7rem;
-    width: 1.8rem;
-    text-align: center;
-    display: inline-block;
-    margin-left: -3.5em;
-    color: var(--color-accent);
-  }
-}
-
-code.language-raw {
-  color: rgb(62, 62, 62);
-  &::before {
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    content: "\f121";
-    margin-right: 1em;
-    font-size: 0.7rem;
-    width: 1.8rem;
-    text-align: center;
-    display: inline-block;
-    margin-left: -3.5em;
-    color: var(--color-accent);
-  }
-}
-
-section.intro {
+section.introduction {
   margin-bottom: 4em;
 }
 
 section.resource {
-  font-size: 90%;
-  background-color: var(--color-lighter);
-  border: 1px solid var(--color-medium);
   padding: 0;
-  margin-bottom: 3em;
+  margin-bottom: 5em;
   h1 {
-    margin-top: 0em;
-    padding: 0.6em;
-    background-color: var(--color-light);
     .lessonlink {
       float: right;
+      font-size: 0.8rem;
     }
   }
-  .listicle, .summary {
-    padding: 0.6em;
+  .summary {
+    margin-bottom: 1em;
+    margin-top: 1em;
+    border-left: 6px solid var(--color-light);
+    color: var(--color-medium);
+    padding-left: 1em;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
   }
-  .package {
-    background-color: var(--color-medium);
-    color: var(--color-lighter);
-    font-size: 90%;
-    padding: 2px;
-    border-radius: 4px;
-    margin-right: 5px;
+  .listicle {
+    font-size: 0.9rem;
+    .fas {
+      color: var(--color-medium);
+    }
+    .listicleitem {
+      background-color: var(--color-lighter);
+      color: var(--color-dark);
+      font-size: 90%;
+      padding: 1px 4px;
+      border-radius: 4px;
+      margin-right: 5px;
+      font-weight: 600;
+    }
   }
 }
 
 figure {
   width: 95%;
   background-color: white;
-  border: 1px solid var(--color-medium);
+  border: 1px solid var(--color-light);
   padding: 1em;
   margin: 2em auto;
+  border-radius: 0.2rem;
   img {
     width: 70%;
     margin: 1em 15%;
@@ -144,104 +95,12 @@ figure {
   figcaption {
     margin: -1em -1em;
     padding: 1em;
-    background-color: var(--color-light);
+    background-color: var(--color-lighter);
     h4 {
       margin: 0 0;
       color: rgb(76, 78, 78);
       font-weight: 400;
-    }
-  }
-}
-
-
-#status{
-  color: #555;
-  border-radius: 4px;
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 4em;
-  &.construction {
-    background:var(--color-construction-bg);
-    border:1px solid var(--color-construction-border);
-    .status-message::before {
-      content: "This lesson is in construction — it is most likely unfinished; you are welcome to contribute by opening an issue if you see areas you can improve.";
-    }
-  }
-  &.draft {
-    background:var(--color-draft-bg);
-    border:1px solid var(--color-draft-border);
-    .status-message::before {
-      content: "This lesson is a draft — it is usable and 90% finished, but some concepts may not presented in the most efficient way.";
-    }
-  }
-  &.overhaul {
-    background:var(--color-overhaul-bg);
-    border:1px solid var(--color-overhaul-border);
-    .status-message::before {
-      content: "This lesson is being re-written. Content may not be up to date.";
-    }
-  }
-  a {
-    float: right;
-    color: #555 !important;
-    &:hover {
-      background: none !important;
-      color: black !important;
-    }
-  }
-}
-
-.callout {
-  border-radius: 0.1rem;
-  background-color: white;
-  border: 1px solid #f5f5f5;
-  padding: 1rem;
-  p {
-    display: inline;
-  }
-  &::before {
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    color: white;
-    margin-right: 0.5em;
-    font-size: 0.9rem;
-    width: 1.75rem;
-    height: 1.75rem;
-    border-radius: 1.65rem;
-    text-align: center;
-    display: inline-block;
-  }
-  &.opinion {
-    color: rgb(98, 137, 190);
-    &::before {
-      content: "\f0eb";
-      background-color: lighten(rgb(98, 137, 190), 20%);
-      border: 1px solid lighten(rgb(98, 137, 190), 10%);
-    }
-  }
-  &.warning {
-    color: rgb(231, 147, 69);
-    &::before {
-      content: "\f12a";
-      background-color: lighten(rgb(231, 147, 69), 20%);
-      border: 1px solid lighten(rgb(231, 147, 69), 10%);
-    }
-  }
-  &.danger {
-    color: rgb(204, 76, 53);
-    &::before {
-      content: "\f05e";
-      background-color: lighten(rgb(204, 76, 53), 20%);
-      border: 1px solid lighten(rgb(204, 76, 53), 10%);
-    }
-  }
-  &.information {
-    color: rgb(74, 179, 85);
-    &::before {
-      content: "\f075";
-      background-color: lighten(rgb(74, 179, 85), 20%);
-      border: 1px solid lighten(rgb(74, 179, 85), 10%);
+      font-family: var(--font-main);
     }
   }
 }

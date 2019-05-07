@@ -1,10 +1,10 @@
 section#navigation {
   font-family: var(--font-title);
   font-weight: 300;
-  box-shadow: 0px 0px 2px #d7d8da;
+  box-shadow: 0px 0px 2px var(--color-medium);
   padding: 4px;
   line-height: 60px;
-  font-size: 18px;
+  font-size: 19px;
   position: fixed;
   background-color: white;
   top: 0;
@@ -16,12 +16,11 @@ section#navigation {
   }
   a {
     text-decoration: none;
-    text-transform: lowercase;
-    font-variant: small-caps;
-    color: rgb(79, 79, 79);
+    text-transform: uppercase;
+    color: var(--color-dark);
     padding: 0em 0.5em;
     &.active {
-      color: black;
+      color: var(--color-darker);
     }
   }
   img {
@@ -32,10 +31,13 @@ section#navigation {
     display: inline-block;
   }
   .title {
-    color: var(--color-title);
-    font-weight: 500;
+    a {
+      color: var(--color-title);
+    }
+    font-weight: 700;
   }
   .subtitle {
+    color: var(--color-medium);
     font-weight: 300;
   }
   .header {

@@ -27,8 +27,8 @@ addprocs(2)
 
 ````
 2-element Array{Int64,1}:
- 12
- 13
+ 2
+ 3
 ````
 
 

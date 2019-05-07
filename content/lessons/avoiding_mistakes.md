@@ -23,11 +23,11 @@ and so passing the blame around ends up being a very frustrating exercise. Even
 if it were not the case, user mistakes can come from sub-optimal design. It is
 crucial to work in a way that protects everyone against mistakes.
 
-{{% callout opinion %}}
-One of our *golden rule* is "fail early, fail often, and fail explicitely" -- it
-is frustrating to have to restart an analysis, but this is preferable to running
-an analysis that keeps accumulating issues we may or may not detect!
-{{% /callout %}}
+{{% callout opinion %}} One of our golden rules is "fail early, fail often, and
+fail explicitely" -- it is frustrating to have to restart an analysis, but this
+is preferable to running an analysis that keeps accumulating issues we may or
+may not detect! {{% /callout %}}
+
 
 In this lesson, you may note that we will switch perspective frequently, from
 user to developper. This is because, in our own experience, this is a fair

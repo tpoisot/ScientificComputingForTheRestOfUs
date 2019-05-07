@@ -89,7 +89,12 @@ Finally, the output of code is presented this way:
 ~~~
 
 Throughout the lessons, we have added some asides -- they are ranked in order of
-importance. "Opinions" are points we would like to raise for the reader's
+importance. The first are "informations":
+
+{{% callout information %}}All that should matter in the choice of tools, language, environment, is that it lets you become productive, and solve the problem you want to solve.
+{{% /callout %}}
+
+"Opinions" are points we would like to raise for the reader's
 consideration, and can be ignored. Example:
 
 {{< callout opinion >}}
@@ -110,7 +115,7 @@ is the one that works for its user.
 risky to everyone. They are worth reading a few times over. Example:
 
 {{< callout danger >}}
-For real tho, this toxic behaviour is driving brilliant people away, and should
+This toxic behaviour is driving brilliant people away, and should
 never be tolerated. Disliking Windows has not made anyone edgy or cool since
 1998.
 {{< /callout >}}

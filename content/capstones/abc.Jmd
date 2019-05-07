@@ -206,8 +206,8 @@ yaxis!("Density", (0, 14))
 
 To summarize, we can now extract the values of the different parameters:
 
-|     | meaning                | mean                                     | standard deviation                      |
-|:----|:-----------------------|:-----------------------------------------|:----------------------------------------|
+|     | meaning                |                                     mean |                      standard deviation |
+|:---:|:-----------------------|-----------------------------------------:|----------------------------------------:|
 | $c$ | Colonization rate      | `j round(mean(Sc[posterior]); digits=3)` | `j round(std(Sc[posterior]); digits=3)` |
 | $e$ | Extinction rate        | `j round(mean(Se[posterior]); digits=3)` | `j round(std(Se[posterior]); digits=3)` |
 | $m$ | Measurement error rate | `j round(mean(Sm[posterior]); digits=3)` | `j round(std(Sm[posterior]); digits=3)` |

@@ -38,14 +38,14 @@ present or absent. This results in a timeseries, like this:
 
 ````
 Year 1	present
-Year 2	absent
+Year 2	present
 Year 3	absent
-Year 4	present
+Year 4	absent
 Year 5	present
-Year 6	present
-Year 7	present
-Year 8	present
-Year 9	present
+Year 6	absent
+Year 7	absent
+Year 8	absent
+Year 9	absent
 Year 10	absent
 ````
 
@@ -148,8 +148,8 @@ summary(island(0.2, 0.6, 0.1))
 
 ````
 2-element Array{Float64,1}:
- 0.69              
- 0.4020100502512563
+ 0.725              
+ 0.32663316582914576
 ````
 
 
@@ -287,8 +287,8 @@ yaxis!("Density", (0, 14))
 
 To summarize, we can now extract the values of the different parameters:
 
-|     | meaning                | mean                                     | standard deviation                      |
-|:----|:-----------------------|:-----------------------------------------|:----------------------------------------|
-| $c$ | Colonization rate      | 0.549 | 0.066 |
-| $e$ | Extinction rate        | 0.154 | 0.041 |
-| $m$ | Measurement error rate | 0.051 | 0.04 |
+|     | meaning                |                                     mean |                      standard deviation |
+|:---:|:-----------------------|-----------------------------------------:|----------------------------------------:|
+| $c$ | Colonization rate      | 0.553 | 0.066 |
+| $e$ | Extinction rate        | 0.152 | 0.042 |
+| $m$ | Measurement error rate | 0.054 | 0.042 |

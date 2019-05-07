@@ -1,0 +1,251 @@
+@charset "UTF-8";
+.callout::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  color: white;
+  margin-right: 1em;
+  font-size: 0.9rem;
+  width: 1.8rem;
+  text-align: center;
+  display: inline-block;
+  margin-left: -3.1em;
+  color: var(--color-accent); }
+.callout.opinion {
+  color: var(--color-opinion); }
+  .callout.opinion::before {
+    content: "\f0eb";
+    color: var(--color-opinion); }
+.callout.warning {
+  color: var(--color-warning); }
+  .callout.warning::before {
+    content: "\f06a";
+    color: var(--color-warning); }
+.callout.danger {
+  color: var(--color-danger); }
+  .callout.danger::before {
+    content: "\f071";
+    color: var(--color-danger); }
+.callout.information {
+  color: var(--color-information); }
+  .callout.information::before {
+    content: "\f075";
+    color: var(--color-information); }
+
+#status {
+  color: #555;
+  border-radius: 4px;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 4em; }
+  #status.construction {
+    background: var(--color-construction-bg);
+    border: 1px solid var(--color-construction-border); }
+    #status.construction .status-message::before {
+      content: "This lesson is in construction — it is most likely unfinished; you are welcome to contribute by opening an issue if you see areas you can improve."; }
+  #status.draft {
+    background: var(--color-draft-bg);
+    border: 1px solid var(--color-draft-border); }
+    #status.draft .status-message::before {
+      content: "This lesson is a draft — it is usable and 90% finished, but some concepts may not presented in the most efficient way."; }
+  #status.overhaul {
+    background: var(--color-overhaul-bg);
+    border: 1px solid var(--color-overhaul-border); }
+    #status.overhaul .status-message::before {
+      content: "This lesson is being re-written. Content may not be up to date."; }
+  #status a {
+    float: right;
+    color: #555 !important; }
+    #status a:hover {
+      background: none !important;
+      color: black !important; }
+
+pre {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  white-space: pre-wrap; }
+  pre code {
+    color: var(--color-dark); }
+    pre code .cm {
+      color: #555;
+      font-style: italic; }
+    pre code .k {
+      color: #009e73; }
+    pre code .mi, pre code .mf {
+      color: #d55e00; }
+    pre code .o {
+      color: #56b4e9; }
+    pre code .s {
+      color: #cc79a7; }
+
+code.language-julia {
+  color: black; }
+  code.language-julia::before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f120";
+    margin-right: 1em;
+    font-size: 0.7rem;
+    width: 1.8rem;
+    text-align: center;
+    display: inline-block;
+    margin-left: -3.5em;
+    color: var(--color-accent); }
+
+code.language-raw {
+  color: var(--color-darker); }
+  code.language-raw::before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f121";
+    margin-right: 1em;
+    font-size: 0.7rem;
+    width: 1.8rem;
+    text-align: center;
+    display: inline-block;
+    margin-left: -3.5em;
+    color: var(--color-accent); }
+
+html, body {
+  font-family: var(--font-main);
+  font-size: var(--font-size);
+  margin: 0 0;
+  padding: 0 0;
+  background-color: var(--color-bg); }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-title);
+  font-weight: 300;
+  color: var(--color-title); }
+
+h1 {
+  font-size: calc(var(--font-copy-size)*1.5); }
+
+h2 {
+  font-size: calc(var(--font-copy-size)*1.3); }
+
+h3 {
+  font-size: calc(var(--font-copy-size)*1.1); }
+
+b, strong {
+  font-weight: 700; }
+
+code {
+  font-family: var(--font-code);
+  font-size: 0.9rem; }
+
+section#navigation {
+  font-family: var(--font-title);
+  font-weight: 300;
+  box-shadow: 0px 0px 2px var(--color-medium);
+  padding: 4px;
+  line-height: 60px;
+  font-size: 19px;
+  position: fixed;
+  background-color: white;
+  top: 0;
+  width: 100vw;
+  z-index: 9999; }
+  section#navigation .main {
+    float: right;
+    margin: 0px 1em; }
+  section#navigation a {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: var(--color-dark);
+    padding: 0em 0.5em; }
+    section#navigation a.active {
+      color: var(--color-darker); }
+  section#navigation img {
+    vertical-align: top;
+    padding-right: 4px; }
+  section#navigation * {
+    display: inline-block; }
+  section#navigation .title {
+    font-weight: 700; }
+    section#navigation .title a {
+      color: var(--color-title); }
+  section#navigation .subtitle {
+    color: var(--color-medium);
+    font-weight: 300; }
+  section#navigation .header {
+    text-transform: uppercase; }
+
+section#content {
+  max-width: 800px;
+  color: var(--color-fg);
+  margin: 2em auto;
+  padding: 2em;
+  padding-top: 5em;
+  line-height: var(--font-copy-lh);
+  font-size: var(--font-copy-size); }
+  section#content a {
+    text-decoration: none;
+    color: var(--color-copy-a); }
+    section#content a:hover {
+      background-color: var(--color-lighter); }
+
+section.introduction {
+  margin-bottom: 4em; }
+
+section.resource {
+  padding: 0;
+  margin-bottom: 5em; }
+  section.resource h1 .lessonlink {
+    float: right;
+    font-size: 0.8rem; }
+  section.resource .summary {
+    margin-bottom: 1em;
+    margin-top: 1em;
+    border-left: 6px solid var(--color-light);
+    color: var(--color-medium);
+    padding-left: 1em;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em; }
+  section.resource .listicle {
+    font-size: 0.9rem; }
+    section.resource .listicle .fas {
+      color: var(--color-medium); }
+    section.resource .listicle .listicleitem {
+      background-color: var(--color-lighter);
+      color: var(--color-dark);
+      font-size: 90%;
+      padding: 1px 4px;
+      border-radius: 4px;
+      margin-right: 5px;
+      font-weight: 600; }
+
+figure {
+  width: 95%;
+  background-color: white;
+  border: 1px solid var(--color-light);
+  padding: 1em;
+  margin: 2em auto;
+  border-radius: 0.2rem; }
+  figure img {
+    width: 70%;
+    margin: 1em 15%; }
+  figure figcaption {
+    margin: -1em -1em;
+    padding: 1em;
+    background-color: var(--color-lighter); }
+    figure figcaption h4 {
+      margin: 0 0;
+      color: #4c4e4e;
+      font-weight: 400;
+      font-family: var(--font-main); }
+
+table {
+  border-collapse: collapse;
+  width: 100%; }
+  table thead {
+    color: var(--color-bg);
+    background-color: var(--color-dark); }
+  table th, table td {
+    padding: 0.3em; }
+  table tbody tr {
+    border-bottom: 1px solid var(--color-lighter); }
+    table tbody tr:nth-child(odd) {
+      background-color: var(--color-lightest); }
+
+/*# sourceMappingURL=index.css.map */

@@ -1,0 +1,29 @@
+using Pkg
+Pkg.activate(".")
+Pkg.instantiate()
+
+using Weave
+
+const content_folder = joinpath(pwd(), "content")
+
+scss_files = ["configuration", "index"]
+for scss_file in scss_files
+    run(`sass themes/shebang/static/css/$(scss_file).scss themes/shebang/static/css/$(scss_file).css`)
+end
+
+for content_type in ["lessons", "primers", "capstones"]
+    this_content_folder = joinpath(content_folder, content_type)
+    raw_files = filter(x -> endswith(x, ".Jmd"), readdir(this_content_folder))
+    for this_file in raw_files
+        target_file = replace(this_file, ".Jmd" => ".md")
+        file_time = mtime(joinpath(this_content_folder, this_file))
+        trgt_time = mtime(joinpath(this_content_folder, target_file))
+
+        if file_time > trgt_time
+            @info "Updating:   $(joinpath(content_type, target_file))"
+            weave(joinpath(this_content_folder, this_file), doctype="hugo")
+        else
+            @info "Up-to-date: $(joinpath(content_type, target_file))"
+        end
+    end
+end

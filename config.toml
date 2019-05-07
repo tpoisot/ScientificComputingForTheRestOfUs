@@ -1,0 +1,34 @@
+baseURL = "http://sciencecomputing.io/"
+languageCode = "en-us"
+preserveTaxonomyNames = true
+theme = "shebang"
+pygmentsCodeFences = true
+pygmentsUseClasses = true
+
+[menu]
+  [[menu.main]]
+    identifier = "lessons"
+    name = "Lessons"
+    url = "/lessons/"
+    weight = 2
+  [[menu.main]]
+    identifier = "capstones"
+    name = "Capstones"
+    url = "/capstones/"
+    weight = 3
+  [[menu.main]]
+    identifier = "primers"
+    name = "Primers"
+    url = "/primers/"
+    weight = 4
+
+[params]
+  readingSpeed = 120
+  githubUser = "tpoisot"
+  githubRepo = "ScientificComputingForTheRestOfUs"
+  title = "Scientific computing"
+  subtitle = "(for the rest of us)"
+
+[taxonomies]
+  concept = "concepts"
+  package = "packages"

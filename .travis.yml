@@ -1,0 +1,26 @@
+language: julia
+
+julia:
+  - 1.0
+
+install:
+  - gem install sass
+  - wget https://github.com/gohugoio/hugo/releases/download/v0.53/hugo_0.53_Linux-64bit.deb
+  - sudo dpkg -i hugo*.deb
+
+script:
+  - julia compile.jl
+  - hugo
+
+deploy:
+  local_dir: public
+  repo: tpoisot/ScientificComputingForTheRestOfUs
+  target_branch: gh-pages
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  email: timothee.poisot@umontreal.ca
+  name: "tpoisot"
+  on:
+    branch:
+      master

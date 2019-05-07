@@ -1,0 +1,58 @@
+pre {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  white-space: pre-wrap;
+  code {
+    color: var(--color-dark);
+    .cm {
+      color: #555;
+      font-style: italic;
+    }
+    .k {
+      color: #009e73;
+    }
+    .mi, .mf {
+      color: #d55e00;
+    }
+    .o {
+      color: #56b4e9;
+    }
+    .s {
+      color: #cc79a7;
+    }
+  }
+}
+
+
+
+code.language-julia {
+  color: black;
+  &::before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f120";
+    margin-right: 1em;
+    font-size: 0.7rem;
+    width: 1.8rem;
+    text-align: center;
+    display: inline-block;
+    margin-left: -3.5em;
+    color: var(--color-accent);
+  }
+}
+
+code.language-raw {
+  color: var(--color-darker);
+  &::before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f121";
+    margin-right: 1em;
+    font-size: 0.7rem;
+    width: 1.8rem;
+    text-align: center;
+    display: inline-block;
+    margin-left: -3.5em;
+    color: var(--color-accent);
+  }
+}

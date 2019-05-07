@@ -23,9 +23,6 @@ lessons - they will provide basic information. Capstones are examples of
 real-life application of the content of lessons. Finally, primers are very short
 bits of additional information, which can be browsed at any time.
 
-[Come talk with us on Gitter](https://gitter.im/ScientificComputingForTheRestOfUs/Lobby)
-
-
 ## Who is this material for?
 
 This material is aimed at people who have already interacted with a computer

@@ -1,6 +1,6 @@
 using Pkg
 Pkg.activate(".")
-#Pkg.instantiate()
+Pkg.instantiate()
 
 using Weave
 

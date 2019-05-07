@@ -1,12 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Anonymous+Pro:400,400i,700,700i');
-@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700');
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i&subset=greek,greek-ext');
-
+@import url('https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i|Oswald:300,400,500,600,700');
 :root {
 
-  --font-main: "Open Sans";
-  --font-title: "Open Sans Condensed";
-  --font-code: "Anonymous Pro";
+  --font-main: "Lato";
+  --font-title: "Oswald";
+  --font-code: "Hack";
 
   --font-size: 16px;
   --font-copy-size: 16px;

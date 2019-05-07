@@ -118,11 +118,21 @@ h1, h2, h3, h4 {
   font-weight: 300;
   color: var(--color-title); }
 
+h1 {
+  font-size: calc(var(--font-copy-size)*1.5); }
+
+h2 {
+  font-size: calc(var(--font-copy-size)*1.3); }
+
+h3 {
+  font-size: calc(var(--font-copy-size)*1.1); }
+
 b, strong {
-  font-weight: 600; }
+  font-weight: 700; }
 
 code {
-  font-family: var(--font-code); }
+  font-family: var(--font-code);
+  font-size: 0.9rem; }
 
 section#navigation {
   font-family: var(--font-title);

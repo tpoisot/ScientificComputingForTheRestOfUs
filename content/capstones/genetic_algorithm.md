@@ -54,7 +54,7 @@ println(initial_guess)
 
 
 ````
-u,ra.bbbl-r,?z
+jumsynompiewzr
 ````
 
 
@@ -78,14 +78,14 @@ end
 
 
 ````
-0.0
+0.07142857142857142
 ````
 
 
 
 
 
-The fitness of this genome is 0.0. We can increase the
+The fitness of this genome is 0.07142857142857142. We can increase the
 number of individuals in our population, by generating a *lot* of initial
 guesses:
 
@@ -120,7 +120,7 @@ offspring = first(parents)[1:cutoff] * last(parents)[cutoff+1:end]
 
 
 ````
-"rh?,j..?yhehzs"
+"b.uhpuqofqah i"
 ````
 
 
@@ -146,26 +146,26 @@ reproduction(initial_guesses, ω.(initial_guesses, problem))
 
 ````
 500-element Array{String,1}:
- "mziez oz!aintf"
- ",.e?! cne-lkq,"
- "ixat.,wl,gcpbc"
- "l?op uimhvanga"
- "wqe!citajyvyyp"
- "g!ayrbxar!e?-?"
- "al-kh.xvr xfrs"
- "wqe!citajx?qhx"
- "dssdaxmhyivgmh"
- ".kamrfti ryogz"
+ "e?itfpqhfoyg--"
+ "ftixrqqjjd-uib"
+ "zmqtfn?vupnwlk"
+ "diheip!kunfg x"
+ "s,khpuqofqah i"
+ "ragzmdrdoi,nv?"
+ "gxtrdnn!fydg-y"
+ "bd,it.jve.h,iv"
+ "ml,?gqqhfoyg--"
+ "o !-.?id?cwfg "
  ⋮               
- "piefsb.,biy!gm"
- ".xrqoc-p? ?jyd"
- "scayqjkkqwarl."
- "jcl-, w! yzzv?"
- "al-kh.rveg-cgz"
- "gewrjmszkwccg."
- "a,kg-amou?thh?"
- "cnap  cne-lkq "
- " hznvjhn!tcxwv"
+ ",nramb!?rtecey"
+ ".xrytzyyaizhbi"
+ "coordnn!fydg-g"
+ "coot,oludrwpfq"
+ "ujbfcp.lofptga"
+ "wic,tzyyaizhbi"
+ "itfmabkfuoe.nm"
+ "f!?ivqpa!k,di?"
+ "rxjlaubxwhkgg."
 ````
 
 

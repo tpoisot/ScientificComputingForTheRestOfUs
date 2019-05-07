@@ -78,6 +78,21 @@ pre {
     pre code .s {
       color: #cc79a7; }
 
+pre.julia-error {
+  color: var(--color-darker);
+  font-size: 0.9rem; }
+  pre.julia-error::before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f188";
+    margin-right: 1em;
+    font-size: 0.7rem;
+    width: 1.8rem;
+    text-align: center;
+    display: inline-block;
+    margin-left: -3.5em;
+    color: var(--color-danger); }
+
 code.language-julia {
   color: black; }
   code.language-julia::before {
@@ -172,7 +187,7 @@ section#navigation {
     text-transform: uppercase; }
 
 section#content {
-  max-width: 800px;
+  max-width: 900px;
   color: var(--color-fg);
   margin: 2em auto;
   padding: 2em;

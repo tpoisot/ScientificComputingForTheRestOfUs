@@ -168,16 +168,31 @@ function signaltonoiseratio(x::Vector{T}) where {T <: Number}
 end
 ```
 
-It is longer, but it is also more explicity. And in most cases, typing `sign`
-and pressing `Tab` will autocomplete to the full function name, so there is
-minimal effort involved.
+It is longer, but it is also more explicit. And in most cases, typing `sign` and
+pressing `Tab` will autocomplete to the full function name, so there is minimal
+effort involved.
+
+Another source of mistakes is to have non-descriptive names for variables. In
+the existing function, the most important variable is called `x`: this means
+nothing. We will replace `x` by something more informative, such as
+`measurement`:
+
+```julia
+function signaltonoiseratio(measurement::Vector{T}) where {T <: Number}
+  length(measurement) < 3 && throw(ArgumentError("A minimum of three values must be provided."))
+  minimum(measurement) .< zero(T) && throw(DomainError(minimum(measurement), "all values passed must be positive or null."))
+end
+```
+
+At this point, our function still does *absolutely nothing*, but we can be sure
+that it is named in a way that makes it easier to reason about, will refuse to
+run when the arguments are wrong, and uses variable names that mean something.
+In short, it does nothing, but it does it really well.
 
 ## Mistakes in the code
 
 
 ## Lack of integration
 
-- calling wrong function
-- running with bad arguments
 - mistake in functions
 - integration issues

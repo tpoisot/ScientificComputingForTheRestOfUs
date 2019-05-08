@@ -1,14 +1,20 @@
 <section class="resource">
     <h1>{{ .Title }}</h1>
     <div class="listicle start">
-         <i class="fas fa-play-circle"></i> <b>{{ .Title }}:</b> <a href="{{ .Permalink }}" class="lessonlink">start the lesson</a>
+         <i class="fas fa-play-circle fa-fw"></i> <b>{{ .Title }}:</b> <a href="{{ .Permalink }}" class="lessonlink">start the lesson</a>
     </div>
     <div class="readingtime listicle">
-        <i class="fas fa-stopwatch"></i> <b>Reading time:</b> {{div .WordCount .Site.Params.readingSpeed}} minutes
+        <i class="fas fa-stopwatch fa-fw"></i> <b>Reading time:</b> {{div .WordCount .Site.Params.readingSpeed}} minutes
     </div>
+    {{ with .Params.status }}
+        <div class="packages listicle">
+            <i class="fas fa-signal fa-fw"></i> <b>Status:</b>
+            <span class="status {{.}}">{{ . }}</span>
+        </div>
+    {{ end }}
     {{ with .Params.concepts }}
         <div class="keywords listicle">
-            <i class="fas fa-tags"></i> <b>Key concepts:</b>
+            <i class="fas fa-tags fa-fw"></i> <b>Key concepts:</b>
             {{ range . }}
             <span class="keyword listicleitem">{{ . }}</span>
             {{ end }}
@@ -16,7 +22,7 @@
     {{ end }}
     {{ with .Params.packages }}
         <div class="packages listicle">
-            <i class="fas fa-box"></i> <b>Extra packages:</b>
+            <i class="fas fa-box fa-fw"></i> <b>Extra packages:</b>
             {{ range . }}
             <span class="package listicleitem">{{ . }}</span>
             {{ end }}

@@ -7,7 +7,7 @@
     position: relative;
   }
   line {
-    stroke: var(--color-medium);
+    stroke: var(--color-bg);
     stroke-width: 8px;
   }
 }
@@ -24,8 +24,7 @@ nav#main {
   box-sizing: border-box;
   .toggle {
     width: 330px;
-    background-color: white;
-    box-shadow: 0px 0px 2px var(--color-lighter);
+    background-color: var(--color-medium);
     border-radius: 0px 5px 5px 0px;
     padding: 5px;
     margin-left: -1em;

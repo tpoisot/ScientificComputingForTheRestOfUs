@@ -49,6 +49,7 @@ a {
 .listicle {
   font-family: var(--font-meta);
   color: var(--color-darkest);
+  margin-bottom: 5px;
   i {
     color: var(--color-accent);
   }
@@ -61,4 +62,16 @@ a {
     font-variant: small-caps;
     text-transform: lowercase;
   }
+  .construction {
+    color: var(--color-danger);
+  }
+  .draft {
+    color: var(--color-warning);
+  }
+}
+
+.summary {
+  padding-top: 0.5em;
+  font-style: italic;
+  color: var(--color-darker);
 }

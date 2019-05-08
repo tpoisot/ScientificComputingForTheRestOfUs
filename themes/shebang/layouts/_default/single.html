@@ -1,12 +1,5 @@
 {{ define "main" }}
 
-{{ with .Params.status }}
- <span id="status" class="{{ . }}">
-     <a onclick="toggle_status()"><i class="far fa-times-circle"></i></a>
-     <span class="status-message"></span>
- </span>
-{{ end }}
-
 {{ .Content }}
 
 {{ end }}

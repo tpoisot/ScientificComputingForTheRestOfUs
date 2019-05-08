@@ -61,7 +61,8 @@ a {
 
 .listicle {
   font-family: var(--font-meta);
-  color: var(--color-darkest); }
+  color: var(--color-darkest);
+  margin-bottom: 5px; }
   .listicle i {
     color: var(--color-accent); }
   .listicle .listicleitem {
@@ -72,6 +73,15 @@ a {
     border-radius: 5px;
     font-variant: small-caps;
     text-transform: lowercase; }
+  .listicle .construction {
+    color: var(--color-danger); }
+  .listicle .draft {
+    color: var(--color-warning); }
+
+.summary {
+  padding-top: 0.5em;
+  font-style: italic;
+  color: var(--color-darker); }
 
 .button {
   cursor: pointer; }
@@ -81,7 +91,7 @@ a {
     right: -2px;
     position: relative; }
   .button line {
-    stroke: var(--color-medium);
+    stroke: var(--color-bg);
     stroke-width: 8px; }
 
 nav#main {
@@ -96,8 +106,7 @@ nav#main {
   box-sizing: border-box; }
   nav#main .toggle {
     width: 330px;
-    background-color: white;
-    box-shadow: 0px 0px 2px var(--color-lighter);
+    background-color: var(--color-medium);
     border-radius: 0px 5px 5px 0px;
     padding: 5px;
     margin-left: -1em; }

@@ -132,4 +132,8 @@ h1 {
   content: '\f023';
   left: 23px; }
 
+section#content {
+  max-width: 900px;
+  margin: 0px auto; }
+
 /*# sourceMappingURL=index.css.map */

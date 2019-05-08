@@ -105,3 +105,8 @@ h1 {
 .nav li:nth-child(6) a::before { content: '\f115'; }
 .nav li:nth-child(7) a::before { content: '\f085'; }
 .nav li:nth-child(8) a::before { content: '\f023'; left: 23px; }
+
+section#content {
+  max-width: 900px;
+  margin: 0px auto;
+}

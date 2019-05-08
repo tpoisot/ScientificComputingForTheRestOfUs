@@ -1,12 +1,25 @@
 <!DOCTYPE html>
 <html>
-    {{- partial "head.html" . -}}
-    <body>
-        {{- partial "header.html" . -}}
-        <section id="content">
+{{- partial "head.html" . -}}
+<body>
+  <div class="wrapper">
+    {{- partial "navbar.html" . -}}
+    <div class="content isOpen">
+      <section id="content">
+        <a class="button">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+            <line x1="0" y1="20" x2="100" y2="20" />
+            <line x1="0" y1="50" x2="100" y2="50" />
+            <line x1="0" y1="80" x2="100" y2="80" />
+          </svg>
+        </a>
         {{- block "main" . }}{{- end }}
-        </section>
-        {{- partial "footer.html" . -}}
-    <script>mermaid.initialize({startOnLoad:true, theme:"neutral", curve: "basis"});</script>
-    </body>
+      </section>
+    </div>
+
+    {{- partial "footer.html" . -}}
+  </div>
+  <script src="/js/ui.js"></script>
+  <script>mermaid.initialize({startOnLoad:true, theme:"neutral", curve: "basis"});</script>
+</body>
 </html>

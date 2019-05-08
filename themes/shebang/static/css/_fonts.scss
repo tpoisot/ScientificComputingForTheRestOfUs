@@ -1,13 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i|Oswald:300,400,500,600,700');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i|Noto+Serif:400,400i,700,700i&subset=greek,greek-ext');
 :root {
 
-  --font-main: "Lato";
-  --font-title: "Oswald";
+  --font-main: "Noto Serif";
+  --font-title: "Noto Sans";
   --font-code: "Hack";
 
-  --font-size: 16px;
-  --font-copy-size: 16px;
-  --font-lh: 20px;
-  --font-copy-lh: 26px;
-
+  --font-size: 1.1rem;
+  --font-lh: 1.8rem;
 }

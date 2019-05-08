@@ -1,35 +1,28 @@
 @import url("https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i|Oswald:300,400,500,600,700");
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i|Noto+Serif:400,400i,700,700i&subset=greek,greek-ext");
 :root {
   --color-warning: rgb(231, 147, 69);
   --color-danger: rgb(204, 76, 53);
   --color-opinion: rgb(98, 137, 190);
-  --color-information: rgb(74, 179, 85);
+  --color-information: rgb(141, 113, 148);
   --color-title: rgb(18, 124, 110);
   --color-fg: rgb(30, 30, 30);
   --color-bg: rgb(255, 255, 255);
-  --color-copy-a: rgb(78, 131, 58);
-  --color-accent: rgb(127, 94, 143);
+  --color-copy-a: rgb(125, 170, 108);
+  --color-copy-a-hover: rgb(84, 108, 74);
   --color-lightest: hsl(0, 2%, 95%);
   --color-lighter: hsl(0, 2%, 90%);
   --color-light: hsl(0, 2%, 75%);
   --color-medium: hsl(0, 2%, 60%);
   --color-dark: hsl(0, 2%, 45%);
   --color-darker: hsl(0, 2%, 30%);
-  --color-darkest: hsl(0, 2%, 25%);
-  --color-overhaul-bg: hsl(177, 25%, 80%);
-  --color-overhaul-border: hsl(177, 25%, 50%);
-  --color-draft-bg: hsl(33, 48%, 80%);
-  --color-draft-border: hsl(33, 48%, 50%);
-  --color-construction-bg: hsl(2, 38%, 80%);
-  --color-construction-border: hsl(2, 38%, 50%); }
+  --color-darkest: hsl(0, 2%, 25%); }
 
 :root {
-  --font-main: "Lato";
-  --font-title: "Oswald";
+  --font-main: "Noto Serif";
+  --font-title: "Noto Sans";
   --font-code: "Hack";
-  --font-size: 16px;
-  --font-copy-size: 16px;
-  --font-lh: 20px;
-  --font-copy-lh: 26px; }
+  --font-size: 1.1rem;
+  --font-lh: 1.8rem; }
 
 /*# sourceMappingURL=configuration.css.map */

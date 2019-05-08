@@ -1,0 +1,23 @@
+body {
+  font-family: var(--font-main);
+  font-size: var(--font-size);
+}
+
+nav, h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 400;
+}
+
+h1 { font-size: calc(1.1rem*1.4)}
+h2 { font-size: calc(1.1rem*1.4*0.9)}
+h3 { font-size: calc(1.1rem*1.4*0.9*0.9)}
+h4 { font-size: calc(1.1rem*1.4*0.9*0.9*0.9)}
+h5 { font-size: calc(1.1rem*1.4*0.9*0.9*0.9*0.9)}
+h6 { font-size: calc(1.1rem*1.4*0.9*0.9*0.9*0.9*0.9)}
+
+section#content {
+  line-height: var(--font-lh);
+}

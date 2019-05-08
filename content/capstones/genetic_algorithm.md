@@ -4,11 +4,12 @@ weight: 1
 status: construction
 packages:
   - StatsPlots
-  - StatsBase
+  - StatsKit
   - Statistics
 concepts:
   - arrays
   - control flow
+  - data frames
 ---
 
 Genetic algorithm is a heuristic that takes heavy inspiration from evolutionary
@@ -24,6 +25,32 @@ which involves recombination at various points in the "genome", and finally a
 step for the mutation of offspring. There are an almost infinite number of
 variations at each of these steps, but we will limit ourselves to a simple case
 here.
+
+[Source of data](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2656.12086)
+
+````julia
+using StatsKit
+url = "/data/metabolicrates.csv"
+tmp = download(url)
+````
+
+
+<pre class="julia-error">
+ERROR: failed process: Process&#40;&#96;curl -g -L -f -o /tmp/juliaMQpk9H /data/metabolicrates.csv&#96;, ProcessExited&#40;3&#41;&#41; &#91;3&#93;
+</pre>
+
+
+````julia
+CSV.read(tmp)
+````
+
+
+<pre class="julia-error">
+ERROR: UndefVarError: tmp not defined
+</pre>
+
+
+
 
 To illustrate how genetic algorithms work, we will attempt to reproduce
 this wonderful line from Shakespeare's Macbeth: *What, you egg?*.
@@ -54,7 +81,7 @@ println(initial_guess)
 
 
 ````
-,mazkftylhnymv
+myyol xkbshuza
 ````
 
 
@@ -105,7 +132,7 @@ scatter(sort(ω.(initial_guesses, problem)), leg=false, c=:grey, msw=0.0)
 ````
 
 
-{{< figure src="../figures/genetic_algorithm_5_1.png" title="Fitness of the initial solutions. Although quite a lot of the genomes have a very low fitness, recombination and mutation will improve this over time."  >}}
+{{< figure src="../figures/genetic_algorithm_6_1.png" title="Fitness of the initial solutions. Although quite a lot of the genomes have a very low fitness, recombination and mutation will improve this over time."  >}}
 
 
 Picking the next generation -- pair of parents, recombination at random point,
@@ -120,7 +147,7 @@ offspring = first(parents)[1:cutoff] * last(parents)[cutoff+1:end]
 
 
 ````
-"edahlxy?kmekd."
+"y,ysfehaf vv.i"
 ````
 
 
@@ -146,26 +173,26 @@ reproduction(initial_guesses, ω.(initial_guesses, problem))
 
 ````
 500-element Array{String,1}:
- "nhicxs,ncp-zhr"
- ".epqncsbbwciuh"
- "whilkrk,ufc cw"
- "wzmaqgmonzngzn"
- "sinz,neylk,me,"
- "whilkrk,u.-?io"
- "ilf!esy-r!l!ut"
- "i.by !!?,vfwxl"
- "zepcenyt?glfq."
- "edahlxy?k.-?mi"
+ "hdpn?!wn,yh? o"
+ "czvjqvkcgmezmg"
+ "osvocfmhs?!vk?"
+ "bgwcafpez.efor"
+ "zfysfehaf vv.i"
+ "uy.hckroj-cvqz"
+ "akasq?kl,?zoqv"
+ "zcjswlnnf,ekwm"
+ "f,fd-surumcskp"
+ "mqe,kid.bwvov?"
  ⋮               
- "qlnhznnjhteylt"
- "ram!joqa- qzc "
- "pehnvhyei,onwc"
- "grjtuppsfdhb!?"
- " xhtg-zz n!qqg"
- "qd l?otpx,okz?"
- "n.dixjenud!tiu"
- " hpmejunphx,gi"
- "qz.k-xfu?mzguw"
+ "?topfaeazf?.nq"
+ "reiiz?yhbltuah"
+ "phm.bgdsujbjzn"
+ "okdhxopmwbogsj"
+ "i?miecpin p cj"
+ "z,ztydlclgoamj"
+ "clftseuis,.zzv"
+ "rua ,wpkukeaez"
+ "ppstdzpi,fe.mg"
 ````
 
 
@@ -247,4 +274,4 @@ yaxis!((0,1))
 ````
 
 
-{{< figure src="../figures/genetic_algorithm_10_1.png"  >}}
+{{< figure src="../figures/genetic_algorithm_11_1.png"  >}}

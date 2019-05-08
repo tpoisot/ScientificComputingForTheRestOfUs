@@ -4,11 +4,12 @@ weight: 1
 status: construction
 packages:
   - StatsPlots
-  - StatsBase
+  - StatsKit
   - Statistics
 concepts:
   - arrays
   - control flow
+  - data frames
 ---
 
 Genetic algorithm is a heuristic that takes heavy inspiration from evolutionary
@@ -24,6 +25,44 @@ which involves recombination at various points in the "genome", and finally a
 step for the mutation of offspring. There are an almost infinite number of
 variations at each of these steps, but we will limit ourselves to a simple case
 here.
+
+Specifically, we will use the `DataFrames` and `CSV` package (installed in
+`StatsKit`) to read a table containing metabolic rates of species, and then use
+genetic algorithm to try and find out the scaling exponent linking mass to the
+field metabolic rate.
+
+[Source of data](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2656.12086)
+
+```julia
+using StatsKit
+using StatsPlots
+url = "http://sciencecomputing.io/data/metabolicrates.csv"
+tmp = download(url)
+rates = CSV.read("static/data/metabolicrates.csv") # TODO use tmp instead
+```
+
+Let's have a look at the names of the columns:
+
+```julia
+names(rates)
+```
+
+We will replace the last two names:
+
+```julia
+rename!(rates, names(rates)[end-1] => :mass)
+rename!(rates, names(rates)[end] => :fmr)
+names(rates)
+```
+
+Much better! Now let's try to figure out the relationship between the last two
+variables:
+
+```julia; fig_cap="Relationship between field metabolic rate and mass - this is a neat log-log relationship, and so linear regression will give us the exponent."
+scatter(rates[:mass], rates[:fmr], c=:teal, leg=false, msc=:transparent)
+xaxis!(:log10, "Mass (kg)")
+yaxis!(:log10, "Field Metabolic Rate (kj per day)")
+```
 
 To illustrate how genetic algorithms work, we will attempt to reproduce
 this wonderful line from Shakespeare's Macbeth: *What, you egg?*.

@@ -1,5 +1,5 @@
 document.querySelector(".button").addEventListener('click', () => {
-  document.querySelector(".content").classList.toggle('isOpen');
+  document.querySelector("nav#main").classList.toggle('toggled');
 });
 
 function toggle_status() {

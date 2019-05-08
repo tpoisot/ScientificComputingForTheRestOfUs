@@ -1,8 +1,17 @@
 <nav id="main" class="sidebar">
-  <span class="header">
-    <span class="title"><a href="/">{{ .Site.Params.title }}</a></span>
-    <span class="subtitle">{{ .Site.Params.subtitle }}</span>
-  </span>
+  <div class="header">
+    <h1><a href="/">{{ .Site.Params.title }}</a></h1>
+    <h2>{{ .Site.Params.subtitle }}</h2>
+  </div>
+  <div class="toggle">
+    <a class="button">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+        <line x1="0" y1="20" x2="100" y2="20" />
+        <line x1="0" y1="50" x2="100" y2="50" />
+        <line x1="0" y1="80" x2="100" y2="80" />
+      </svg>
+    </a>
+  </div>
   <ul class="nav">
     {{ $currentPage := . }}
     {{ range .Site.Menus.main }}

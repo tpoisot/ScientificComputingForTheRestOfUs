@@ -1,46 +1,75 @@
-section#navigation {
-  font-family: var(--font-title);
-  font-weight: 300;
-  box-shadow: 0px 0px 2px var(--color-medium);
-  padding: 4px;
-  line-height: 60px;
-  font-size: 19px;
-  position: fixed;
+.button {
+  cursor: pointer;
+  svg {
+    width: 25px;
+    top: 2px;
+    right: -2px;
+    position: relative;
+  }
+  line {
+    stroke: var(--color-medium);
+    stroke-width: 8px;
+  }
+}
+
+nav#main {
   background-color: white;
+  width: 300px;
+  padding: 1em;
+  height: 100vh;
+  position: fixed;
   top: 0;
-  width: 100vw;
-  z-index: 9999;
-  .main {
-    float: right;
-    margin: 0px 1em;
-  }
-  a {
-    text-decoration: none;
-    text-transform: uppercase;
-    color: var(--color-dark);
-    padding: 0em 0.5em;
-    &.active {
-      color: var(--color-darker);
-    }
-  }
-  img {
-    vertical-align: top;
-    padding-right: 4px;
-  }
-  * {
-    display: inline-block;
-  }
-  .title {
+  left: -300px;
+  transition: left .5s;
+  box-sizing: border-box;
+  .toggle {
+    width: 330px;
+    background-color: white;
+    box-shadow: 0px 0px 2px var(--color-lighter);
+    border-radius: 0px 5px 5px 0px;
+    padding: 5px;
+    margin-left: -1em;
     a {
-      color: var(--color-title);
+      position: relative;
+      left: 300px;
     }
-    font-weight: 700;
   }
-  .subtitle {
-    color: var(--color-medium);
-    font-weight: 300;
+  &.toggled {
+    left: 0;
+    box-shadow: 0px 0px 2px var(--color-lighter);
   }
   .header {
-    text-transform: uppercase;
+    margin: 2em 0;
+    h1, h2 {
+      margin: 0;
+      padding: 0;
+    }
+    h1{font-weight: 300;}
+    h2{
+      font-weight: 600;
+      color: var(--color-light);
+    }
+  }
+}
+
+ul.nav {
+  list-style: none;
+  padding: 0 0;
+  li {
+    list-style: none;
+    a {
+      display: block;
+      border: 1px solid var(--color-lighter);
+      margin-bottom: 1em;
+      padding: 0.5em;
+      border-radius: 5px;
+      text-align: center;
+      text-decoration: none;
+      color: var(--color-dark);
+      &.active {
+        background-color: var(--color-lightest);
+        color: var(--color-darker);
+      }
+    }
   }
 }

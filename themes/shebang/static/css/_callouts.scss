@@ -1,4 +1,5 @@
 .callout {
+  font-family: var(--font-title);
   &::before {
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
@@ -37,45 +38,6 @@
     &::before {
       content: "\f075";
       color: var(--color-information);
-    }
-  }
-}
-
-
-#status{
-  color: #555;
-  border-radius: 4px;
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 4em;
-  &.construction {
-    background:var(--color-construction-bg);
-    border:1px solid var(--color-construction-border);
-    .status-message::before {
-      content: "This lesson is in construction — it is most likely unfinished; you are welcome to contribute by opening an issue if you see areas you can improve.";
-    }
-  }
-  &.draft {
-    background:var(--color-draft-bg);
-    border:1px solid var(--color-draft-border);
-    .status-message::before {
-      content: "This lesson is a draft — it is usable and 90% finished, but some concepts may not presented in the most efficient way.";
-    }
-  }
-  &.overhaul {
-    background:var(--color-overhaul-bg);
-    border:1px solid var(--color-overhaul-border);
-    .status-message::before {
-      content: "This lesson is being re-written. Content may not be up to date.";
-    }
-  }
-  a {
-    float: right;
-    color: #555 !important;
-    &:hover {
-      background: none !important;
-      color: black !important;
     }
   }
 }

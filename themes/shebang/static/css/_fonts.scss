@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i|Oswald:300,400,500,600,700');
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i|Noto+Serif:400,400i,700,700i&subset=greek,greek-ext');
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i,600,600i|IBM+Plex+Sans+Condensed:300,300i,400,400i,600,600i|IBM+Plex+Sans:300,300i,400,600,600i|IBM+Plex+Serif:400,400i,600,600i&subset=greek');
+
 :root {
 
-  --font-main: "Noto Serif";
-  --font-title: "Noto Sans";
-  --font-code: "Hack";
+  --font-main: "IBM Plex Serif";
+  --font-title: "IBM Plex Sans";
+  --font-meta: "IBM Plex Sans Condensed";
+  --font-code: "IBM Plex Mono";
 
   --font-size: 1.1rem;
   --font-lh: 1.8rem;

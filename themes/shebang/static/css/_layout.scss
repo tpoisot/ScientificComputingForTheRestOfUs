@@ -1,0 +1,12 @@
+html, body {
+  height: 100vh;
+}
+
+section#content {
+  max-width: 820px;
+  padding: 50px;
+  margin: 0px auto;
+  img {
+    max-width: 100%;
+  }
+}

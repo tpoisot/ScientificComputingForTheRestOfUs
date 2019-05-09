@@ -7,9 +7,9 @@ packages:
   - StatsKit
   - Statistics
 concepts:
-  - arrays
-  - control flow
   - data frames
+  - generic code
+  - type system
 ---
 
 Genetic algorithm is a heuristic that takes heavy inspiration from evolutionary
@@ -64,127 +64,86 @@ xaxis!(:log10, "Mass (kg)")
 yaxis!(:log10, "Field Metabolic Rate (kj per day)")
 ```
 
-To illustrate how genetic algorithms work, we will attempt to reproduce
-this wonderful line from Shakespeare's Macbeth: *What, you egg?*.
+Neat! This is a log-log relationship, so we can represent this problem as
+$\text{log}_{10}(\text{FMR}) ∝ m\times\text{log}_{10}(\text{M})+b$.
+
+{{> callout information <}}
+In this capstone, we will try to write a very general code for genetic
+algorithms. It is possible to come up with a more specific code, but spending
+time to think about making code general is almost always wise, since it means we
+can seamlessly re-use already written code.
+{{> /callout <}}
+
+Genetic algorithms represent the state of the problem as "genomes", which here
+will be composed of two genes: $m$ and $b$. There are a few decisions we need to
+take already: how large is our initial population, and how much standing
+variation do we have?
+
+Just to be a little fancier than usual, we will define a *type* for our genomes:
 
 ```julia
-const problem = lowercase("What, you egg?")
-```
-
-The first thing we need to decide is the initial state of our population; in
-this case, we will draw a random string of characters. To simplify our task, we
-will use a reduced subset of all possible characters). We could make our
-
-```julia
-using StatsBase
-search_space = split("abcdefghijklmnopqrstuvwxyz !?,.-", "")
-initial_guess = reduce(*, sample(search_space, length(problem), replace=true))
-println(initial_guess)
-```
-
-This first solution is one *genome*, and every position on the string is a
-*gene*. This is, quite obviously, a bit far from the string we want to
-reproduce. How far? We can calculate a *fitness* for this genome, which in this
-situation is the average number of correct letters.
-
-```julia
-using Statistics
-
-function ω(guess, solution)
-  return mean(split(guess, "") .== split(solution, ""))
+mutable struct Genome
+  m::Float64
+  b::Float64
 end
-
-ω(initial_guess, problem)
 ```
 
-The fitness of this genome is `j ω(initial_guess, problem)`. We can increase the
-number of individuals in our population, by generating a *lot* of initial
-guesses:
+{{> callout information <}}
+Defining a new type is *absolutely not* necessary. We are only doing it to show
+some interesting features of Julia.
+{{> /callout <}}
+
+This means that our population will be of the type `Vector{Genome}`. Now, we
+will *add methods* to some of Julia's existing function, so we can write code
+that will read exactly like native code would:
 
 ```julia
-initial_guesses = [reduce(*, sample(search_space, length(problem), replace=true)) for i in 1:500];
+import Base: zero
+zero(::Type{Genome}) = Genome(0.0, 0.0)
 ```
 
-Once this is done, we can view their fitness distribution:
-
-```julia; fig_cap="Fitness of the initial solutions. Although quite a lot of the genomes have a very low fitness, recombination and mutation will improve this over time."
-using StatsPlots
-scatter(sort(ω.(initial_guesses, problem)), leg=false, c=:grey, msw=0.0)
-```
-
-Picking the next generation -- pair of parents, recombination at random point,
-then mutation:
+Because we have created a `zero` method for the `Genome` type, we can create our
+population:
 
 ```julia
-Ω = ω.(initial_guesses, problem)
-parents = sample(initial_guesses, StatsBase.weights(Ω), 2; replace=false)
-cutoff = rand(1:length(problem))
-offspring = first(parents)[1:cutoff] * last(parents)[cutoff+1:end]
+population_size = 10_000
+population = zeros(Genome, population_size)
+population[1:5]
 ```
 
-Now, we want to automate the process a bit, so function
+To have a slightly more pleasing display, we can also overload the `show`
+function:
 
 ```julia
-function reproduction(pool, Ω)
-  offspring = copy(pool)
-  for i in eachindex(offspring)
-    parents = sample(pool, weights(Ω), 2; replace=false)
-    cutoff = rand(1:length(first(parents)))
-    offspring[i] = first(parents)[1:cutoff] * last(parents)[cutoff+1:end]
+import Base: show
+show(io::IO, g::Genome) = "ŷ = $(round(g.m; digits=3))×x + $(round(g.b; digits=3))"
+```
+
+And we are now ready to start. At this point, it is useful to outline the
+general structure of the genetic algorithm:
+
+```julia
+function GA(population::Vector{T}, fitness::Function, mutation!::Function, generations=1_000) where {T}
+  for generation in 1:generations
+    fitnesses = fitness.(population)
+    population = sample(population, weights(fitnesses), length(population), replace=true)
+    mutation!.(population)
   end
-  return offspring
+  return population
 end
-
-reproduction(initial_guesses, ω.(initial_guesses, problem))
 ```
 
-Next step is to have mutations
+Wouldn't it be cool if the real code was actually that simple?
+
+What if I told you this *is* the real code? To make it work, we need to do two
+things. First, we need to define a `fitness` function, which, given an input
+(here, a `Genome`), will return its "score". Second, we need to define a
+`mutation!` function, which will *modify* a genome.
+
+The fitness function can be defined as follows:
 
 ```julia
-function mutation(genome, μ, search_space)
-  splitted = split(genome, "")
-  for i in 1:length(splitted)
-    if rand() ≤ μ
-      splitted[i] = rand(search_space)
-    end
-  end
-  return reduce(*, splitted)
+function fmr_fitness(g::Genome)
+  
 end
-```
-
-We can start wrapping it up:
-
-```julia; fig_cap="Fitness of the best solution increases over time. Genetic algorithm is an efficient heuristic to rapidly explore a large search space."
-problem = lowercase("What, you egg?")
-search_space = split("abcdefghijklmnopqrstuvwxyz ?,!", "")
-population = [reduce(*, sample(search_space, length(problem), replace=true)) for i in 1:300]
-
-fit = []
-
-for generation in 1:500
-  global population
-  population = reproduction(population, ω.(population, problem))
-  for i in eachindex(population)
-    population[i] = mutation(population[i], 0.01, search_space)
-  end
-  maxfit = findmax(ω.(population, problem))
-  push!(fit, maxfit[1])
-  maxfit[1] == 1.0 && break
-end
-```
-
-The `break` syntax (and short-circuit operators) is covered in the [Advanced
-control flow primer]({{> ref "/primers/advanced_control_flow.md" <}}). In short,
-whenever the population has a mutant whose fitness is 1, we don't need to keep
-running, and so the code will stop.
-
-```julia
-final_fit = ω.(population, problem)
-println(population[last(findmax(final_fit))])
-
-plot(fit,
-  leg=false, xlab="Step", ylab="Maximal fitness",
-  frame=:origin, c=:purple, lw=2
-  )
-yaxis!((0,1))
 ```

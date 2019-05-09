@@ -106,7 +106,7 @@ Because we have created a `zero` method for the `Genome` type, we can create our
 population:
 
 ```julia
-population_size = 10_000
+population_size = 1_000
 population = zeros(Genome, population_size)
 population[1:5]
 ```
@@ -116,20 +116,23 @@ function:
 
 ```julia
 import Base: show
-show(io::IO, g::Genome) = "ŷ = $(round(g.m; digits=3))×x + $(round(g.b; digits=3))"
+show(io::IO, g::Genome) = print(io, "ŷ = $(round(g.m; digits=3))×x + $(round(g.b; digits=3))")
+population[1:5]
 ```
 
 And we are now ready to start. At this point, it is useful to outline the
 general structure of the genetic algorithm:
 
 ```julia
-function GA(population::Vector{T}, fitness::Function, mutation!::Function, generations=1_000) where {T}
+function GA!(p::Vector{T}, fitness::Function, mutation!::Function; generations=1_000) where {T}
+  maximum_fit = zeros(Float64, generations)
   for generation in 1:generations
-    fitnesses = fitness.(population)
-    population = sample(population, weights(fitnesses), length(population), replace=true)
-    mutation!.(population)
+    fitnesses = fitness.(p)
+    population = sample(p, weights(fitnesses), length(p), replace=true)
+    mutation!.(p)
+    maximum_fit[generation] = maximum(fitnesses)
   end
-  return population
+  return maximum_fit
 end
 ```
 
@@ -143,7 +146,73 @@ things. First, we need to define a `fitness` function, which, given an input
 The fitness function can be defined as follows:
 
 ```julia
+const log10fmr = log10.(rates[:fmr])
+const log10M = log10.(rates[:mass])
+
 function fmr_fitness(g::Genome)
-  
+  errors = log10fmr .- (g.m .* log10M .+ g.b)
+  sum_of_errors_sq = sum(errors.^2.0)/length(log10fmr)
+  return 1.0/sum_of_errors_sq
 end
+```
+
+The first thing we do is "extract" the $\text{log}_{10}$ of the FMR and mass,
+and turn them into vectors. Then we define a function which uses these vectors,
+and does the linear prediction. You may notice that this function uses elements
+from "the outside", which have not been passed as arguments, and this may not be
+ideal - this is why the `log10...` variables have been declared as `const`: they
+*cannot* be changed.
+
+We can check the score of an "empty" genome ($\hat y = 0$):
+
+```julia
+fmr_fitness(zero(Genome))
+```
+
+Now, let's define a function for mutations. Because we might want to change the
+rate at which parameters evolve, it would be useful to be able to generate
+multiple such functions. And so, our first task is to write a function that will
+return another function, which will itself modify the `Genome` object. Note that
+we `return nothing` at the end, because all of this function does is change an
+existing object.
+
+```julia
+function normal_error(σm::Float64, σb::Float64)
+  function f(g)
+    g.m = rand(Normal(g.m, σm))
+    g.b = rand(Normal(g.b, σb))
+    return nothing
+  end
+  return f
+end
+```
+
+We can test that this all works as expected:
+
+```julia
+change_both! = normal_error(0.01, 0.01)
+initial_genome = Genome(0.2, 0.5)
+change_both!(initial_genome)
+initial_genome
+```
+
+Let's now define a function to work on the actual problem:
+
+```julia
+very_gradual_change! = normal_error(1e-1, 1e-1)
+```
+
+We have all of the pieces to apply our genetic algorithm. Before starting, it is
+always a good idea to try and eyeball the parameters. Judging from the plot we
+made early in the lesson, the intercept is probably just around 3, so we can
+probably draw it from $\mathcal{N}(\mu=3, \sigma=1)$; the slope seems to be
+close to one, so we can get it from $\mathcal{N}(\mu=1, \sigma=0.5)$:
+
+```julia
+population = [Genome(rand(Normal(1,0.5)), rand(Normal(3,1))) for i in 1:1_000]
+```
+
+```julia
+@elapsed fitness_history = GA!(population, fmr_fitness, very_gradual_change!; generations=500)
+plot(fitness_history)
 ```

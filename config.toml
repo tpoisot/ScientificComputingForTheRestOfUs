@@ -10,17 +10,20 @@ pygmentsUseClasses = true
     identifier = "lessons"
     name = "Lessons"
     url = "/lessons/"
-    weight = 2
+    weight = 1
+    pre = "fa-graduation-cap"
   [[menu.main]]
     identifier = "capstones"
     name = "Capstones"
     url = "/capstones/"
-    weight = 3
+    weight = 2
+    pre = "fa-star"
   [[menu.main]]
     identifier = "primers"
     name = "Primers"
     url = "/primers/"
-    weight = 4
+    weight = 3
+    pre = "fa-bolt"
 
 [params]
   readingSpeed = 120

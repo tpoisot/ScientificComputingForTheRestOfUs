@@ -1,12 +1,11 @@
-@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i,600,600i|IBM+Plex+Sans+Condensed:300,300i,400,400i,600,600i|IBM+Plex+Sans:300,300i,400,600,600i|IBM+Plex+Serif:400,400i,600,600i&subset=greek');
-
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto+Mono:400,400i,500,500i|Roboto+Slab:300,400,700|Roboto:400,400i,500,500i&subset=greek,greek-ext');
 :root {
 
-  --font-main: "IBM Plex Serif";
-  --font-title: "IBM Plex Sans";
-  --font-meta: "IBM Plex Sans Condensed";
-  --font-code: "IBM Plex Mono";
+  --font-main: "Roboto";
+  --font-title: "Roboto Slab";
+  --font-meta: "Roboto Condensed";
+  --font-code: "Roboto Mono";
 
-  --font-size: 1.1rem;
-  --font-lh: 1.8rem;
+  --font-size: 1.1em;
+  --font-lh: 1.9em;
 }

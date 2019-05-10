@@ -68,7 +68,23 @@ yaxis!(:log10, "Field Metabolic Rate (kj per day)")
 
 Neat! This is a log-log relationship, so we can represent this problem as:
 
-$$\text{log}_{10}(\text{FMR}) \propto m\times\text{log}_{10}(\text{M})+b$$
+$$\text{log}{10}(\text{FMR}) \propto m\times\text{log}_{10}(\text{M})+b$$
+
+To simplify the problem a little bit, we will average the values within species;
+because the relation is log-log, we will average the log of the value (as
+opposed to taking the log of the averages).
+
+```julia
+rates = by(rates, [:Genus, :Species], [:mass, :fmr] => x -> (mass=mean(log10.(x.mass)), fmr=mean(log10.(x.fmr))))
+```
+
+We can look at the simplified data:
+
+```julia; fig_cap="Same data, but a little bit less points. In addition, aggregating by species doesn't increase the impact that well sampled species will have on the regression output."
+scatter(10.0.^rates[:mass], 10.0.^rates[:fmr], c=:teal, leg=false, msc=:transparent)
+xaxis!(:log10, "Mass (kg)")
+yaxis!(:log10, "Field Metabolic Rate (kj per day)")
+```
 
 {{< callout information >}}
 In this capstone, we will try to write a very general code for genetic
@@ -144,14 +160,17 @@ things. First, we need to define a `fitness` function, which, given an input
 (here, a `Genome`), will return its "score". Second, we need to define a
 `mutation!` function, which will *modify* a genome.
 
-The fitness function can be defined as follows:
+The fitness function can be defined as follows (note that we have already taken
+the log10 of the mass and FMR earlier):
 
 ```julia
-const log10fmr = log10.(rates[:fmr])
-const log10M = log10.(rates[:mass])
+const log10fmr = rates[:fmr]
+const log10M = rates[:mass]
+
+ŷ(g::Genome, x::Vector{Float64})=  g.m .* x .+ g.b
 
 function fmr_fitness(g::Genome)
-  errors = log10fmr .- (g.m .* log10M .+ g.b)
+  errors = log10fmr .- ŷ(g, log10M)
   sum_of_errors_sq = sum(errors.^2.0)/length(log10fmr)
   return 1.0/sum_of_errors_sq
 end
@@ -207,27 +226,24 @@ We have all of the pieces to apply our genetic algorithm. Before starting, it is
 always a good idea to try and eyeball the parameters. Judging from the plot we
 made early in the lesson, the intercept is probably just around 3, so we can
 probably draw it from $\mathcal{N}(\mu=3, \sigma=1)$; the slope seems to be
-close to one, so we can get it from $\mathcal{N}(\mu=1, \sigma=0.5)$:
+close to one but a little bit lower, so we can get it from
+$\mathcal{N}(\mu=0.75, \sigma=0.2)$:
 
 ```julia
-population = [Genome(rand(Normal(1,0.5)), rand(Normal(3,1))) for i in 1:500]
+population = [Genome(rand(Normal(0.75,0.2)), rand(Normal(3,1))) for i in 1:500]
 ```
 
 ```julia
-GA!(population, fmr_fitness, very_gradual_change!; generations=5000)
+GA!(population, fmr_fitness, very_gradual_change!; generations=10000)
 ```
 
-```julia
-function ŷ(g::Genome, x::Vector{Float64})
-  return g.m .* x .+ g.b
-end
-```
+**_TODO_**
 
 ```julia; fig_cap="Relationship between field metabolic rate and mass - this is a neat log-log relationship, and so linear regression will give us the exponent."
-scatter(rates[:mass], rates[:fmr], c=:teal, leg=false, msc=:transparent)
-pred = collect(LinRange(minimum(rates[:mass]), maximum(rates[:mass]), 100))
+scatter(10.0.^rates[:mass], 10.0.^rates[:fmr], c=:teal, leg=false, msc=:transparent)
+pred = collect(LinRange(10.0.^minimum(rates[:mass]), 10.0.^maximum(rates[:mass]), 100))
 mostfit = fmr_fitness.(population) |> findmax |> last
-plot!(pred, 10.0.^ŷ(population[mostfit], log10.(pred)))
+plot!(pred, 10.0.^ŷ(population[mostfit], log10.(pred)), c=:orange, lw=2, ls=:dash)
 xaxis!(:log10, "Mass (kg)")
 yaxis!(:log10, "Field Metabolic Rate (kj per day)")
 ```

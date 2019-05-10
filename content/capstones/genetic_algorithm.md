@@ -1,7 +1,7 @@
 ---
 title: Genetic algorithm
 weight: 1
-status: construction
+status: draft
 packages:
   - StatsPlots
   - StatsKit
@@ -143,7 +143,7 @@ zero(::Type{Genome}) = Genome(0.0, 0.0)
 
 
 ````
-zero (generic function with 36 methods)
+zero (generic function with 37 methods)
 ````
 
 
@@ -161,12 +161,12 @@ population[1:5]
 
 
 ````
-5-element Array{Main.WeaveSandBox1.Genome,1}:
- Main.WeaveSandBox1.Genome(0.0, 0.0)
- Main.WeaveSandBox1.Genome(0.0, 0.0)
- Main.WeaveSandBox1.Genome(0.0, 0.0)
- Main.WeaveSandBox1.Genome(0.0, 0.0)
- Main.WeaveSandBox1.Genome(0.0, 0.0)
+5-element Array{Main.WeaveSandBox2.Genome,1}:
+ Main.WeaveSandBox2.Genome(0.0, 0.0)
+ Main.WeaveSandBox2.Genome(0.0, 0.0)
+ Main.WeaveSandBox2.Genome(0.0, 0.0)
+ Main.WeaveSandBox2.Genome(0.0, 0.0)
+ Main.WeaveSandBox2.Genome(0.0, 0.0)
 ````
 
 
@@ -184,7 +184,7 @@ population[1:5]
 
 
 ````
-5-element Array{Main.WeaveSandBox1.Genome,1}:
+5-element Array{Main.WeaveSandBox2.Genome,1}:
  ŷ = 0.0×x + 0.0
  ŷ = 0.0×x + 0.0
  ŷ = 0.0×x + 0.0
@@ -308,7 +308,7 @@ initial_genome
 
 
 ````
-ŷ = 0.212×x + 0.521
+ŷ = 0.193×x + 0.49
 ````
 
 
@@ -323,7 +323,7 @@ very_gradual_change! = normal_error(1e-3, 1e-3)
 
 
 ````
-(::getfield(Main.WeaveSandBox1, Symbol("#f#2")){Float64,Float64}) (generic 
+(::getfield(Main.WeaveSandBox2, Symbol("#f#2")){Float64,Float64}) (generic 
 function with 1 method)
 ````
 
@@ -343,27 +343,27 @@ population = [Genome(rand(Normal(1,0.5)), rand(Normal(3,1))) for i in 1:500]
 
 
 ````
-500-element Array{Main.WeaveSandBox1.Genome,1}:
- ŷ = 1.889×x + 3.915 
- ŷ = 1.717×x + 3.153 
- ŷ = -0.064×x + 3.585
- ŷ = 1.066×x + 3.608 
- ŷ = 1.216×x + 2.751 
- ŷ = 1.328×x + 3.559 
- ŷ = 1.493×x + 3.25  
- ŷ = 1.167×x + 3.149 
- ŷ = 0.641×x + 1.078 
- ŷ = 1.285×x + 3.654 
- ⋮                    
- ŷ = 1.131×x + 3.499 
- ŷ = 0.519×x + 3.723 
- ŷ = 1.508×x + 3.683 
- ŷ = 0.849×x + 4.071 
- ŷ = 0.809×x + 3.792 
- ŷ = 1.225×x + 3.335 
- ŷ = 0.619×x + 2.908 
- ŷ = 1.202×x + 4.682 
- ŷ = 0.341×x + 3.669
+500-element Array{Main.WeaveSandBox2.Genome,1}:
+ ŷ = 1.28×x + 3.948 
+ ŷ = 0.931×x + 4.525
+ ŷ = 0.262×x + 2.984
+ ŷ = 0.901×x + 4.849
+ ŷ = 0.998×x + 4.115
+ ŷ = 1.449×x + 2.74 
+ ŷ = 1.714×x + 1.987
+ ŷ = 0.595×x + 4.617
+ ŷ = 0.091×x + 2.289
+ ŷ = 0.968×x + 5.752
+ ⋮                   
+ ŷ = 1.078×x + 3.928
+ ŷ = 0.61×x + 1.933 
+ ŷ = 0.9×x + 1.971  
+ ŷ = 0.747×x + 4.629
+ ŷ = 1.577×x + 2.832
+ ŷ = 0.074×x + 3.756
+ ŷ = 0.02×x + 1.698 
+ ŷ = 1.206×x + 5.079
+ ŷ = 1.269×x + 2.507
 ````
 
 
@@ -400,4 +400,4 @@ yaxis!(:log10, "Field Metabolic Rate (kj per day)")
 {{< figure src="../figures/genetic_algorithm_18_1.png" title="Relationship between field metabolic rate and mass - this is a neat log-log relationship, and so linear regression will give us the exponent."  >}}
 
 
-We can also look at the equation for the most fit genome: ŷ = 0.742×x + 2.955.
+We can also look at the equation for the most fit genome: ŷ = 0.765×x + 3.029.

@@ -99,15 +99,16 @@ yaxis!(:log10, "Field Metabolic Rate (kj per day)")
 {{< figure src="../figures/genetic_algorithm_4_1.png" title="Relationship between field metabolic rate and mass - this is a neat log-log relationship, and so linear regression will give us the exponent."  >}}
 
 
-Neat! This is a log-log relationship, so we can represent this problem as
-$\text{log}_{10}(\text{FMR}) \propto m\times\text{log}_{10}(\text{M})+b$.
+Neat! This is a log-log relationship, so we can represent this problem as:
 
-{{> callout information <}}
+$$\text{log}_{10}(\text{FMR}) \propto m\times\text{log}_{10}(\text{M})+b$$
+
+{{< callout information >}}
 In this capstone, we will try to write a very general code for genetic
 algorithms. It is possible to come up with a more specific code, but spending
 time to think about making code general is almost always wise, since it means we
 can seamlessly re-use already written code.
-{{> /callout <}}
+{{< /callout >}}
 
 Genetic algorithms represent the state of the problem as "genomes", which here
 will be composed of two genes: $m$ and $b$. There are a few decisions we need to
@@ -127,10 +128,10 @@ end
 
 
 
-{{> callout information <}}
+{{< callout information >}}
 Defining a new type is *absolutely not* necessary. We are only doing it to show
 some interesting features of Julia.
-{{> /callout <}}
+{{< /callout >}}
 
 This means that our population will be of the type `Vector{Genome}`. Now, we
 will *add methods* to some of Julia's existing function, so we can write code
@@ -143,7 +144,7 @@ zero(::Type{Genome}) = Genome(0.0, 0.0)
 
 
 ````
-zero (generic function with 37 methods)
+zero (generic function with 38 methods)
 ````
 
 
@@ -161,12 +162,12 @@ population[1:5]
 
 
 ````
-5-element Array{Main.WeaveSandBox2.Genome,1}:
- Main.WeaveSandBox2.Genome(0.0, 0.0)
- Main.WeaveSandBox2.Genome(0.0, 0.0)
- Main.WeaveSandBox2.Genome(0.0, 0.0)
- Main.WeaveSandBox2.Genome(0.0, 0.0)
- Main.WeaveSandBox2.Genome(0.0, 0.0)
+5-element Array{Main.WeaveSandBox3.Genome,1}:
+ Main.WeaveSandBox3.Genome(0.0, 0.0)
+ Main.WeaveSandBox3.Genome(0.0, 0.0)
+ Main.WeaveSandBox3.Genome(0.0, 0.0)
+ Main.WeaveSandBox3.Genome(0.0, 0.0)
+ Main.WeaveSandBox3.Genome(0.0, 0.0)
 ````
 
 
@@ -184,7 +185,7 @@ population[1:5]
 
 
 ````
-5-element Array{Main.WeaveSandBox2.Genome,1}:
+5-element Array{Main.WeaveSandBox3.Genome,1}:
  ŷ = 0.0×x + 0.0
  ŷ = 0.0×x + 0.0
  ŷ = 0.0×x + 0.0
@@ -308,7 +309,7 @@ initial_genome
 
 
 ````
-ŷ = 0.193×x + 0.49
+ŷ = 0.187×x + 0.49
 ````
 
 
@@ -323,7 +324,7 @@ very_gradual_change! = normal_error(1e-3, 1e-3)
 
 
 ````
-(::getfield(Main.WeaveSandBox2, Symbol("#f#2")){Float64,Float64}) (generic 
+(::getfield(Main.WeaveSandBox3, Symbol("#f#2")){Float64,Float64}) (generic 
 function with 1 method)
 ````
 
@@ -343,27 +344,27 @@ population = [Genome(rand(Normal(1,0.5)), rand(Normal(3,1))) for i in 1:500]
 
 
 ````
-500-element Array{Main.WeaveSandBox2.Genome,1}:
- ŷ = 1.28×x + 3.948 
- ŷ = 0.931×x + 4.525
- ŷ = 0.262×x + 2.984
- ŷ = 0.901×x + 4.849
- ŷ = 0.998×x + 4.115
- ŷ = 1.449×x + 2.74 
- ŷ = 1.714×x + 1.987
- ŷ = 0.595×x + 4.617
- ŷ = 0.091×x + 2.289
- ŷ = 0.968×x + 5.752
+500-element Array{Main.WeaveSandBox3.Genome,1}:
+ ŷ = 0.966×x + 2.329
+ ŷ = 1.249×x + 2.853
+ ŷ = 0.501×x + 2.998
+ ŷ = 1.074×x + 1.847
+ ŷ = 0.908×x + 2.779
+ ŷ = 0.394×x + 3.351
+ ŷ = 1.173×x + 2.904
+ ŷ = 1.088×x + 2.725
+ ŷ = 0.921×x + 2.794
+ ŷ = 0.926×x + 3.572
  ⋮                   
- ŷ = 1.078×x + 3.928
- ŷ = 0.61×x + 1.933 
- ŷ = 0.9×x + 1.971  
- ŷ = 0.747×x + 4.629
- ŷ = 1.577×x + 2.832
- ŷ = 0.074×x + 3.756
- ŷ = 0.02×x + 1.698 
- ŷ = 1.206×x + 5.079
- ŷ = 1.269×x + 2.507
+ ŷ = 1.141×x + 2.102
+ ŷ = 1.821×x + 3.28 
+ ŷ = 1.104×x + 4.267
+ ŷ = 0.957×x + 3.539
+ ŷ = 1.38×x + 2.486 
+ ŷ = 1.271×x + 4.457
+ ŷ = 1.383×x + 1.555
+ ŷ = 1.219×x + 3.234
+ ŷ = 0.794×x + 3.477
 ````
 
 
@@ -400,4 +401,4 @@ yaxis!(:log10, "Field Metabolic Rate (kj per day)")
 {{< figure src="../figures/genetic_algorithm_18_1.png" title="Relationship between field metabolic rate and mass - this is a neat log-log relationship, and so linear regression will give us the exponent."  >}}
 
 
-We can also look at the equation for the most fit genome: ŷ = 0.765×x + 3.029.
+We can also look at the equation for the most fit genome: ŷ = 0.565×x + 2.957.

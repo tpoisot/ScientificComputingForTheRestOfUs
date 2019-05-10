@@ -66,15 +66,16 @@ xaxis!(:log10, "Mass (kg)")
 yaxis!(:log10, "Field Metabolic Rate (kj per day)")
 ```
 
-Neat! This is a log-log relationship, so we can represent this problem as
-$\text{log}_{10}(\text{FMR}) \propto m\times\text{log}_{10}(\text{M})+b$.
+Neat! This is a log-log relationship, so we can represent this problem as:
 
-{{> callout information <}}
+$$\text{log}_{10}(\text{FMR}) \propto m\times\text{log}_{10}(\text{M})+b$$
+
+{{< callout information >}}
 In this capstone, we will try to write a very general code for genetic
 algorithms. It is possible to come up with a more specific code, but spending
 time to think about making code general is almost always wise, since it means we
 can seamlessly re-use already written code.
-{{> /callout <}}
+{{< /callout >}}
 
 Genetic algorithms represent the state of the problem as "genomes", which here
 will be composed of two genes: $m$ and $b$. There are a few decisions we need to
@@ -90,10 +91,10 @@ mutable struct Genome
 end
 ```
 
-{{> callout information <}}
+{{< callout information >}}
 Defining a new type is *absolutely not* necessary. We are only doing it to show
 some interesting features of Julia.
-{{> /callout <}}
+{{< /callout >}}
 
 This means that our population will be of the type `Vector{Genome}`. Now, we
 will *add methods* to some of Julia's existing function, so we can write code

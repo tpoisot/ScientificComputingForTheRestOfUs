@@ -8,7 +8,7 @@ section#content {
   section#content img {
     max-width: 100%; }
 
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1460px) {
   nav#main {
     left: 0 !important; }
     nav#main .toggle {
@@ -25,7 +25,7 @@ b, strong {
 
 nav, h1, h2 {
   font-family: var(--font-title);
-  color: var(--color-title); }
+  color: var(--color-accent); }
 
 h3, h4, h5, h6 {
   font-family: var(--font-meta);
@@ -59,17 +59,17 @@ section#content {
   line-height: var(--font-lh); }
 
 a {
-  color: var(--color-copy-a);
+  color: var(--color-bright);
   text-decoration: none; }
   a:hover {
-    color: var(--color-copy-a-hover); }
+    color: var(--color-bright-subdued); }
 
 .listicle {
   font-family: var(--font-meta);
   color: var(--color-darkest);
   margin-bottom: 5px; }
   .listicle i {
-    color: var(--color-accent); }
+    color: var(--color-main); }
   .listicle .listicleitem {
     color: var(--color-darker);
     border: 1px solid var(--color-medium);
@@ -153,6 +153,8 @@ ul.nav {
   ul.nav li {
     list-style: none;
     margin-bottom: 2em; }
+    ul.nav li:hover i {
+      color: var(--color-highlight); }
     ul.nav li i {
       color: var(--color-medium);
       padding-right: 1em; }

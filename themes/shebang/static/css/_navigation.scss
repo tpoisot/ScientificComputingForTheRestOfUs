@@ -58,6 +58,11 @@ ul.nav {
   li {
     list-style: none;
     margin-bottom: 2em;
+    &:hover {
+      i {
+        color: var(--color-highlight);
+      }
+    }
     i {
       color: var(--color-medium);
       padding-right: 1em;

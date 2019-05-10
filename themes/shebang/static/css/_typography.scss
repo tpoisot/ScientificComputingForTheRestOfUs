@@ -13,7 +13,7 @@ b, strong {
 
 nav, h1, h2 {
   font-family: var(--font-title);
-  color: var(--color-title);
+  color: var(--color-accent);
 }
 h3, h4, h5, h6 {
   font-family: var(--font-meta);
@@ -39,9 +39,9 @@ section#content {
 }
 
 a {
-  color: var(--color-copy-a);
+  color: var(--color-bright);
   &:hover {
-    color: var(--color-copy-a-hover);
+    color: var(--color-bright-subdued);
   }
   text-decoration: none;
 }
@@ -51,7 +51,7 @@ a {
   color: var(--color-darkest);
   margin-bottom: 5px;
   i {
-    color: var(--color-accent);
+    color: var(--color-main);
   }
   .listicleitem {
     color: var(--color-darker);

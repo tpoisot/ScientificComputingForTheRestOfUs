@@ -39,6 +39,7 @@ using StatsPlots
 url = "http://sciencecomputing.io/data/metabolicrates.csv"
 tmp = download(url)
 rates = CSV.read(tmp)
+rates[1:10,:]
 ```
 
 Let's have a look at the names of the columns:
@@ -53,7 +54,7 @@ We will replace the last two names:
 rename!(rates, names(rates)[end-1] => :mass)
 rename!(rates, names(rates)[end] => :fmr)
 rates = rates[rates[:mass].<1e3,:]
-names(rates)
+rates[1:10,:]
 ```
 
 Much better! Now let's try to figure out the relationship between the last two

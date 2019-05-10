@@ -81,10 +81,22 @@ table {
   width: 100%;
   border-collapse: collapse;
   border-bottom: 1px solid var(--color-dark);
-  th {
-    font-weight: 500;
-    color: var(--color-lightest);
-    background-color: var(--color-dark);
+  thead {
+    th {
+      font-weight: 500;
+      color: var(--color-lightest);
+      background-color: var(--color-dark);
+    }
+    tr {
+      &:nth-child(2){
+        th {
+          background-color: var(--color-light);
+          color: var(--color-accent);
+          font-weight: 400;
+          font-family: var(--font-code);
+        }
+      }
+    }
   }
   tr{
     &:nth-child(odd) {
@@ -92,6 +104,10 @@ table {
     }
   }
   tbody {
+    th {
+      color: var(--color-light);
+      font-weight: 400;
+    }
     tr {
       &:hover {
         background: var(--color-highlight);
@@ -99,6 +115,6 @@ table {
     }
   }
   td, th {
-    padding: 5px 10px;
+    padding: 3px 7px;
   }
 }

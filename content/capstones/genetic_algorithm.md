@@ -39,12 +39,12 @@ using StatsPlots
 url = "http://sciencecomputing.io/data/metabolicrates.csv"
 tmp = download(url)
 rates = CSV.read(tmp)
-rates[1:10,:]
+rates[1:5,:]
 ````
 
 
 
-<table class="data-frame"><thead><tr><th></th><th>Class</th><th>Order</th><th>Family</th><th>Genus</th><th>Species</th><th>Study</th><th>M (kg)</th><th>FMR (kJ / day)</th></tr><tr><th></th><th>String</th><th>String</th><th>String</th><th>String</th><th>String</th><th>String</th><th>Float64</th><th>Float64</th></tr></thead><tbody><p>10 rows × 8 columns</p><tr><th>1</th><td>Mammalia</td><td>Carnivora</td><td>Odobenidae</td><td>Odobenus</td><td>rosmarus</td><td>Acquarone et al 2006</td><td>1370.0</td><td>345000.0</td></tr><tr><th>2</th><td>Mammalia</td><td>Carnivora</td><td>Odobenidae</td><td>Odobenus</td><td>rosmarus</td><td>Acquarone et al 2006</td><td>1250.0</td><td>417400.0</td></tr><tr><th>3</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>7.4</td><td>3100.0</td></tr><tr><th>4</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>6.95</td><td>2898.0</td></tr><tr><th>5</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>8.9</td><td>3528.0</td></tr><tr><th>6</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>9.6</td><td>3881.0</td></tr><tr><th>7</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>9.4</td><td>3830.0</td></tr><tr><th>8</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>9.3</td><td>4284.0</td></tr><tr><th>9</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>9.35</td><td>3906.0</td></tr><tr><th>10</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>8.15</td><td>2386.0</td></tr></tbody></table>
+<table class="data-frame"><thead><tr><th></th><th>Class</th><th>Order</th><th>Family</th><th>Genus</th><th>Species</th><th>Study</th><th>M (kg)</th><th>FMR (kJ / day)</th></tr><tr><th></th><th>String</th><th>String</th><th>String</th><th>String</th><th>String</th><th>String</th><th>Float64</th><th>Float64</th></tr></thead><tbody><p>5 rows × 8 columns</p><tr><th>1</th><td>Mammalia</td><td>Carnivora</td><td>Odobenidae</td><td>Odobenus</td><td>rosmarus</td><td>Acquarone et al 2006</td><td>1370.0</td><td>345000.0</td></tr><tr><th>2</th><td>Mammalia</td><td>Carnivora</td><td>Odobenidae</td><td>Odobenus</td><td>rosmarus</td><td>Acquarone et al 2006</td><td>1250.0</td><td>417400.0</td></tr><tr><th>3</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>7.4</td><td>3100.0</td></tr><tr><th>4</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>6.95</td><td>2898.0</td></tr><tr><th>5</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>8.9</td><td>3528.0</td></tr></tbody></table>
 
 
 
@@ -144,7 +144,7 @@ zero(::Type{Genome}) = Genome(0.0, 0.0)
 
 
 ````
-zero (generic function with 38 methods)
+zero (generic function with 39 methods)
 ````
 
 
@@ -162,12 +162,12 @@ population[1:5]
 
 
 ````
-5-element Array{Main.WeaveSandBox3.Genome,1}:
- Main.WeaveSandBox3.Genome(0.0, 0.0)
- Main.WeaveSandBox3.Genome(0.0, 0.0)
- Main.WeaveSandBox3.Genome(0.0, 0.0)
- Main.WeaveSandBox3.Genome(0.0, 0.0)
- Main.WeaveSandBox3.Genome(0.0, 0.0)
+5-element Array{Main.WeaveSandBox4.Genome,1}:
+ Main.WeaveSandBox4.Genome(0.0, 0.0)
+ Main.WeaveSandBox4.Genome(0.0, 0.0)
+ Main.WeaveSandBox4.Genome(0.0, 0.0)
+ Main.WeaveSandBox4.Genome(0.0, 0.0)
+ Main.WeaveSandBox4.Genome(0.0, 0.0)
 ````
 
 
@@ -185,7 +185,7 @@ population[1:5]
 
 
 ````
-5-element Array{Main.WeaveSandBox3.Genome,1}:
+5-element Array{Main.WeaveSandBox4.Genome,1}:
  ŷ = 0.0×x + 0.0
  ŷ = 0.0×x + 0.0
  ŷ = 0.0×x + 0.0
@@ -309,7 +309,7 @@ initial_genome
 
 
 ````
-ŷ = 0.187×x + 0.49
+ŷ = 0.197×x + 0.479
 ````
 
 
@@ -324,7 +324,7 @@ very_gradual_change! = normal_error(1e-3, 1e-3)
 
 
 ````
-(::getfield(Main.WeaveSandBox3, Symbol("#f#2")){Float64,Float64}) (generic 
+(::getfield(Main.WeaveSandBox4, Symbol("#f#2")){Float64,Float64}) (generic 
 function with 1 method)
 ````
 
@@ -344,27 +344,27 @@ population = [Genome(rand(Normal(1,0.5)), rand(Normal(3,1))) for i in 1:500]
 
 
 ````
-500-element Array{Main.WeaveSandBox3.Genome,1}:
- ŷ = 0.966×x + 2.329
- ŷ = 1.249×x + 2.853
- ŷ = 0.501×x + 2.998
- ŷ = 1.074×x + 1.847
- ŷ = 0.908×x + 2.779
- ŷ = 0.394×x + 3.351
- ŷ = 1.173×x + 2.904
- ŷ = 1.088×x + 2.725
- ŷ = 0.921×x + 2.794
- ŷ = 0.926×x + 3.572
+500-element Array{Main.WeaveSandBox4.Genome,1}:
+ ŷ = 0.671×x + 3.108
+ ŷ = 0.902×x + 3.798
+ ŷ = 0.699×x + 1.814
+ ŷ = 1.308×x + 2.887
+ ŷ = 0.718×x + 3.859
+ ŷ = 1.461×x + 1.261
+ ŷ = 1.454×x + 2.292
+ ŷ = 1.189×x + 3.367
+ ŷ = 1.555×x + 3.658
+ ŷ = 1.506×x + 2.815
  ⋮                   
- ŷ = 1.141×x + 2.102
- ŷ = 1.821×x + 3.28 
- ŷ = 1.104×x + 4.267
- ŷ = 0.957×x + 3.539
- ŷ = 1.38×x + 2.486 
- ŷ = 1.271×x + 4.457
- ŷ = 1.383×x + 1.555
- ŷ = 1.219×x + 3.234
- ŷ = 0.794×x + 3.477
+ ŷ = 0.751×x + 1.344
+ ŷ = 0.755×x + 2.189
+ ŷ = 1.605×x + 3.723
+ ŷ = 0.0×x + 3.646  
+ ŷ = 0.854×x + 4.072
+ ŷ = 1.583×x + 2.864
+ ŷ = 1.096×x + 3.696
+ ŷ = 1.18×x + 2.988 
+ ŷ = 0.555×x + 3.215
 ````
 
 
@@ -401,4 +401,4 @@ yaxis!(:log10, "Field Metabolic Rate (kj per day)")
 {{< figure src="../figures/genetic_algorithm_18_1.png" title="Relationship between field metabolic rate and mass - this is a neat log-log relationship, and so linear regression will give us the exponent."  >}}
 
 
-We can also look at the equation for the most fit genome: ŷ = 0.565×x + 2.957.
+We can also look at the equation for the most fit genome: ŷ = 0.605×x + 3.041.

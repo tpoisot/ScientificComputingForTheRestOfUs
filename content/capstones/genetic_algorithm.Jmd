@@ -39,7 +39,7 @@ using StatsPlots
 url = "http://sciencecomputing.io/data/metabolicrates.csv"
 tmp = download(url)
 rates = CSV.read(tmp)
-rates[1:10,:]
+rates[1:5,:]
 ```
 
 Let's have a look at the names of the columns:

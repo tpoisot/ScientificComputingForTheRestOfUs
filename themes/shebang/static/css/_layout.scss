@@ -3,7 +3,7 @@ html, body {
 }
 
 section#content {
-  max-width: 800px;
+  max-width: 850px;
   padding: 50px;
   margin: 0px auto;
   img {
@@ -11,8 +11,7 @@ section#content {
   }
 }
 
-
-@media only screen and (min-width: 1460px) {
+@media only screen and (min-width: 1540px) {
   nav#main {
     left: 0 !important;
     .toggle {
@@ -29,7 +28,7 @@ figure {
   figcaption {
     text-align: left;
     h4 {
-      color: var(--color-darker);  
+      color: var(--color-darker);
     }
   }
 }

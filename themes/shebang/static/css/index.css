@@ -2,11 +2,26 @@ html, body {
   height: 100vh; }
 
 section#content {
-  max-width: 820px;
+  max-width: 800px;
   padding: 50px;
   margin: 0px auto; }
   section#content img {
     max-width: 100%; }
+
+@media only screen and (min-width: 1460px) {
+  nav#main {
+    left: 0 !important; }
+    nav#main .toggle {
+      display: none; } }
+figure {
+  margin: 2em 0em;
+  padding: 1em;
+  border: 1px solid var(--color-lighter);
+  text-align: center; }
+  figure figcaption {
+    text-align: left; }
+    figure figcaption h4 {
+      color: var(--color-darker); }
 
 body {
   font-family: var(--font-main);
@@ -16,11 +31,11 @@ pre, code {
   font-family: var(--font-code); }
 
 b, strong {
-  font-weight: 600; }
+  font-weight: 500; }
 
 nav, h1, h2 {
   font-family: var(--font-title);
-  color: var(--color-title); }
+  color: var(--color-accent); }
 
 h3, h4, h5, h6 {
   font-family: var(--font-meta);
@@ -54,17 +69,17 @@ section#content {
   line-height: var(--font-lh); }
 
 a {
-  color: var(--color-copy-a);
+  color: var(--color-bright);
   text-decoration: none; }
   a:hover {
-    color: var(--color-copy-a-hover); }
+    color: var(--color-bright-subdued); }
 
 .listicle {
   font-family: var(--font-meta);
   color: var(--color-darkest);
   margin-bottom: 5px; }
   .listicle i {
-    color: var(--color-accent); }
+    color: var(--color-main); }
   .listicle .listicleitem {
     color: var(--color-darker);
     border: 1px solid var(--color-medium);
@@ -83,6 +98,22 @@ a {
   font-style: italic;
   color: var(--color-darker); }
 
+table {
+  font-size: 90%;
+  width: 100%;
+  border-collapse: collapse;
+  border-bottom: 1px solid var(--color-dark); }
+  table th {
+    font-weight: 500;
+    color: var(--color-lightest);
+    background-color: var(--color-dark); }
+  table tr:nth-child(odd) {
+    background: var(--color-lightest); }
+  table tbody tr:hover {
+    background: var(--color-highlight); }
+  table td, table th {
+    padding: 5px 10px; }
+
 .button {
   cursor: pointer; }
   .button svg {
@@ -91,11 +122,12 @@ a {
     right: -2px;
     position: relative; }
   .button line {
-    stroke: var(--color-bg);
+    stroke: var(--color-darker);
     stroke-width: 8px; }
 
 nav#main {
-  background-color: white;
+  z-index: 10000;
+  background-color: var(--color-darker);
   width: 300px;
   padding: 1em;
   height: 100vh;
@@ -106,7 +138,6 @@ nav#main {
   box-sizing: border-box; }
   nav#main .toggle {
     width: 330px;
-    background-color: var(--color-medium);
     border-radius: 0px 5px 5px 0px;
     padding: 5px;
     margin-left: -1em; }
@@ -114,8 +145,7 @@ nav#main {
       position: relative;
       left: 300px; }
   nav#main.toggled {
-    left: 0;
-    box-shadow: 0px 0px 2px var(--color-lighter); }
+    left: 0; }
   nav#main .header {
     margin: 2em 0; }
     nav#main .header h1, nav#main .header h2 {
@@ -124,26 +154,28 @@ nav#main {
     nav#main .header h1 {
       font-weight: 300; }
     nav#main .header h2 {
-      font-weight: 600;
-      color: var(--color-light); }
+      font-weight: 500;
+      color: var(--color-lighter); }
 
 ul.nav {
   list-style: none;
-  padding: 0 0; }
+  padding: 0 0;
+  position: absolute;
+  bottom: 0; }
   ul.nav li {
-    list-style: none; }
+    list-style: none;
+    margin-bottom: 2em; }
+    ul.nav li:hover i {
+      color: var(--color-highlight); }
+    ul.nav li i {
+      color: var(--color-medium);
+      padding-right: 1em; }
     ul.nav li a {
-      display: block;
-      border: 1px solid var(--color-lighter);
-      margin-bottom: 1em;
-      padding: 0.5em;
-      border-radius: 5px;
-      text-align: center;
-      text-decoration: none;
-      color: var(--color-dark); }
+      font-weight: 400;
+      color: var(--color-lighter); }
       ul.nav li a.active {
-        background-color: var(--color-lightest);
-        color: var(--color-darker); }
+        font-weight: 500;
+        color: var(--color-lightest); }
 
 .callout {
   font-family: var(--font-title); }

@@ -7,13 +7,14 @@
     position: relative;
   }
   line {
-    stroke: var(--color-bg);
+    stroke: var(--color-darker);
     stroke-width: 8px;
   }
 }
 
 nav#main {
-  background-color: white;
+  z-index: 10000;
+  background-color: var(--color-darker);
   width: 300px;
   padding: 1em;
   height: 100vh;
@@ -24,7 +25,6 @@ nav#main {
   box-sizing: border-box;
   .toggle {
     width: 330px;
-    background-color: var(--color-medium);
     border-radius: 0px 5px 5px 0px;
     padding: 5px;
     margin-left: -1em;
@@ -35,7 +35,6 @@ nav#main {
   }
   &.toggled {
     left: 0;
-    box-shadow: 0px 0px 2px var(--color-lighter);
   }
   .header {
     margin: 2em 0;
@@ -45,8 +44,8 @@ nav#main {
     }
     h1{font-weight: 300;}
     h2{
-      font-weight: 600;
-      color: var(--color-light);
+      font-weight: 500;
+      color: var(--color-lighter);
     }
   }
 }
@@ -54,20 +53,26 @@ nav#main {
 ul.nav {
   list-style: none;
   padding: 0 0;
+  position: absolute;
+  bottom: 0;
   li {
     list-style: none;
+    margin-bottom: 2em;
+    &:hover {
+      i {
+        color: var(--color-highlight);
+      }
+    }
+    i {
+      color: var(--color-medium);
+      padding-right: 1em;
+    }
     a {
-      display: block;
-      border: 1px solid var(--color-lighter);
-      margin-bottom: 1em;
-      padding: 0.5em;
-      border-radius: 5px;
-      text-align: center;
-      text-decoration: none;
-      color: var(--color-dark);
+      font-weight: 400;
+      color: var(--color-lighter);
       &.active {
-        background-color: var(--color-lightest);
-        color: var(--color-darker);
+        font-weight: 500;
+        color: var(--color-lightest);
       }
     }
   }

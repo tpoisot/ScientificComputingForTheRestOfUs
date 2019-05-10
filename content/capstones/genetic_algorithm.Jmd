@@ -76,6 +76,7 @@ opposed to taking the log of the averages).
 
 ```julia
 rates = by(rates, [:Genus, :Species], [:mass, :fmr] => x -> (mass=mean(log10.(x.mass)), fmr=mean(log10.(x.fmr))))
+rates[1:10,:]
 ```
 
 We can look at the simplified data:

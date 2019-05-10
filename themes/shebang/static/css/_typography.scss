@@ -91,6 +91,13 @@ table {
       background: var(--color-lightest);
     }
   }
+  tbody {
+    tr {
+      &:hover {
+        background: var(--color-highlight);
+      }
+    }
+  }
   td, th {
     padding: 5px 10px;
   }

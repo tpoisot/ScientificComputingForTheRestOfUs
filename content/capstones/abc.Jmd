@@ -87,10 +87,21 @@ function island(e::T, c::T, m::T; n=200) where {T <: AbstractFloat}
 end
 ```
 
-In ABC, one key notion is the idea of "summary statistics", *i.e.* the act of
-compressing the empirical data and model output to something that can be
-meaningfully compared. Here, we will work with two informations, namely the rate
-of transition, and the temporal occupancy.
+In ABC, one key notion is the idea of "summary statistics", *i.e.* the act
+of compressing the empirical data and model output to something that can be
+meaningfully compared. Here, we will work with two informations, namely the
+rate of transition, and the temporal occupancy. In ABC, the summary statistics
+are *key* in determining the validity of the results. Using too much exposes
+you to the curse of dimensionality, and using too few (or the wrong ones)
+can lead to spurious conclusions. Another few indicators we could have used
+are apparent colonisation events (when the island appeared empty one year,
+then occupied the next), apparent extinction events (when the island appears
+occupied one year, and empty the next), and finally the number of times
+where the sequence occupied/empty/occupied appears. Feel free to try and
+adapt the code after you have been through this lesson once to use these
+and other indicators, and see how the results change. 
+
+In any case, here is our function to summarize a sequence of observations:
 
 ```julia
 function summary(t::Vector{Bool})

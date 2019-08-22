@@ -164,7 +164,7 @@ some inspiration.
 
 **Lesson contents**: Timothée Poisot
 
-**Comments, ideas, feedback**: Hao Ye, Philipp Bayer, Tim Head, Ethan White
+**Comments, ideas, feedback**: Hao Ye, Philipp Bayer, Tim Head, Ethan White, Andrew MacDonald
 
 **Other contributions**: Konrad Hinsen
 

@@ -151,7 +151,7 @@ function throw_darts(n::Int64)
     Also specifying the type of the objects will let the computer
     reserve exactly enough space in memory.
     =#
-    darts = Array{Tuple{Float64,Float64},1}(n)
+    darts = Array{Tuple{Float64,Float64},1}(undef,n)
 
     #=
     Now we can fill the variable with random darts. Julia has
@@ -170,7 +170,7 @@ function throw_darts(n::Int64)
         x, y = rand(2).*2
         darts[i] = (x, y)
         =#
-        darts[i] = rand(2).*2.0
+        darts[i] = Tuple(rand(2).*2.0)
     end
 
     #=

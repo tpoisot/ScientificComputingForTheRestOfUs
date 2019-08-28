@@ -379,7 +379,7 @@ then the computer will see that we have not asked for a specific value of `b`,
 and use the default. But if we use the following syntax,
 
 ```julia
-my_log_function(2.0; b=e)
+my_log_function(2.0; b=ℯ)
 ```
 
 then the value of `b` will be fixed (to $e$), and the function will use this.

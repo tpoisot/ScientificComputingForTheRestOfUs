@@ -337,7 +337,7 @@ So, how good is our estimate?
 
 ```julia
 estimate = estimate_pi(100000)
-println("Estimate: $(estimate)\tπ: $(π)")
+println("Estimate: $(estimate)\t\tπ: $(π+0)")
 ```
 
 ## Keyword arguments and default values

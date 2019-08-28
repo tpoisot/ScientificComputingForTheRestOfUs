@@ -170,7 +170,7 @@ function throw_darts(n::Int64)
     Also specifying the type of the objects will let the computer
     reserve exactly enough space in memory.
     =#
-    darts = Array{Tuple{Float64,Float64},1}(n)
+    darts = Array{Tuple{Float64,Float64},1}(undef,n)
 
     #=
     Now we can fill the variable with random darts. Julia has
@@ -189,7 +189,7 @@ function throw_darts(n::Int64)
         x, y = rand(2).*2
         darts[i] = (x, y)
         =#
-        darts[i] = rand(2).*2.0
+        darts[i] = Tuple(rand(2).*2.0)
     end
 
     #=
@@ -421,27 +421,14 @@ So, how good is our estimate?
 
 ````julia
 estimate = estimate_pi(100000)
+println("Estimate: $(estimate)\t\tπ: $(π+0)")
 ````
 
 
-<pre class="julia-error">
-ERROR: MethodError: no method matching Array&#123;Tuple&#123;Float64,Float64&#125;,1&#125;&#40;::Int64&#41;
-Closest candidates are:
-  Array&#123;Tuple&#123;Float64,Float64&#125;,1&#125;&#40;&#41; where T at boot.jl:421
-  Array&#123;Tuple&#123;Float64,Float64&#125;,1&#125;&#40;&#33;Matched::UndefInitializer, &#33;Matched::Int64&#41; where T at boot.jl:402
-  Array&#123;Tuple&#123;Float64,Float64&#125;,1&#125;&#40;&#33;Matched::UndefInitializer, &#33;Matched::Int64...&#41; where &#123;T, N&#125; at boot.jl:408
-  ...
-</pre>
-
-
-````julia
-println("Estimate: $(estimate)\tπ: $(π)")
+````
+Estimate: 3.14284		π: 3.141592653589793
 ````
 
-
-<pre class="julia-error">
-ERROR: UndefVarError: estimate not defined
-</pre>
 
 
 
@@ -503,13 +490,14 @@ then the computer will see that we have not asked for a specific value of `b`,
 and use the default. But if we use the following syntax,
 
 ````julia
-my_log_function(2.0; b=e)
+my_log_function(2.0; b=ℯ)
 ````
 
 
-<pre class="julia-error">
-ERROR: UndefVarError: e not defined
-</pre>
+````
+0.6931471805599453
+````
+
 
 
 
@@ -581,7 +569,7 @@ println("It takes $(round(time_int_and_float/time_float_and_float; digits=2)) ti
 
 
 ````
-It takes 1.47 times longer to work with different types!
+It takes 1.13 times longer to work with different types!
 ````
 
 

@@ -95,7 +95,7 @@ some inspiration.
 
 **Comments, ideas, feedback**: Hao Ye, Philipp Bayer, Tim Head, Ethan White
 
-**Lesson contents**: Timothée Poisot
+**Lesson contents**: Timothée Poisot, [Zaki Ahmed](https://github.com/notzaki)
 
 **Other contributions**: Konrad Hinsen
 

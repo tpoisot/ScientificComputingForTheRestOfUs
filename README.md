@@ -128,5 +128,5 @@ Finally, a short [Q&A at *Nature Jobs*][qanda] about this project.
 ## Other information
 
 [![license](https://img.shields.io/github/license/tpoisot/ScientificComputingForTheRestOfUs.svg?style=flat-square)]()
-[![Binder](https://img.shields.io/badge/launch-binder-ff69b4.svg?style=flat-square)](https://beta.mybinder.org/v2/gh/tpoisot/ScientificComputingForTheRestOfUs/master?filepath=lessons)
+[![Binder](https://img.shields.io/badge/launch-binder-ff69b4.svg?style=flat-square)](https://mybinder.org/v2/gh/tpoisot/ScientificComputingForTheRestOfUs/master?filepath=content%2Flessons)
 [![Gitter](https://img.shields.io/gitter/room/ScientificComputingForTheRestOfUs/Lobby.svg?style=flat-square)](https://gitter.im/ScientificComputingForTheRestOfUs/Lobby)

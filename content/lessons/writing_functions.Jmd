@@ -151,7 +151,7 @@ function throw_darts(n::Int64)
     Also specifying the type of the objects will let the computer
     reserve exactly enough space in memory.
     =#
-    darts = Array{Tuple{Float64,Float64},1}(n)
+    darts = Array{Tuple{Float64,Float64},1}(undef,n)
 
     #=
     Now we can fill the variable with random darts. Julia has
@@ -170,7 +170,7 @@ function throw_darts(n::Int64)
         x, y = rand(2).*2
         darts[i] = (x, y)
         =#
-        darts[i] = rand(2).*2.0
+        darts[i] = Tuple(rand(2).*2.0)
     end
 
     #=
@@ -337,7 +337,7 @@ So, how good is our estimate?
 
 ```julia
 estimate = estimate_pi(100000)
-println("Estimate: $(estimate)\tπ: $(π)")
+println("Estimate: $(estimate)\t\tπ: $(π+0)")
 ```
 
 ## Keyword arguments and default values
@@ -379,7 +379,7 @@ then the computer will see that we have not asked for a specific value of `b`,
 and use the default. But if we use the following syntax,
 
 ```julia
-my_log_function(2.0; b=e)
+my_log_function(2.0; b=ℯ)
 ```
 
 then the value of `b` will be fixed (to $e$), and the function will use this.

@@ -162,7 +162,7 @@ some inspiration.
 
 ## Contributors
 
-**Lesson contents**: Timothée Poisot
+**Lesson contents**: Timothée Poisot, [Zaki Ahmed](https://github.com/notzaki)
 
 **Comments, ideas, feedback**: Hao Ye, Philipp Bayer, Tim Head, Ethan White, Andrew MacDonald
 

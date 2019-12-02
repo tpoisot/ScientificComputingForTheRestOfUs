@@ -29,9 +29,10 @@ here.
 Specifically, we will use the `DataFrames` and `CSV` package (installed in
 `StatsKit`) to read a table containing metabolic rates of species, and then use
 genetic algorithm to try and find out the scaling exponent linking mass to the
-field metabolic rate.
+field metabolic rate. The data come from a meta-analysis by [Lawrence N. Hudson
+and colleagues](hudson), and can be downloaded as follows:
 
-[Source of data](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2656.12086)
+[hudson]: https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2656.12086
 
 ```julia
 using StatsKit
@@ -48,13 +49,13 @@ Let's have a look at the names of the columns:
 names(rates)
 ```
 
-We will replace the last two names:
+We will replace the last two names, as they are not easy to work with:
 
 ```julia
 rename!(rates, names(rates)[end-1] => :mass)
 rename!(rates, names(rates)[end] => :fmr)
 rates = rates[rates[:mass].<1e3,:]
-rates[1:10,:]
+rates[1:5,:]
 ```
 
 Much better! Now let's try to figure out the relationship between the last two
@@ -75,8 +76,16 @@ because the relation is log-log, we will average the log of the value (as
 opposed to taking the log of the averages).
 
 ```julia
-rates = by(rates, [:Genus, :Species], [:mass, :fmr] => x -> (mass=mean(log10.(x.mass)), fmr=mean(log10.(x.fmr))))
-rates[1:10,:]
+rates = by(
+  rates,
+  [:Genus, :Species],
+  [:mass, :fmr] =>
+    x -> (
+    mass=mean(log10.(x.mass)),
+    fmr=mean(log10.(x.fmr))
+    )
+  )
+rates[1:5,:]
 ```
 
 We can look at the simplified data:

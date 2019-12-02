@@ -90,7 +90,7 @@ rates[1:5,:]
 
 We can look at the simplified data:
 
-```julia; fig_cap="Same data, but a little bit less points. In addition, aggregating by species doesn't increase the impact that well sampled species will have on the regression output."
+```julia; fig_cap="Same data, but a little bit fewer points. In addition, aggregating by species doesn't increase the impact that well sampled species will have on the regression output."
 scatter(10.0.^rates[:mass], 10.0.^rates[:fmr], c=:teal, leg=false, msc=:transparent)
 xaxis!(:log10, "Mass (kg)")
 yaxis!(:log10, "Field Metabolic Rate (kj per day)")

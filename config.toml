@@ -16,14 +16,20 @@ pygmentsUseClasses = true
     identifier = "capstones"
     name = "Capstones"
     url = "/capstones/"
-    weight = 2
+    weight = 3
     pre = "fa-star"
   [[menu.main]]
     identifier = "primers"
     name = "Primers"
     url = "/primers/"
-    weight = 3
+    weight = 2
     pre = "fa-bolt"
+  [[menu.main]]
+    identifier = "ml"
+    name = "Machine Learning"
+    url = "/machinelearning/"
+    weight = 4
+    pre = "fa-brain"
 
 [params]
   readingSpeed = 120

@@ -3,7 +3,7 @@ title: Advanced control flow
 slug: advanced_control_flow
 layout: page
 concepts: [control flow]
-weight: 1
+weight: 2
 ---
 
 In the [first lesson]({{< ref "/lessons/control_flow.md">}}), we have
@@ -12,9 +12,9 @@ there are two important operations we may want to perform: skip an iteration, or
 stop the iteration process entirely. In this primer, we will see how this can be
 achieved using the `break` and `next` keywords.
 
-Undestanding how `next` and `break` can be used is extremely useful as you start
-developing more complex workflows. It can save a lot of time when you know that
-you want to avoid some operations, and is therefore worth understanding.
+Understanding how `next` and `break` can be used is extremely useful as you
+start developing more complex workflows. It can save a lot of time when you know
+that you want to avoid some operations, and is therefore worth understanding.
 
 Let's imagine that we have the following loop:
 

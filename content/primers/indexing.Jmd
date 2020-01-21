@@ -18,7 +18,3 @@ them.
 ```julia
 x = [i for i in 1:5]
 ```
-
-In short, `continue` will *skip ahead* to the next element in the iteration.
-This can be very important to avoid performing operations on objects that are
-not relevant.

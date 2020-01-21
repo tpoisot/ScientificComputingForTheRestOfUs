@@ -3,6 +3,7 @@ title: Parallel computing
 slug: parallelcomputing
 layout: page
 status: construction
+draft: true
 concepts:
   - optimization
   - parallel computing
@@ -30,5 +31,3 @@ addprocs(2)
  14
  15
 ````
-
-

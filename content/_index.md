@@ -196,7 +196,7 @@ Finally, a short [Q&A at *Nature Jobs*][qanda] about this project.
 
 [qanda]: https://web.archive.org/web/20171114145519/http://blogs.nature.com/naturejobs/2017/11/10/techblog-timothee-poisot-data-science-for-the-rest-of-us/
 
-[userconf]: https://queens.scholarsportal.info/ojs-archive/index.php/IEE/article/download/5644/5463
+[userconf]: https://ojs.library.queensu.ca/index.php/IEE/article/view/5644
 [elevate]: http://www.cell.com/trends/ecology-evolution/abstract/S0169-5347(15)00290-6
 
 [httlacs]: https://benlauwens.github.io/ThinkJulia.jl/latest/book.html

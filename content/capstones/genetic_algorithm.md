@@ -29,9 +29,10 @@ here.
 Specifically, we will use the `DataFrames` and `CSV` package (installed in
 `StatsKit`) to read a table containing metabolic rates of species, and then use
 genetic algorithm to try and find out the scaling exponent linking mass to the
-field metabolic rate.
+field metabolic rate. The data come from a meta-analysis by [Lawrence N. Hudson
+and colleagues](hudson), and can be downloaded as follows:
 
-[Source of data](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2656.12086)
+[hudson]: https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2656.12086
 
 ````julia
 using StatsKit
@@ -71,18 +72,45 @@ names(rates)
 
 
 
-We will replace the last two names:
+We will replace the last two names, as they are not easy to work with:
 
 ````julia
 rename!(rates, names(rates)[end-1] => :mass)
+````
+
+
+<pre class="julia-error">
+ERROR: UndefVarError: rename&#33; not defined
+</pre>
+
+
+````julia
 rename!(rates, names(rates)[end] => :fmr)
+````
+
+
+<pre class="julia-error">
+ERROR: UndefVarError: rename&#33; not defined
+</pre>
+
+
+````julia
 rates = rates[rates[:mass].<1e3,:]
-rates[1:10,:]
+````
+
+
+<pre class="julia-error">
+ERROR: ArgumentError: column name :mass not found in the data frame; existing most similar names are: :Class
+</pre>
+
+
+````julia
+rates[1:5,:]
 ````
 
 
 
-<table class="data-frame"><thead><tr><th></th><th>Class</th><th>Order</th><th>Family</th><th>Genus</th><th>Species</th><th>Study</th><th>mass</th><th>fmr</th></tr><tr><th></th><th>String</th><th>String</th><th>String</th><th>String</th><th>String</th><th>String</th><th>Float64</th><th>Float64</th></tr></thead><tbody><p>10 rows × 8 columns</p><tr><th>1</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>7.4</td><td>3100.0</td></tr><tr><th>2</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>6.95</td><td>2898.0</td></tr><tr><th>3</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>8.9</td><td>3528.0</td></tr><tr><th>4</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>9.6</td><td>3881.0</td></tr><tr><th>5</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>9.4</td><td>3830.0</td></tr><tr><th>6</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>9.3</td><td>4284.0</td></tr><tr><th>7</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>9.35</td><td>3906.0</td></tr><tr><th>8</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>8.15</td><td>2386.0</td></tr><tr><th>9</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>6.7</td><td>2374.0</td></tr><tr><th>10</th><td>Mammalia</td><td>Carnivora</td><td>Otariidae</td><td>Arctocephalus</td><td>gazella</td><td>Arnould et al 1996</td><td>32.75</td><td>17430.3</td></tr></tbody></table>
+<table class="data-frame"><thead><tr><th></th><th>Class</th><th>Order</th><th>Family</th><th>Genus</th><th>Species</th><th>Study</th><th>M (kg)</th><th>FMR (kJ / day)</th></tr><tr><th></th><th>String</th><th>String</th><th>String</th><th>String</th><th>String</th><th>String</th><th>Float64</th><th>Float64</th></tr></thead><tbody><p>5 rows × 8 columns</p><tr><th>1</th><td>Mammalia</td><td>Carnivora</td><td>Odobenidae</td><td>Odobenus</td><td>rosmarus</td><td>Acquarone et al 2006</td><td>1370.0</td><td>345000.0</td></tr><tr><th>2</th><td>Mammalia</td><td>Carnivora</td><td>Odobenidae</td><td>Odobenus</td><td>rosmarus</td><td>Acquarone et al 2006</td><td>1250.0</td><td>417400.0</td></tr><tr><th>3</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>7.4</td><td>3100.0</td></tr><tr><th>4</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>6.95</td><td>2898.0</td></tr><tr><th>5</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>8.9</td><td>3528.0</td></tr></tbody></table>
 
 
 
@@ -91,12 +119,25 @@ variables:
 
 ````julia
 scatter(rates[:mass], rates[:fmr], c=:teal, leg=false, msc=:transparent)
+````
+
+
+<pre class="julia-error">
+ERROR: ArgumentError: column name :mass not found in the data frame; existing most similar names are: :Class
+</pre>
+
+
+````julia
 xaxis!(:log10, "Mass (kg)")
 yaxis!(:log10, "Field Metabolic Rate (kj per day)")
 ````
 
 
-{{< figure src="../figures/genetic_algorithm_4_1.png" title="Relationship between field metabolic rate and mass - this is a neat log-log relationship, and so linear regression will give us the exponent."  >}}
+<pre class="julia-error">
+ERROR: ArgumentError: At least one finite value must be provided to formatter.
+</pre>
+
+
 
 
 Neat! This is a log-log relationship, so we can represent this problem as:
@@ -108,13 +149,30 @@ because the relation is log-log, we will average the log of the value (as
 opposed to taking the log of the averages).
 
 ````julia
-rates = by(rates, [:Genus, :Species], [:mass, :fmr] => x -> (mass=mean(log10.(x.mass)), fmr=mean(log10.(x.fmr))))
-rates[1:10,:]
+rates = by(
+  rates,
+  [:Genus, :Species],
+  [:mass, :fmr] =>
+    x -> (
+    mass=mean(log10.(x.mass)),
+    fmr=mean(log10.(x.fmr))
+    )
+  )
+````
+
+
+<pre class="julia-error">
+ERROR: ArgumentError: column name :mass not found in the data frame; existing most similar names are: :Class
+</pre>
+
+
+````julia
+rates[1:5,:]
 ````
 
 
 
-<table class="data-frame"><thead><tr><th></th><th>Genus</th><th>Species</th><th>mass</th><th>fmr</th></tr><tr><th></th><th>String</th><th>String</th><th>Float64</th><th>Float64</th></tr></thead><tbody><p>10 rows × 4 columns</p><tr><th>1</th><td>Diomedea</td><td>exulans</td><td>0.952967</td><td>3.35304</td></tr><tr><th>2</th><td>Arctocephalus</td><td>gazella</td><td>1.53131</td><td>4.32877</td></tr><tr><th>3</th><td>Sula</td><td>sula</td><td>0.0263231</td><td>3.07421</td></tr><tr><th>4</th><td>Macrotus</td><td>californicus</td><td>-1.88828</td><td>1.33622</td></tr><tr><th>5</th><td>Microtus</td><td>pennsylvanicus</td><td>-1.44936</td><td>1.9947</td></tr><tr><th>6</th><td>Tarsipes</td><td>rostratus</td><td>-2.04591</td><td>1.43081</td></tr><tr><th>7</th><td>Muscicapa</td><td>striata</td><td>-1.84164</td><td>1.71799</td></tr><tr><th>8</th><td>Parus</td><td>major</td><td>-1.74771</td><td>1.98197</td></tr><tr><th>9</th><td>Turdus</td><td>merula</td><td>-1.01773</td><td>2.256</td></tr><tr><th>10</th><td>Hirundo</td><td>tahitica</td><td>-1.85214</td><td>1.86032</td></tr></tbody></table>
+<table class="data-frame"><thead><tr><th></th><th>Class</th><th>Order</th><th>Family</th><th>Genus</th><th>Species</th><th>Study</th><th>M (kg)</th><th>FMR (kJ / day)</th></tr><tr><th></th><th>String</th><th>String</th><th>String</th><th>String</th><th>String</th><th>String</th><th>Float64</th><th>Float64</th></tr></thead><tbody><p>5 rows × 8 columns</p><tr><th>1</th><td>Mammalia</td><td>Carnivora</td><td>Odobenidae</td><td>Odobenus</td><td>rosmarus</td><td>Acquarone et al 2006</td><td>1370.0</td><td>345000.0</td></tr><tr><th>2</th><td>Mammalia</td><td>Carnivora</td><td>Odobenidae</td><td>Odobenus</td><td>rosmarus</td><td>Acquarone et al 2006</td><td>1250.0</td><td>417400.0</td></tr><tr><th>3</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>7.4</td><td>3100.0</td></tr><tr><th>4</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>6.95</td><td>2898.0</td></tr><tr><th>5</th><td>Aves</td><td>Procellariiformes</td><td>Diomedeidae</td><td>Diomedea</td><td>exulans</td><td>Adams et al 1986</td><td>8.9</td><td>3528.0</td></tr></tbody></table>
 
 
 
@@ -122,12 +180,25 @@ We can look at the simplified data:
 
 ````julia
 scatter(10.0.^rates[:mass], 10.0.^rates[:fmr], c=:teal, leg=false, msc=:transparent)
+````
+
+
+<pre class="julia-error">
+ERROR: ArgumentError: column name :mass not found in the data frame; existing most similar names are: :Class
+</pre>
+
+
+````julia
 xaxis!(:log10, "Mass (kg)")
 yaxis!(:log10, "Field Metabolic Rate (kj per day)")
 ````
 
 
-{{< figure src="../figures/genetic_algorithm_6_1.png" title="Same data, but a little bit less points. In addition, aggregating by species doesn't increase the impact that well sampled species will have on the regression output."  >}}
+<pre class="julia-error">
+ERROR: ArgumentError: At least one finite value must be provided to formatter.
+</pre>
+
+
 
 
 {{< callout information >}}
@@ -171,7 +242,7 @@ zero(::Type{Genome}) = Genome(0.0, 0.0)
 
 
 ````
-zero (generic function with 35 methods)
+zero (generic function with 36 methods)
 ````
 
 
@@ -189,12 +260,12 @@ population[1:5]
 
 
 ````
-5-element Array{Main.WeaveSandBox0.Genome,1}:
- Main.WeaveSandBox0.Genome(0.0, 0.0)
- Main.WeaveSandBox0.Genome(0.0, 0.0)
- Main.WeaveSandBox0.Genome(0.0, 0.0)
- Main.WeaveSandBox0.Genome(0.0, 0.0)
- Main.WeaveSandBox0.Genome(0.0, 0.0)
+5-element Array{Main.WeaveSandBox3.Genome,1}:
+ Main.WeaveSandBox3.Genome(0.0, 0.0)
+ Main.WeaveSandBox3.Genome(0.0, 0.0)
+ Main.WeaveSandBox3.Genome(0.0, 0.0)
+ Main.WeaveSandBox3.Genome(0.0, 0.0)
+ Main.WeaveSandBox3.Genome(0.0, 0.0)
 ````
 
 
@@ -212,7 +283,7 @@ population[1:5]
 
 
 ````
-5-element Array{Main.WeaveSandBox0.Genome,1}:
+5-element Array{Main.WeaveSandBox3.Genome,1}:
  ŷ = 0.0×x + 0.0
  ŷ = 0.0×x + 0.0
  ŷ = 0.0×x + 0.0
@@ -259,7 +330,25 @@ the log10 of the mass and FMR earlier):
 
 ````julia
 const log10fmr = rates[:fmr]
+````
+
+
+<pre class="julia-error">
+ERROR: ArgumentError: column name :fmr not found in the data frame
+</pre>
+
+
+````julia
 const log10M = rates[:mass]
+````
+
+
+<pre class="julia-error">
+ERROR: ArgumentError: column name :mass not found in the data frame; existing most similar names are: :Class
+</pre>
+
+
+````julia
 
 ŷ(g::Genome, x::Vector{Float64})=  g.m .* x .+ g.b
 
@@ -293,10 +382,9 @@ fmr_fitness(zero(Genome))
 ````
 
 
-````
-0.1406618826939854
-````
-
+<pre class="julia-error">
+ERROR: UndefVarError: log10M not defined
+</pre>
 
 
 
@@ -339,7 +427,7 @@ initial_genome
 
 
 ````
-ŷ = 0.211×x + 0.503
+ŷ = 0.2×x + 0.511
 ````
 
 
@@ -354,7 +442,7 @@ very_gradual_change! = normal_error(1e-3, 1e-3)
 
 
 ````
-(::getfield(Main.WeaveSandBox0, Symbol("#f#4")){Float64,Float64}) (generic 
+(::getfield(Main.WeaveSandBox3, Symbol("#f#4")){Float64,Float64}) (generic 
 function with 1 method)
 ````
 
@@ -375,27 +463,27 @@ population = [Genome(rand(Normal(0.75,0.2)), rand(Normal(3,1))) for i in 1:500]
 
 
 ````
-500-element Array{Main.WeaveSandBox0.Genome,1}:
- ŷ = 0.573×x + 2.4  
- ŷ = 0.575×x + 3.115
- ŷ = 0.78×x + 4.82  
- ŷ = 0.614×x + 3.223
- ŷ = 0.805×x + 3.464
- ŷ = 1.115×x + 3.242
- ŷ = 0.652×x + 2.365
- ŷ = 0.801×x + 3.243
- ŷ = 0.658×x + 2.869
- ŷ = 0.85×x + 3.477 
+500-element Array{Main.WeaveSandBox3.Genome,1}:
+ ŷ = 0.958×x + 2.879
+ ŷ = 0.674×x + 3.908
+ ŷ = 0.734×x + 2.403
+ ŷ = 0.818×x + 4.346
+ ŷ = 1.031×x + 4.9  
+ ŷ = 0.475×x + 2.027
+ ŷ = 0.456×x + 2.679
+ ŷ = 0.843×x + 2.243
+ ŷ = 0.794×x + 4.469
+ ŷ = 1.08×x + 3.123 
  ⋮                   
- ŷ = 0.619×x + 3.89 
- ŷ = 0.587×x + 2.112
- ŷ = 0.693×x + 3.364
- ŷ = 0.978×x + 3.913
- ŷ = 0.714×x + 2.412
- ŷ = 0.453×x + 4.089
- ŷ = 0.674×x + 3.183
- ŷ = 0.831×x + 4.708
- ŷ = 0.434×x + 3.448
+ ŷ = 0.81×x + 3.605 
+ ŷ = 0.71×x + 3.998 
+ ŷ = 0.75×x + 2.936 
+ ŷ = 0.974×x + 3.078
+ ŷ = 0.881×x + 3.915
+ ŷ = 0.39×x + 1.924 
+ ŷ = 0.594×x + 3.176
+ ŷ = 0.838×x + 4.527
+ ŷ = 0.928×x + 2.184
 ````
 
 
@@ -405,6 +493,10 @@ GA!(population, fmr_fitness, very_gradual_change!; generations=10000)
 ````
 
 
+<pre class="julia-error">
+ERROR: UndefVarError: log10M not defined
+</pre>
+
 
 
 
@@ -412,15 +504,58 @@ GA!(population, fmr_fitness, very_gradual_change!; generations=10000)
 
 ````julia
 scatter(10.0.^rates[:mass], 10.0.^rates[:fmr], c=:teal, leg=false, msc=:transparent)
+````
+
+
+<pre class="julia-error">
+ERROR: ArgumentError: column name :mass not found in the data frame; existing most similar names are: :Class
+</pre>
+
+
+````julia
 pred = collect(LinRange(10.0.^minimum(rates[:mass]), 10.0.^maximum(rates[:mass]), 100))
+````
+
+
+<pre class="julia-error">
+ERROR: ArgumentError: column name :mass not found in the data frame; existing most similar names are: :Class
+</pre>
+
+
+````julia
 mostfit = fmr_fitness.(population) |> findmax |> last
+````
+
+
+<pre class="julia-error">
+ERROR: UndefVarError: log10M not defined
+</pre>
+
+
+````julia
 plot!(pred, 10.0.^ŷ(population[mostfit], log10.(pred)), c=:orange, lw=2, ls=:dash)
+````
+
+
+<pre class="julia-error">
+ERROR: UndefVarError: mostfit not defined
+</pre>
+
+
+````julia
 xaxis!(:log10, "Mass (kg)")
 yaxis!(:log10, "Field Metabolic Rate (kj per day)")
 ````
 
 
-{{< figure src="../figures/genetic_algorithm_19_1.png" title="Relationship between field metabolic rate and mass - this is a neat log-log relationship, and so linear regression will give us the exponent."  >}}
+<pre class="julia-error">
+ERROR: ArgumentError: At least one finite value must be provided to formatter.
+</pre>
 
 
-We can also look at the equation for the most fit genome: ŷ = 0.554×x + 2.83.
+
+
+We can also look at the equation for the most fit genome: <pre class="julia-error">
+ERROR: UndefVarError: mostfit not defined
+</pre>
+.

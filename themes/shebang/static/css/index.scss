@@ -3,3 +3,16 @@
 @import "navigation";
 @import "callouts";
 @import "code";
+
+.contributor {
+    &::after {
+        content: " // ";
+        color: var(--color-light);
+    }
+    &:last-child {
+        color: red;
+        &::after {
+            display: none;
+        }
+    }
+}

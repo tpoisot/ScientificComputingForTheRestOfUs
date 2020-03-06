@@ -42,15 +42,15 @@ present or absent. This results in a timeseries, like this:
 
 ````
 Year 1	absent
-Year 2	present
+Year 2	absent
 Year 3	present
-Year 4	absent
-Year 5	present
+Year 4	present
+Year 5	absent
 Year 6	absent
-Year 7	absent
+Year 7	present
 Year 8	absent
-Year 9	absent
-Year 10	present
+Year 9	present
+Year 10	absent
 ````
 
 
@@ -219,8 +219,8 @@ summary(
 
 ````
 2-element Array{Float64,1}:
- 0.645              
- 0.33668341708542715
+ 0.64               
+ 0.38190954773869346
 ````
 
 
@@ -385,9 +385,9 @@ To summarize, we can now extract the values of the different parameters:
 
 |     | meaning                |                                     mean |                      standard deviation |
 |:---:|:-----------------------|-----------------------------------------:|----------------------------------------:|
-| $c$ | Colonization rate      | 0.551 | 0.067 |
-| $e$ | Extinction rate        | 0.156 | 0.041 |
-| $m$ | Measurement error rate | 0.047 | 0.038 |
+| $c$ | Colonization rate      | 0.555 | 0.067 |
+| $e$ | Extinction rate        | 0.154 | 0.041 |
+| $m$ | Measurement error rate | 0.051 | 0.039 |
 
 Done! One of the strength of ABC is that we can now *generate* datasets, using
 our original model for simulation. And because we know the measurement error

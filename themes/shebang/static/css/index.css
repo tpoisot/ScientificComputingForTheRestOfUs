@@ -280,4 +280,12 @@ code.language-raw {
     margin-left: -3.5em;
     color: var(--color-accent); }
 
+.contributor::after {
+  content: " // ";
+  color: var(--color-light); }
+.contributor:last-child {
+  color: red; }
+  .contributor:last-child::after {
+    display: none; }
+
 /*# sourceMappingURL=index.css.map */

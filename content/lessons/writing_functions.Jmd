@@ -1,10 +1,12 @@
 ---
 title: Writing functions
-concepts: [writing functions, type stability, keyword arguments]
+concepts:
+    - writing functions
+    - type stability
+    - keyword arguments
+contributors:
+    - tpoisot
 weight: 3
-meta:
-  issue: 18
-  label: "lesson:functions"
 ---
 
 ## Good code is small code

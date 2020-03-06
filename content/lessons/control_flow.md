@@ -1,10 +1,14 @@
 ---
 title: The flow of execution
 weight: 2
-concepts: [control flow, Booleans, iteration]
-meta:
-  issue: 12
-  label: "lesson:flow"
+contributors:
+    - tpoisot
+concepts:
+    - control flow
+    - Booleans
+    - iteration
+packages:
+    - Statistics
 ---
 
 ## Programming really *is* a language
@@ -386,9 +390,9 @@ end
 ````
 bar
 bar
+foo
 bar
-foo
-foo
+bar
 ````
 
 
@@ -464,11 +468,11 @@ random_numbers
 
 ````
 5-element Array{Float64,1}:
- 0.696954084189267  
- 0.5953472822798715
- 0.9635387763565737
- 0.28704366092762257
- 0.13761870988374625
+ 0.5850840517891143  
+ 0.5140082053721966  
+ 0.016099656463364198
+ 0.657105449169457   
+ 0.857921938720698
 ````
 
 
@@ -524,7 +528,7 @@ random_numbers[1]
 
 
 ````
-0.696954084189267
+0.5850840517891143
 ````
 
 
@@ -545,7 +549,7 @@ random_numbers[length(random_numbers)]
 
 
 ````
-0.13761870988374625
+0.857921938720698
 ````
 
 
@@ -563,7 +567,7 @@ random_numbers[end]
 
 
 ````
-0.13761870988374625
+0.857921938720698
 ````
 
 
@@ -579,7 +583,7 @@ first(random_numbers)
 
 
 ````
-0.696954084189267
+0.5850840517891143
 ````
 
 
@@ -590,7 +594,7 @@ last(random_numbers)
 
 
 ````
-0.13761870988374625
+0.857921938720698
 ````
 
 
@@ -610,7 +614,7 @@ println(random_numbers[1])
 
 
 ````
-0.696954084189267
+0.5850840517891143
 ````
 
 
@@ -621,7 +625,7 @@ println(random_numbers[3])
 
 
 ````
-0.9635387763565737
+0.016099656463364198
 ````
 
 
@@ -632,7 +636,7 @@ println(random_numbers[5])
 
 
 ````
-0.13761870988374625
+0.857921938720698
 ````
 
 
@@ -662,9 +666,9 @@ end
 
 
 ````
-Position 1:	0.696954084189267
-Position 3:	0.9635387763565737
-Position 5:	0.13761870988374625
+Position 1:	0.5850840517891143
+Position 3:	0.016099656463364198
+Position 5:	0.857921938720698
 ````
 
 
@@ -744,7 +748,7 @@ What happens is that the variable `i` only exists within the `for` loop! This
 might seem problematic at first, but it is actually much cleaner: this avoid
 polluting your workspace with a lot of variables that are not really relevant.
 
-This is true for all variables created within a loop: in the following code, `a`
+This is true for all variables created within a loop. In the following code, `a`
 is not defined outside of the loop:
 
 ~~~ julia
@@ -754,11 +758,14 @@ end
 ~~~
 
 If you want a variable to be accessible *outside* a loop, you can simply create
-it before:
+it before *and* declare it as a `global` variable (this is not required within
+functions, and this is the point where reading the section of the Julia manual
+on scope will help you):
 
 ````julia
 a = 0
 for i in 1:3
+    global a
     a = i
 end
 println(a)
@@ -766,7 +773,7 @@ println(a)
 
 
 ````
-0
+3
 ````
 
 
@@ -789,28 +796,22 @@ run it for a while (*GET IT?*) to get a sample with an average of about 0.5.
 We can for example write it this way:
 
 ````julia
+using Statistics # We need this to use mean
+
 my_collection = rand(5)
 
 while !(0.499 ≤ mean(my_collection) ≤ 0.501)
   append!(my_collection, rand(5))
 end
+
+println("μ: $(round(mean(my_collection); digits=4))")
 ````
 
 
-<pre class="julia-error">
-ERROR: UndefVarError: mean not defined
-</pre>
-
-
-````julia
-
-println("μ: $(round(mean(my_collection), 4))")
+````
+μ: 0.4992
 ````
 
-
-<pre class="julia-error">
-ERROR: UndefVarError: mean not defined
-</pre>
 
 
 

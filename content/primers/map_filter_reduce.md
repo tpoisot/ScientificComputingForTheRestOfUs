@@ -1,8 +1,10 @@
 ---
 title: Map, filter, reduce
 slug: map_filter_reduce
-layout: page
 status: construction
+draft: true
+contributors:
+  - tpoisot
 concepts:
   - map
   - filter

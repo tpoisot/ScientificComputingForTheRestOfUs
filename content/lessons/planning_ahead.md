@@ -2,7 +2,12 @@
 title: Before we start...
 weight: 1
 status: construction
-concepts: [control flow, flowcharts, pseudo-code]
+contributors:
+    - tpoisot
+concepts:
+    - control flow
+    - flowcharts
+    - pseudo-code
 ---
 
 ## Programming is intimidating
@@ -127,7 +132,9 @@ With this in mind, here is a possible template for a project.
 
 
 [README](readme)
+
 [LICENSE](license)
+
 [*Julia* package manager](pkg)
 
 [readme]: https://mozilla.github.io/open-leadership-training-series/articles/opening-your-project/write-a-great-project-readme/

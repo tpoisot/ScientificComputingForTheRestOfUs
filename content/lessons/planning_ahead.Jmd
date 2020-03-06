@@ -2,7 +2,12 @@
 title: Before we start...
 weight: 1
 status: construction
-concepts: [control flow, flowcharts, pseudo-code]
+contributors:
+    - tpoisot
+concepts:
+    - control flow
+    - flowcharts
+    - pseudo-code
 ---
 
 ## Programming is intimidating

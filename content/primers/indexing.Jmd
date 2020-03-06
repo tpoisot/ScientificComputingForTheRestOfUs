@@ -1,8 +1,13 @@
 ---
 title: Indexing and arrays dimensions
 slug: indexing
-layout: page
-concepts: [arrays, indexing, slices, sequences]
+concepts:
+  - arrays
+  - indexing
+  - slices
+  - sequences
+contributors:
+  - tpoisot
 status: construction
 draft: true
 weight: 1

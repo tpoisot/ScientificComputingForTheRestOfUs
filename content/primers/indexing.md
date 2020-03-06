@@ -1,36 +1,37 @@
 ---
 title: Indexing and arrays dimensions
 slug: indexing
-layout: page
-concepts: [arrays, indexing, slices]
+concepts:
+  - arrays
+  - indexing
+  - slices
+  - sequences
+contributors:
+  - tpoisot
+status: construction
+draft: true
 weight: 1
 ---
 
 The overwhelming majority of data we will need to manipulate will be stored in
-vectors, or matrices, or other types of multi-dimensional structures.
+vectors, or matrices, or other types of multi-dimensional structures. Being able
+to locate and modify information stored in these structure is one of the most
+important skills you can develop. *Julia* has a number of ways to facilitate and
+refine this, and the point of this primer is to showcase the most useful of
+them.
 
 ````julia
-for r in rand(10)
-  r ≥ 1/3 || continue
-  println(round(r; digits=2))
-end
+x = [i for i in 1:5]
 ````
 
 
 ````
-0.47
-0.45
-0.8
-0.73
-0.58
-0.69
-0.57
+5-element Array{Int64,1}:
+ 1
+ 2
+ 3
+ 4
+ 5
 ````
 
 
-
-
-
-In short, `continue` will *skip ahead* to the next element in the iteration.
-This can be very important to avoid performing operations on objects that are
-not relevant.

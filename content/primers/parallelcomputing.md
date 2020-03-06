@@ -9,6 +9,8 @@ concepts:
   - parallel computing
 packages:
   - Distributed
+contributors:
+  - tpoisot
 weight: 4
 ---
 
@@ -28,6 +30,8 @@ addprocs(2)
 
 ````
 2-element Array{Int64,1}:
- 14
- 15
+ 6
+ 7
 ````
+
+

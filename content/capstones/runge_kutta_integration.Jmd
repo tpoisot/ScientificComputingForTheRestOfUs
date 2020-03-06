@@ -2,7 +2,6 @@
 title: Runge-Kutta integration
 slug: runge_kutta_integration
 weight: 2
-status: draft
 packages:
   - StatsPlots
 concepts:
@@ -10,6 +9,8 @@ concepts:
   - numerical precision
   - arrays
   - keyword arguments
+contributors:
+  - tpoisot
 ---
 
 Numerical integration, the search for solutions of differential equations, is a

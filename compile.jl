@@ -20,10 +20,11 @@ for content_type in ["lessons", "primers", "capstones"]
         trgt_time = mtime(joinpath(this_content_folder, target_file))
 
         if file_time > trgt_time
-            @info "Updating:   $(joinpath(content_type, target_file))"
+            @info "UPDATING:   $(joinpath(content_type, target_file))"
             weave(joinpath(this_content_folder, this_file), doctype="hugo")
+            @info "UPDATED:   $(joinpath(content_type, target_file))"
         else
-            @info "Up-to-date: $(joinpath(content_type, target_file))"
+            @info "NOT CHANGED: $(joinpath(content_type, target_file))"
         end
     end
 end

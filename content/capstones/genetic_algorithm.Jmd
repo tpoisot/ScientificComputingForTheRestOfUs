@@ -4,12 +4,15 @@ weight: 1
 status: draft
 packages:
   - StatsPlots
-  - StatsKit
+  - CSV
+  - DataFrames
   - Statistics
 concepts:
   - data frames
   - generic code
   - type system
+contributors:
+  - tpoisot
 ---
 
 Genetic algorithm is a heuristic that takes heavy inspiration from evolutionary
@@ -35,7 +38,10 @@ and colleagues](hudson), and can be downloaded as follows:
 [hudson]: https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2656.12086
 
 ```julia
-using StatsKit
+using DataFrames
+using Statistics
+using StatsBase
+import CSV
 using StatsPlots
 url = "http://sciencecomputing.io/data/metabolicrates.csv"
 tmp = download(url)
@@ -156,7 +162,7 @@ general structure of the genetic algorithm:
 function GA!(p::Vector{T}, fitness::Function, mutation!::Function; generations=1_000) where {T}
   for generation in 1:generations
     fitnesses = fitness.(p)
-    p = sample(p, weights(fitnesses), length(p), replace=true)
+    p = sample(p, StatsBase.weights(fitnesses), length(p), replace=true)
     mutation!.(p)
   end
   return nothing
@@ -207,6 +213,8 @@ we `return nothing` at the end, because all of this function does is change an
 existing object.
 
 ```julia
+using Distributions
+
 function normal_error(σm::Float64, σb::Float64)
   function f(g)
     g.m = rand(Normal(g.m, σm))

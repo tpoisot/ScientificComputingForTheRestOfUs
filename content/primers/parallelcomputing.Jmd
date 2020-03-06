@@ -3,11 +3,14 @@ title: Parallel computing
 slug: parallelcomputing
 layout: page
 status: construction
+draft: true
 concepts:
   - optimization
   - parallel computing
 packages:
   - Distributed
+contributors:
+  - tpoisot
 weight: 4
 ---
 

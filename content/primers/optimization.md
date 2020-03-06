@@ -1,9 +1,10 @@
 ---
 title: Optimization
 slug: optimization
-layout: page
 status: construction
 draft: true
+contributors:
+  - tpoisot
 concepts:
   - optimization
   - profiling
@@ -19,3 +20,5 @@ end
 ````
 initial_mutation (generic function with 1 method)
 ````
+
+

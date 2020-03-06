@@ -2,11 +2,16 @@
 title: Avoiding mistakes
 weight: 4
 status: construction
-concepts: [defensive programming, writing functions, assertion, unit testing]
-packages: [Test, Statistics]
-meta:
-  issue: 19
-  label: "lesson:defensive"
+concepts:
+  - defensive programming
+  - writing functions
+  - assertion
+  - unit testing
+packages:
+  - Test
+  - Statistics
+contributors:
+  - tpoisot
 ---
 
 ## We can't avoid mistakes

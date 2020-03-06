@@ -5,6 +5,9 @@ theme = "shebang"
 pygmentsCodeFences = true
 pygmentsUseClasses = true
 
+[markup.goldmark.renderer]
+unsafe= true
+
 [menu]
   [[menu.main]]
     identifier = "lessons"

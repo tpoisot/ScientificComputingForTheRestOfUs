@@ -1,9 +1,11 @@
 ---
 title: Advanced control flow
 slug: advanced_control_flow
-layout: page
-concepts: [control flow]
-weight: 2
+concepts:
+  - control flow
+contributors:
+  - tpoisot
+weight: 1
 ---
 
 In the [first lesson]({{< ref "/lessons/control_flow.md">}}), we have
@@ -71,13 +73,11 @@ end
 
 
 ````
-0.99
-0.58
-0.56
-0.87
-0.87
-0.96
+1.0
 0.62
+0.84
+0.46
+0.99
 ````
 
 

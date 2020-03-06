@@ -1,10 +1,14 @@
 ---
 title: The flow of execution
 weight: 2
-concepts: [control flow, Booleans, iteration]
-meta:
-  issue: 12
-  label: "lesson:flow"
+contributors:
+    - tpoisot
+concepts:
+    - control flow
+    - Booleans
+    - iteration
+packages:
+    - Statistics
 ---
 
 ## Programming really *is* a language
@@ -477,7 +481,7 @@ What happens is that the variable `i` only exists within the `for` loop! This
 might seem problematic at first, but it is actually much cleaner: this avoid
 polluting your workspace with a lot of variables that are not really relevant.
 
-This is true for all variables created within a loop: in the following code, `a`
+This is true for all variables created within a loop. In the following code, `a`
 is not defined outside of the loop:
 
 ~~~ julia
@@ -487,11 +491,14 @@ end
 ~~~
 
 If you want a variable to be accessible *outside* a loop, you can simply create
-it before:
+it before *and* declare it as a `global` variable (this is not required within
+functions, and this is the point where reading the section of the Julia manual
+on scope will help you):
 
 ```julia
 a = 0
 for i in 1:3
+    global a
     a = i
 end
 println(a)
@@ -513,13 +520,15 @@ run it for a while (*GET IT?*) to get a sample with an average of about 0.5.
 We can for example write it this way:
 
 ```julia
+using Statistics # We need this to use mean
+
 my_collection = rand(5)
 
 while !(0.499 ≤ mean(my_collection) ≤ 0.501)
   append!(my_collection, rand(5))
 end
 
-println("μ: $(round(mean(my_collection), 4))")
+println("μ: $(round(mean(my_collection); digits=4))")
 ```
 
 The instruction just after `while`, *i.e.*

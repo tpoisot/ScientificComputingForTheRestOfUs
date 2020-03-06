@@ -9,6 +9,8 @@ packages:
 concepts:
   - arrays
   - control flow
+contributors:
+  - tpoisot
 ---
 
 

@@ -55,9 +55,9 @@ seeds = seeds[shuffle(1:end), :]
 first(seeds, 3)
 ```
 
-The task in which we are interested is to predict the cultivar to which a seeds
-belong, by using Naive Bayes classification to use the distribution of
-morphological features. At its core, Naive Bayes classification assumes that the
+The task in which we are interested is to predict the cultivar to which a seed
+belongs, by using Naive Bayes classification to distribute their
+morphological features in different classes. At its core, Naive Bayes classification assumes that the
 probability of belonging to a class based on a single measurement depends on the
 probability of observing this measurement knowing the distribution for the
 class, and that different mesaurements are independent. In short, this means
@@ -98,7 +98,7 @@ first(distribution_data, 3)
 ```
 
 This is the sort of table one can find in a publication - in fact, the greatness
-of Naive Bayes classification is that it can work if you only have access to the
+of Naive Bayes classification is that it can work even if you only have access to the
 moments of the distribution, and not to the raw data themselves!
 
 We now need to create statistical distributions from the information in this
@@ -130,9 +130,9 @@ select!(leftovers, Not(:cultivar))
 first(leftovers, 3)
 ```
 
-Let's take the first row. We want to get the probability of every variable being
-take from the distribution of this variable for every cultivar. The probability
-that this sample comes from cultivar 2 knowing its  area is:
+Let's take the first row. We want to get the probability of every observation being
+taken from the distribution of this variable for every cultivar. The probability
+that this sample comes from cultivar 2 knowing its area is:
 
 ```julia
 pdf(distributions.area[2], leftovers.area[1])

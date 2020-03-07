@@ -52,12 +52,12 @@ seeds = get_dataset(seed_url, "seeds.txt");
 
 
 ````julia
-seeds[1:5,:]
+first(seeds, 3)
 ````
 
 
 
-<table class="data-frame"><thead><tr><th></th><th>Column1</th><th>Column2</th><th>Column3</th><th>Column4</th><th>Column5</th><th>Column6</th><th>Column7</th><th>Column8</th></tr><tr><th></th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th></tr></thead><tbody><p>5 rows × 8 columns</p><tr><th>1</th><td>15.26</td><td>14.84</td><td>0.871</td><td>5.763</td><td>3.312</td><td>2.221</td><td>5.22</td><td>1.0</td></tr><tr><th>2</th><td>14.88</td><td>14.57</td><td>0.8811</td><td>5.554</td><td>3.333</td><td>1.018</td><td>4.956</td><td>1.0</td></tr><tr><th>3</th><td>14.29</td><td>14.09</td><td>0.905</td><td>5.291</td><td>3.337</td><td>2.699</td><td>4.825</td><td>1.0</td></tr><tr><th>4</th><td>13.84</td><td>13.94</td><td>0.8955</td><td>5.324</td><td>3.379</td><td>2.259</td><td>4.805</td><td>1.0</td></tr><tr><th>5</th><td>16.14</td><td>14.99</td><td>0.9034</td><td>5.658</td><td>3.562</td><td>1.355</td><td>5.175</td><td>1.0</td></tr></tbody></table>
+<table class="data-frame"><thead><tr><th></th><th>Column1</th><th>Column2</th><th>Column3</th><th>Column4</th><th>Column5</th><th>Column6</th><th>Column7</th><th>Column8</th></tr><tr><th></th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th></tr></thead><tbody><p>3 rows × 8 columns</p><tr><th>1</th><td>15.26</td><td>14.84</td><td>0.871</td><td>5.763</td><td>3.312</td><td>2.221</td><td>5.22</td><td>1.0</td></tr><tr><th>2</th><td>14.88</td><td>14.57</td><td>0.8811</td><td>5.554</td><td>3.333</td><td>1.018</td><td>4.956</td><td>1.0</td></tr><tr><th>3</th><td>14.29</td><td>14.09</td><td>0.905</td><td>5.291</td><td>3.337</td><td>2.699</td><td>4.825</td><td>1.0</td></tr></tbody></table>
 
 
 
@@ -130,12 +130,12 @@ dataframe, and take the first 139 of that:
 
 ````julia
 seeds = seeds[shuffle(1:end), :]
-seeds[1:5,:]
+first(seeds, 3)
 ````
 
 
 
-<table class="data-frame"><thead><tr><th></th><th>area</th><th>perimeter</th><th>compactness</th><th>kernel_length</th><th>kernel_width</th><th>asymmetry</th><th>kernel_groove</th><th>cultivar</th></tr><tr><th></th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th></tr></thead><tbody><p>5 rows × 8 columns</p><tr><th>1</th><td>17.32</td><td>15.91</td><td>0.8599</td><td>6.064</td><td>3.403</td><td>3.824</td><td>5.922</td><td>2.0</td></tr><tr><th>2</th><td>17.08</td><td>15.38</td><td>0.9079</td><td>5.832</td><td>3.683</td><td>2.956</td><td>5.484</td><td>1.0</td></tr><tr><th>3</th><td>12.79</td><td>13.53</td><td>0.8786</td><td>5.224</td><td>3.054</td><td>5.483</td><td>4.958</td><td>3.0</td></tr><tr><th>4</th><td>11.23</td><td>12.88</td><td>0.8511</td><td>5.14</td><td>2.795</td><td>4.325</td><td>5.003</td><td>3.0</td></tr><tr><th>5</th><td>16.82</td><td>15.51</td><td>0.8786</td><td>6.017</td><td>3.486</td><td>4.004</td><td>5.841</td><td>2.0</td></tr></tbody></table>
+<table class="data-frame"><thead><tr><th></th><th>area</th><th>perimeter</th><th>compactness</th><th>kernel_length</th><th>kernel_width</th><th>asymmetry</th><th>kernel_groove</th><th>cultivar</th></tr><tr><th></th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th></tr></thead><tbody><p>3 rows × 8 columns</p><tr><th>1</th><td>17.32</td><td>15.91</td><td>0.8599</td><td>6.064</td><td>3.403</td><td>3.824</td><td>5.922</td><td>2.0</td></tr><tr><th>2</th><td>17.08</td><td>15.38</td><td>0.9079</td><td>5.832</td><td>3.683</td><td>2.956</td><td>5.484</td><td>1.0</td></tr><tr><th>3</th><td>12.79</td><td>13.53</td><td>0.8786</td><td>5.224</td><td>3.054</td><td>5.483</td><td>4.958</td><td>3.0</td></tr></tbody></table>
 
 
 

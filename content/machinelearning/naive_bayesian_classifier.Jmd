@@ -1,0 +1,179 @@
+---
+title: Neural Bayes classifier
+slug: naivebayes
+concepts:
+  - control flow
+  - working with files
+  - iteration
+  - grouping and aggregation
+packages:
+   - CSV
+   - DataFrames
+   - Random
+   - Statistics
+   - Distributions
+contributors:
+   - tpoisot
+weight: 2
+draft: true
+status: construction
+---
+
+In this capstone, we will implement a Naive Bayes classifier, to make
+predictions about the cultivar to which wheat seeds belong. This is the same
+dataset used in the [neural network with *Flux*][neuralnet] example, and so we
+will skip over the details of how to download the data:
+
+[neuralnet]: {{< ref "/machinelearning/neural_network_flux.md" >}}
+
+```julia; results="hidden"
+import CSV
+using DataFrames
+
+function get_dataset(url, filename)
+	if !isfile(filename)
+		download(url, filename)
+	end
+	return dropmissing(CSV.read(filename; header=0, delim='\t'))
+end
+const seed_url = "https://archive.ics.uci.edu/ml/machine-learning-databases/00236/seeds_dataset.txt"
+seeds = get_dataset(seed_url, "seeds.txt");
+```
+
+As always, we will rename the columns to make it easier to reference them:
+
+```julia
+rename!(seeds,
+  [:Column1 => :area, :Column2 => :perimeter,
+  :Column3 => :compactness, :Column4 => :kernel_length,
+  :Column5 => :kernel_width, :Column6 => :asymmetry,
+  :Column7 => :kernel_groove, :Column8 => :cultivar]
+  )
+
+using Random
+seeds = seeds[shuffle(1:end), :]
+first(seeds, 3)
+```
+
+The task in which we are interested is to predict the cultivar to which a seeds
+belong, by using Naive Bayes classification to use the distribution of
+morphological features. At its core, Naive Bayes classification assumes that the
+probability of belonging to a class based on a single measurement depends on the
+probability of observing this measurement knowing the distribution for the
+class, and that different mesaurements are independent. In short, this means
+that the probability that a sample defined by an array $\mathbf{x}$ of
+observations belongs to class $C_k$ is *proportional to* $p(C_k) \prod p(x_i |
+C_k)$. Further, we can get the class to which the sample should be assigned
+using $\hat y = \text{argmax}_{k \in K} p(C_k) \prod p(x_i | C_k)$.
+
+Calculating $p(_i | C_k)$ assumes that we know the distribution of the values of
+the *i*-th variable in class $C_k$ - this is not necessarily true, and in this
+example we will assume that all we know for sure is the average and standard
+deviation, meaning that the distribution we will use is a normal.
+
+To see how well our technique performs, we will split the dataset in two,
+keeping 10 samples for the validation:
+
+```julia
+seeds = seeds[1:(end-21),:];
+leftovers = seeds[(end-20):end,:];
+```
+
+As it is, our first task is to summarize the data in `seeds` in a table
+containing, for every measure and every cultivar, the average and standard
+deviation. Because we have *a lot* of variables, it is likely easier to reshape the data to a long format:
+
+```julia
+long_seeds = stack(seeds, Not(:cultivar))
+first(long_seeds, 3)
+```
+
+We can now calculate the mean and standard deviation for all variable and
+cultivar combinations:
+
+```julia
+using Statistics
+distribution_data = by(long_seeds, Not(:value), μ = :value => mean, σ = :value => std)
+first(distribution_data, 3)
+```
+
+This is the sort of table one can find in a publication - in fact, the greatness
+of Naive Bayes classification is that it can work if you only have access to the
+moments of the distribution, and not to the raw data themselves!
+
+We now need to create statistical distributions from the information in this
+table - in *Julia*, a data frame can store just about any type of information,
+so it is perfectly fine to store the object representing the normal distribution
+for each variable and cultivar.
+
+```julia
+using Distributions
+distribution_data.distribution = [Normal(row.μ, row.σ) for row in eachrow(distribution_data)]
+```
+
+Of course, this format is not ideal for what we're about to do (measure the
+probability that a sample belongs to a class), so we will unstack it (this drops
+the `μ` and `σ` columns, but they are not needed anymore):
+
+```julia
+distributions = unstack(distribution_data, :cultivar, :variable, :distribution)
+```
+
+And with this information, we are ready to make a prediction. We will keep the
+cultivar information from the `leftovers` dataset, and then remove it to
+simulate what would happen if we had, for example, spilled all of our wheat
+kernels and had to put them in the correct kernel bags.
+
+```julia
+true_cultivar = leftovers.cultivar
+select!(leftovers, Not(:cultivar))
+first(leftovers, 3)
+```
+
+Let's take the first row. We want to get the probability of every variable being
+take from the distribution of this variable for every cultivar. The probability
+that this sample comes from cultivar 2 knowing its  area is:
+
+```julia
+pdf(distributions.area[2], leftovers.area[1])
+```
+
+At this point, it might be faster to transform our table of distributions into a
+matrix:
+
+```julia
+d_m = convert(Matrix, select(distributions, names(leftovers)))
+```
+
+```julia
+d_1 = collect(leftovers[5,:])
+argmax(vec(prod(mapslices(f -> pdf.(f, d_1), d_m, dims=2); dims=2)))
+```
+
+```julia
+leftovers.id = 1:size(leftovers,1)
+s_leftovers = stack(leftovers, Not(:id))
+s_distributions = stack(distributions, Not(:cultivar))
+rename!(s_distributions, :value => :distribution)
+
+s_merged = join(s_leftovers, s_distributions, on=:variable)
+first(s_merged, 3)
+```
+
+```julia
+s_proba = by(s_merged, [:cultivar, :id, :variable],
+	[:value, :distribution] =>  x -> (p = pdf.(x.distribution, x.value))
+	)
+first(s_proba, 3)
+```
+
+```julia
+s_p = by(s_proba, [:cultivar, :id], p = :x1 => prod)
+s_argmax = by(s_p, :id, y = :p => argmax)
+```
+
+finally, accuracy
+
+```julia
+mean(s_argmax.y .== true_cultivar)
+```

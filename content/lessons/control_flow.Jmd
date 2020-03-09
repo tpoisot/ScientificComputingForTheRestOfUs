@@ -313,9 +313,9 @@ this inside thing *the body* for no particular reason.
 
 ```raw
 if random_number ≤ 0.5
-    println("foo")
+    println("smol")
 else
-    println("bar")
+    println("chonky")
 end
 ```
 

@@ -5,3 +5,4 @@ deps/deps.jl
 .ipynb_checkpoints
 _site/
 .sass-cache/
+seeds.txt

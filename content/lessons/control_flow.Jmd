@@ -248,21 +248,22 @@ instructive example. We can draw five random numbers between 0 and 1, using
 rand(5)
 ```
 
-We might want to print *foo* when a number is lower or equal to 0.5, and *bar*
-in the rest of the situations. Why on Earth would we need to print *foo* and
-*bar*? Because these are nonsense words used as placeholders by programmers. In
-case you want to get all fancy, these are actually called "metasyntactic
-variables". If you want more than two, we suggest *baz*, and then *wibble* and
-*wobble*.
+We might want to print *smol* when a number is lower or equal to 0.5, and
+*chonky* in the rest of the situations. In a lot of programming examples, you
+will see *foo* and *bar*. Why on Earth would we need to print *foo* and *bar*?
+These are nonsense words used as placeholders by programmers. Of course, what
+with us being all fancy, the term you should use instead of nonsense is
+"metasyntactic variables". But polysyllabic nonsense is nonsense still, and so
+we will use the far more dignified *smol* and *chonky*:
 
 ```julia
 random_numbers = rand(5)
 
 for random_number in random_numbers
   if random_number ≤ 0.5
-    println("foo")
+    println("smol")
   else
-    println("bar")
+    println("chonky")
   end
 end
 ```

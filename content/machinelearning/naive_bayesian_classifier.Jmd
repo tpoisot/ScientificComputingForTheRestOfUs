@@ -52,6 +52,7 @@ rename!(seeds,
   )
 
 using Random
+Random.seed!(42);
 seeds = seeds[shuffle(1:end), :]
 first(seeds, 3)
 ```
@@ -69,13 +70,13 @@ In short, the probability that a sample defined by an array $\mathbf{x}$ of
 observations of multiple variables belongs to class $C_k$ is *proportional* to
 $p(C_k) \prod p(x_i | C_k)$. Further, we can get the class to which the sample
 should be assigned using $\hat y = \text{argmax}_{k \in K} p(C_k) \prod p(x_i |
-C_k)$ - the class that is the most probable is used as the guess.
+C_k)$ - the class that is the most probable is taken as the guess.
 
 [nbcwp]:https://en.wikipedia.org/wiki/Naive_Bayes_classifier
 
 Calculating $p(x_i | C_k)$ assumes that we know the distribution of the values of
-the *i*-th variable in class $C_k$ - this is not necessarily true, and in this
-example we will assume that all we know for sure is the average and standard
+the *i*-th variable in class $C_k$, which is not necessarily true.
+In this example we will assume that all we know for sure is the average and standard
 deviation, meaning that the distribution we will use should be a normal
 distribution, which has the maximal entropy given the information available.
 
@@ -84,8 +85,8 @@ keeping 20 samples for the validation, and the rest to get information on the
 distributions:
 
 ```julia
-seeds = seeds[1:(end-21),:];
-leftovers = seeds[(end-20):end,:];
+seeds = seeds[1:(end-20),:];
+leftovers = seeds[(end-19):end,:];
 ```
 
 As it is, our first task is to summarize the data in `seeds` in a table
@@ -118,9 +119,9 @@ of Naive Bayes classification is that it can work even if you only have access
 to the moments of the distribution, and not to the raw data themselves!
 
 We now need to create statistical distributions from the information in this
-table - in *Julia*, a data frame can store just about any type of information,
+table - in *Julia*, a dataframe can store just about any type of information,
 so it is perfectly fine to store the object representing the normal distribution
-for each variable and cultivar.
+for each variable and cultivar in a new column.
 
 ```julia
 using Distributions
@@ -128,8 +129,8 @@ distribution_data.distribution = [Normal(row.μ, row.σ) for row in eachrow(dist
 ```
 
 Of course, this format is not ideal for what we're about to do (measure the
-probability that a sample belongs to a class), so we will unstack it (this drops
-the `μ` and `σ` columns, but they are not needed anymore):
+probability that a sample belongs to a class), so we will unstack it by cultivar
+(this drops the `μ` and `σ` columns, but they are not needed anymore):
 
 ```julia
 distributions = unstack(distribution_data, :cultivar, :variable, :distribution)
@@ -155,7 +156,7 @@ pdf(distributions.area[2], leftovers.area[1])
 ```
 
 To do this for all samples, we will assign a unique `id` to our observations for
-the test, and then stack both dataframes;
+the test, and then stack both dataframes by variable;
 
 ```julia
 leftovers.id = 1:size(leftovers,1)
@@ -164,7 +165,7 @@ s_distributions = stack(distributions, Not(:cultivar))
 rename!(s_distributions, :value => :distribution)
 ```
 
-These data frames have one identical column (`:variable`), which we can use to
+These dataframes have one identical column (`:variable`), which we can use to
 `join` them:
 
 ```julia
@@ -185,7 +186,7 @@ first(s_proba, 3)
 
 The very last step is to bring everything back together, and to multiply the
 probabilities for every variable *within* every cultivar together, and get the
-argmax:
+argmax (most probable class):
 
 ```julia
 s_p = by(s_proba, [:cultivar, :id], p = :probability => prod)
@@ -193,12 +194,12 @@ s_argmax = by(s_p, :id, y = :p => argmax)
 ```
 
 This leaves us with a column containing the class we guessed, and we can compare
-it to the actual class:
+it to the actual class to get the accuracy:
 
 ```julia
-mean(s_argmax.y .== true_cultivar)
+accuracy = mean(s_argmax.y .== true_cultivar)
 ```
 
 Naive Bayes classifiers have uncanny accuracy on a lot of problems! This example
-relies on data frames to reach the answer, but of course it is a valuable
+relies on dataframes to reach the answer, but of course it is a valuable
 programming exercise to do it starting from a matrix of values.

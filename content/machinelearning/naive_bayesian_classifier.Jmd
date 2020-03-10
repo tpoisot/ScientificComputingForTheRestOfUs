@@ -22,9 +22,51 @@ status: construction
 ---
 
 In this capstone, we will implement a Naive Bayes classifier, to make
-predictions about the cultivar to which wheat seeds belong. This is the same
-dataset used in the [neural network with *Flux*][neuralnet] example, and so we
-will skip over the details of how these data can be downloaded:
+predictions about the cultivar to which wheat seeds belong. This is a
+classification task, meaning that we want to get an answer that looks like
+`class A` or `class B`, as opposed to a regression problem in which we would
+like to get an answer like `length = 0.8cm`. At its core, Naive Bayes
+classification assumes that the probability of belonging to a class based on a
+single measurement is the probability that this value measures originates from
+the distribution of know values for the class. For example, we know that the
+road runner (*Tastyus supersonicus*) runs at a speed of 25.8 ± 1.2 mph, whereas
+the coyote (*Eatius birdius*) runs at a speed of 21.5 ± 1.8 mph. If we measure
+an unidentified animal going 24.6 mph in a area where coyotes are three quarters
+of the total population, we can use NBC to get the probability that it is a
+coyote or a roadrunner:
+
+```julia
+using Distributions
+
+speed_coyote = Normal(21.5, 1.8)
+speed_roadrunner = Normal(25.8, 1.2)
+measured_speed = 24.6
+
+P_roadrunner = 0.25 * pdf(speed_roadrunner, measured_speed)
+P_coyote = 0.75 * pdf(speed_coyote, measured_speed)
+
+[:roadrunner, :coyote][argmax([P_roadrunner, P_coyote])]
+```
+
+The [Wikipedia page][nbcwp] has a very clear introduction to the theory, and we
+will adhere to its notation here. In short, given an array $\mathbf{x}$ of
+observations of multiple features, the probability ($p(C_k | x)$) that this
+sample belongs to the class $C_k$ is *proportional* to $p(C_k) \prod p(x_i |
+C_k)$. Further, we can get the class to which the sample should be assigned
+using $\hat y = \text{argmax}_{k \in K} p(C_k) \prod p(x_i | C_k)$ - the class
+that is the most probable is taken as the guess.
+
+[nbcwp]:https://en.wikipedia.org/wiki/Naive_Bayes_classifier
+
+Calculating $p(x_i | C_k)$ assumes that we know the distribution of the values
+of the *i*-th variable in class $C_k$, which is not necessarily true. In this
+example we will assume that all we know for sure is the average and standard
+deviation, meaning that the distribution we will use should be a normal
+distribution, which has the maximal entropy given the information available.
+
+We will re-use the dataset from the [neural network with *Flux*][neuralnet]
+capstone, and so we will skip over the details of how these data can be
+downloaded:
 
 [neuralnet]: {{< ref "/machinelearning/neural_network_flux.md" >}}
 
@@ -57,29 +99,6 @@ Random.seed!(42);
 seeds = seeds[shuffle(1:end), :]
 first(seeds, 3)
 ```
-
-The task in which we are interested is to predict the cultivar to which a seed
-belongs, by using Naive Bayes classification to distribute their morphological
-features in different classes. At its core, Naive Bayes classification assumes
-that the probability of belonging to a class based on a single measurement of the features
-depends on the probability of observing this measurement knowing the features'
-distributions for the class. It also assumes that different measurements are independent. The
-[Wikipedia page][nbcwp] has a very clear introduction to the theory, and we will
-adhere to its notation here.
-
-In short, given an array $\mathbf{x}$ of observations of multiple features,
-the probability ($p(C_k | x)$) that this sample belongs to the class $C_k$ is *proportional*
-to $p(C_k) \prod p(x_i | C_k)$. Further, we can get the class to which the sample
-should be assigned using $\hat y = \text{argmax}_{k \in K} p(C_k) \prod p(x_i |
-C_k)$ - the class that is the most probable is taken as the guess.
-
-[nbcwp]:https://en.wikipedia.org/wiki/Naive_Bayes_classifier
-
-Calculating $p(x_i | C_k)$ assumes that we know the distribution of the values of
-the *i*-th variable in class $C_k$, which is not necessarily true.
-In this example we will assume that all we know for sure is the average and standard
-deviation, meaning that the distribution we will use should be a normal
-distribution, which has the maximal entropy given the information available.
 
 To see how well our technique performs, we will split the dataset in two,
 keeping 20 samples for the validation, and the rest to get information on the
@@ -125,7 +144,6 @@ so it is perfectly fine to store the object representing the normal distribution
 for each variable and cultivar in a new column.
 
 ```julia
-using Distributions
 distribution_data.distribution = [Normal(row.μ, row.σ) for row in eachrow(distribution_data)]
 ```
 

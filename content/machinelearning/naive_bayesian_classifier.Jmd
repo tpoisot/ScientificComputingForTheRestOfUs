@@ -66,17 +66,17 @@ distribution for the class, and that different measurements are independent. The
 adhere to its notation here.
 
 In short, the probability that a sample defined by an array $\mathbf{x}$ of
-observations of multiple varaibles belongs to class $C_k$ is *proportional* to
+observations of multiple variables belongs to class $C_k$ is *proportional* to
 $p(C_k) \prod p(x_i | C_k)$. Further, we can get the class to which the sample
 should be assigned using $\hat y = \text{argmax}_{k \in K} p(C_k) \prod p(x_i |
 C_k)$ - the class that is the most probable is used as the guess.
 
 [nbcwp]:https://en.wikipedia.org/wiki/Naive_Bayes_classifier
 
-Calculating $p(_i | C_k)$ assumes that we know the distribution of the values of
+Calculating $p(x_i | C_k)$ assumes that we know the distribution of the values of
 the *i*-th variable in class $C_k$ - this is not necessarily true, and in this
 example we will assume that all we know for sure is the average and standard
-deviation, meaning that the distribution we will should be a normal
+deviation, meaning that the distribution we will use should be a normal
 distribution, which has the maximal entropy given the information available.
 
 To see how well our technique performs, we will split the dataset in two,

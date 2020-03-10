@@ -27,8 +27,8 @@ classification task, meaning that we want to get an answer that looks like
 `class A` or `class B`, as opposed to a regression problem in which we would
 like to get an answer like `length = 0.8cm`. At its core, Naive Bayes
 classification assumes that the probability of belonging to a class based on a
-single measurement is the probability that this value measures originates from
-the distribution of know values for the class. For example, we know that the
+single measurement is equal to the probability that this measurement's values originate
+from the distribution of known values for the class. For example, we know that the
 road runner (*Tastyus supersonicus*) runs at a speed of 25.8 ± 1.2 mph, whereas
 the coyote (*Eatius birdius*) runs at a speed of 21.5 ± 1.8 mph. If we measure
 an unidentified animal going 24.6 mph in a area where coyotes are three quarters

@@ -6,3 +6,8 @@ deps/deps.jl
 _site/
 .sass-cache/
 seeds.txt
+
+content/**/*.md
+!content/**/_index.md
+!content/_index.md
+Manifest.toml

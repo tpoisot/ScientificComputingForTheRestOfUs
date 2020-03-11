@@ -46,7 +46,7 @@ seeds = get_dataset(seed_url, "seeds.txt");
 ```
 
 ```julia
-seeds[1:5,:]
+first(seeds, 3)
 ```
 
 Note that we rely on `dropmissing`, because the original dataset is not properly
@@ -99,7 +99,7 @@ dataframe, and take the first `j n_training` of that:
 
 ```julia
 seeds = seeds[shuffle(1:end), :]
-seeds[1:5,:]
+first(seeds, 3)
 ```
 
 We are now satistified about the fact that the dataset is aranged in a random

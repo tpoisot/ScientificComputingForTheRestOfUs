@@ -29,11 +29,11 @@ step for the mutation of offspring. There are an almost infinite number of
 variations at each of these steps, but we will limit ourselves to a simple case
 here.
 
-Specifically, we will use the `DataFrames` and `CSV` package (installed in
-`StatsKit`) to read a table containing metabolic rates of species, and then use
-genetic algorithm to try and find out the scaling exponent linking mass to the
-field metabolic rate. The data come from a meta-analysis by [Lawrence N. Hudson
-and colleagues](hudson), and can be downloaded as follows:
+Specifically, we will use the `DataFrames` and `CSV` package to read a table
+containing metabolic rates of species, and then use genetic algorithm to try and
+find out the scaling exponent linking mass to the field metabolic rate. The data
+come from a meta-analysis by [Lawrence N. Hudson and colleagues](hudson), and
+can be downloaded as follows:
 
 [hudson]: https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2656.12086
 

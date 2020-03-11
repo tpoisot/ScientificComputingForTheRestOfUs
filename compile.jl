@@ -1,9 +1,13 @@
 using Pkg
 Pkg.activate(".")
 Pkg.instantiate()
+Pkg.build()
 
 using Weave
 using Random
+using Flux
+
+@info pwd()
 
 const content_folder = joinpath(pwd(), "content")
 
@@ -24,7 +28,7 @@ function build_folder(folder)
 end
 
 for content_type in content_types
-    build_folder(joinpath(content_folder, content_type))
+#    build_folder(joinpath(content_folder, content_type))
 end
 
 #=

@@ -29,7 +29,7 @@ end
 
 for content_type in content_types
     @info joinpath(content_folder, content_type)
-#    build_folder(joinpath(content_folder, content_type))
+    build_folder(joinpath(content_folder, content_type))
 end
 
 #=

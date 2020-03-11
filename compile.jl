@@ -3,6 +3,7 @@ Pkg.activate(".")
 Pkg.instantiate()
 
 using Weave
+using Random
 
 const content_folder = joinpath(pwd(), "content")
 
@@ -15,6 +16,7 @@ for content_type in ["lessons", "primers", "capstones", "machinelearning"]
     this_content_folder = joinpath(content_folder, content_type)
     raw_files = filter(x -> endswith(x, ".Jmd"), readdir(this_content_folder))
     for this_file in raw_files
+        Random.seed!(42) # All files have the same seed - will it work in Weave?
         target_file = replace(this_file, ".Jmd" => ".md")
         file_time = mtime(joinpath(this_content_folder, this_file))
         trgt_time = mtime(joinpath(this_content_folder, target_file))

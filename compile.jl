@@ -2,19 +2,13 @@ using Pkg
 Pkg.activate(".")
 Pkg.instantiate()
 Pkg.build()
+Pkg.precompile()
 
 using Weave
-using Random
-using Flux
 
 @info pwd()
 
 const content_folder = joinpath(pwd(), "content")
-
-#scss_files = ["configuration", "index"]
-#for scss_file in scss_files
-#    run(`sass themes/shebang/static/css/$(scss_file).scss themes/shebang/static/css/$(scss_file).css`)
-#end
 
 const content_types = ["lessons", "primers", "capstones", "machinelearning"]
 
@@ -55,3 +49,8 @@ for content_type in ["lessons", "primers", "capstones", "machinelearning"]
     end
 end
 =#
+
+#scss_files = ["configuration", "index"]
+#for scss_file in scss_files
+#    run(`sass themes/shebang/static/css/$(scss_file).scss themes/shebang/static/css/$(scss_file).css`)
+#end

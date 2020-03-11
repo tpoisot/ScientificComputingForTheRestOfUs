@@ -1,6 +1,5 @@
 using Pkg
 Pkg.activate(".")
-Pkg.instantiate()
 
 using Weave
 using Random

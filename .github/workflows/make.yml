@@ -1,0 +1,29 @@
+name: "Build the website"
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        julia-version: [1.3.0]
+        julia-arch: [x86]
+        os: [ubuntu-latest]
+    steps:
+      - name: "Checkout action"
+        uses: actions/checkout@v1.0.0
+      - name: "Get Julia"
+        uses: julia-actions/setup-julia@latest
+        with:
+          version: ${{ matrix.julia-version }}
+      - name: "Install the packages"
+        run: julia --project -e 'import Pkg; Pkg.instantiate()'
+      - name: "Build the pages"
+        run: julia --project compile.jl
+      - name: "GitHub Pages deployment"
+        uses: maxheld83/ghpages@v0.2.1
+        env:
+          GH_PAT: ${{ secrets.ACCESS_TOKEN }}

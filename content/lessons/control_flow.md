@@ -367,32 +367,33 @@ instructive example. We can draw five random numbers between 0 and 1, using
 rand(5)
 ```
 
-We might want to print *foo* when a number is lower or equal to 0.5, and *bar*
-in the rest of the situations. Why on Earth would we need to print *foo* and
-*bar*? Because these are nonsense words used as placeholders by programmers. In
-case you want to get all fancy, these are actually called "metasyntactic
-variables". If you want more than two, we suggest *baz*, and then *wibble* and
-*wobble*.
+We might want to print *smol* when a number is lower or equal to 0.5, and
+*chonky* in the rest of the situations. In a lot of programming examples, you
+will see *foo* and *bar*. Why on Earth would we need to print *foo* and *bar*?
+These are nonsense words used as placeholders by programmers. Of course, what
+with us being all fancy, the term you should use instead of nonsense is
+"metasyntactic variables". But polysyllabic nonsense is nonsense still, and so
+we will use the far more dignified *smol* and *chonky*:
 
 ````julia
 random_numbers = rand(5)
 
 for random_number in random_numbers
   if random_number ≤ 0.5
-    println("foo")
+    println("smol")
   else
-    println("bar")
+    println("chonky")
   end
 end
 ````
 
 
 ````
-bar
-bar
-foo
-bar
-bar
+chonky
+chonky
+chonky
+chonky
+chonky
 ````
 
 
@@ -444,9 +445,9 @@ this inside thing *the body* for no particular reason.
 
 ```raw
 if random_number ≤ 0.5
-    println("foo")
+    println("smol")
 else
-    println("bar")
+    println("chonky")
 end
 ```
 
@@ -468,11 +469,11 @@ random_numbers
 
 ````
 5-element Array{Float64,1}:
- 0.5850840517891143  
- 0.5140082053721966  
- 0.016099656463364198
- 0.657105449169457   
- 0.857921938720698
+ 0.6515792617622824
+ 0.5362401844174467
+ 0.6541051839861407
+ 0.5329399597400395
+ 0.6403260876648504
 ````
 
 
@@ -528,7 +529,7 @@ random_numbers[1]
 
 
 ````
-0.5850840517891143
+0.6515792617622824
 ````
 
 
@@ -549,7 +550,7 @@ random_numbers[length(random_numbers)]
 
 
 ````
-0.857921938720698
+0.6403260876648504
 ````
 
 
@@ -567,7 +568,7 @@ random_numbers[end]
 
 
 ````
-0.857921938720698
+0.6403260876648504
 ````
 
 
@@ -583,7 +584,7 @@ first(random_numbers)
 
 
 ````
-0.5850840517891143
+0.6515792617622824
 ````
 
 
@@ -594,7 +595,7 @@ last(random_numbers)
 
 
 ````
-0.857921938720698
+0.6403260876648504
 ````
 
 
@@ -614,7 +615,7 @@ println(random_numbers[1])
 
 
 ````
-0.5850840517891143
+0.6515792617622824
 ````
 
 
@@ -625,7 +626,7 @@ println(random_numbers[3])
 
 
 ````
-0.016099656463364198
+0.6541051839861407
 ````
 
 
@@ -636,7 +637,7 @@ println(random_numbers[5])
 
 
 ````
-0.857921938720698
+0.6403260876648504
 ````
 
 
@@ -666,9 +667,9 @@ end
 
 
 ````
-Position 1:	0.5850840517891143
-Position 3:	0.016099656463364198
-Position 5:	0.857921938720698
+Position 1:	0.6515792617622824
+Position 3:	0.6541051839861407
+Position 5:	0.6403260876648504
 ````
 
 
@@ -809,7 +810,7 @@ println("μ: $(round(mean(my_collection); digits=4))")
 
 
 ````
-μ: 0.4992
+μ: 0.5003
 ````
 
 

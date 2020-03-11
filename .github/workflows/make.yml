@@ -19,8 +19,6 @@ jobs:
         uses: julia-actions/setup-julia@latest
         with:
           version: ${{ matrix.julia-version }}
-      - name: "Install the packages"
-        run: julia --project -e 'import Pkg; Pkg.activate("."); Pkg.instantiate()'
       - name: "Weave the pages"
         run: julia --project compile.jl
       - name: "Setup hugo"

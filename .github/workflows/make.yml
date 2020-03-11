@@ -41,6 +41,10 @@ jobs:
           julia --project -e 'using Weave; weave(joinpath("content", "primers", "map_filter_reduce.Jmd"), doctype="hugo")'
           julia --project -e 'using Weave; weave(joinpath("content", "primers", "optimization.Jmd"), doctype="hugo")'
           julia --project -e 'using Weave; weave(joinpath("content", "primers", "parallelcomputing.Jmd"), doctype="hugo")'
+      - name: "Weave the machine learning modules"
+        run: |
+          julia --project -e 'using Weave; weave(joinpath("content", "machinelearning", "neural_network_flux.Jmd"), doctype="hugo")'
+          julia --project -e 'using Weave; weave(joinpath("content", "machinelearning", "naive_bayesian_classifier.Jmd"), doctype="hugo")'
       - name: "Build the website"
         run: hugo --minify
       - name: Deploy

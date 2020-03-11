@@ -14,7 +14,7 @@ unsafe= true
     name = "Lessons"
     url = "/lessons/"
     weight = 1
-    pre = "fa-graduation-cap"
+    pre = "fa-book-open"
   [[menu.main]]
     identifier = "capstones"
     name = "Capstones"
@@ -38,7 +38,7 @@ unsafe= true
     name = "Contribute!"
     url = "https://github.com/tpoisot/ScientificComputingForTheRestOfUs"
     weight = 5
-    pre = "fa-book-open"
+    pre = "fa-pen"
 
 [params]
   readingSpeed = 120

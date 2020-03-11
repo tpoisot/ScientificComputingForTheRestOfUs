@@ -17,6 +17,9 @@ for content_type in ["lessons", "primers", "capstones", "machinelearning"]
     for this_file in raw_files
         Random.seed!(42) # All files have the same seed - will it work in Weave?
         target_file = replace(this_file, ".Jmd" => ".md")
+        @info "UPDATING:   $(joinpath(content_type, target_file))"
+        weave(joinpath(this_content_folder, this_file), doctype="hugo")
+        #=
         file_time = mtime(joinpath(this_content_folder, this_file))
         trgt_time = mtime(joinpath(this_content_folder, target_file))
 
@@ -27,5 +30,6 @@ for content_type in ["lessons", "primers", "capstones", "machinelearning"]
         else
             @info "NOT CHANGED: $(joinpath(content_type, target_file))"
         end
+        =#
     end
 end

@@ -143,7 +143,7 @@ so it is perfectly fine to store the object representing the normal distribution
 for each variable and cultivar in a new column.
 
 ```julia
-distribution_data.distribution = [Normal(row.μ, row.σ) for row in eachrow(distribution_data)]
+distribution_data.distribution = [Normal(row.μ, row.σ) for row in eachrow(distribution_data)];
 ```
 
 Of course, this format is not ideal for what we're about to do (measure the
@@ -152,6 +152,7 @@ probability that a sample belongs to a class), so we will unstack it by cultivar
 
 ```julia
 distributions = unstack(distribution_data, :cultivar, :variable, :distribution)
+select(distributions, [:cultivar, :area, :compactness])
 ```
 
 And with this information, we are ready to make a prediction. We will keep the

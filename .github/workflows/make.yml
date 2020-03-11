@@ -34,6 +34,13 @@ jobs:
           julia --project -e 'using Weave; weave(joinpath("content", "capstones", "abc.Jmd"), doctype="hugo")'
           julia --project -e 'using Weave; weave(joinpath("content", "capstones", "genetic_algorithm.Jmd"), doctype="hugo")'
           julia --project -e 'using Weave; weave(joinpath("content", "capstones", "runge_kutta.Jmd"), doctype="hugo")'
+      - name: "Weave the primers"
+        run: |
+          julia --project -e 'using Weave; weave(joinpath("content", "primers", "advanced_control_flow.Jmd"), doctype="hugo")'
+          julia --project -e 'using Weave; weave(joinpath("content", "primers", "indexing.Jmd"), doctype="hugo")'
+          julia --project -e 'using Weave; weave(joinpath("content", "primers", "map_filter_reduce.Jmd"), doctype="hugo")'
+          julia --project -e 'using Weave; weave(joinpath("content", "primers", "optimization.Jmd"), doctype="hugo")'
+          julia --project -e 'using Weave; weave(joinpath("content", "primers", "parallelcomputing.Jmd"), doctype="hugo")'
       - name: "Build the website"
         run: hugo --minify
       - name: Deploy

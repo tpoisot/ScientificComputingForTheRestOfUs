@@ -17,8 +17,7 @@ contributors:
    - graciellehigino
    - gabrieldansereau
 weight: 2
-draft: true
-status: construction
+status: draft
 ---
 
 In this capstone, we will implement a Naive Bayes classifier, to make

@@ -3,7 +3,6 @@ Pkg.activate(".")
 Pkg.update()
 Pkg.instantiate()
 Pkg.build()
-Pkg.precompile()
 
 using Weave
 

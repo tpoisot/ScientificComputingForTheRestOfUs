@@ -33,6 +33,12 @@ unsafe= true
     url = "/machinelearning/"
     weight = 4
     pre = "fa-brain"
+  [[menu.main]]
+    identifier = "main"
+    name = "Contribute!"
+    url = "https://github.com/tpoisot/ScientificComputingForTheRestOfUs"
+    weight = 5
+    pre = "fa-book-open"
 
 [params]
   readingSpeed = 120

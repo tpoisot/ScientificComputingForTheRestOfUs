@@ -16,7 +16,18 @@ contributors:
 weight: 1
 ---
 
-***short intro text goes here***
+In this lesson, we will create neural networks using `Flux`, a performant and
+elegant package for doing machine learning in Julia. `Flux` is very well
+documented, and [multiple step-by-step examples](https://fluxml.ai/) have been
+written to provide users with a solid understanding of how it can be used to
+build machine learning models in a few lines of code only.
+
+We will be using the seeds dataset, which we believe is a better version of the
+widely used iris dataset. It consists of 7 measures of wheat kernels. Each
+kernel belongs to one of the three cultivars labeled in the dataset. The aim of
+our models is to predict cultivars from the kernel features within a supervised
+learning framework. We will define and train two models before evaluating their
+predictive performance: a single-layer neural network and a deep neural network.
 
 ```julia
 using Flux

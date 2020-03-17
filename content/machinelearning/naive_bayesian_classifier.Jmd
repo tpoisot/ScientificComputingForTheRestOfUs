@@ -1,5 +1,5 @@
 ---
-title: Neural Bayes classifier
+title: Naive Bayes classifier
 slug: naivebayes
 concepts:
   - control flow
@@ -51,7 +51,11 @@ The [Wikipedia page][nbcwp] has a very clear introduction to the theory, and we
 will adhere to its notation here. In short, given an array $\mathbf{x}$ of
 observations of multiple features, the probability ($p(C_k | x)$) that this
 sample belongs to the class $C_k$ is *proportional* to $p(C_k) \prod p(x_i |
-C_k)$. Further, we can get the class to which the sample should be assigned
+C_k)$.
+We can multiply these probabilities together because Naive Bayes classification makes the
+assumption of independance between features. This is precisely why we say that this
+classifier is 'naive'.
+Further, we can get the class to which the sample should be assigned
 using $\hat y = \text{argmax}_{k \in K} p(C_k) \prod p(x_i | C_k)$ - the class
 that is the most probable is taken as the guess.
 
@@ -83,6 +87,8 @@ const seed_url = "https://archive.ics.uci.edu/ml/machine-learning-databases/0023
 seeds = get_dataset(seed_url, "seeds.txt");
 ```
 
+This dataset comprises a bunch of measures taken on wheat kernels.
+The kernels belong to three different cultivars of wheat.
 As always, we will rename the columns to make it easier to reference them:
 
 ```julia
@@ -104,11 +110,11 @@ keeping 20 samples for the validation, and the rest to get information on the
 distributions:
 
 ```julia
-seeds = seeds[1:(end-20),:];
+seeds_dist = seeds[1:(end-20),:];
 leftovers = seeds[(end-19):end,:];
 ```
 
-As it is, our first task is to summarize the data in `seeds` in a table
+As it is, our first task is to summarize the data in `seeds_dist` in a table
 containing, for every measure and every cultivar, the average and standard
 deviation. The next steps will involve a fair amount of manipulations using the
 `DataFrames` package, and it is a good idea to look at the documentation for the
@@ -120,7 +126,7 @@ Because we have *a lot* of variables, it is likely easier to reshape
 the data to a long format:
 
 ```julia
-long_seeds = stack(seeds, Not(:cultivar))
+long_seeds = stack(seeds_dist, Not(:cultivar))
 first(long_seeds, 3)
 ```
 

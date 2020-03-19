@@ -3,12 +3,12 @@ title: Approximate Bayesian Computation
 weight: 1
 packages:
   - StatsPlots
-  - StatsBase
   - Statistics
   - Distributions
 concepts:
   - arrays
   - control flow
+  - writing functions
 contributors:
   - tpoisot
 ---
@@ -20,21 +20,21 @@ ABC for short, is a very useful heuristic to estimate the posterior distribution
 of model parameters, specifically when the analytical expression of the
 likelihood function is unavailable (or when we can't be bothered to figure it
 out). The theory on how ABC works will not be covered here in detail, so reading
-the previous article is highly recommended.
+the previous article (and the references it links to) is highly recommended.
 
 We will rely on a few packages for this example:
 
 ```julia
-using StatsPlots
-using Statistics
-using StatsBase
-using Distributions
+using StatsPlots     # Plots of statistical distributions
+using Statistics     # mean and std
+using Distributions  # Statistical distributions
 ```
 
 Let us now imagine an island. It is a small island, no more than a few meters in
-diameter, in the Florida keys. Every year, for 20 years, a few biologists comb
-through the island, to figure out whether or not *Eurycotis floridana* is
-present or absent. This results in a timeseries, like this:
+diameter, in the Florida keys. On this island is a single shrub, and on this
+single shrub an insect can live. Every year, for 20 years, a few biologists comb
+through the shrub, to figure out whether or not the insect is present or absent.
+This results in a timeseries, like this:
 
 ```julia; echo=false; results="markup"
 for (i, e) in enumerate(sample(["present", "absent"], 10, replace=true))
@@ -46,10 +46,16 @@ To begin with, let us see how we can model the presence/absence of this species.
 We will make two assumptions. First, the biological process here can be
 represented by modeling the probabilities of *transition*, *i.e.* the chance of
 changing from one state to another. Second, there is a small chance of *error*
-when measuring the state of the system. Specifically, while detecting at least
-one individual means that there is no chance that the species is absent, *not*
-detecting any individual can also mean that there were present in low density,
-and have not been detected.
+when measuring the state of the system; this is because our insect evolved a
+really good mimetism, and is more or less the same color as the shrub.
+Specifically, while detecting at least one individual means that there is no
+chance that the species is absent, *not* detecting any individual can also mean
+that there were present in low density, and have not been detected. The problem
+is therefore that if we want to think about the extinction-colonization dynamics
+of this island, our empirical dataset adds some uncertainty due to the
+measurement. We will use ABC to quantify this uncertainty, and estimate the
+value of the extinction and colonization parameters to conduct additional
+simulations.
 
 We can represent this system using the following figure:
 

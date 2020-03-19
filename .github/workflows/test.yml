@@ -1,6 +1,6 @@
-name: "Build the website for deployment"
+name: "Test the website during PR to master"
 on:
-  push:
+  pull_request:
     branches:
       - master
 
@@ -46,9 +46,4 @@ jobs:
           julia --project -e 'using Weave; weave(joinpath("content", "machinelearning", "neural_network_flux.Jmd"), doctype="hugo")'
           julia --project -e 'using Weave; weave(joinpath("content", "machinelearning", "naive_bayesian_classifier.Jmd"), doctype="hugo")'
       - name: "Build the website"
-        run: hugo --minify
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.ACCESS_TOKEN }}
-          publish_dir: ./public
+        run: hugo

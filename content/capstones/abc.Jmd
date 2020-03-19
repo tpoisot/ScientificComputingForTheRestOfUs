@@ -352,10 +352,10 @@ this, we can use our `island_true_state` model, which only takes `c` and `e` as
 inputs, and generate timeseries. We will focus on the average temporal
 occupancy:
 
-```julia
+```julia; fig_cap="Distribution of the predicted occupancy without measurement error based on the posterior distribution."
 posterior_c = Sc[posterior]
 posterior_e = Se[posterior]
 
 occupancies = map((e,c) -> occupancy(island_true_state(e,c)), posterior_e, posterior_c)
-density(occupancies)
+density(occupancies, fill=(0, :orange, 0.4))
 ```

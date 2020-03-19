@@ -37,9 +37,9 @@ through the shrub, to figure out whether or not the insect is present or absent.
 This results in a timeseries, like this:
 
 ```julia; echo=false; results="markup"
-for i in 1:10
-  e = rand() < 0.5 ? "present" : "absent"
-  println("Year $(i)\t$(e)")
+for year in 1:10
+  state = rand() < 0.5 ? "present" : "absent"
+  println("Year $(year)\t$(state)")
 end
 ```
 
@@ -99,7 +99,7 @@ function island_true_state(e::T, c::T; n=200) where {T <: AbstractFloat}
   return state
 end
 
-function island_measured_state(state::Vector{Bool}, m::T)
+function island_measured_state(state::Vector{Bool}, m::T) where {T <: AbstractFloat}
   measured_state = similar(state)
   for (year, real_state) in enumerate(state)
     measured_state[year] = real_state ? rand() ≥ m : false

@@ -3,12 +3,12 @@ title: Approximate Bayesian Computation
 weight: 1
 packages:
   - StatsPlots
-  - StatsBase
   - Statistics
   - Distributions
 concepts:
   - arrays
   - control flow
+  - writing functions
 contributors:
   - tpoisot
 ---
@@ -20,25 +20,26 @@ ABC for short, is a very useful heuristic to estimate the posterior distribution
 of model parameters, specifically when the analytical expression of the
 likelihood function is unavailable (or when we can't be bothered to figure it
 out). The theory on how ABC works will not be covered here in detail, so reading
-the previous article is highly recommended.
+the previous article (and the references it links to) is highly recommended.
 
 We will rely on a few packages for this example:
 
 ```julia
-using StatsPlots
-using Statistics
-using StatsBase
-using Distributions
+using StatsPlots     # Plots of statistical distributions
+using Statistics     # mean and std
+using Distributions  # Statistical distributions
 ```
 
 Let us now imagine an island. It is a small island, no more than a few meters in
-diameter, in the Florida keys. Every year, for 20 years, a few biologists comb
-through the island, to figure out whether or not *Eurycotis floridana* is
-present or absent. This results in a timeseries, like this:
+diameter, in the Florida keys. On this island is a single shrub, and on this
+single shrub an insect can live. Every year, for 20 years, a few biologists comb
+through the shrub, to figure out whether or not the insect is present or absent.
+This results in a timeseries, like this:
 
 ```julia; echo=false; results="markup"
-for (i, e) in enumerate(sample(["present", "absent"], 10, replace=true))
-  println("Year $(i)\t$(e)")
+for year in 1:10
+  state = rand() < 0.5 ? "present" : "absent"
+  println("Year $(year)\t$(state)")
 end
 ```
 
@@ -46,10 +47,16 @@ To begin with, let us see how we can model the presence/absence of this species.
 We will make two assumptions. First, the biological process here can be
 represented by modeling the probabilities of *transition*, *i.e.* the chance of
 changing from one state to another. Second, there is a small chance of *error*
-when measuring the state of the system. Specifically, while detecting at least
-one individual means that there is no chance that the species is absent, *not*
-detecting any individual can also mean that there were present in low density,
-and have not been detected.
+when measuring the state of the system; this is because our insect evolved a
+really good mimetism, and is more or less the same color as the shrub.
+Specifically, while detecting at least one individual means that there is no
+chance that the species is absent, *not* detecting any individual can also mean
+that there were present in low density, and have not been detected. The problem
+is therefore that if we want to think about the extinction-colonization dynamics
+of this island, our empirical dataset adds some uncertainty due to the
+measurement. We will use ABC to quantify this uncertainty, and estimate the
+value of the extinction and colonization parameters to conduct additional
+simulations.
 
 We can represent this system using the following figure:
 
@@ -71,39 +78,67 @@ end
 {{< /mermaid >}}
 
 In the *true state* box, the rates represent the probabilities of state change.
-The rates between *true state* and *measured state* represent the probabilities
-of making the wrong measurement. We now have enough to write a simple function
-to simulate this model:
+An empty island can be colonized at rate $c$; an occupied island can become
+empty through extinction at rate $e$; finally, we can miss the insect during
+sampling at rate $m$. The rates between *true state* and *measured state*
+represent the probabilities of making the wrong measurement. We now have enough
+to write a simple function to simulate this model. The point of this function is
+to return a timeseries, where an occupied island at a given year is `true`, and
+an empty isladnd is `false`. Because there are two distinct processes, we will
+first simulate the *true state* of the island, and then write a second function
+to simulate the *measured state*:
 
 ```julia
-function island(e::T, c::T, m::T; n=200) where {T <: AbstractFloat}
+function island_true_state(e::T, c::T; n=200) where {T <: AbstractFloat}
   @assert 0.0 ≤ e ≤ 1.0
   @assert 0.0 ≤ c ≤ 1.0
-  @assert 0.0 ≤ m ≤ 1.0
-  true_state = zeros(Bool, n)
-  measured_state = zeros(Bool, n)
-  measured_state[1] = true_state[1]
+  state = zeros(Bool, n)
   for year in 2:n
-    true_state[year] = true_state[year-1] ? rand() ≥ e : rand() < c
-    measured_state[year] = true_state[year] ? rand() ≥ m : false
+    state[year] = state[year-1] ? rand() ≥ e : rand() < c
   end
+  return state
+end
+
+function island_measured_state(state::Vector{Bool}, m::T) where {T <: AbstractFloat}
+  measured_state = similar(state)
+  for (year, real_state) in enumerate(state)
+    measured_state[year] = real_state ? rand() ≥ m : false
+  end
+  return measured_state
+end
+
+function island(e::T, c::T, m::T; n=200) where {T <: AbstractFloat}
+  true_state = island_true_state(e, c; n=n)
+  measured_state = island_measured_state(true_state, m)
   return measured_state
 end
 ```
 
+This is not the most efficient way to express this problem (we will need to
+iterate over our timeseries twice!), but it will be good enough for this
+example; most importantly, it means that we will be able to use
+`island_true_state` to generate simulations without the observation error after
+we are done estimating the values of the parameters.
+
 In ABC, one key notion is the idea of "summary statistics", *i.e.* the act of
 compressing the empirical data and model output to something that can be
-meaningfully compared. Here, we will work with two informations, namely the rate
-of transition, and the temporal occupancy. In ABC, the summary statistics are
-*key* in determining the validity of the results. Using too much exposes you to
-the curse of dimensionality, and using too few (or the wrong ones) can lead to
-spurious conclusions. Another few indicators we could have used are apparent
+meaningfully compared. The selection of summary statistics can be [very
+complex][summstat], and is in fact a key step in the success of ABC. Using too
+much exposes you to the curse of dimensionality, and using too few (or the wrong
+ones) can lead to spurious conclusions.
+
+[summstat]: https://arxiv.org/abs/1106.6281
+
+Here, we will work with two informations, namely the rate of transition, and the
+temporal occupancy. Another few indicators we could have used are apparent
 colonisation events (when the island appeared empty one year, then occupied the
 next), apparent extinction events (when the island appears occupied one year,
 and empty the next), and finally the number of times where the sequence
 occupied/empty/occupied appears. Feel free to try and adapt the code after you
 have been through this lesson once to use these and other indicators, and see
-how the results change.
+how the results change. A good rule of thumb is to think about summary
+statistics both as a statistician and a domain expert: you want to capture the
+structure of your data, but also the mechanisms of interest.
 
 In any case, here is our function to summarize a sequence of observations:
 
@@ -146,11 +181,11 @@ timeseries, *and* an array of functions to measure the indicators:
 
 ```julia
 function summary(t::Vector{Bool}, f::Vector{T}) where {T <: Function}
-   s = zeros(Float64, length(f))
-   for (i, fn) in enumerate(f)
-      s[i] = fn(t)
-   end
-   return s
+  s = zeros(Float64, length(f))
+  for (i, fn) in enumerate(f)
+    s[i] = fn(t)
+  end
+  return s
 end
 ```
 
@@ -177,8 +212,8 @@ empirical_data[17:20] .= true
 ```
 
 Your biologist colleague would be very happy if you could get to an estimate of
-the parameters that govern the presence of this insect on the island. This is an
-easy enough task to do with ABC.
+the parameters that govern the presence of this insect on the island, *minus*
+the observation error. This is an easy enough task to do with ABC.
 
 We can measure the statistics of this timeseries:
 
@@ -186,12 +221,18 @@ We can measure the statistics of this timeseries:
 summary(empirical_data)
 ```
 
+Good parameter values will result in simulations that have similar summary
+statistics. Keep in mind that the empircal data are the real state of the island
+*and* the measurement error, so we need to use the `island` model.
+
 And just like this, we are ready to start the ABC process. We will start by
 deciding on priors for all three parameters. We could model them in a variety of
-ways, including β laws, and truncated distributions. Let's go with the later, as
-it is a neat illustration of the `Distributions` package. We picked a value of
-colonisation higher than extinction (as the species seems to persist), and a
-relatively low rate of false absences.
+ways, including beta distributions, and truncated distributions. Let's go with
+the later, as it is a neat illustration of the `Distributions` package. We
+picked a value of colonisation higher than extinction (as the species seems to
+persist), and a relatively low rate of false absences, albeit with a larger
+standard deviation because we are not really sure as to what this parameter
+should look like.
 
 ```julia; results="hidden"
 Dc = Truncated(Normal(0.6, 0.1), 0.0, 1.0)
@@ -211,8 +252,10 @@ infinity to positive infinity) means that the time to convergence will explode.
 We will generate 10⁶ samples using our simulation model, and get the summary
 statistics for all of them. Note that the simulations run for 200 timesteps, as
 opposed to 20 for the empirical data. This is perfectly fine, because ABC works
-on summary statistics. An interesting exercise is to change the number of
-timesteps in the simulations, and see if/how the posterior distributions react.
+on summary statistics, and not on the raw data. In fact, if we *only* add the
+summary statistics and not the raw data, we could still apply ABC! An
+interesting exercise is to change the number of timesteps in the simulations,
+and see if/how the posterior distributions react.
 
 ```julia; results="hidden"
 N = 1_000_000
@@ -238,6 +281,11 @@ function euclidean_distance(x1::Vector{T}, x2::Vector{T}) where {T <: AbstractFl
 end
 distances = map(s -> euclidean_distance(s, summary(empirical_data)), simulated_results)
 ```
+
+We could use another distance measure - dependind on the type of summary
+statistics, it might even be required. We can also assign weights to the
+different summary statistics, but this has a risk of overly fine-tuning the
+process, and it can be difficult to assess the consequences of these choices.
 
 ```julia; fig_cap="Distance between the summaries of empirical and actual data."
 density(distances, leg=false, fill=(0, :orange, 0.4), c=:orange)
@@ -266,7 +314,8 @@ Another approach to rejection sampling would be to keep generating samples until
 the sample size of the posterior has reached a certain threshold. Both solutions
 are valid, but for the sake of illustration, we went with the one that was
 simpler to implement. Feel free to work on other rejection samplers as a
-programming exercise.
+programming exercise, this will be a good opportunity to practice writing
+`while` loops.
 {{< /callout >}}
 
 ```julia; fig_cap = "Posterior distributions (shaded) and the corresponding priors (dashed) for the three parameters in the model."
@@ -296,3 +345,17 @@ rate, we can also correct these datasets to describe the data *generation*
 process (the actual presence/absence of the species) as opposed to the data
 *observation* process (measuring the presence/absence and being sometimes wrong
 about it).
+
+We now have everything we need to answer our original question: what would the
+extinction/colonization dynamics looks like *minus* the measurement error? For
+this, we can use our `island_true_state` model, which only takes `c` and `e` as
+inputs, and generate timeseries. We will focus on the average temporal
+occupancy:
+
+```julia; fig_cap="Distribution of the predicted occupancy without measurement error based on the posterior distribution."
+posterior_c = Sc[posterior]
+posterior_e = Se[posterior]
+
+occupancies = map((e,c) -> occupancy(island_true_state(e,c)), posterior_e, posterior_c)
+density(occupancies, fill=(0, :orange, 0.4))
+```

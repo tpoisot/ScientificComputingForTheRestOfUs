@@ -37,7 +37,8 @@ through the shrub, to figure out whether or not the insect is present or absent.
 This results in a timeseries, like this:
 
 ```julia; echo=false; results="markup"
-for (i, e) in enumerate(sample(["present", "absent"], 10, replace=true))
+for i in 1:10
+  e = rand() < 0.5 ? "present" : "absent"
   println("Year $(i)\t$(e)")
 end
 ```
@@ -180,11 +181,11 @@ timeseries, *and* an array of functions to measure the indicators:
 
 ```julia
 function summary(t::Vector{Bool}, f::Vector{T}) where {T <: Function}
-   s = zeros(Float64, length(f))
-   for (i, fn) in enumerate(f)
-      s[i] = fn(t)
-   end
-   return s
+  s = zeros(Float64, length(f))
+  for (i, fn) in enumerate(f)
+    s[i] = fn(t)
+  end
+  return s
 end
 ```
 
@@ -211,8 +212,8 @@ empirical_data[17:20] .= true
 ```
 
 Your biologist colleague would be very happy if you could get to an estimate of
-the parameters that govern the presence of this insect on the island. This is an
-easy enough task to do with ABC.
+the parameters that govern the presence of this insect on the island, *minus*
+the observation error. This is an easy enough task to do with ABC.
 
 We can measure the statistics of this timeseries:
 
@@ -220,12 +221,18 @@ We can measure the statistics of this timeseries:
 summary(empirical_data)
 ```
 
+Good parameter values will result in simulations that have similar summary
+statistics. Keep in mind that the empircal data are the real state of the island
+*and* the measurement error, so we need to use the `island` model.
+
 And just like this, we are ready to start the ABC process. We will start by
 deciding on priors for all three parameters. We could model them in a variety of
-ways, including β laws, and truncated distributions. Let's go with the later, as
-it is a neat illustration of the `Distributions` package. We picked a value of
-colonisation higher than extinction (as the species seems to persist), and a
-relatively low rate of false absences.
+ways, including beta distributions, and truncated distributions. Let's go with
+the later, as it is a neat illustration of the `Distributions` package. We
+picked a value of colonisation higher than extinction (as the species seems to
+persist), and a relatively low rate of false absences, albeit with a larger
+standard deviation because we are not really sure as to what this parameter
+should look like.
 
 ```julia; results="hidden"
 Dc = Truncated(Normal(0.6, 0.1), 0.0, 1.0)
@@ -245,8 +252,10 @@ infinity to positive infinity) means that the time to convergence will explode.
 We will generate 10⁶ samples using our simulation model, and get the summary
 statistics for all of them. Note that the simulations run for 200 timesteps, as
 opposed to 20 for the empirical data. This is perfectly fine, because ABC works
-on summary statistics. An interesting exercise is to change the number of
-timesteps in the simulations, and see if/how the posterior distributions react.
+on summary statistics, and not on the raw data. In fact, if we *only* add the
+summary statistics and not the raw data, we could still apply ABC! An
+interesting exercise is to change the number of timesteps in the simulations,
+and see if/how the posterior distributions react.
 
 ```julia; results="hidden"
 N = 1_000_000
@@ -272,6 +281,11 @@ function euclidean_distance(x1::Vector{T}, x2::Vector{T}) where {T <: AbstractFl
 end
 distances = map(s -> euclidean_distance(s, summary(empirical_data)), simulated_results)
 ```
+
+We could use another distance measure - dependind on the type of summary
+statistics, it might even be required. We can also assign weights to the
+different summary statistics, but this has a risk of overly fine-tuning the
+process, and it can be difficult to assess the consequences of these choices.
 
 ```julia; fig_cap="Distance between the summaries of empirical and actual data."
 density(distances, leg=false, fill=(0, :orange, 0.4), c=:orange)
@@ -300,7 +314,8 @@ Another approach to rejection sampling would be to keep generating samples until
 the sample size of the posterior has reached a certain threshold. Both solutions
 are valid, but for the sake of illustration, we went with the one that was
 simpler to implement. Feel free to work on other rejection samplers as a
-programming exercise.
+programming exercise, this will be a good opportunity to practice writing
+`while` loops.
 {{< /callout >}}
 
 ```julia; fig_cap = "Posterior distributions (shaded) and the corresponding priors (dashed) for the three parameters in the model."
@@ -330,3 +345,17 @@ rate, we can also correct these datasets to describe the data *generation*
 process (the actual presence/absence of the species) as opposed to the data
 *observation* process (measuring the presence/absence and being sometimes wrong
 about it).
+
+We now have everything we need to answer our original question: what would the
+extinction/colonization dynamics looks like *minus* the measurement error? For
+this, we can use our `island_true_state` model, which only takes `c` and `e` as
+inputs, and generate timeseries. We will focus on the average temporal
+occupancy:
+
+```julia
+posterior_c = Sc[posterior]
+posterior_e = Se[posterior]
+
+occupancies = map((e,c) -> occupancy(island_true_state(e,c)), posterior_e, posterior_c)
+density(occupancies)
+```

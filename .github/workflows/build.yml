@@ -32,6 +32,7 @@ jobs:
         run: julia --project _builder.jl ${{ matrix.document }}
       - name: Upload result for ${{ matrix.document }}
         uses: actions/upload-artifact@v2
+        continue-on-error: true
         with:
           name: built-project
           path: dist

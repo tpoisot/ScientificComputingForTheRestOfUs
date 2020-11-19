@@ -40,7 +40,7 @@ jobs:
               # fig_path = joinpath(post_name, "figures")
             )
             cd("..", "..")
-          """"
+            """
         - name: Upload result for ${{ matrix.document }}
           uses: actions/upload-artifact@v2
           with:

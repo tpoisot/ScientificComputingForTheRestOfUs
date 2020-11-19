@@ -6,6 +6,7 @@ on:
 
 jobs:
   build:
+    name: "Build the material"
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -21,10 +22,6 @@ jobs:
           version: ${{ matrix.julia }}
       - name: "Build the core packages"
         uses: julia-actions/julia-buildpkg@master
-      - name: "Setup hugo"
-        uses: peaceiris/actions-hugo@v2
-        with:
-          hugo-version: '0.62.2'
       - name: "Build ${{ matrix.document }}"
         run: |
           julia -e """
@@ -49,3 +46,25 @@ jobs:
           with:
             name: built
             path: dist
+  website:
+    needs: build
+    name: "Make the website"
+    steps:
+      - name: "Setup hugo"
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: '0.62.2'
+      - name: Download built lessons
+        uses: actions/download-artifact@v2
+        with:
+          name: built
+          path: dist
+      - name: "Run hugo"
+        run: |
+          cd dist;
+          hugo --minify
+      - name: Deploy the website
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          publish_dir: ./dist/public

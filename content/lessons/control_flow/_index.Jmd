@@ -543,12 +543,10 @@ once: the mean needs to be larger than 0.499, yet smaller than 0.501, and we
 need to continue *until* this is true (but there is not *until* statement, so we
 use the awkward "while not").
 
-{{% callout danger %}}
-If we are particularly unlucky, we would never get a sequence of random numbers
-that would match this condition! In this case, our computer would stubbornly
-keep running until the heat death of the universe (or until it breaks, which in
-all likelihood will happen earlier). Writing `while` loops can be a complex
-exercice, and it is always good to think about "exit strategies". These will be
-discussed in the ["Advanced control flow"]({{< ref
-"/primers/advanced_control_flow.md" >}}) primer.
-{{% /callout %}}
+{{% callout danger %}} If we are particularly unlucky, we would never get a
+sequence of random numbers that would match this condition! In this case, our
+computer would stubbornly keep running until the heat death of the universe (or
+until it breaks, which in all likelihood will happen earlier). Writing `while`
+loops can be a complex exercice, and it is always good to think about "exit
+strategies". These will be discussed in the ["Advanced control flow"]({{< ref
+"/primers/advanced_control_flow/_index.md" >}}) primer. {{% /callout %}}

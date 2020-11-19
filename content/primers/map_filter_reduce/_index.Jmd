@@ -15,7 +15,7 @@ weight: 3
 A *lot* of computing tasks involve going through arrays, or collections, of
 values, and selecting some of them, applying transformations, and returning
 values based on them. After reading the lesson on [Control flow]({{< ref
-"/lessons/control_flow.md" >}}), you are equipped to do this using `for`, `if`,
+"/lessons/control_flow/_index.md" >}}), you are equipped to do this using `for`, `if`,
 and `while`. But most tasks can actually be adressed using an approach which is
 even more simple: map/filter/reduce.
 

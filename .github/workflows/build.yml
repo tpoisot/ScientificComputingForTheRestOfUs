@@ -15,13 +15,13 @@ jobs:
         document: ["lessons/01_planning_ahead/", "lessons/02_control_flow/"]
     steps:
       - name: "Checkout action"
-        uses: actions/checkout@master
+        uses: actions/checkout@v1.0.0
       - name: "Setup julia"
-        uses: julia-actions/setup-julia@master
+        uses: julia-actions/setup-julia@v1
         with:
           version: ${{ matrix.julia }}
       - name: "Build the core packages"
-        uses: julia-actions/julia-buildpkg@master
+        uses: julia-actions/julia-buildpkg@v1
       - name: "Build ${{ matrix.document }}"
         run: julia --project _builder.jl ${{ matrix.document }}
       - name: Upload result for ${{ matrix.document }}
@@ -34,6 +34,8 @@ jobs:
     needs: build
     name: "Make the website"
     steps:
+      - name: "Checkout action"
+        uses: actions/checkout@v1.0.0
       - name: "Setup hugo"
         uses: peaceiris/actions-hugo@v2
         with:

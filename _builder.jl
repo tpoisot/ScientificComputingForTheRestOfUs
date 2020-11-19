@@ -22,10 +22,8 @@ if isfile("Project.toml")
     end
 end
 
-#=
 weave(
     "_index.Jmd",
     out_path=joinpath("..", "..", "..", "dist", "content", lesson, "_index.md"),
     doctype="github"
 )
-=#

@@ -15,9 +15,9 @@ jobs:
         document: ["lessons/01_planning_ahead/", "lessons/02_control_flow/"]
     steps:
       - name: "Checkout action"
-        uses: actions/checkout@latest
+        uses: actions/checkout@master
       - name: "Setup julia"
-        uses: julia-actions/setup-julia@latest
+        uses: julia-actions/setup-julia@master
         with:
           version: ${{ matrix.julia }}
       - name: "Build the core packages"

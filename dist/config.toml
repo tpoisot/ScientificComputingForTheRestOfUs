@@ -1,0 +1,46 @@
+baseURL = "http://sciencecomputing.io/"
+languageCode = "en-us"
+preserveTaxonomyNames = true
+theme = "shebang"
+pygmentsCodeFences = true
+pygmentsUseClasses = true
+
+[markup.goldmark.renderer]
+unsafe= true
+
+[menu]
+  [[menu.main]]
+    identifier = "lessons"
+    name = "Lessons"
+    url = "/lessons/"
+    weight = 1
+    pre = "fa-book-open"
+  [[menu.main]]
+    identifier = "capstones"
+    name = "Capstones"
+    url = "/capstones/"
+    weight = 3
+    pre = "fa-star"
+  [[menu.main]]
+    identifier = "primers"
+    name = "Primers"
+    url = "/primers/"
+    weight = 2
+    pre = "fa-bolt"
+  [[menu.main]]
+    identifier = "ml"
+    name = "AI/ML"
+    url = "/machinelearning/"
+    weight = 4
+    pre = "fa-brain"
+
+[params]
+  readingSpeed = 120
+  githubUser = "tpoisot"
+  githubRepo = "ScientificComputingForTheRestOfUs"
+  title = "Scientific computing"
+  subtitle = "(for the rest of us)"
+
+[taxonomies]
+  concept = "concepts"
+  package = "packages"

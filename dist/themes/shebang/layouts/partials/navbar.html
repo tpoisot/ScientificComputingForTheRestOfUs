@@ -1,0 +1,12 @@
+<nav id="main" class="sidebar">
+  <div class="header">
+    <h1><a href="/">{{ .Site.Params.title }}</a></h1>
+    <h2>{{ .Site.Params.subtitle }}</h2>
+  </div>
+  <ul class="nav">
+    {{ $currentPage := . }}
+    {{ range $entry := .Site.Menus.main }}
+    <li class="{{ $entry.Identifier }}"><i class="fas fa-fw {{ $entry.Pre}}"></i><a class="sidebar-nav-item {{if eq $currentPage.Section $entry.Identifier }} active{{end}}" href="{{ .URL }}" title="{{ .Title }}">{{ .Name }}</a></li>
+    {{ end }}
+  </ul>
+</nav>

@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+{{- partial "head.html" . -}}
+<body>
+    {{- partial "navbar.html" . -}}
+      <section id="content">
+        {{- block "main" . }}{{- end }}
+      </section>
+      <script>mermaid.initialize({ startOnLoad: true, theme: "neutral", curve: "basis" });</script>
+</body>
+</html>

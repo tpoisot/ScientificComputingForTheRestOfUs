@@ -17,7 +17,8 @@ jobs:
           "lessons/writing_functions", "lessons/avoiding_mistakes",
           "capstones/ABC", "capstones/genetic_algorithm", "capstones/runge_kutta",
           "primers/advanced_control_flow", "primers/indexing", "primers/map_filter_reduce",
-          "primers/optimization", "primers/parallelcomputing"
+          "primers/optimization", "primers/parallelcomputing",
+          "machinelearning/naive_bayesian_classifier", "machinelearning/neural_network_flux"
           ]
     steps:
       - name: "Checkout action"

@@ -1,7 +1,5 @@
-- name: "Build the website"
-        run: hugo --minify
-      - name: Deploy
+- name: Deploy the website
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
-          publish_dir: ./public
+          publish_dir: "./dist/public"

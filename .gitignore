@@ -23,4 +23,6 @@ dist/content/machinelearning/
 dist/content/capstones/
 !dist/content/capstones/_index.md
 
+dist/data/dependencies
+
 Manifest.toml

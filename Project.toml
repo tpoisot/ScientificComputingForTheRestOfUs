@@ -1,4 +1,6 @@
 [deps]
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 Weave = "44d3d7a6-8a23-5bf8-98c5-b353f8df5ec9"
 
 [compat]

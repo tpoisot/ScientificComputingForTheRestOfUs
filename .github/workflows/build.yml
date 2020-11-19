@@ -14,7 +14,7 @@ jobs:
         julia: [1.5.2]
         document: [
           "lessons/01_planning_ahead/", "lessons/02_control_flow/",
-          "lessons/03_writing_function", "lessons/04_avoiding_mistakes/",
+          "lessons/03_writing_functions", "lessons/04_avoiding_mistakes/",
           "capstones/ABC", "capstones/genetic_algorithm", "capstones/runge_kutta"
           ]
     steps:

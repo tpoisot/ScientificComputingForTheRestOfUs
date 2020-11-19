@@ -22,24 +22,7 @@ jobs:
       - name: "Build the core packages"
         uses: julia-actions/julia-buildpkg@master
       - name: "Build ${{ matrix.document }}"
-        run: |
-          julia -e """
-            import Pkg
-            using Weave
-            source_file = joinpath("content", ${{ matrix.document }}, "_index.Jmd")
-            target_file = joinpath("dist", replace(source_file, "index.Jmd" => "index.md"))
-            cd(joinpath("content", ${{ matrix.document }}))
-            Pkg.activate(".")
-            post_name = splitpath(current_post_folder)[end]
-            weave(
-              source_file,
-              out_path = target_file,
-              doctype = "github",
-              # doctype = "hugo",
-              # fig_path = joinpath(post_name, "figures")
-            )
-            cd("..", "..")
-            """
+        run: julia --project _builder.jl ${{ matrix.document }}
       - name: Upload result for ${{ matrix.document }}
         uses: actions/upload-artifact@v2
         with:

@@ -4,12 +4,12 @@ lesson = first(ARGS)
 
 import Pkg
 using Weave
-source_file = joinpath("content", lesson, "_index.Jmd")
+root = pwd()
 target_file = joinpath("dist", replace(source_file, "index.Jmd" => "index.md"))
 cd(joinpath("content", lesson))
 Pkg.activate(".")
 weave(
-    source_file,
-    out_path=target_file,
+    "_index.Jmd",
+    out_path=joinpath(pwd(), "dist", "content", lesson, "index.md"),
     doctype="github"
 )

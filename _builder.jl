@@ -11,6 +11,7 @@ using JSON
 cd(joinpath("content", lesson))
 
 Pkg.activate(".")
+Pkg.instantiate()
 
 if isfile("Project.toml")
     _proj = TOML.parsefile("Project.toml")
@@ -21,8 +22,6 @@ if isfile("Project.toml")
         JSON.print(f, _proj)
     end
 end
-
-Pkg.instantiate(".")
 
 weave(
     "_index.Jmd",

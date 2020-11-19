@@ -13,11 +13,11 @@ jobs:
       matrix:
         julia: [1.5.2]
         document: [
-          "lessons/01_planning_ahead", "lessons/02_control_flow",
-          "lessons/03_writing_functions", "lessons/04_avoiding_mistakes",
+          "lessons/planning_ahead", "lessons/control_flow",
+          "lessons/writing_functions", "lessons/avoiding_mistakes",
           "capstones/ABC", "capstones/genetic_algorithm", "capstones/runge_kutta",
           "primers/advanced_control_flow", "primers/indexing", "primers/map_filter_reduce",
-          "primers/optimization", "primer/parallelcomputing"
+          "primers/optimization", "primers/parallelcomputing"
           ]
     steps:
       - name: "Checkout action"

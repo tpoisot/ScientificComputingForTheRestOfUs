@@ -22,6 +22,8 @@ if isfile("Project.toml")
     end
 end
 
+Pkg.instantiate(".")
+
 weave(
     "_index.Jmd",
     out_path=joinpath("..", "..", "..", "dist", "content", lesson, "_index.md"),

@@ -1,4 +1,4 @@
-baseURL = "http://sciencecomputing.io/"
+baseURL = "https://sciencecomputing.io/"
 languageCode = "en-us"
 preserveTaxonomyNames = true
 theme = "shebang"

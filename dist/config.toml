@@ -29,16 +29,10 @@ unsafe= true
     pre = "fa-bolt"
   [[menu.main]]
     identifier = "ml"
-    name = "Machine Learning"
+    name = "AI/ML"
     url = "/machinelearning/"
     weight = 4
     pre = "fa-brain"
-  [[menu.main]]
-    identifier = "main"
-    name = "Contribute!"
-    url = "https://github.com/tpoisot/ScientificComputingForTheRestOfUs"
-    weight = 5
-    pre = "fa-pen"
 
 [params]
   readingSpeed = 120

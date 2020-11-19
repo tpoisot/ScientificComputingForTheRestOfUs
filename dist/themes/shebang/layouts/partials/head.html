@@ -4,8 +4,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.0.0/mermaid.js"></script>
 
   <link rel="stylesheet" href="/css/normalize.css" />
-  <link rel="stylesheet" href="/css/configuration.css" />
-  <link rel="stylesheet" href="/css/index.css" />
+  
+  {{ $config := resources.Get "configuration.scss" | resources.ToCSS (dict "outputStyle" "compressed") | fingerprint }}
+  <link rel="stylesheet" href="{{ $config.Permalink }}">
+
+  {{ $index := resources.Get "index.scss" | resources.ToCSS (dict "outputStyle" "compressed") | fingerprint }}
+  <link rel="stylesheet" href="{{ $index.Permalink }}">
 
   <meta charset="utf-8">
 

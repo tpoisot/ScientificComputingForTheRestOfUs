@@ -44,3 +44,8 @@ jobs:
             )
             cd("..", "..")
           """"
+        - name: Upload result for ${{ matrix.document }}
+          uses: actions/upload-artifact@v2
+          with:
+            name: built
+            path: dist

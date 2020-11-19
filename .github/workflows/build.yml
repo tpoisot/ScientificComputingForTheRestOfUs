@@ -2,7 +2,7 @@ name: "Build the website for deployment"
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
 
 jobs:
@@ -56,3 +56,8 @@ jobs:
         run: |
           cd dist;
           hugo --minify
+      - name: Deploy the website
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          publish_dir: "./dist/public"

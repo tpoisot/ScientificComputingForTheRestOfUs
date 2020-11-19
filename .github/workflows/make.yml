@@ -1,0 +1,70 @@
+name: "Build the website for deployment"
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: "Build the material"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        julia: [1.5.2]
+        document: ["lessons/01_planning_ahead/", "lessons/02_control_flow/"]
+    steps:
+      - name: "Checkout action"
+        uses: actions/checkout@latest
+      - name: "Setup julia"
+        uses: julia-actions/setup-julia@latest
+        with:
+          version: ${{ matrix.julia }}
+      - name: "Build the core packages"
+        uses: julia-actions/julia-buildpkg@master
+      - name: "Build ${{ matrix.document }}"
+        run: |
+          julia -e """
+            import Pkg
+            using Weave
+            source_file = joinpath("content", ${{ matrix.document }}, "_index.Jmd")
+            target_file = joinpath("dist", replace(source_file, "index.Jmd" => "index.md"))
+            cd(joinpath("content", ${{ matrix.document }}))
+            Pkg.activate(".")
+            post_name = splitpath(current_post_folder)[end]
+            weave(
+              source_file,
+              out_path = target_file,
+              doctype = "github",
+              # doctype = "hugo",
+              # fig_path = joinpath(post_name, "figures")
+            )
+            cd("..", "..")
+            """
+      - name: Upload result for ${{ matrix.document }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: built
+          path: dist
+  website:
+    runs-on: ubuntu-latest
+    needs: build
+    name: "Make the website"
+    steps:
+      - name: "Setup hugo"
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: "0.62.2"
+      - name: Download built lessons
+        uses: actions/download-artifact@v2
+        with:
+          name: built
+          path: dist
+      - name: "Run hugo"
+        run: |
+          cd dist;
+          hugo --minify
+      - name: Deploy the website
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          publish_dir: ./dist/public

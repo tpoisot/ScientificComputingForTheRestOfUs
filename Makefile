@@ -1,8 +1,5 @@
 BASE_DIR := "content"
 DIRS := $(shell find $(BASE_DIR) -type d)
-SLUGS := $(subst content/,,$(DIRS))
 
-$(info $(SLUGS))
-
-all: $(SLUGS)
-	julia --project _builder.jl $<
+all: $(filter-out content content/capstones content/lessons content/machinelearning content/primers,$(DIRS))
+	julia --project _builder.jl $(subst content/,,$<)

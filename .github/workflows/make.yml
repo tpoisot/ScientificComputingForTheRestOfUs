@@ -10,13 +10,15 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
+        julia: [1.5.2]
+        documents: ["lessons/01_planning_ahead/", "lessons/02_control_flow/"]
     steps:
       - name: "Checkout action"
         uses: actions/checkout@v1.0.0
       - name: "Setup julia"
         uses: julia-actions/setup-julia@v1
         with:
-          version: "1.2.0"
+          version: ${{ matrix.julia }}
       - name: "Setup hugo"
         uses: peaceiris/actions-hugo@v2
         with:

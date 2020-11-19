@@ -28,7 +28,7 @@ bits of additional information, which can be browsed at any time.
 This material is aimed at people who have already interacted with a computer
 using a programming language, but want to adopt best practices that make their
 code more robust. It can also be used to facilitate the onboarding of new people
-in your lab or in your project.
+in your lab or your project.
 
 Scientific computing can be very diverse, ranging from a few-step analysis
 of small data sets to simulations running for weeks on supercomputers.

@@ -29,15 +29,17 @@
     {{ end }}
     
     {{ $catmap := (index $.Site.Data.dependencies .Type) }}
-    {{ $catidx := (index (split .File.Dir "/") 1) }}
-    {{ $deps := (index (index $catmap $catidx) "deps") }}
-    {{ if $deps }}
-    <div class="packages listicle">
-        <i class="fas fa-box fa-fw"></i> <b>Packages used:</b>
-        {{ range $x, $y := $deps }}
-            <span class="package listicleitem">{{ $x }}</span>
+    {{ if $catmap }}
+        {{ $catidx := (index (split .File.Dir "/") 1) }}
+        {{ $deps := (index (index $catmap $catidx) "deps") }}
+        {{ if $deps }}
+        <div class="packages listicle">
+            <i class="fas fa-box fa-fw"></i> <b>Packages used:</b>
+            {{ range $x, $y := $deps }}
+                <span class="package listicleitem">{{ $x }}</span>
+            {{ end }}
+        </div>
         {{ end }}
-    </div>
     {{ end }}
 
 </section>

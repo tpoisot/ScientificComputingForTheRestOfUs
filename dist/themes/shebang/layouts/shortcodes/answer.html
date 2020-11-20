@@ -1,6 +1,3 @@
-{{- $txt := .Get "txt" -}}
-{{- with .Parent -}}
-<div class="answer" id="{{.Get "id"}}"">
-    {{ $txt }}
+<div class="answer" id="{{.Get "id"}}">
+    {{ .Inner | markdownify }}
 </div>
-{{- end }}

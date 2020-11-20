@@ -25,4 +25,6 @@ dist/content/capstones/
 
 dist/data/dependencies
 
+dist/**/_gen
+
 Manifest.toml

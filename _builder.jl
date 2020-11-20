@@ -13,10 +13,12 @@ Pkg.instantiate()
 
 if isfile("Project.toml")
     _proj = TOML.parsefile("Project.toml")
-    dpath = joinpath("..","..", "..", "dist", "data", "dependencies", lesson)
-    ispath(dpath) || mkpath(dpath)
-    open(joinpath(dpath, "deps.json"),"w") do f
-        JSON.print(f, _proj["deps"])
+    if "deps" in keys(_proj)
+        dpath = joinpath("..","..", "..", "dist", "data", "dependencies", lesson)
+        ispath(dpath) || mkpath(dpath)
+        open(joinpath(dpath, "deps.json"),"w") do f
+            JSON.print(f, _proj["deps"])
+        end
     end
 end
 

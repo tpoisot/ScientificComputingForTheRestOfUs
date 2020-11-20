@@ -1,0 +1,6 @@
+{{- $txt := .Get "txt" -}}
+{{- with .Parent -}}
+<div class="answer" id="{{.Get "id"}}"">
+    {{ $txt }}
+</div>
+{{- end }}

@@ -1,5 +1,3 @@
-@info ARGS
-
 lesson = first(ARGS)
 
 import Pkg

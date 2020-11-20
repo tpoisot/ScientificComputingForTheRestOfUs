@@ -318,6 +318,8 @@ These lines should be familiar to you now -- your computer will evaluate the
 statement "`random_number` is lower than or equal to 0.5", and depending on the
 truthiness of it, will print either *foo* or *bar*.
 
+{{< question id="isodd" >}}
+
 ## Navigating arrays
 
 Before we move on to a more interesting use of iteration, it is worth
@@ -417,7 +419,7 @@ Let's go:
 
 
 ```julia
-for i in 1:length(random_numbers) # We could also write `in eachindex(random_numbers)`
+for i in eachindex(random_numbers)
   if i % 2 != 0
     println("Position $i:\t", random_numbers[i])
   end
@@ -435,7 +437,11 @@ look if it is odd
 if it is, print the random number at this position
 ~~~
 
-All `for` loops will share this structure:
+The `eachindex` function is a very powerful way to get, well, every position in
+an array; it is the same thing as writing `for i in 1:length(random_numbers)`,
+but in a more expressive way.
+
+All `for` loops will share the following structure:
 
 ~~~ julia
 for element in collection
@@ -547,3 +553,10 @@ exercice, and it is always good to think about "exit strategies". These will be
 discussed in the ["Advanced control flow"]({{< ref
 "/primers/advanced_control_flow/_index.md" >}}) primer.
 {{% /callout %}}
+
+This concludes the lesson on the flow of execution. These concepts are very
+important to understand in depth, as everything else we do is built on them. Now
+would be a good time to get back to the questions, or to try and change the
+examples, to make sure you are familiar with the material.
+
+{{< question id="extrema" >}}

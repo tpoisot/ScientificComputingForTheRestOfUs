@@ -1,0 +1,42 @@
+title = "Generating a diverse enough sample of numbers."
+
+question = """
+For this question, we want to take the k first numbers from a series
+of random numbers, so that the difference between the largest and the
+smallest is *at least* some arbitrary threshold. By looking at the
+documentation for the `extrema` function, and by remembering what the 
+`first` and `last` functions do, complete the following code:
+
+~~~
+numbers = rand(10000);
+threshold = 0.5
+
+for k in ___(numbers)
+    series = ___[1:k]
+    extremas = ___(___)
+    if (___(___) - ___(___)) ≥ threshold
+        println(___)
+        break
+    end
+end
+~~~
+
+The `break` keyword is here to stop our loop when we have found the
+correct value of k.
+"""
+
+answer = """
+~~~ julia
+numbers = rand(10000);
+threshold = 0.5
+
+for k in eachindex(numbers)
+    series = numbers[1:k]
+    extremas = extrema(series)
+    if (last(extremas) - first(extremas)) ≥ threshold
+        println(k)
+        break
+    end
+end
+~~~
+"""

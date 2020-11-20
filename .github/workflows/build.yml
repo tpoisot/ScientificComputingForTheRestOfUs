@@ -57,7 +57,7 @@ jobs:
       - name: "Run hugo"
         run: |
           cd dist;
-          hugo
+          hugo --minify
       - name: Deploy the website
         uses: peaceiris/actions-gh-pages@v3
         if: github.event_name == 'push'

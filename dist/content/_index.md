@@ -40,20 +40,12 @@ be suitable for tasks requiring special hardware such as GPUs or supercomputers,
 or for projects requiring a significant software development effort.
 
 We will use the [Julia][jl] programming language; but you don't need to know
-anything about it either. We will keep the discussion very general, and not use
-any of the (very cool!) language-specific features and syntax. And do you want
-good news? You don't need to install anything! You can run everything on
-[JuliaBox][jlbox], a cloud-based service to run reproducible documents as
-notebooks (if you want to read a short introduction to notebooks, we have
-written one [here][nb]).
-
-In fact, you will see that good practices for scientific computing have very
-little to do with tools and technical things; instead, they rely on thinking
-about programming in a slightly different way. You will be able to apply these
+anything about it either. We will keep the discussion very general. In fact, you
+will see that good practices for scientific computing have very little to do
+with tools and technical things; instead, they rely on thinking about
+programming in a slightly different way. You will be able to apply these
 principles to any language you prefer to use.
 
-[nb]: https://nbviewer.jupyter.org/github/tpoisot/ScientificComputingForTheRestOfUs/blob/master/_lessons/00_introduction_to_notebooks.ipynb
-[jlbox]: http://juliabox.com/
 [jl]: http://julialang.org/
 
 ## How to use this material
@@ -117,56 +109,22 @@ never be tolerated. Disliking Windows has not made anyone edgy or cool since
 1998.
 {{< /callout >}}
 
-## Workshop
+## Want to see this material as a workshop?
 
 This material can be given in a workshop format, ideally over two days, covering
 several lessons and one or two capstone examples. Please contact [Timothée
 Poisot](mailto:timothee.poisot@umontreal.ca) for more information.
 
-## Contributing
+## Want to contribute to this material?
 
 There are a number of ways to contribute. Before you start, please have a look
 at our [Code of Conduct][coc]. It boils down to *be nice and respectful* -- no
 contribution, no matter how amazing it may be, justifies or excuses bad
-behaviour.
+behaviour. For the actual details on how to contribute, head over to the
+[guidelines][guid].
 
 [coc]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/master/CODE_OF_CONDUCT.md
-
-The first thing you can do is comment on Issues that have the ["Request for
-feedback"][feedback] label. They represent situations for which we are actively
-seeking community feedback, and anyone is always welcome to chime in.
-
-[feedback]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/labels/request%20for%20feedback
-
-If you are not sure about opening an issue, you can use the
-[chatroom][gitterlink]. We'll be glad to have a more informal conversation with
-you!
-
-[gitterlink]: https://gitter.im/ScientificComputingForTheRestOfUs/Lobby
-
-If there is a more specific point you would like to raise, you can [create a new
-Issue][new_issue], and explain your idea, critique, or comment. And of course,
-you can always browse the [current Issues][issues], to get a sense of what is
-being discussed.
-
-[new_issue]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new
-[issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues
-
-If you want to contribute more, then great! Have a look at the [contribution
-guidelines][cguid] first, to get you started with setting up a development
-environment. You can have a look at ["Good first issues"][first], if you want
-some inspiration.
-
-[cguid]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/master/CONTRIBUTING.md
-[first]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/labels/good%20first%20issue
-
-## Contributors
-
-**Lesson contents**: Timothée Poisot, [Zaki Ahmed](https://github.com/notzaki)
-
-**Comments, ideas, feedback**: Hao Ye, Philipp Bayer, Tim Head, Ethan White, Andrew MacDonald
-
-**Other contributions**: Konrad Hinsen
+[guid]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/CONTRIBUTING.md
 
 ## Want to read more?
 
@@ -206,6 +164,10 @@ Finally, a short [Q&A at *Nature Jobs*][qanda] about this project.
 [pragm]: https://www.amazon.ca/Pragmatic-Programmer-Journeyman-Master/dp/020161622X/ref=as_li_ss_tl?ie=UTF8&linkCode=sl1&tag=&linkId=0ff8cca36522d8539b26e536778bbb5e
 [cleanc]: https://www.amazon.ca/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882
 
-## Other information
-
 ![license](https://img.shields.io/github/license/tpoisot/ScientificComputingForTheRestOfUs.svg?style=flat-square)
+
+## Special thanks to...
+
+**Comments, ideas, feedback**: Hao Ye, Philipp Bayer, Tim Head, Ethan White, Andrew MacDonald
+
+**Other contributions**: Konrad Hinsen

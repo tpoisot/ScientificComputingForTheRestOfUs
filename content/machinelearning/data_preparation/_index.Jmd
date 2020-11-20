@@ -1,0 +1,83 @@
+---
+title: Data Preparation
+slug: datapreparation
+concepts:
+  - working with files
+  - data frames
+contributors:
+   - tpoisot
+   - graciellehigino
+weight: 1
+status: draft
+draft: true
+---
+
+#' # Data wrangling
+
+#' ## Load the packages
+
+import CSV
+using DataFrames
+using DataFramesMeta
+import Dates
+using Gadfly
+
+#' ## Get the data, and extract the taxonomy
+
+observations = CSV.read("observations.csv");
+taxonomy = unique(select(observations, [:order, :family, :genus, :taxon]));
+
+first(observations, 5)
+
+#' ## Earliest and latest observation by species
+
+temporal = @linq observations |>
+    where(:rank .== "SPECIES") |>
+    where(.!ismissing.(:date)) |>
+    by(:taxon, earliest = minimum(Dates.year.(:date)), latest = maximum(Dates.year.(:date))) |>
+    select(:taxon, :earliest, :latest, span = :latest - :earliest) |>
+    orderby(:earliest)
+
+first(temporal, 5)
+
+#' ### Plot
+
+plot(temporal, x=:span, Geom.density, Coord.cartesian(xmin=0, xmax=250))
+
+#' ## Broadest latitudinal range by genus?
+
+latitudes = @linq observations |>
+    where(:rank .== "SPECIES") |>
+    where(.!ismissing.(:latitude)) |>
+    by(:genus, northern=maximum(:latitude), southern=minimum(:latitude), n=length(:latitude)) |>
+    where(:n .> 10) |>
+    select(:genus, range = :northern - :southern, records = :n) |>
+    orderby(:range)
+
+first(latitudes, 5)
+
+#' ## Number of observers for every species
+
+observers = @linq observations |>
+    where(:rank .== "SPECIES") |>
+    where(.!ismissing.(:observer)) |>
+    where(:observer .!= "Unknown") |>
+    select(:taxon, :observer, :date) |>
+    by(:taxon, observers = length(unique(:observer)), observations = length(:observer)) |>
+    orderby(:observations)
+
+first(observers, 5)
+
+#' ### Plot the number of observers vs. number of observations
+
+plot(join(observers, taxonomy, on=:taxon), x=:observers, y=:observations, color=:family, label=:taxon, Geom.point, Geom.label, Scale.x_log10, Scale.y_log10)
+
+#' ## Stacking for dataviz
+
+stacked_temporal = stack(temporal, [:earliest, :latest])
+
+first(stacked_temporal, 5)
+
+#' ### Plot
+
+plot(stacked_temporal, x=:value, color=:variable, Geom.density, Coord.cartesian(xmin=1900, xmax=2020))

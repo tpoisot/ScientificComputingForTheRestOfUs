@@ -6,3 +6,4 @@ all: $(MD)
 
 $(MD): dist/content/%md: content/%Jmd 
 	julia --project _builder.jl $(patsubst content/%/_index.Jmd,%,$<)
+

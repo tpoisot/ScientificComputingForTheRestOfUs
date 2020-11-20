@@ -62,7 +62,7 @@ Much better! Now let's try to figure out the relationship between the last two
 variables:
 
 ```julia; fig_cap="Relationship between field metabolic rate and mass - this is a neat log-log relationship, and so linear regression will give us the exponent."
-@def rates scatter(:mass, :fmr, c=:teal, leg=false, msc=:transparent)
+@df rates scatter(:mass, :fmr, c=:teal, leg=false, msc=:transparent)
 xaxis!(:log10, "Mass (kg)")
 yaxis!(:log10, "Field Metabolic Rate (kj per day)")
 ```

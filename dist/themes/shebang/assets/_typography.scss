@@ -54,13 +54,8 @@ a {
     color: var(--color-main);
   }
   .listicleitem {
-    color: var(--color-darker);
-    border: 1px solid var(--color-medium);
-    padding: 0px 3px;
+    color: var(--color-dark);
     margin-right: 5px;
-    border-radius: 5px;
-    font-variant: small-caps;
-    text-transform: lowercase;
   }
   .construction {
     color: var(--color-danger);

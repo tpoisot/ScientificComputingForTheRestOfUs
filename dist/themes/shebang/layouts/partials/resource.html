@@ -32,14 +32,16 @@
             {{ end }}
         </div>
     {{ end }}
-    {{ with .Params.packages }}
-        <div class="packages listicle">
-            <i class="fas fa-box fa-fw"></i> <b>Packages used:</b>
-            {{ range . }}
-            <span class="package listicleitem">{{ . }}</span>
-            {{ end }}
-        </div>
+    {{ $catmap := (index $.Site.Data.dependencies .Type) }}
+    {{ $catidx := (index (split .File.Dir "/") 1) }}
+    {{ $deps := (index (index (index $catmap $catidx) "deps") "deps") }}
+    {{ if $deps }}
+    <div class="packages listicle">
+        <i class="fas fa-box fa-fw"></i> <b>Packages used:</b>
+        {{ range $x, $y := $deps }}
+            <span class="package listicleitem">{{ $x }}</span>
+        {{ end }}
+    </div>
     {{ end }}
-    <!-- <div class="summary">{{ .Summary }}</div> -->
 
 </section>

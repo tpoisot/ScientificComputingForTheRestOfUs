@@ -195,14 +195,8 @@ end
 Because it rains (`rain = true`), our code is correctly telling us to take the
 subway.
 
-{{% question id="stopraining" %}}
-Now, what would you change to make it stop raining? And what do you expect to
-see as an output?
-{{% /question %}}
-{{% answer id="stopraining" %}}
-Correct! If you change the `rain = true` to `rain = false`, and re-run this
-example, the code will tell us to bike, because it is faster.
-{{% /answer %}}    
+{{< question id="stopraining" >}}
+  
 
 At this point, it is important to note that there are many, many ways to write
 the same code. Maybe you would like to ask the question "Is it *not* raining?"

@@ -1,3 +1,13 @@
-<div class="question" id="{{.Get "id"}}">
-    {{ .Inner | markdownify }}
+{{ $id := .Get "id"}}
+<div class="question" id="{{ $id }}">
+    {{ $contents := (index $.Site.Data.questions $id) }}
+    <h1><i class="fa fa-question-circle" aria-hidden="true"></i>
+ {{ (index $contents "title") }}</h1>
+    <div class="text">
+        {{ (index $contents "question") | markdownify }}
+        <button type="button" onclick="document.getElementById('answer-{{ $id }}').classList.toggle('hidden');">See the answer</button>
+    </div>
+    <div class="answer hidden" id="answer-{{ $id }}">
+        {{ (index $contents "answer") | markdownify }}
+    </div>
 </div>

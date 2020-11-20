@@ -25,30 +25,33 @@ nav#main{
       display: inline-block;
     }
     li {
+      margin-left: 1em;
       line-height: 32px;
       font-size: 13px;
-      background-color: var(--color-main);
+      background-color: var(--color-lightest);
       a {
-        color: var(--color-bg);
+        color: var(--color-darkest);
       }
       &:hover {
-        background-color: var(--color-accent);
+        background-color: var(--color-bright);
+        color: var(--color-lightest);
         .fas {
           color: var(--color-highlight);
         }
       }
       border-radius: 18px;
-      width: 120px;
-      font-weight: bold;
+      width: 110px;
+      
       text-align: right;
       a {
         padding-right: 10px;
       }
       text-transform: uppercase;
       .fas {
-        padding-left: 8px;
+        padding-left: 13px;
         float: left;
         line-height: 32px;
+        color: var(--color-bright);
       }
     }
   }

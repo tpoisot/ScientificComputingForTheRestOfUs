@@ -1,5 +1,3 @@
-@info ARGS
-
 lesson = first(ARGS)
 
 import Pkg
@@ -15,11 +13,10 @@ Pkg.instantiate()
 
 if isfile("Project.toml")
     _proj = TOML.parsefile("Project.toml")
-    @info collect(keys(_proj["deps"]))
     dpath = joinpath("..","..", "..", "dist", "data", "dependencies", lesson)
     ispath(dpath) || mkpath(dpath)
     open(joinpath(dpath, "deps.json"),"w") do f
-        JSON.print(f, _proj)
+        JSON.print(f, _proj["deps"])
     end
 end
 

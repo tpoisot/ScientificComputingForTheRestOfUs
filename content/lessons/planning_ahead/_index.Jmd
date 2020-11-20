@@ -13,17 +13,30 @@ concepts:
 ## Programming is intimidating
 
 If your working environment looks anything like mine, the first thing you may
-see on a new project will look like this - an empty text editor, and an empty
-code interpreter. This is highly intimidating.
+see on a new project will look like this:
 
-![test](../figures/white-page.png)
+~~~
+tpoisot@pop-os:~/Work/Teaching/ScientificComputingForTheRestOfUs$ julia
+               _
+   _       _ _(_)_     |  Documentation: https://docs.julialang.org
+  (_)     | (_) (_)    |
+   _ _   _| |_  __ _   |  Type "?" for help, "]?" for Pkg help.
+  | | | | | | |/ _` |  |
+  | | |_| | | | (_| |  |  Version 1.5.2 (2020-09-23)
+ _/ |\__'_|_|_|\__'_|  |  Official https://julialang.org/ release
+|__/                   |
 
-Facing an empty text editor at the beginning of a programming task is like
-facing an empty page at the beginning of a writing project. To make it easier to
-work through, one really good (but also really uncommon) approach is to walk
-away from the computer. Instead of trying to write code, we will first try to
-articulate the structure of our project - and not jumping to our keyboard works
-really well for this.
+julia> 
+~~~
+
+This is highly intimidating.
+
+Facing an empty text editor or a blinking REPL prompt at the beginning of a
+programming task is like facing an empty page at the beginning of a writing
+project. To make it easier to work through, one really good (but also really
+uncommon) approach is to walk away from the computer. Instead of trying to write
+code, we will first try to articulate the structure of our project - and not
+jumping to our keyboard works really well for this.
 
 In this lesson, we will see how we can optimize our preparation for any project,
 by having good project organization, thinking about the flowchart of our

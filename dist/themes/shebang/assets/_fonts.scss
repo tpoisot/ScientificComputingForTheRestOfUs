@@ -1,10 +1,13 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto+Mono:400,400i,500,500i|Roboto+Slab:300,400,700|Roboto:400,400i,500,500i&subset=greek,greek-ext');
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Mono&display=swap');
+
 :root {
 
-  --font-main: "Roboto";
-  --font-title: "Roboto Slab";
-  --font-meta: "Roboto Condensed";
-  --font-code: "Roboto Mono";
+  --font-main: "PT Serif", serif;
+  --font-title: "PT Sans";
+  --font-meta: "PT Sans";
+  --font-code: "PT Mono";
 
   --font-size: 13pt;
   --font-lh: 1.6em;

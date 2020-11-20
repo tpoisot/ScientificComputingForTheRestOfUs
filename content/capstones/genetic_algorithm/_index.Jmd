@@ -2,11 +2,6 @@
 title: Genetic algorithm
 weight: 1
 status: draft
-packages:
-  - StatsPlots
-  - CSV
-  - DataFrames
-  - Statistics
 concepts:
   - data frames
   - generic code
@@ -43,9 +38,8 @@ using Statistics
 using StatsBase
 import CSV
 using StatsPlots
-url = "http://sciencecomputing.io/data/metabolicrates.csv"
-tmp = download(url)
-rates = CSV.read(tmp)
+tmp = download("http://sciencecomputing.io/data/metabolicrates.csv")
+rates = DataFrame(CSV.File(tmp))
 rates[1:5,:]
 ```
 
@@ -60,7 +54,7 @@ We will replace the last two names, as they are not easy to work with:
 ```julia
 rename!(rates, names(rates)[end-1] => :mass)
 rename!(rates, names(rates)[end] => :fmr)
-rates = rates[rates[:mass].<1e3,:]
+rates = rates[rates.mass.<1e3,:]
 rates[1:5,:]
 ```
 
@@ -68,7 +62,7 @@ Much better! Now let's try to figure out the relationship between the last two
 variables:
 
 ```julia; fig_cap="Relationship between field metabolic rate and mass - this is a neat log-log relationship, and so linear regression will give us the exponent."
-scatter(rates[:mass], rates[:fmr], c=:teal, leg=false, msc=:transparent)
+@def rates scatter(:mass, :fmr, c=:teal, leg=false, msc=:transparent)
 xaxis!(:log10, "Mass (kg)")
 yaxis!(:log10, "Field Metabolic Rate (kj per day)")
 ```
@@ -97,7 +91,7 @@ rates[1:5,:]
 We can look at the simplified data:
 
 ```julia; fig_cap="Same data, but a little bit fewer points. In addition, aggregating by species doesn't increase the impact that well sampled species will have on the regression output."
-scatter(10.0.^rates[:mass], 10.0.^rates[:fmr], c=:teal, leg=false, msc=:transparent)
+scatter(10.0.^rates.mass, 10.0.^rates.fmr, c=:teal, leg=false, msc=:transparent)
 xaxis!(:log10, "Mass (kg)")
 yaxis!(:log10, "Field Metabolic Rate (kj per day)")
 ```

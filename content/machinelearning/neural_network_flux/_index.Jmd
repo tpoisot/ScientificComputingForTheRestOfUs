@@ -50,7 +50,7 @@ function get_dataset(url, filename)
 	if !isfile(filename)
 		download(url, filename)
 	end
-	return dropmissing(CSV.read(filename; header=0, delim='\t'))
+	return dropmissing(DataFrame(CSV.File(filename; header=0, delim='\t')))
 end
 const seed_url = "https://archive.ics.uci.edu/ml/machine-learning-databases/00236/seeds_dataset.txt"
 seeds = get_dataset(seed_url, "seeds.txt");

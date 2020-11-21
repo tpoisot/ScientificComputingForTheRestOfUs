@@ -1,0 +1,67 @@
+---
+title: Returning functions
+slug: returning_functions
+concepts:
+  - functions
+contributors:
+  - tpoisot
+weight: 1
+---
+
+In *Julia*, functions are objects like any other. This offers a number of
+interesting mechanisms, such as for example the ability for a function to return
+another function. Let's use a simple example: the logistic map. It is defined by
+$x_{n+1} = a\times x_n\times(1-x_n)$, and $x_0 \in [0;1]$.
+
+If we wanted to do this calculation, we could write a function that takes two
+arguments, `a` and `x`, and return `a*x*(1.0-x)`. But there is no reason to
+expect that $a$ (a parameter) will change, so what we might want to do instead
+is return a function with `a` "built-in".
+
+```julia
+function f(x::Number)
+  return a * x * (1.0 - x)
+end
+```
+
+Of course this function will *not* work, because `a` is currently not defined.
+And we do not want to hard-code the value of `a`, since we might want to change
+this parameter. So ideally, we would like to have a function to write the
+function `f` on our behalf.
+
+Because functions are objects like any other, they can actually be returned. So
+we can write a function that accepts `a` as its argument, and then returns a
+function that accepts `x` as an argument:
+
+```julia
+function logistic(a::Number)
+  return function f(x::Number)
+    return a * x * (1.0 - x)
+  end
+end
+```
+
+Now, if we call this function, we can see that it does indeed return a function:
+
+```julia
+logistic(1.2)
+```
+
+We can now use this function to run our model:
+
+```julia
+m = logistic(1.4)
+x0 = 0.5
+m(x0)
+```
+
+This specific design pattern shows up in a bunch of *Julia* functions:
+`isequal`, for example, constructs a function that tests for equality:
+
+```julia
+istwo = isequal(2)
+istwo(2)
+```
+
+Sometimes, thinking about returning a function with "built-in" arguments can
+simplify your high-level code a lot!

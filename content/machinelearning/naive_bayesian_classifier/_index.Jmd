@@ -6,12 +6,6 @@ concepts:
   - working with files
   - iteration
   - grouping and aggregation
-packages:
-   - CSV
-   - DataFrames
-   - Random
-   - Statistics
-   - Distributions
 contributors:
    - tpoisot
    - graciellehigino

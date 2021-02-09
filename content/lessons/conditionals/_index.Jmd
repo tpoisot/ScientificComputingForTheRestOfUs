@@ -224,6 +224,8 @@ println("true and true:\t", true && true)
 ```
 
 **So far**, we have learned about Boolean values, and the *if* operation. Using
-*if* is a way to look at a statement, and do different things when it is true
-or false. In a lot of cases, we want to also perform operations on a large
-number of elements. To do so, we will use the second word: *for*.
+*if* is a way to look at a statement, and do different things when it is true or
+false. In a lot of cases, we want to also perform operations on a large number
+of elements. To do so, we will use the second word: *for*. But because it is a
+confusing one, we will do so in the [next lesson]({{< ref
+"/lessons/iteration/_index.md">}}).

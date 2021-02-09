@@ -8,7 +8,7 @@ contributors:
 weight: 1
 ---
 
-In the [first lesson]({{< ref "/lessons/control_flow/_index.md">}}), we have
+In the [module on iteration]({{< ref "/lessons/iteration/_index.md">}}), we have
 presented the flow of execution as something largely unescapable. In practice,
 there are two important operations we may want to perform: skip an iteration, or
 stop the iteration process entirely. In this primer, we will see how this can be

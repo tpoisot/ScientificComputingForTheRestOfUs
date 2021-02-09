@@ -13,12 +13,15 @@ jobs:
       matrix:
         julia: [1.5.2]
         document: [
-          "lessons/planning_ahead", "lessons/control_flow",
+          "lessons/planning_ahead", "lessons/conditionals", "lessons/iteration",
           "lessons/writing_functions", "lessons/avoiding_mistakes",
-          "capstones/ABC", "capstones/genetic_algorithm", "capstones/runge_kutta",
-          "primers/advanced_control_flow", "primers/indexing", "primers/map_filter_reduce",
-          "primers/optimization", "primers/parallelcomputing", "primers/returning_functions",
-          "machinelearning/naive_bayesian_classifier", "machinelearning/neural_network_flux"
+          "capstones/ABC", "capstones/genetic_algorithm",
+          "capstones/runge_kutta", "primers/advanced_control_flow",
+          "primers/indexing", "primers/map_filter_reduce",
+          "primers/optimization", "primers/parallelcomputing",
+          "primers/returning_functions",
+          "machinelearning/naive_bayesian_classifier",
+          "machinelearning/neural_network_flux"
           ]
     steps:
       - name: "Checkout action"

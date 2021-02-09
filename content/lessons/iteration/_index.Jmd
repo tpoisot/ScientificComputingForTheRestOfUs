@@ -1,11 +1,10 @@
 ---
-title: The flow of execution
-weight: 2
+title: Iteration and array navigation
+weight: 3
 contributors:
     - tpoisot
 concepts:
     - control flow
-    - Booleans
     - iteration
 packages:
     - Statistics
@@ -15,21 +14,22 @@ packages:
 
 But if you understand three words, you will be able to hold a good conversation
 with your computer! These three words are *if*, *for*, and *while*. If you have
-some previous experience with writing code, you can skim through this lesson.
+some previous experience with writing code, you can skim through this lesson and
+the next.
 
 One great way to make your code robust is to keep it very simple, and one great
 way to keep your code very simple is to recognize that often, we want to do one
 of three things: do one thing if something happens (`if`), do one thing to a
 series of things (`for`), or do one thing until something happens (`while`).
 These three possibilities define what we call the *control flow*, or the *flow
-of execution*.
+of execution*. In the current lesson, we will focus on understanding the `if`
+statement.
 
 ## After this lesson, you will be able to ...
 
 - ... express your problems in Boolean terms (true/false)
-- ... create loops and conditionals
-- ... navigate in arrays
-- ... understand the difference between `for` and `while`
+- ... understand the different Boolean operators
+- ... create conditionals
 
 ## Tossing coins and planning trips
 

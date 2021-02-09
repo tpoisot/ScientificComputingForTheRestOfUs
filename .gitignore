@@ -28,3 +28,5 @@ dist/data/dependencies
 dist/**/_gen
 
 Manifest.toml
+
+.vscode

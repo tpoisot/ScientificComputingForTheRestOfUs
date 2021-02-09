@@ -1,7 +1,6 @@
 ---
 title: Before we start...
 weight: 1
-status: construction
 contributors:
     - tpoisot
 concepts:
@@ -16,13 +15,13 @@ If your working environment looks anything like mine, the first thing you may
 see on a new project will look like this:
 
 ~~~
-tpoisot@pop-os:~/Work/Teaching/ScientificComputingForTheRestOfUs$ julia
+tpoisot@x1:~$ julia
                _
    _       _ _(_)_     |  Documentation: https://docs.julialang.org
   (_)     | (_) (_)    |
    _ _   _| |_  __ _   |  Type "?" for help, "]?" for Pkg help.
   | | | | | | |/ _` |  |
-  | | |_| | | | (_| |  |  Version 1.5.2 (2020-09-23)
+  | | |_| | | | (_| |  |  Version 1.5.3 (2020-11-09)
  _/ |\__'_|_|_|\__'_|  |  Official https://julialang.org/ release
 |__/                   |
 
@@ -31,7 +30,8 @@ julia>
 
 This is highly intimidating.
 
-Facing an empty text editor or a blinking REPL prompt at the beginning of a
+Facing an empty text editor or a blinking REPL (it stands for Read/Execute/Print
+Loop, and this the place where you type things) prompt at the beginning of a
 programming task is like facing an empty page at the beginning of a writing
 project. To make it easier to work through, one really good (but also really
 uncommon) approach is to walk away from the computer. Instead of trying to write
@@ -95,8 +95,9 @@ use in a computer lab? The file would be at
 data\file.txt
 ```
 
-This difference between `/` and `\` is trivial to us, but *not* to the computer.
-So to avoid these issues, it is better to let your programming language
+This difference between `/` and `\` is trivial to us, but *not* to the computer
+(they are, actually, trivial to *Julia* which tends to parse paths well all the
+time). So to avoid these issues, it is better to let your programming language
 construct the path correclty. *Julia* has the `joinpath` function, and so we
 would refer to this file as:
 
@@ -134,12 +135,24 @@ With this in mind, here is a possible template for a project.
     └── notes.md
 ```
 
+There are a few files here on which it is worth spending a little more time.
+Their names are presented below as links, to the resource that we think is the
+most informative. It is, indeed, a very good idea to read the content of these
+links as well.
 
-[README](readme)
+The [README](readme) is a standard file for all projects, which gives
+information about the project, how to run it, the dependencies, who is in
+charge, *etc*. Writing a good README is a difficult task, but this is going to
+be the point of entry in your project. Show it some love.
 
-[LICENSE](license)
+[LICENSE](license) is the text of a license, which gives information about
+intellectual property and your own liability regarding the use of your project.
+Picking FOSS (Free and Open Source Software) licenses is recommended, and there
+are a lot of the to accomodate different use cases.
 
-[*Julia* package manager](pkg)
+Finally, and these are language-specific, the [*Julia* package manager](pkg)
+will create files to track the dependencies of your project. Check out the
+documentation.
 
 [readme]: https://mozilla.github.io/open-leadership-training-series/articles/opening-your-project/write-a-great-project-readme/
 [license]: https://choosealicense.com/
@@ -237,9 +250,3 @@ pancake --> eat{eat}
 {{< /mermaid >}}
 
 ## Pseudo-code
-
-- ...
-
-## Use cases
-
-## Basic tests

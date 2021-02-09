@@ -80,11 +80,13 @@ Finally, the output of code is presented this way:
 Throughout the lessons, we have added some asides -- they are ranked in order of
 importance. The first are "informations":
 
-{{% callout information %}}All that should matter in the choice of tools, language, environment, is that it lets you become productive, and solve the problem you want to solve.
-{{% /callout %}}
+{{< callout information >}}
+All that should matter in the choice of tools, language, environment, is that it
+lets you become productive, and solve the problem you want to solve.
+{{< /callout >}}
 
-"Opinions" are points we would like to raise for the reader's
-consideration, and can be ignored. Example:
+"Opinions" are points we would like to raise for the reader's consideration, and
+can be ignored. Example:
 
 {{< callout opinion >}}
 People who think it's OK to criticize others based on their choice of language,
@@ -100,12 +102,12 @@ whether this is really necessary, and the answer is usually "no". The Good Tool
 is the one that works for its user.
 {{< /callout >}}
 
-"Dangers" are really important point, that can prove especially dangerous or
+"Dangers" are really important points, that can prove especially dangerous or
 risky to everyone. They are worth reading a few times over. Example:
 
 {{< callout danger >}}
-This toxic behaviour is driving brilliant people away, and should
-never be tolerated. Disliking Windows has not made anyone edgy or cool since
+This toxic behaviour is driving brilliant people away, and should never be
+tolerated. Disliking Windows has not made anyone edgy or cool since
 1998.
 {{< /callout >}}
 
@@ -137,7 +139,9 @@ computing"][best] might suit you.
 Want a more complete thing to read? ["The pragmatic programmer"][pragm] is a
 masterpiece. I have also heard great things about ["Clean code"][cleanc]. The
 online book ["How to think like a computer scientist"][httlacs] is based on
-Julia, and very thorough.
+Julia, and very thorough. Finally, ["Hands-on design patterns and best practices
+with Julia"][handson] is a wonderfully accessible book that will make you a
+better programmer, even if *Julia* is not your main language.
 
 If you still have some time, you can read something about [ways to improve user
 confidence in your software][userconf], or ways to [elevate code as a research
@@ -163,6 +167,7 @@ Finally, a short [Q&A at *Nature Jobs*][qanda] about this project.
 [best]: http://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1001745
 [pragm]: https://www.amazon.ca/Pragmatic-Programmer-Journeyman-Master/dp/020161622X/ref=as_li_ss_tl?ie=UTF8&linkCode=sl1&tag=&linkId=0ff8cca36522d8539b26e536778bbb5e
 [cleanc]: https://www.amazon.ca/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882
+[handson]: https://www.packtpub.com/product/hands-on-design-patterns-and-best-practices-with-julia/9781838648817
 
 ![license](https://img.shields.io/github/license/tpoisot/ScientificComputingForTheRestOfUs.svg?style=flat-square)
 

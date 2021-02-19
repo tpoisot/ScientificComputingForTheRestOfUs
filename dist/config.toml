@@ -27,12 +27,6 @@ unsafe= true
     url = "/primers/"
     weight = 2
     pre = "fa-bolt"
-  [[menu.main]]
-    identifier = "ml"
-    name = "AI/ML"
-    url = "/machinelearning/"
-    weight = 4
-    pre = "fa-brain"
 
 [params]
   readingSpeed = 120

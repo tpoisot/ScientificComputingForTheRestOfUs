@@ -19,39 +19,41 @@ nav#main{
   .nav {
     float: right;
     position: relative;
-    right: 1em;
+    right: .5em;
     ul ,li {
       list-style: none;
       display: inline-block;
     }
+    padding: 0 0;
+    margin: 0 0;
     li {
-      margin-left: 1em;
-      line-height: 32px;
+      margin-left: .1em;
+      line-height: 66px;
       font-size: 13px;
-      background-color: var(--color-lightest);
+      background-color: none;
       a {
         color: var(--color-darkest);
         font: var(--font-meta);
       }
       &:hover {
-        background-color: var(--color-bright);
+        background-color: var(--color-lightest);
         color: var(--color-lightest);
         .fas {
           color: var(--color-highlight);
         }
       }
-      border-radius: 18px;
-      width: 110px;
-      
-      text-align: right;
+      border-radius: 0px;
+      width: 120px;
+      text-align: center;
       a {
-        padding-right: 10px;
+        //padding-right: 10px;
       }
       text-transform: uppercase;
       .fas {
         padding-left: 13px;
+        display: none;
         float: left;
-        line-height: 32px;
+        line-height: 66px;
         color: var(--color-bright);
       }
     }

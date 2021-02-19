@@ -20,8 +20,8 @@ jobs:
           "primers/indexing", "primers/map_filter_reduce",
           "primers/optimization", "primers/parallelcomputing",
           "primers/returning_functions",
-          "machinelearning/naive_bayesian_classifier",
-          "machinelearning/neural_network_flux"
+          "capstones/naive_bayesian_classifier",
+          "capstones/neural_network_flux"
           ]
     steps:
       - name: "Checkout action"

@@ -17,9 +17,6 @@ dist/content/lessons/
 dist/content/primers/
 !dist/content/primers/_index.md
 
-dist/content/machinelearning/
-!dist/content/machinelearning/_index.md
-
 dist/content/capstones/
 !dist/content/capstones/_index.md
 

@@ -1,7 +1,6 @@
 ---
 title: Avoiding mistakes
 weight: 4
-status: construction
 concepts:
   - defensive programming
   - writing functions
@@ -33,7 +32,6 @@ fail explicitely" -- it is frustrating to have to restart an analysis, but this
 is preferable to running an analysis that keeps accumulating issues we may or
 may not detect! {{% /callout %}}
 
-
 In this lesson, you may note that we will switch perspective frequently, from
 user to developper. This is because, in our own experience, this is a fair
 representation of the way we work. We try to write something (developper), then
@@ -49,7 +47,7 @@ switch back to developper mode.
 But let's do something a little bit different. Instead of writing a function, we
 will start by thinking about its behavior. In this example, we want to write a
 function that will calculate an average. That's it. Specifically, it will
-calculate the singal-to-noise ration in an array of numbers, using the S = μ/σ
+calculate the signal-to-noise ration in an array of numbers, using the S = μ/σ
 expression, where μ is the average and σ the standard deviation.
 
 What we will do is *declare* the function, but put nothing in it -- in each of
@@ -112,7 +110,7 @@ elements), then we *throw* an error.
 
 ```julia
 function snr(x::Vector{T}) where {T <: Number}
-  minimum(x) .< zero(T) && throw(DomainError(minimum(x), "all values passed must be positive or null."))
+  minimum(x) < zero(T) && throw(DomainError(minimum(x), "all values passed must be positive or null."))
 end
 ```
 
@@ -169,7 +167,7 @@ true in a week? A month? Let's instead aim for something more explicit:
 ```julia
 function signaltonoiseratio(x::Vector{T}) where {T <: Number}
   length(x) < 3 && throw(ArgumentError("A minimum of three values must be provided."))
-  minimum(x) .< zero(T) && throw(DomainError(minimum(x), "all values passed must be positive or null."))
+  minimum(x) < zero(T) && throw(DomainError(minimum(x), "all values passed must be positive or null."))
 end
 ```
 
@@ -185,7 +183,7 @@ nothing. We will replace `x` by something more informative, such as
 ```julia
 function signaltonoiseratio(measurement::Vector{T}) where {T <: Number}
   length(measurement) < 3 && throw(ArgumentError("A minimum of three values must be provided."))
-  minimum(measurement) .< zero(T) && throw(DomainError(minimum(measurement), "all values passed must be positive or null."))
+  minimum(measurement) < zero(T) && throw(DomainError(minimum(measurement), "all values passed must be positive or null."))
 end
 ```
 
@@ -196,8 +194,108 @@ In short, it does nothing, but it does it really well.
 
 ## Mistakes in the code
 
+We now need to build the *inside* of our function. In practice, this will
+require two parts. First, a function for the mean, and a function for the
+standard deviation (in real life, we would of course use `mean` and `std` from
+the `Statistics` standard library).
 
-## Lack of integration
+Let's get the standard deviation out of the way:
 
-- mistake in functions
-- integration issues
+```julia
+σ(x) = sum(sqrt.((x^2.0 .- μ(x)^2.0)./length(x)))
+```
+
+We will assume that this function is correct, but in practice it would of course
+be important to test it. This functions calls `μ(x)`, which is our mean
+function, which we will need to implement. Let's do just that. We will use a
+rather straightforward approach, where we sum the numbers in `x`, and then
+divide by the length of `x`:
+
+```julia
+function μ(x::Vector{T}) where {T <: Number}
+  su = 0.0
+  for i in 1:length(x)
+    su += x[1]
+  end
+  return su/length(x)
+end
+```
+
+Now let's think about tests for this functions. A simple one is: a vector of any
+length that contains a single value should have its mean be this value (we will
+use `≈` instead of `==` because rounding errors with floating point numbers
+happen).
+
+```julia
+n = rand()
+@test μ(fill(n, 200)) ≈ n
+```
+
+This works! Our function is bug-free, and we can use it. Or can we? The
+confidence we have in a function is only as good as the exhaustivity of our
+tests. So let's add a second test, like the fact that the average of `[2,1,3]`
+is `2`.
+
+```julia
+@test μ([2,1,3]) == 2
+```
+
+That's a good sign. Or is it? Let's add one more. The average of `[2,1,3]` and
+`[3,2,1]` should be the same:
+
+```julia
+@test μ([2,1,3]) == μ([3,2,1])
+```
+
+Wait, what? This test is not passing, and this strongly suggests that our
+function is wrong. Take a moment to read it in detail, and see if you can spot
+the issue.
+
+When we do the sum step, we have the line `su += x[1]` -- this is a simple typo,
+but we are adding the first element over and over. This is not what we want: we
+want to add the *i*-th element, and so we should correct the function
+accordingly:
+
+```julia
+function μ(x::Vector{T}) where {T <: Number}
+  su = 0.0
+  for i in 1:length(x)
+    su += x[i]
+  end
+  return su/length(x)
+end
+
+n = rand()
+@test μ(fill(n, 200)) ≈ n
+@test μ([2,1,3]) == 2
+@test μ([2,1,3]) == μ([3,2,1])
+```
+
+And now, this works!
+
+The whole point of this example was to show that tests can be misleading. Our
+initial function, although wrong, was passing the first tests because we were
+not writing tests that could catch the bug. It does happen in practice. The two
+ways around these are usually to write more tests, or to use the code and notice
+that something is wrong. One of these is far riskier...
+
+## Putting things back together
+
+Now that we have our internal functions, we can finish the `signaltonoiseratio`
+function:
+
+```julia
+function signaltonoiseratio(measurement::Vector{T}) where {T <: Number}
+  length(measurement) < 3 && throw(ArgumentError("A minimum of three values must be provided."))
+  minimum(measurement) < zero(T) && throw(DomainError(minimum(measurement), "all values passed must be positive or null."))
+  return μ(x)/σ(x)
+end
+```
+
+Here it is! It is important to notice that *most* of the code we wrote is not
+about making calculations. It is about making sure that the conditions to do
+these calculations are met, and that the calculations are done correctly. This
+is not unusual. In fact, the task of programming is often more about testing,
+documenting, and commenting, than it is about writing the actual code; this is
+not because these tasks are enjoyable on their own (they mostly are not), but
+because they are necessary to get to a correct result.

@@ -27,3 +27,4 @@ dist/**/_gen
 Manifest.toml
 
 .vscode
+.VSCodeCounter

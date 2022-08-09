@@ -17,6 +17,18 @@ confusing, ways to tell a computer what to do. This is because it requires to
 understand a lot of concepts at once; we will walk through each of them, get
 confused a little bit, then get confused a lot, then get it.
 
+But first! We will make sure that running this code multiple times will give
+us the same result, by setting a seed for our random number generator:
+
+````julia
+using Random
+Random.seed!(123456)
+````
+
+````
+TaskLocalRNG()
+````
+
 When talking about `for`, we usually talk about *for loops* or *iteration*.
 This is because `for` lets you express the fact that you will perform an
 operation on a (finite) set of elements. Let's start with a perfectly boring
@@ -25,6 +37,15 @@ and 1, using
 
 ````julia
 rand(5)
+````
+
+````
+5-element Vector{Float64}:
+ 0.3859098947362972
+ 0.1467242159945591
+ 0.9887363297442582
+ 0.06641191524107182
+ 0.8914839126552594
 ````
 
 We might want to print *smol* when a number is lower or equal to 0.5, and
@@ -47,10 +68,28 @@ for random_number in random_numbers
 end
 ````
 
+````
+chonky
+chonky
+smol
+smol
+chonky
+
+````
+
 There is quite a lot happening here, so we will go line by line.
 
 ````julia
 random_numbers = rand(5)
+````
+
+````
+5-element Vector{Float64}:
+ 0.7646006338932442
+ 0.26348724853556216
+ 0.4049769471766548
+ 0.4000708410427055
+ 0.22652223432706042
 ````
 
 First, we generate 5 random numbers, and put them in a variable called
@@ -113,6 +152,15 @@ again:
 random_numbers
 ````
 
+````
+5-element Vector{Float64}:
+ 0.7646006338932442
+ 0.26348724853556216
+ 0.4049769471766548
+ 0.4000708410427055
+ 0.22652223432706042
+````
+
 This type of object is an *array*; it may help to think of an array as a
 shelf, in which every compartment can store one thing. You can have shelves
 with a single row, a single column, or both rows and columns. In *Julia*,
@@ -124,11 +172,19 @@ the most important being their *length*:
 length(random_numbers)
 ````
 
+````
+5
+````
+
 This tells us that our "shelf" has five compartments, so we can store five
 things in it. We can also ask what its *size* is:
 
 ````julia
 size(random_numbers)
+````
+
+````
+(5,)
 ````
 
 The output is `(5,)` - this is the computer way of telling us that this array
@@ -141,16 +197,24 @@ compartment":
 random_numbers[1]
 ````
 
+````
+0.7646006338932442
+````
+
 Some languages, like *Julia*, *R*, and *MatLab*, start counting from 1, but
 *python* and *C* start counting from 0. These are conventions that each
 language adopted. Everyone thinks the other camp is wrong, and it's one of
 these surprisingly bitter (considering how utterly unimportant they are)
 divides in the computer science world.
 
-We can *also ask what the *last* position contains:
+We can also ask what the *last* position contains:
 
 ````julia
 random_numbers[length(random_numbers)]
+````
+
+````
+0.22652223432706042
 ````
 
 The way to read this instruction is as follows: get me the element at position
@@ -162,16 +226,31 @@ getting the last element of most collections:
 random_numbers[end]
 ````
 
+````
+0.22652223432706042
+````
+
 There is a similar trick for the beginning of a collection:
 
 ````julia
 random_numbers[begin]
 ````
 
+````
+0.7646006338932442
+````
+
 These two are mostly useful to write things like
 
 ````julia
 random_numbers[(begin+1):(end-1)]
+````
+
+````
+3-element Vector{Float64}:
+ 0.26348724853556216
+ 0.4049769471766548
+ 0.4000708410427055
 ````
 
 An extra bit of [syntactic sugar][sugar] in *Julia* are the two following
@@ -183,8 +262,16 @@ functions:
 first(random_numbers)
 ````
 
+````
+0.7646006338932442
+````
+
 ````julia
 last(random_numbers)
+````
+
+````
+0.22652223432706042
 ````
 
 Being able to access elements by their position can be very useful. Our
@@ -195,6 +282,13 @@ odd-numbered ones. One way to do this would be to call then individually:
 println(random_numbers[1])
 println(random_numbers[3])
 println(random_numbers[5])
+````
+
+````
+0.7646006338932442
+0.4049769471766548
+0.22652223432706042
+
 ````
 
 Of course, this is only reasonable if we have a very small number of things to
@@ -215,6 +309,13 @@ for i in eachindex(random_numbers)
     println("Position $i:\t", random_numbers[i])
   end
 end
+````
+
+````
+Position 1:	0.7646006338932442
+Position 3:	0.4049769471766548
+Position 5:	0.22652223432706042
+
 ````
 
 We can "read" this snippet (a *snippet* is the affectionate name given to a
@@ -295,6 +396,11 @@ end
 println(a)
 ````
 
+````
+3
+
+````
+
 ## Doing something until something happens
 
 Before moving on, there is an additional construct we can use: `while`. This
@@ -317,6 +423,15 @@ using Statistics
 my_collection = rand(5)
 ````
 
+````
+5-element Vector{Float64}:
+ 0.7765683713932601
+ 0.37082255393396135
+ 0.49595368421740216
+ 0.4454848647458809
+ 0.9929855033045603
+````
+
 ````julia
 while !(0.499 ≤ mean(my_collection) ≤ 0.501)
   append!(my_collection, rand(5))
@@ -325,6 +440,11 @@ end
 
 ````julia
 println("μ: $(round(mean(my_collection); digits=4))")
+````
+
+````
+μ: 0.5003
+
 ````
 
 The instruction just after `while`, *i.e.*
@@ -349,8 +469,4 @@ This concludes the lesson on the flow of execution. These concepts are very
 important to understand in depth, as everything else we do is built on them. Now
 would be a good time to get back to the questions, or to try and change the
 examples, to make sure you are familiar with the material.
-
----
-
-*This page was generated using [Literate.jl](https://github.com/fredrikekre/Literate.jl).*
 

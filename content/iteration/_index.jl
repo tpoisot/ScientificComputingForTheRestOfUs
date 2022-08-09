@@ -17,6 +17,12 @@
 # understand a lot of concepts at once; we will walk through each of them, get
 # confused a little bit, then get confused a lot, then get it.
 
+# But first! We will make sure that running this code multiple times will give
+# us the same result, by setting a seed for our random number generator:
+
+using Random
+Random.seed!(123456)
+
 # When talking about `for`, we usually talk about *for loops* or *iteration*.
 # This is because `for` lets you express the fact that you will perform an
 # operation on a (finite) set of elements. Let's start with a perfectly boring

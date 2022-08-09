@@ -20,5 +20,5 @@ for folder in folders_to_build
     destination_folder = replace(folder, "content" => joinpath("dist", "content"))
     ispath(destination_folder) && mkpath(destination_folder)
     index_file = joinpath(folder, "_index.jl")
-    Literate.markdown(index_file, destination_folder; flavor = Literate.CommonMarkFlavor())
+    Literate.markdown(index_file, destination_folder; flavor = Literate.CommonMarkFlavor(), config=Dict("credit" => false, "execute" => true))
 end

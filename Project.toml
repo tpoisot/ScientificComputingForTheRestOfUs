@@ -1,7 +1,8 @@
 [deps]
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
 TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 Weave = "44d3d7a6-8a23-5bf8-98c5-b353f8df5ec9"
 
 [compat]
-julia = "1.5"
+julia = "1.7"

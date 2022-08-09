@@ -1,29 +1,24 @@
-lesson = first(ARGS)
-
-import Pkg
-
-using Weave
+using Literate
 using TOML
 using JSON
 
-cd(joinpath("content", lesson))
+# Get the folder with the main content
+content_folder = joinpath(@__DIR__, "content")
 
-Pkg.activate(".")
-Pkg.instantiate()
-
-if isfile("Project.toml")
-    _proj = TOML.parsefile("Project.toml")
-    if "deps" in keys(_proj)
-        dpath = joinpath("..","..", "..", "dist", "data", "dependencies", lesson)
-        ispath(dpath) || mkpath(dpath)
-        open(joinpath(dpath, "deps.json"),"w") do f
-            JSON.print(f, _proj["deps"])
-        end
-    end
+# Function to remove everything that isn't a Literate folder
+function isvalid(_folder)::Bool
+    isdir(_folder) || return false
+    "_index.jl" in readdir(_folder) || return false
+    return true
 end
 
-weave(
-    "_index.Jmd",
-    out_path=joinpath("..", "..", "..", "dist", "content", lesson, "_index.md"),
-    doctype="github"
-)
+# List of folders to build
+folders_to_build = filter(isvalid, readdir(content_folder; join=true))
+
+# Actually build the content
+for folder in folders_to_build
+    destination_folder = replace(folder, "content" => joinpath("dist", "content"))
+    ispath(destination_folder) && mkpath(destination_folder)
+    index_file = joinpath(folder, "_index.jl")
+    Literate.markdown(index_file, destination_folder; flavor = Literate.CommonMarkFlavor())
+end

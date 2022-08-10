@@ -1,71 +1,67 @@
----
-title: Writing functions
-concepts:
-    - writing functions
-    - type stability
-    - keyword arguments
-contributors:
-    - tpoisot
-    - notzaki
-weight: 3
----
+# ---
+# title: Writing functions
+# category: 03-functions
+# concepts:
+#     - writing functions
+#     - type stability
+#     - keyword arguments
+# weight: 3
+# ---
 
-## Good code is small code
+# ## Good code is small code
 
-In the previous lessons, we have seen how to express problems using `for`, `if`,
-and `while`. In this lesson, we will see how it is possible to *wrap* these
-instructions in functions. Functions allow you to write code that is modular,
-can easily be re-used, and (more importantly for us), can easily be tested,
-validated, and fixed.
+# In the previous lessons, we have seen how to express problems using `for`, `if`,
+# and `while`. In this lesson, we will see how it is possible to *wrap* these
+# instructions in functions. Functions allow you to write code that is modular,
+# can easily be re-used, and (more importantly for us), can easily be tested,
+# validated, and fixed.
 
-Throughout this lesson, we will pay attention to decomposing a problem into a
-series of small parts. The "[UNIX philosophy][unix]" is a useful guide for this,
-and it can be summarized as:
+# Throughout this lesson, we will pay attention to decomposing a problem into a
+# series of small parts. The "[UNIX philosophy][unix]" is a useful guide for this,
+# and it can be summarized as:
 
-1. Make each function do one thing well
-2. Expect the output of most functions to become the input of another function
-3. Don't hesitate to throw away and rebuild the clumsy parts
+# 1. Make each function do one thing well
+# 2. Expect the output of most functions to become the input of another function
+# 3. Don't hesitate to throw away and rebuild the clumsy parts
 
-In a sense, writing a program works much like writing a manuscript. Writing a
-manuscript is a *big task*. But decomposing the task into paragraphs makes it
-more manageable. Having an outline lets you ensure that each paragraph logically
-flows into the next one. It also lets you rewrite the paragraph without breaking
-the flow of your manuscript. Good practices in scientific writing also apply to
-writing code!
+# In a sense, writing a program works much like writing a manuscript. Writing a
+# manuscript is a *big task*. But decomposing the task into paragraphs makes it
+# more manageable. Having an outline lets you ensure that each paragraph logically
+# flows into the next one. It also lets you rewrite the paragraph without breaking
+# the flow of your manuscript. Good practices in scientific writing also apply to
+# writing code!
 
-[unix]: https://en.wikipedia.org/wiki/Unix_philosophy
+# [unix]: https://en.wikipedia.org/wiki/Unix_philosophy
 
-## After this lesson, you will be able to ...
+ # ## After this lesson, you will be able to ...
 
-- ... create functions to automate and repeat tasks
-- ... understand the notions of input and output
-- ... understand what type stability is
+# - ... create functions to automate and repeat tasks
+# - ... understand the notions of input and output
+# - ... understand what type stability is
 
-## What is the value of π anyways?
+# ## What is the value of π anyways?
 
-There is a nifty algorithm to estimate the value of $\pi$. We start by drawing a
-square, and the length of its sides is 2. Two what? Two arbitrary units, it
-doesn't really matter. The circle inscribed within this circle has a radius of
-$r = 1$ (arbitrary unit). And therefore, this inscribed circle has an area of
-$\pi \times r^2=\pi$ (arbitrary units squared).
+# There is a nifty algorithm to estimate the value of $\pi$. We start by drawing a
+# square, and the length of its sides is 2. Two what? Two arbitrary units, it
+# doesn't really matter. The circle inscribed within this circle has a radius of
+# $r = 1$ (arbitrary unit). And therefore, this inscribed circle has an area of
+# $\pi \times r^2=\pi$ (arbitrary units squared).
 
-Now let's grab some darts (some *computer simulated* darts). If we throw them
-randomly at the square, they have a chance of falling within the circle ($\pi /
-4$, which is the area of the circle divided by the area of the square), or
-outside of the circle ($1 - \pi / 4$). So if we throw a bunch (it's a technical
-term for *some*) of darts ($N$) at the square, we can measure the number $n$
-that fall into the circle, and then estimate that $\pi \approx 4\times(n/N)$.
+# Now let's grab some darts (some *computer simulated* darts). If we throw them
+# randomly at the square, they have a chance of falling within the circle ($\pi /
+# 4$, which is the area of the circle divided by the area of the square), or
+# outside of the circle ($1 - \pi / 4$). So if we throw a bunch (it's a technical
+# term for *some*) of darts ($N$) at the square, we can measure the number $n$
+# that fall into the circle, and then estimate that $\pi \approx 4\times(n/N)$.
 
-We can decompose this problem into a series of steps. First, we need to generate
-a series of darts, with coordinates in $(0,2)$. This makes the center of the
-square $(1,1)$. We could have thrown darts in $(-1,1)$ with a center at $(0,0)$;
-or in $(5,7)$ with a center at $(6,6)$. This is largely arbitrary, but using
-$(0,2)$ will be save us almost four keystrokes!
+# We can decompose this problem into a series of steps. First, we need to generate
+# a series of darts, with coordinates in $(0,2)$. This makes the center of the
+# square $(1,1)$. We could have thrown darts in $(-1,1)$ with a center at $(0,0)$;
+# or in $(5,7)$ with a center at $(6,6)$. This is largely arbitrary, but using
+# $(0,2)$ will be save us almost four keystrokes!
 
-After the following lesson, it is tempting to write:
+# After the following lesson, it is tempting to write:
 
-
-```julia
 N = 10
 darts = []
 for i in 1:N
@@ -73,74 +69,69 @@ for i in 1:N
     push!(darts, (x, y))
 end
 darts
-```
 
-This introduces a few new notations. The `darts = []` instruction creates an
-*empty* array. This is not the optimal way of approaching this problem, but
-remember the UNIX philosophy: we'll rewrite this awkard part later. Then we use
-a `for` loop to throw the darts.
+# This introduces a few new notations. The `darts = []` instruction creates an
+# *empty* array. This is not the optimal way of approaching this problem, but
+# remember the UNIX philosophy: we'll rewrite this awkard part later. Then we use
+# a `for` loop to throw the darts.
 
-At each step of the loop, we generate a new dart: its coordinates are `rand(2)`
-(two random numbers in $(0,1)$), which we multiply by `2` to have them in
-$(0,2)$.
+# At each step of the loop, we generate a new dart: its coordinates are `rand(2)`
+# (two random numbers in $(0,1)$), which we multiply by `2` to have them in
+# $(0,2)$.
 
-Finaly, we *add* this set of coordinates to `darts`. The `push!` function will
-take its first *argument*, and add its second argument at the end. Wait, hold
-on. What's an argument? It's something you give to a function, to get it to do
-its work. We will go into this deeply in a few moments.
+# Finaly, we *add* this set of coordinates to `darts`. The `push!` function will
+# take its first *argument*, and add its second argument at the end. Wait, hold
+# on. What's an argument? It's something you give to a function, to get it to do
+# its work. We will go into this deeply in a few moments.
 
-{{% callout opinion %}}
-Our initial intuition of writing this code "as is", *i.e.* not within a
-function, is valid. It is often easier to experiment with different ways of
-expressing a problem, then wrap it up nicely in a function.
-{{% /callout %}}
+# {{% callout opinion %}}
+# Our initial intuition of writing this code "as is", *i.e.* not within a
+# function, is valid. It is often easier to experiment with different ways of
+# expressing a problem, then wrap it up nicely in a function.
+# {{% /callout %}}
 
-This code works. But it is kind of messy. There is a `N` variable, which is
-declared even though it is unlikely we will need it (because we can get it from
-`length(darts)`, remember?). So we will put this code inside its own function.
+# This code works. But it is kind of messy. There is a `N` variable, which is
+# declared even though it is unlikely we will need it (because we can get it from
+# `length(darts)`, remember?). So we will put this code inside its own function.
 
-In *Julia* (and most other languages), we can declare functions using the
-following syntax:
+# In *Julia* (and most other languages), we can declare functions using the
+# following syntax:
 
-~~~
 function functionname(foo, bar)
   baz = foo + bar
   return baz
 end
-~~~
 
-This will generate a function called `functionname`, with two arguments. Inside
-the function, a variable called `baz` will be created, and the function will
-return its *value*.
+# This will generate a function called `functionname`, with two arguments. Inside
+# the function, a variable called `baz` will be created, and the function will
+# return its *value*.
 
-It is wise to think of functions as wood chippers. You can put things in, and
-you will get things out, but we strongly advise against going inside: if you
-limit the *inputs* to the function to its arguments, and its *effects* to the
-`return` statement, your function will have a neat, predictible behavior (that
-is, at least, the theory). Functions that only act on their arguments, and only
-give you something back through `return`, have no [side effect][se].
+# It is wise to think of functions as wood chippers. You can put things in, and
+# you will get things out, but we strongly advise against going inside: if you
+# limit the *inputs* to the function to its arguments, and its *effects* to the
+# `return` statement, your function will have a neat, predictible behavior (that
+# is, at least, the theory). Functions that only act on their arguments, and
+# only give you something back through `return`, have no [side effect][se].
 
-*Julia* has a special way of indicating functions *with* side effects: they have
-a `!` at the end. Remember `push!` from the previous code block? The `!` at the
-end tells you "Hey, you are going to change things *outside* of this function,
-be careful". We will write a few functions with side effects later.
+# *Julia* has a special way of indicating functions *with* side effects: they
+# have a `!` at the end. Remember `push!` from the previous code block? The `!`
+# at the end tells you "Hey, you are going to change things *outside* of this
+# function, be careful". We will write a few functions with side effects later.
 
-[se]: https://en.wikipedia.org/wiki/Side_effect_(computer_science)
+# [se]: https://en.wikipedia.org/wiki/Side_effect_(computer_science)
 
-### Writing a function to throw darts
+# ### Writing a function to throw darts
 
-But what if we want to change the number of darts we will generate? What if
-later, we want to re-use this code for anoter project? What if we don't want to
-have variables `N` and `darts` in our global scope? In this case, we will write
-a function.
+# But what if we want to change the number of darts we will generate? What if
+# later, we want to re-use this code for anoter project? What if we don't want
+# to have variables `N` and `darts` in our global scope? In this case, we will
+# write a function.
 
-Our function will take an *input*, which is the number of darts we want to
-throw, and return an *output*, which is an array of coordinates of where the
-darts hit. The block below presents *one possible* implementation of such a
-function, with comments about whats is hapenning in every line:
+# Our function will take an *input*, which is the number of darts we want to
+# throw, and return an *output*, which is an array of coordinates of where the
+# darts hit. The block below presents *one possible* implementation of such a
+# function, with comments about whats is hapenning in every line:
 
-
-```julia
 function throw_darts(n::Int64)
     #=
     Let's create a space to store the results in
@@ -184,19 +175,18 @@ function throw_darts(n::Int64)
     =#
     return darts
 end
-```
 
-Now, we can *call* this function, using `throw_darts(10)`. You can experiment
-changing `10` by other values. For example, how do you throw 124 darts?
+# Now, we can *call* this function, using `throw_darts(10)`. You can experiment
+# changing `10` by other values. For example, how do you throw 124 darts?
 
-### How many darts are within the circle?
+# ### How many darts are within the circle?
 
-Now that we are able to throw darts, we can see how many of them are within the
-circle. Remember, the circle has a diameter of two, and is centered on $(1, 1)$.
-It would be tempting to take *all* the darts we generated, and see how many of
-them are within the circle. But it is almost always better to write functions
-that do the simplest thing possible: in this case, is a single dart within the
-circle?
+# Now that we are able to throw darts, we can see how many of them are within
+# the circle. Remember, the circle has a diameter of two, and is centered on
+# $(1, 1)$. It would be tempting to take *all* the darts we generated, and see
+# how many of them are within the circle. But it is almost always better to
+# write functions that do the simplest thing possible: in this case, is a single
+# dart within the circle?
 
 This is done by measuring the distance between the darts and the center of the
 circle -- if it is lower than the radius, then the dart is within the circle. We

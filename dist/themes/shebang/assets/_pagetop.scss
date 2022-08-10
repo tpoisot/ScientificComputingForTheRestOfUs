@@ -6,11 +6,7 @@
     width: 100vw;
     height: 55vh;
     z-index: -1000;
-
-    svg {
-        display: block;
-        width: 100%;
-    }
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 5vw), 0 100%);
 
     .bgimage {
         background-image: url("/background.png");

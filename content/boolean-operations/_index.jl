@@ -1,7 +1,7 @@
 # ---
-# title: Booleans
+# title: Booleans operations
 # category: 01-introduction
-# weight: 1
+# weight: 2
 # concepts:
 #     - control flow
 #     - Booleans

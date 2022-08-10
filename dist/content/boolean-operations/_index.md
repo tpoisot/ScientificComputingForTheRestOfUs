@@ -1,5 +1,5 @@
 ---
-title: Booleans
+title: Booleans operations
 category: 01-introduction
 weight: 1
 concepts:

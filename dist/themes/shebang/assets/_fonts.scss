@@ -1,12 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;1,400;1,500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;1,300;1,400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;1,200;1,300;1,400;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&display=swap');
 
 :root {
-  --font-main: "Roboto", sans-serif;
-  --font-title: "Roboto Condensed";
-  --font-meta: "Roboto Condensed";
-  --font-code: "Roboto Mono";
+  --font-main: "Source Sans Pro", sans-serif;
+  --font-title: "Source Sans Pro";
+  --font-meta: "Source Sans Pro";
+  --font-code: "Source Code Pro";
 
   --font-size: 13pt;
   --font-lh: 1.6em;

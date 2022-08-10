@@ -1,6 +1,6 @@
 .background {
     position: fixed;
-    background-color: blue;
+    background-color: var(--color-header);
     top: 0;
     left: 0;
     width: 100vw;
@@ -14,9 +14,9 @@
         height: 100%;
         background-size: cover;
         background-repeat: no-repeat;
-        background-position: bottom;
-        opacity: 0.5;
-        filter: blur(3px);
+        background-position: center;
+        opacity: 0.7;
+        filter: blur(2px);
     }
 
 }

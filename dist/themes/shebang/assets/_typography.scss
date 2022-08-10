@@ -113,3 +113,23 @@ table {
     padding: 3px 7px;
   }
 }
+
+#content {
+    .about {
+        text-align: center;
+        a {
+            width: 70%;
+            display: block;
+            text-align: center;
+            margin: 3em auto;
+            padding: 1em;
+            background-color: var(--color-header);
+            color: var(--color-lightest);
+            font-weight: 600;
+            &:hover {
+                background-color: var(--color-accent);
+                color: var(--color-lightest);
+            }
+        }
+    }
+}

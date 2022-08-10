@@ -1,19 +1,12 @@
 @import "layout";
 @import "typography";
-@import "navigation";
+@import "pagetop";
 @import "callouts";
 @import "code";
 @import "questions";
 
-.contributor {
-    &::after {
-        content: " // ";
-        color: var(--color-light);
-    }
-    &:last-child {
-        color: red;
-        &::after {
-            display: none;
-        }
-    }
+#background {
+    background-color: blue;
+    height: 50vh;
+    clip-path: url(#myClip);
 }

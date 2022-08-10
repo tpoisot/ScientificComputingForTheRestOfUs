@@ -1,0 +1,43 @@
+.background {
+    position: fixed;
+    background-color: blue;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 55vh;
+    z-index: -1000;
+
+    svg {
+        display: block;
+        width: 100%;
+    }
+
+    .bgimage {
+        background-image: url("/background.png");
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: bottom;
+        opacity: 0.5;
+        filter: blur(3px);
+    }
+
+}
+
+#pagetop {
+    z-index: -10;
+    padding: 50px;
+    h1, h2, h3 {
+        margin: 0 0;
+    }
+    h1 {
+        text-align: right;
+    }
+    h2 {
+        text-align: right;
+    }
+    h3 {
+        padding-top: 100px;
+    }
+}

@@ -1,0 +1,13 @@
+<div class="background">
+    <div class="bgimage"></div>
+</div>
+
+
+<section id="pagetop">
+    <div class="wrapper">
+        <h1><a href="/">{{ .Site.Params.title }}</a></h1>
+        <h2>{{ .Site.Params.subtitle }}</h2>
+        {{ $currentPage := . }}
+        <h3>{{ .Title }}</h3>
+    </div>
+</section>

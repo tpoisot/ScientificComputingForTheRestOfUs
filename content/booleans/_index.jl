@@ -1,6 +1,6 @@
 # ---
 # title: Booleans and conditionals
-# weight: 2
+# category: 01-introduction
 # concepts:
 #     - control flow
 #     - Booleans

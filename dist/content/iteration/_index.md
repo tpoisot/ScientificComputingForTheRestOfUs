@@ -1,6 +1,6 @@
 ---
-title: Iteration and array navigation
-weight: 3
+title: Iteration and indexing
+category: 01-introduction
 concepts:
     - control flow
     - iteration

@@ -2,8 +2,8 @@ using Literate
 using TOML
 using JSON
 
-# Get the folder with the main content
-content_folder = joinpath(@__DIR__, "content")
+# Get the top-level folders
+content_folder = readdir(joinpath(@__DIR__, "content"); join=true, sort=true)
 
 # Function to remove everything that isn't a Literate folder
 function isvalid(_folder)::Bool
@@ -13,7 +13,7 @@ function isvalid(_folder)::Bool
 end
 
 # List of folders to build
-folders_to_build = filter(isvalid, readdir(content_folder; join=true))
+folders_to_build = filter(isvalid, content_folder)
 
 # Actually build the content
 for folder in folders_to_build

@@ -5,6 +5,17 @@
     <a href="about" title="About the project">Read more about the project</a>
 </div>
 
-stuff goes here
+{{ range .Pages.GroupByParam "category" }}
+<section id="modules">
+    <h3>{{ title (substr (.Key | humanize) 3) }}</h3>
+    <div class="cards">
+        {{ range .Pages }}
+        <div class="card">
+            <a href="{{ .Permalink }}">{{ .Title }}</a>
+        </div>
+        {{ end }}
+    </div>
+</section>
+{{ end }}
 
 {{ end }}

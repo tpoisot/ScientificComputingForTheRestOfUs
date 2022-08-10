@@ -34,7 +34,3 @@ unsafe= true
   githubRepo = "ScientificComputingForTheRestOfUs"
   title = "Scientific computing"
   subtitle = "(for the rest of us)"
-
-[taxonomies]
-  concept = "concepts"
-  package = "packages"

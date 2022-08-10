@@ -1,13 +1,9 @@
 ---
 title: Iteration and array navigation
 weight: 3
-contributors:
-    - tpoisot
 concepts:
     - control flow
     - iteration
-packages:
-    - Statistics
 ---
 
 ## Introducing iteration
@@ -26,7 +22,7 @@ Random.seed!(123456)
 ````
 
 ````
-TaskLocalRNG()
+Random.TaskLocalRNG()
 ````
 
 When talking about `for`, we usually talk about *for loops* or *iteration*.

@@ -1,13 +1,9 @@
 # ---
 # title: Iteration and array navigation
 # weight: 3
-# contributors:
-#     - tpoisot
 # concepts:
 #     - control flow
 #     - iteration
-# packages:
-#     - Statistics
 # ---
 
 # ## Introducing iteration

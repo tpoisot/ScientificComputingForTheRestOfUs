@@ -6,27 +6,7 @@ pygmentsCodeFences = true
 pygmentsUseClasses = true
 
 [markup.goldmark.renderer]
-unsafe= true
-
-[menu]
-  [[menu.main]]
-    identifier = "lessons"
-    name = "Lessons"
-    url = "/lessons/"
-    weight = 1
-    pre = "fa-book-open"
-  [[menu.main]]
-    identifier = "capstones"
-    name = "Capstones"
-    url = "/capstones/"
-    weight = 3
-    pre = "fa-star"
-  [[menu.main]]
-    identifier = "primers"
-    name = "Primers"
-    url = "/primers/"
-    weight = 2
-    pre = "fa-bolt"
+    unsafe= true
 
 [params]
   readingSpeed = 120

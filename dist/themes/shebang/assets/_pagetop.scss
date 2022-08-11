@@ -4,10 +4,10 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 55vh;
+    height: 65vh;
     z-index: -1000;
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 5vw), 0 100%);
-
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10vw), 0 100%);
+    
     .bgimage {
         background-image: url("/background.png");
         width: 100%;
@@ -15,8 +15,8 @@
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
-        opacity: 0.7;
-        filter: blur(2px);
+        opacity: 0.6;
+        filter: blur(1px);
     }
 
 }
@@ -37,6 +37,6 @@
         padding-top: 100px;
         color: white;
         font-size: 2.5rem;
-        text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.5);
+        text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.9);
     }
 }

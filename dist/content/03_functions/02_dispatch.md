@@ -1,7 +1,6 @@
 ---
 title: Understanding dispatch
 weight: 2
-category: 03-functions
 ---
 
 The point of this module is to understand *dispatch*, which is to say, the way
@@ -59,7 +58,7 @@ typeof(Rock())
 ````
 
 ````
-Main.##487.Rock
+Main.##306.Rock
 ````
 
 Surprisingly, this is enough to build our rock/papers/scissors game. We will

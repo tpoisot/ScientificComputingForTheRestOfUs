@@ -1,8 +1,6 @@
 # ---
 # title: Understanding multiple dispatch
-# url: multiple-dispatch
 # weight: 3
-# category: 03-functions
 # ---
 
 # In this module, we will expand on the previous content (understanding

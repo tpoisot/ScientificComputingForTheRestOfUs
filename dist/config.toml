@@ -14,3 +14,6 @@ pygmentsUseClasses = true
   githubRepo = "ScientificComputingForTheRestOfUs"
   title = "Scientific computing"
   subtitle = "(for the rest of us)"
+
+[permalinks]
+    "03_functions" = "/functions/:slug/"

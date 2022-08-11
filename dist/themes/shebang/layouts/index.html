@@ -5,9 +5,9 @@
     <a href="about" title="About the project">Read more about the project</a>
 </div>
 
-{{ range .Pages.GroupByParam "category" }}
+{{ range .Site.Sections }}
 <section id="modules">
-    <h3>{{ title (substr (.Key | humanize) 3) }}</h3>
+    <h3>{{ title (substr (.Title | humanize) 3) }}</h3>
     <div class="cards">
         {{ range .Pages }}
         <div class="card">

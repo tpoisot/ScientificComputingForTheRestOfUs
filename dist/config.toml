@@ -16,4 +16,5 @@ pygmentsUseClasses = true
   subtitle = "(for the rest of us)"
 
 [permalinks]
+    "01_fundamentals" = "/fundamentals/:slug/"
     "03_functions" = "/functions/:slug/"

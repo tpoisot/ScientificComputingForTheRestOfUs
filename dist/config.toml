@@ -4,6 +4,7 @@ preserveTaxonomyNames = true
 theme = "shebang"
 pygmentsCodeFences = true
 pygmentsUseClasses = true
+pluralizelisttitles = false
 
 [markup.goldmark.renderer]
     unsafe= true
@@ -16,5 +17,6 @@ pygmentsUseClasses = true
   subtitle = "(for the rest of us)"
 
 [permalinks]
+    "00_getting_started" = "/getting_started/:slug/"
     "01_fundamentals" = "/fundamentals/:slug/"
     "03_functions" = "/functions/:slug/"

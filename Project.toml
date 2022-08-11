@@ -1,4 +1,5 @@
 [deps]
+Crayons = "a8cc5b0e-0ffa-5ad4-8c14-923d3ee1735f"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
 TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"

@@ -15,8 +15,8 @@
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
-        opacity: 0.6;
-        filter: blur(1px);
+        opacity: 0.4;
+        filter: blur(3px);
     }
 
 }
@@ -26,17 +26,30 @@
     padding: 50px;
     h1, h2, h3 {
         margin: 0 0;
+        text-shadow: 0px 0px 3px rgba(50, 50, 50, 0.4);
     }
     h1 {
-        text-align: right;
+        text-align: left;
+        font-weight: 300;
+        font-size: 400%;
+        a {
+            color: var(--color-lightest) !important;
+        }
+        margin-left: -50px;
     }
     h2 {
-        text-align: right;
+        text-align: left;
+        color: var(--color-lighter) !important;
+        font-weight: 600;
+        margin-left: -50px;
     }
     h3 {
+        text-align: right;
         padding-top: 100px;
-        color: white;
+        color: var(--color-lightest);
         font-size: 2.5rem;
-        text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.9);
+        font-weight: 400;
+        margin-right: -50px;
+        margin-bottom: -25px;
     }
 }

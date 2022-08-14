@@ -60,10 +60,10 @@ end
 discrete_logistic_growth(1.0f0, 2.0f0)
 
 # Excellent, this is a generic function with a single method! We can double
-# check that it is, indeed, a `Function`, by channeling our inner Jar-Jar Binks
-# (sorry):
+# check that it is, indeed, a `Function`, by using the `isa` operator (it also
+# works as a function!):
 
-isa(discrete_logistic_growth(1.0f0, 2.0f0), Function)
+discrete_logistic_growth(1.0f0, 2.0f0) isa Function
 
 # Excellent! Let's take a step back. That we are able to return functions should
 # not be very surprising, because functions are just another category of things.
@@ -82,6 +82,11 @@ discrete_logistic_growth(1.0f0, 2.0f0)(2.2f0)
 # Now, we can of course assign the first part of this expression to a variable:
 
 parameterized_model = discrete_logistic_growth(1.0f0, 2.0f0)
+
+# We now have a fully usable function: 
+
 parameterized_model(2.2f0)
 
-#-
+# But *why*? Think of our function this way: as soon as it is created, using
+# `discrete_logistic_growth`, we know the parameters (because we specified
+# them), and we know that they will not change.

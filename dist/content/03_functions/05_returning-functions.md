@@ -88,15 +88,15 @@ discrete_logistic_growth(1.0f0, 2.0f0)
 ````
 
 ````
-(::Main.##377.var"#model#1"{Float32, Float32, Float32}) (generic function with 1 method)
+(::Main.var"##1095".var"#model#1"{Float32, Float32, Float32}) (generic function with 1 method)
 ````
 
 Excellent, this is a generic function with a single method! We can double
-check that it is, indeed, a `Function`, by channeling our inner Jar-Jar Binks
-(sorry):
+check that it is, indeed, a `Function`, by using the `isa` operator (it also
+works as a function!):
 
 ````julia
-isa(discrete_logistic_growth(1.0f0, 2.0f0), Function)
+discrete_logistic_growth(1.0f0, 2.0f0) isa Function
 ````
 
 ````
@@ -127,10 +127,23 @@ Now, we can of course assign the first part of this expression to a variable:
 
 ````julia
 parameterized_model = discrete_logistic_growth(1.0f0, 2.0f0)
+````
+
+````
+(::Main.var"##1095".var"#model#1"{Float32, Float32, Float32}) (generic function with 1 method)
+````
+
+We now have a fully usable function:
+
+````julia
 parameterized_model(2.2f0)
 ````
 
 ````
 1.98f0
 ````
+
+But *why*? Think of our function this way: as soon as it is created, using
+`discrete_logistic_growth`, we know the parameters (because we specified
+them), and we know that they will not change.
 

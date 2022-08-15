@@ -172,21 +172,22 @@ will find a subset of it with the correct properties:
 ````julia
 for start_position in findall("AUG", rnd_seq)
     global tmp_seq
-    for stop_position in vcat(findall.(["UAA", "UAG", "UGA"], rnd_seq)...)
+    for stop_codon in ["UAA", "UAG", "UGA"]
+        for stop_position in findall(stop_codon, rnd_seq)
 
-        (stop_position[begin] > start_position[end]) || continue
+            (stop_position[begin] > start_position[end]) || continue
 
-        seq_length = stop_position[end] - start_position[begin] + 1
+            seq_length = stop_position[end] - start_position[begin] + 1
 
-        iszero(seq_length % 3) || continue
+            iszero(seq_length % 3) || continue
 
-        if 40 <= seq_length <= 50
-            tmp_seq = rnd_seq[start_position[begin]:stop_position[end]]
-            break
+            if 40 <= seq_length <= 50
+                tmp_seq = rnd_seq[start_position[begin]:stop_position[end]]
+                break
+            end
+
         end
-
     end
-
 end
 ````
 

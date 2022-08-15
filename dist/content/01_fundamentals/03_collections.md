@@ -1,9 +1,6 @@
 ---
 title: Iteration and indexing
-category: 01-introduction
-concepts:
-    - control flow
-    - iteration
+weight: 3
 ---
 
 ## Introducing iteration

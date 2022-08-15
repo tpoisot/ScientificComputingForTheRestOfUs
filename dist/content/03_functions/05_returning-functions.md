@@ -88,7 +88,7 @@ discrete_logistic_growth(1.0f0, 2.0f0)
 ````
 
 ````
-(::Main.var"##1095".var"#model#1"{Float32, Float32, Float32}) (generic function with 1 method)
+(::Main.##352.var"#model#1"{Float32, Float32, Float32}) (generic function with 1 method)
 ````
 
 Excellent, this is a generic function with a single method! We can double
@@ -130,7 +130,7 @@ parameterized_model = discrete_logistic_growth(1.0f0, 2.0f0)
 ````
 
 ````
-(::Main.var"##1095".var"#model#1"{Float32, Float32, Float32}) (generic function with 1 method)
+(::Main.##352.var"#model#1"{Float32, Float32, Float32}) (generic function with 1 method)
 ````
 
 We now have a fully usable function:

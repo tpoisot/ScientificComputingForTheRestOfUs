@@ -1,11 +1,6 @@
 # ---
 # title: Booleans operations
-# category: 01-introduction
-# weight: 2
-# concepts:
-#     - control flow
-#     - Booleans
-#     - iteration
+# weight: 3
 # ---
 
 # ## Programming really *is* a language

@@ -1,6 +1,6 @@
 # ---
 # title: Iteration and indexing
-# weight: 3
+# weight: 4
 # ---
 
 # ## Introducing iteration

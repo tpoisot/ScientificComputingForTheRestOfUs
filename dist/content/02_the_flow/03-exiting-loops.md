@@ -170,7 +170,10 @@ codons, and essentially hoping that the random sequence is long enough that we
 will find a subset of it with the correct properties:
 
 ````julia
+seq_found = false
+
 for start_position in findall("AUG", rnd_seq)
+    global seq_found
     global tmp_seq
     for stop_codon in ["UAA", "UAG", "UGA"]
         for stop_position in findall(stop_codon, rnd_seq)
@@ -182,12 +185,19 @@ for start_position in findall("AUG", rnd_seq)
             iszero(seq_length % 3) || continue
 
             if 40 <= seq_length <= 50
+                seq_found = true
                 tmp_seq = rnd_seq[start_position[begin]:stop_position[end]]
                 break
             end
 
         end
+
+        seq_found && break
+
     end
+
+    seq_found && break
+
 end
 ````
 
@@ -196,7 +206,7 @@ print("Found a sequence of length $(length(tmp_seq)):\n$(tmp_seq)")
 ````
 
 ````
-Found a sequence of length 48:
-AUGUUAGGGAGGAUGGAGGUUUUUAUUCUCGCGGGGAGAAUUACAUGA
+Found a sequence of length 45:
+AUGAUCACAUGGAGGAGCUCAUCGUAAUUGUUUAAGACCAAAUGA
 ````
 

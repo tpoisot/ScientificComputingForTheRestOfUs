@@ -58,7 +58,7 @@ typeof(Rock())
 ````
 
 ````
-Main.##690.Rock
+Main.##316.Rock
 ````
 
 Let's finally check that an instance of `Rock` is indeed a `Rock`, but is also
@@ -170,7 +170,7 @@ end
 
 ````
 There was a MethodError:
-MethodError(Main.##690.move, (Main.##690.Paper(), Main.##690.Rock()), 0x000000000000801a)
+MethodError(Main.##316.move, (Main.##316.Paper(), Main.##316.Rock()), 0x0000000000007abe)
 
 ````
 
@@ -225,10 +225,10 @@ methods(move)
 
 ````
 # 4 methods for generic function "move":
-[1] move(::Main.##690.Paper, ::Main.##690.Rock) in Main.##690 at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/03_functions/02_dispatch.md:1
-[2] move(::Main.##690.Scissors, ::Main.##690.Paper) in Main.##690 at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/03_functions/02_dispatch.md:1
-[3] move(::Main.##690.Rock, ::Main.##690.Scissors) in Main.##690 at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/03_functions/02_dispatch.md:2
-[4] move(::T, ::T) where T<:Main.##690.Strategy in Main.##690 at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/03_functions/02_dispatch.md:1
+[1] move(::Main.##316.Paper, ::Main.##316.Rock) in Main.##316 at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/03_functions/02_dispatch.md:1
+[2] move(::Main.##316.Scissors, ::Main.##316.Paper) in Main.##316 at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/03_functions/02_dispatch.md:1
+[3] move(::Main.##316.Rock, ::Main.##316.Scissors) in Main.##316 at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/03_functions/02_dispatch.md:2
+[4] move(::T, ::T) where T<:Main.##316.Strategy in Main.##316 at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/03_functions/02_dispatch.md:1
 ````
 
 The problem we want to solve becomes, in plain English, "the move has two
@@ -262,15 +262,15 @@ end
 ````
 
 ````
-Main.##690.Rock() 	 Main.##690.Rock()	→	(0, 0)
-Main.##690.Rock() 	 Main.##690.Paper()	→	(0, 1)
-Main.##690.Rock() 	 Main.##690.Scissors()	→	(1, 0)
-Main.##690.Paper() 	 Main.##690.Rock()	→	(1, 0)
-Main.##690.Paper() 	 Main.##690.Paper()	→	(0, 0)
-Main.##690.Paper() 	 Main.##690.Scissors()	→	(0, 1)
-Main.##690.Scissors() 	 Main.##690.Rock()	→	(0, 1)
-Main.##690.Scissors() 	 Main.##690.Paper()	→	(1, 0)
-Main.##690.Scissors() 	 Main.##690.Scissors()	→	(0, 0)
+Main.##316.Rock() 	 Main.##316.Rock()	→	(0, 0)
+Main.##316.Rock() 	 Main.##316.Paper()	→	(0, 1)
+Main.##316.Rock() 	 Main.##316.Scissors()	→	(1, 0)
+Main.##316.Paper() 	 Main.##316.Rock()	→	(1, 0)
+Main.##316.Paper() 	 Main.##316.Paper()	→	(0, 0)
+Main.##316.Paper() 	 Main.##316.Scissors()	→	(0, 1)
+Main.##316.Scissors() 	 Main.##316.Rock()	→	(0, 1)
+Main.##316.Scissors() 	 Main.##316.Paper()	→	(1, 0)
+Main.##316.Scissors() 	 Main.##316.Scissors()	→	(0, 0)
 
 ````
 

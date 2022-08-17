@@ -138,11 +138,12 @@ true
 
 These three functions are very useful when working on path issues. `isfile`
 will take a string, and let you know if there is a *file* at this location.
-`isdir` will do the same for a directory (folder). `ispath` will do the same
-for *either* a folder or a file.
+`isdir` will do the same for a directory (folder; we will stick to *directory*
+as it is the more correct term). `ispath` will do the same for *either* a
+folder or a file.
 
-In our case, we want `data_path` to be a folder, so we will first check that
-it does not exists:
+In our case, we want `data_path` to be a directory, so we will first check
+that it does not exists:
 
 ````julia
 isdir(data_path)
@@ -165,8 +166,8 @@ end
 ````
 
 This line (we will go into the details of `if`, and booleans more broadly, in
-the next few modules) will create the folder if it does not exist. We can now
-read the content of our working directory:
+the next few modules) will create the directory if it does not exist. We can
+now read the content of our working directory:
 
 ````julia
 readdir(pwd())
@@ -181,12 +182,14 @@ readdir(pwd())
  "data"
 ````
 
-There seems to be a `data` folder. Note that `readdir` has a number of
+There seems to be a `data` directory. Note that `readdir` has a number of
 options, and that *Julia* offers additional ways to walk through a series of
-nested folders.
+nested directories if neede.
 
-To finish up, let's remove this folder. We will use `isdir` again because we
-do not want to remove a folder that doesn't exist.
+To finish up, let's remove this directory. We will use `isdir` again because
+we do not want to remove a directory that doesn't exist. It is worth looking
+at the documentation for `rm`, as it has a number of important options and
+keyword arguments.
 
 ````julia
 if isdir(data_path)
@@ -224,11 +227,11 @@ tempname()
 ````
 
 ````
-"/tmp/jl_CpSiH4"
+"/tmp/jl_dVFeqt"
 ````
 
 Note that this string describes just this: a path. You can turn it into a
-file, or a folder. Working with temporary files is very useful when you, for
-example, need to download data in bulk, but do not want to save the raw
+file, or a directory. Working with temporary files is very useful when you,
+for example, need to download data in bulk, but do not want to save the raw
 download.
 

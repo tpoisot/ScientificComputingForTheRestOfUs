@@ -55,3 +55,25 @@ Statistics.cor(x,y)
 0.29421466052888634
 ````
 
+What we now need to do is keep generating vectors `x` and `y` *until* the
+condition is met. In *Julia*, this is expressed as
+
+````julia
+while !(0.6 ≤ Statistics.cor(x,y) ≤ 0.8)
+    global x, y
+    x, y = rand(10), rand(10)
+end
+````
+
+````julia
+Statistics.cor(x,y)
+````
+
+````
+0.6100870666348821
+````
+
+Note that we use `global x,y` because `x` and `y` are defined outside of the
+loop, and we are working outside of a function. If we removed this line, this
+code will never stop running.
+

@@ -29,7 +29,7 @@ end
 ````
 
 ````
-(Main.var"##340".Predator("Vulpes vulpes"), Main.var"##340".Prey("Mus musculus"))
+(Main.var"##447".Predator("Vulpes vulpes"), Main.var"##447".Prey("Mus musculus"))
 ````
 
 Yes, emojis are, indeed, acceptable for variable names, function names, etc.
@@ -44,7 +44,7 @@ fox, mouse = Predator("Vulpes vulpes"), Prey("Mus musculus")
 ````
 
 ````
-(Main.var"##340".Predator("Vulpes vulpes"), Main.var"##340".Prey("Mus musculus"))
+(Main.var"##447".Predator("Vulpes vulpes"), Main.var"##447".Prey("Mus musculus"))
 ````
 
 Better. What we want to do now is functionnaly very similar to the

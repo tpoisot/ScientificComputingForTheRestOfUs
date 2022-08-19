@@ -1,5 +1,5 @@
 ---
-title: Setting things up
+title: Preparing a project
 weight: 1
 ---
 

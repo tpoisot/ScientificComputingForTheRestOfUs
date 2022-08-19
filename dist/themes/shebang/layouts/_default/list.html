@@ -5,7 +5,9 @@
 </section>
 
 {{ range .Pages }}
-{{- partial "resource.html" . -}}
+
+ {{ . }}
+
 {{ end }}
 
 {{ end }}

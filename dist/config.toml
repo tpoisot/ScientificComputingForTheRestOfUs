@@ -18,5 +18,6 @@ pluralizelisttitles = false
 
 [permalinks]
     "00_getting_started" = "/getting_started/:slug/"
-    "01_fundamentals" = "/fundamentals/:slug/"
-    "03_functions" = "/functions/:slug/"
+    "02_data_structures" = "/data/:slug/"
+    "03_fundamentals" = "/fundamentals/:slug/"
+    "04_functions" = "/functions/:slug/"

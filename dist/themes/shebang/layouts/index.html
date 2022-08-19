@@ -5,13 +5,19 @@
     <a href="about" title="About the project">Read more about the project</a>
 </div>
 
-{{ range .Site.Sections }}
+{{ range $id, $section := .Site.Sections }}
 <section id="modules">
-    <h3>{{ title (substr (.Title | humanize) 3) }}</h3>
+    <h3>{{ title (substr ($section.Title | humanize) 3) }}</h3>
     <div class="cards">
-        {{ range .Pages }}
+        {{ range $index, $page := $section.Pages }}
         <div class="card">
-            <a href="{{ .Permalink }}">{{ .Title }}</a>
+            <div class="title">
+                <span class="index">{{ printf "%02d" $id }}/{{ printf "%02d" $index }}</span>
+                <a href="{{ $page.Permalink }}">{{ $page.Title }}</a><br />
+            </div>
+            <div class="summary">
+                {{ $page.Summary }}
+            </div>
         </div>
         {{ end }}
     </div>

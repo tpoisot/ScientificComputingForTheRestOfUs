@@ -1,6 +1,5 @@
 # ---
 # title: Pseudo-code
-# weight: 3
 # ---
 
 # To facilitate the transition between diagram and code, one important step is

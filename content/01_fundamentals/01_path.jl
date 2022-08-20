@@ -1,6 +1,5 @@
 # ---
 # title: The Path
-# weight: 1
 # ---
 
 # One of the main obstacle to reproductible projects is issues with describing

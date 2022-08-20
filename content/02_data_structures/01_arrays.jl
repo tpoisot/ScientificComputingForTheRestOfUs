@@ -1,6 +1,5 @@
 # ---
 # title: Arrays
-# weight: 1
 # ---
 
 # vector matrix

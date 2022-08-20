@@ -1,6 +1,5 @@
 # ---
 # title: Understanding multiple dispatch
-# weight: 3
 # ---
 
 # In this module, we will expand on the previous content (understanding

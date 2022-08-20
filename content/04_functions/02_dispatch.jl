@@ -1,6 +1,5 @@
 # ---
 # title: Understanding dispatch
-# weight: 2
 # ---
 
 # The point of this module is to understand *dispatch*, which is to say, the way

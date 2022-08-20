@@ -1,6 +1,5 @@
 # ---
 # title: Declaring functions
-# weight: 1
 # ---
 
 # Everything should be a function. Everything. Especially in *Julia*, for

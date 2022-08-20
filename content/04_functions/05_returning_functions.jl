@@ -1,6 +1,5 @@
 # ---
 # title: Returning functions
-# weight: 5
 # ---
 
 # *Julia* has a very interesting function called `isequal`. Let's see how it

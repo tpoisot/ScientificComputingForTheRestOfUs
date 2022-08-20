@@ -1,30 +1,18 @@
 body {
-  font-family: var(--font-main);
-  font-size: var(--font-size);
+  font-family: $font_copy;
+  color: $color_copy;
 }
 
 pre, code {
-  font-family: var(--font-code);
+  font-family: $font_mono;
 }
 
 b, strong {
-  font-weight: 600;
-}
-
-nav, h1, h2 {
-  font-family: var(--font-title);
-  color: var(--color-accent);
-}
-h3, h4, h5, h6 {
-  font-family: var(--font-meta);
-  color: var(--color-dark);
+  font-weight: 500;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 400;
-  padding-bottom: 0px;
-  margin-bottom: 0.2em;
-  margin-top: 2.8em;
+    font-family: $font_display;
 }
 
 h1 { font-size: calc(1.1rem*1.4)}
@@ -33,103 +21,3 @@ h3 { font-size: calc(1.1rem*1.4*0.9*0.9)}
 h4 { font-size: calc(1.1rem*1.4*0.9*0.9*0.9)}
 h5 { font-size: calc(1.1rem*1.4*0.9*0.9*0.9*0.9)}
 h6 { font-size: calc(1.1rem*1.4*0.9*0.9*0.9*0.9*0.9)}
-
-section#content {
-  line-height: var(--font-lh);
-}
-
-a {
-  color: var(--color-bright);
-  &:hover {
-    color: var(--color-bright-subdued);
-  }
-  text-decoration: none;
-}
-
-.listicle {
-  font-family: var(--font-meta);
-  color: var(--color-darkest);
-  margin-bottom: 5px;
-  i {
-    color: var(--color-main);
-  }
-  .listicleitem {
-    color: var(--color-dark);
-    margin-right: 5px;
-  }
-  .construction {
-    color: var(--color-danger);
-  }
-  .draft {
-    color: var(--color-warning);
-  }
-}
-
-.summary {
-  padding-top: 0.5em;
-  font-style: italic;
-  color: var(--color-darker);
-}
-
-table {
-  font-size: 90%;
-  width: 100%;
-  border-collapse: collapse;
-  border-bottom: 1px solid var(--color-dark);
-  thead {
-    th {
-      font-weight: 500;
-      color: var(--color-lightest);
-      background-color: var(--color-dark);
-    }
-    tr {
-      &:nth-child(2){
-        th {
-          background-color: var(--color-light);
-          color: var(--color-accent);
-          font-weight: 400;
-          font-family: var(--font-code);
-        }
-      }
-    }
-  }
-  tr{
-    &:nth-child(odd) {
-      background: var(--color-lightest);
-    }
-  }
-  tbody {
-    th {
-      color: var(--color-light);
-      font-weight: 400;
-    }
-    tr {
-      &:hover {
-        background: var(--color-highlight);
-      }
-    }
-  }
-  td, th {
-    padding: 3px 7px;
-  }
-}
-
-#content {
-    .about {
-        text-align: center;
-        a {
-            width: 70%;
-            display: block;
-            text-align: center;
-            margin: 3em auto;
-            padding: 1em;
-            background-color: var(--color-header);
-            color: var(--color-lightest);
-            font-weight: 600;
-            &:hover {
-                background-color: var(--color-accent);
-                color: var(--color-lightest);
-            }
-        }
-    }
-}

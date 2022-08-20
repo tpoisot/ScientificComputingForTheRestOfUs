@@ -9,7 +9,7 @@
 <section id="modules">
     <h3>{{ title (substr ($section.Title | humanize) 3) }}</h3>
     <div class="cards">
-        {{ range $index, $page := (sort $section.Pages "Name") }}
+        {{ range $index, $page := (sort $section.Pages "File.Path") }}
         <div class="card">
             <div class="title">
                 <span class="index">{{ printf "%02d" $id }}/{{ printf "%02d" $index }}</span>

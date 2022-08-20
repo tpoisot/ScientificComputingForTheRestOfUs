@@ -1,12 +1,14 @@
-@import "layout";
-@import "typography";
-@import "pagetop";
-@import "callouts";
-@import "code";
-@import "questions";
+// Color palette
+@import "palette";
 
-#background {
-    background-color: blue;
-    height: 50vh;
-    clip-path: url(#myClip);
-}
+// Fonts from google
+@import "fonts";
+
+// Main typography choices
+@import "typography";
+
+// Page layout
+@import "layout";
+
+// Code blocks
+@import "codeblocks";

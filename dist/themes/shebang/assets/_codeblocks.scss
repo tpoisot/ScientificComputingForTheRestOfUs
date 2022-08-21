@@ -1,11 +1,21 @@
 .chroma, pre {
     padding: 15px;
-    border-radius: 10px;
+    border-radius: 4px;
     background-color: lighten($color_compl, 50%);
-    color: $color_compl;
+    border: 1px solid lighten($color_compl, 40%);
+    code {
+        color: $color_compl;
+    }
+}
+
+code {
+    color: $color_analogous_1;
 }
 
 .chroma {
-    background-color: lighten($color_theme, 50%);
-    color: $color_theme;
+    background-color: lighten($color_analogous_1, 50%);
+    border: 1px solid lighten($color_analogous_1, 40%);
+    code {
+        color: $color_analogous_1;
+    }
 }

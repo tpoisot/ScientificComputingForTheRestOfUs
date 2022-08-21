@@ -1,33 +1,21 @@
-$color_copy: rgb(30, 20, 10);
 
-$color_code: #917B66;
-$color_codebox: #FFF2E6;
-$color_output: #DEC7B2;
-$My-Color-6-4-hex: #578591;
-$My-Color-6-5-hex: #B1D5DE;
+// Main theme color
+$color_theme: #3c50b3;
 
-:root {
-  --color-warning: rgb(231, 147, 69);
-  --color-danger: rgb(204, 76, 53);
-  --color-opinion: rgb(98, 137, 190);
-  --color-information: rgb(141, 113, 148);
+$color_compl: #b39f3c;
 
-  --color-fg: rgb(40, 40, 40);
-  --color-bg: #fafafa;
+$color_analogous_1: #3c8bb3;
+$color_analogous_2: #633cb3;
 
-  --color-main: #9aaae3;
-  --color-highlight: #ffdca1;
-  --color-accent: #4d6ab3;
-  --color-bright: #8eb356;
-  --color-bright-subdued: #9ecc58;
+$color_triadic_1: #9f3cb3;
+$color_triadic_2: #b33c50;
 
-  --color-lightest: hsl(204, 6%, 95%);
-  --color-lighter: hsl(204, 6%, 90%);
-  --color-light: hsl(204, 6%, 75%);
-  --color-medium: hsl(204, 6%, 60%);
-  --color-dark: hsl(204, 6%, 45%);
-  --color-darker: hsl(204, 6%, 30%);
-  --color-darkest: hsl(204, 6%, 25%);
+// Color for the text
+$color_copy: darken($color_theme, 60%);
+$color_bg: #fcfefd;
 
-  --color-header: #3f51b5;
+html {
+    background-color: $color_bg;
+    color: $color_copy;
 }
+

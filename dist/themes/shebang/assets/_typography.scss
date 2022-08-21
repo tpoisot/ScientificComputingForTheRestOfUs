@@ -1,23 +1,57 @@
+@font-face {
+    font-family: 'Recursive';
+    src: url('fonts/Recursive_VF_1.085.woff2') format('woff2-variations');
+    font-weight: 300 500;
+}
+
 body {
-  font-family: $font_copy;
-  color: $color_copy;
+    font-family: 'Recursive', sans-serif;
+    font-variation-settings: "CASL" 0.2;
 }
 
-pre, code {
-  font-family: $font_mono;
+b,
+strong {
+    font-variation-settings: "wght" 400;
 }
 
-b, strong {
-  font-weight: 500;
+em,
+i {
+    font-style: normal;
+    font-variation-settings: "slnt" -7.2, "CASL" 0.5;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: $font_display;
+code,
+.highlight {
+    font-family: 'Recursive', monospace;
+    font-variation-settings: "MONO" 1, "CASL" 0.0;
 }
 
-h1 { font-size: calc(1.1rem*1.4)}
-h2 { font-size: calc(1.1rem*1.4*0.9)}
-h3 { font-size: calc(1.1rem*1.4*0.9*0.9)}
-h4 { font-size: calc(1.1rem*1.4*0.9*0.9*0.9)}
-h5 { font-size: calc(1.1rem*1.4*0.9*0.9*0.9*0.9)}
-h6 { font-size: calc(1.1rem*1.4*0.9*0.9*0.9*0.9*0.9)}
+article {
+    p:first-child {
+        font-feature-settings: "CASL" 0.3, "wght" 500;
+    }
+}
+
+h1 {
+    font-size: calc(1.1rem*1.4)
+}
+
+h2 {
+    font-size: calc(1.1rem*1.4*0.9)
+}
+
+h3 {
+    font-size: calc(1.1rem*1.4*0.9*0.9)
+}
+
+h4 {
+    font-size: calc(1.1rem*1.4*0.9*0.9*0.9)
+}
+
+h5 {
+    font-size: calc(1.1rem*1.4*0.9*0.9*0.9*0.9)
+}
+
+h6 {
+    font-size: calc(1.1rem*1.4*0.9*0.9*0.9*0.9*0.9)
+}

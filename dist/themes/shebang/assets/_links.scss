@@ -1,0 +1,10 @@
+a {
+    color: $color_theme;
+    transition: color 3s;
+    transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+    text-decoration-color: lighten($color_theme, 40%);
+    &:hover {
+        color: $color_analogous_1;
+        text-decoration-color: $color_compl;
+    }
+}

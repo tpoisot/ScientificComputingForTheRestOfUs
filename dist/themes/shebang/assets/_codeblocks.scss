@@ -1,8 +1,11 @@
-code {
-    color: $color_code;
+.chroma, pre {
+    padding: 15px;
+    border-radius: 10px;
+    background-color: lighten($color_compl, 50%);
+    color: $color_compl;
 }
 
 .chroma {
-    background-color: $color_codebox;
-    padding: 2%;
+    background-color: lighten($color_theme, 50%);
+    color: $color_theme;
 }

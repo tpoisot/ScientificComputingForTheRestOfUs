@@ -5,8 +5,8 @@
     <a href="about" title="About the project">Read more about the project</a>
 </div>
 
-{{ range $id, $section := .Site.Sections }}
-<section id="modules">
+<section class="modules">
+    {{ range $id, $section := .Site.Sections }}
     <h3>{{ title (substr ($section.Title | humanize) 3) }}</h3>
     <div class="cards">
         {{ range $index, $page := (sort $section.Pages "File.Path") }}
@@ -21,7 +21,7 @@
         </div>
         {{ end }}
     </div>
+    {{ end }}
 </section>
-{{ end }}
 
 {{ end }}

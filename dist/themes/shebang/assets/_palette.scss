@@ -1,14 +1,18 @@
 
 // Main theme color
-$color_theme: #3c50b3;
+$color_theme: #237cd9;
 
-$color_compl: #b39f3c;
+// Material color
+$color_compl: #d98123;
 
-$color_analogous_1: #3c8bb3;
-$color_analogous_2: #633cb3;
+$color_analogous_1: #23d6d9;
+$color_analogous_2: #2623d9;
 
-$color_triadic_1: #9f3cb3;
-$color_triadic_2: #b33c50;
+$color_triadic_1: #8123d9;
+$color_triadic_2: #d9237b;
+
+// Metadata color
+$color_meta: #737373;
 
 // Color for the text
 $color_copy: darken($color_theme, 30%);

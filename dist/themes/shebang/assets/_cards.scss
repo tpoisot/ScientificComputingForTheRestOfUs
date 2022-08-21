@@ -1,0 +1,21 @@
+.card {
+    padding: 8px;
+    border-left: 4px solid lighten($color_meta, 30%);
+    background-color: lighten($color_meta, 50%);
+    color: $color_meta;
+    margin-bottom: 1.6rem;
+
+    .title {
+        font-variation-settings: "MONO" 0, "CASL" 1.0, "wght" 800;
+        padding-bottom: 20px;
+        .index {
+            font-variation-settings: "MONO" 1, "CASL" 0;
+            color: $color_meta;
+
+        }
+    }
+
+    .summary {
+        color: darken($color_meta, 20%);
+    }
+}

@@ -1,7 +1,7 @@
 // Color palette
 @import "palette";
 
-// Main typography choices
+// Main text setting options
 @import "typography";
 
 // Page layout
@@ -12,3 +12,20 @@
 
 // Links
 @import "links";
+
+// Callouts
+@import "callouts";
+
+// About
+.about {
+    max-width: 50%;
+    width: 30vw;
+    display: block;
+    background-color: $color_theme;
+    padding: 20px;
+    text-align: center;
+    margin: 2rem auto;
+    a {
+        color: white;
+    }
+}

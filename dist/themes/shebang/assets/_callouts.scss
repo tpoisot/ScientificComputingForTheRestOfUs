@@ -1,0 +1,42 @@
+.callout {
+    padding: 8px;
+    border-radius: 4px;
+    border-left: 4px solid lighten($color_theme, 30%);
+    background-color: lighten($color_theme, 50%);
+}
+
+.warning {
+    &:before {
+        font-family: IcoFont;
+        content: "";
+        padding-right: 5px;
+        color: $color_triadic_1;
+    }
+}
+
+.information {
+    &:before {
+        font-family: IcoFont;
+        content: "";
+        padding-right: 5px;
+        color: $color_compl;
+    }
+}
+
+.opinion {
+    &:before {
+        font-family: IcoFont;
+        content: "";
+        padding-right: 5px;
+        color: $color_analogous_1;
+    }
+}
+
+.danger {
+    &:before {
+        font-family: IcoFont;
+        content: "";
+        padding-right: 5px;
+        color: $color_triadic_2;
+    }
+}

@@ -1,10 +1,11 @@
 main {
-    max-width: 1000px;
+    width: 1000px;
+    max-width: 90vw;
     margin: 0 auto;
 }
 
 article {
     p {
-        padding-bottom: 1rem;
+        padding: 0.4rem 0rem;
     }
 }

@@ -1,6 +1,5 @@
 ---
 title: Understanding dispatch
-weight: 2
 ---
 
 The point of this module is to understand *dispatch*, which is to say, the way
@@ -58,7 +57,7 @@ typeof(Rock())
 ````
 
 ````
-Main.var"##446".Rock
+Main.var"##327".Rock
 ````
 
 Let's finally check that an instance of `Rock` is indeed a `Rock`, but is also
@@ -170,7 +169,7 @@ end
 
 ````
 There was a MethodError:
-MethodError(Main.var"##446".move, (Main.var"##446".Paper(), Main.var"##446".Rock()), 0x000000000000803e)
+MethodError(Main.var"##327".move, (Main.var"##327".Paper(), Main.var"##327".Rock()), 0x0000000000007ea8)
 
 ````
 
@@ -225,10 +224,10 @@ methods(move)
 
 ````
 # 4 methods for generic function "move":
-[1] move(::Main.var"##446".Paper, ::Main.var"##446".Rock) in Main.var"##446" at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/04_functions/02_dispatch.md:1
-[2] move(::Main.var"##446".Scissors, ::Main.var"##446".Paper) in Main.var"##446" at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/04_functions/02_dispatch.md:1
-[3] move(::Main.var"##446".Rock, ::Main.var"##446".Scissors) in Main.var"##446" at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/04_functions/02_dispatch.md:2
-[4] move(::T, ::T) where T<:Main.var"##446".Strategy in Main.var"##446" at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/04_functions/02_dispatch.md:1
+[1] move(::Main.var"##327".Paper, ::Main.var"##327".Rock) in Main.var"##327" at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/04_functions/02_dispatch.md:1
+[2] move(::Main.var"##327".Scissors, ::Main.var"##327".Paper) in Main.var"##327" at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/04_functions/02_dispatch.md:1
+[3] move(::Main.var"##327".Rock, ::Main.var"##327".Scissors) in Main.var"##327" at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/04_functions/02_dispatch.md:2
+[4] move(::T, ::T) where T<:Main.var"##327".Strategy in Main.var"##327" at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/04_functions/02_dispatch.md:1
 ````
 
 The problem we want to solve becomes, in plain English, "the move has two
@@ -262,15 +261,15 @@ end
 ````
 
 ````
-Main.var"##446".Rock() 	 Main.var"##446".Rock()	→	(0, 0)
-Main.var"##446".Rock() 	 Main.var"##446".Paper()	→	(0, 1)
-Main.var"##446".Rock() 	 Main.var"##446".Scissors()	→	(1, 0)
-Main.var"##446".Paper() 	 Main.var"##446".Rock()	→	(1, 0)
-Main.var"##446".Paper() 	 Main.var"##446".Paper()	→	(0, 0)
-Main.var"##446".Paper() 	 Main.var"##446".Scissors()	→	(0, 1)
-Main.var"##446".Scissors() 	 Main.var"##446".Rock()	→	(0, 1)
-Main.var"##446".Scissors() 	 Main.var"##446".Paper()	→	(1, 0)
-Main.var"##446".Scissors() 	 Main.var"##446".Scissors()	→	(0, 0)
+Main.var"##327".Rock() 	 Main.var"##327".Rock()	→	(0, 0)
+Main.var"##327".Rock() 	 Main.var"##327".Paper()	→	(0, 1)
+Main.var"##327".Rock() 	 Main.var"##327".Scissors()	→	(1, 0)
+Main.var"##327".Paper() 	 Main.var"##327".Rock()	→	(1, 0)
+Main.var"##327".Paper() 	 Main.var"##327".Paper()	→	(0, 0)
+Main.var"##327".Paper() 	 Main.var"##327".Scissors()	→	(0, 1)
+Main.var"##327".Scissors() 	 Main.var"##327".Rock()	→	(0, 1)
+Main.var"##327".Scissors() 	 Main.var"##327".Paper()	→	(1, 0)
+Main.var"##327".Scissors() 	 Main.var"##327".Scissors()	→	(0, 0)
 
 ````
 

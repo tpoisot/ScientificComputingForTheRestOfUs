@@ -1,6 +1,5 @@
 ---
 title: The Path
-weight: 1
 ---
 
 One of the main obstacle to reproductible projects is issues with describing
@@ -174,11 +173,7 @@ readdir(pwd())
 ````
 
 ````
-5-element Vector{String}:
- "01_path.md"
- "02_booleans.md"
- "03_boolean-operations.md"
- "04_collections.md"
+1-element Vector{String}:
  "data"
 ````
 
@@ -200,11 +195,7 @@ readdir(pwd())
 ````
 
 ````
-4-element Vector{String}:
- "01_path.md"
- "02_booleans.md"
- "03_boolean-operations.md"
- "04_collections.md"
+String[]
 ````
 
 As a final bit of information, *Julia* can create temporary files, *i.e.*
@@ -227,7 +218,7 @@ tempname()
 ````
 
 ````
-"/tmp/jl_nAfAz8DcRc"
+"/tmp/jl_lqBQhUNcx0"
 ````
 
 Note that this string describes just this: a path. You can turn it into a

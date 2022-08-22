@@ -1,6 +1,5 @@
 ---
 title: Exiting loops
-weight: 3
 ---
 
 In the previous two modules, we have written loops that terminate when a

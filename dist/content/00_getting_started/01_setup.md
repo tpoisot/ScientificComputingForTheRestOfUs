@@ -1,6 +1,5 @@
 ---
 title: Preparing a project
-weight: 1
 ---
 
 If your working environment looks anything like mine, the first thing you may

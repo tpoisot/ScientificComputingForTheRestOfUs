@@ -1,6 +1,5 @@
 ---
 title: Returning functions
-weight: 5
 ---
 
 *Julia* has a very interesting function called `isequal`. Let's see how it
@@ -88,7 +87,7 @@ discrete_logistic_growth(1.0f0, 2.0f0)
 ````
 
 ````
-(::Main.var"##448".var"#model#1"{Float32, Float32, Float32}) (generic function with 1 method)
+(::Main.var"##329".var"#model#1"{Float32, Float32, Float32}) (generic function with 1 method)
 ````
 
 Excellent, this is a generic function with a single method! We can double
@@ -130,7 +129,7 @@ parameterized_model = discrete_logistic_growth(1.0f0, 2.0f0)
 ````
 
 ````
-(::Main.var"##448".var"#model#1"{Float32, Float32, Float32}) (generic function with 1 method)
+(::Main.var"##329".var"#model#1"{Float32, Float32, Float32}) (generic function with 1 method)
 ````
 
 We now have a fully usable function:

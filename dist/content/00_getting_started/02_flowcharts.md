@@ -1,6 +1,5 @@
 ---
 title: Flowcharts
-weight: 2
 ---
 
 One of the most powerful tool to plan a programming task is to draw a flochart.

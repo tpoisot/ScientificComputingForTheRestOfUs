@@ -1,6 +1,5 @@
 ---
 title: The while statement
-weight: 2
 ---
 
 In this module, we will see how we can use the `while` construct to make a
@@ -75,5 +74,5 @@ Statistics.cor(x,y)
 
 Note that we use `global x,y` because `x` and `y` are defined outside of the
 loop, and we are working outside of a function. If we removed this line, this
-code will never stop running.
+code will never stop running! This is a very important poi
 

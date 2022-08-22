@@ -1,7 +1,8 @@
 .callout {
     padding: 8px;
-    border-left: 4px solid lighten($color_theme, 30%);
-    background-color: lighten($color_theme, 50%);
+    border-left: 4px solid lighten($color_meta, 30%);
+    background-color: lighten($color_meta, 50%);
+    color: $color_meta;
 }
 
 .warning {
@@ -9,7 +10,7 @@
         font-family: IcoFont;
         content: "";
         padding-right: 5px;
-        color: $color_triadic_1;
+        color: $color_warning;
     }
 }
 
@@ -18,7 +19,7 @@
         font-family: IcoFont;
         content: "";
         padding-right: 5px;
-        color: $color_compl;
+        color: $color_information;
     }
 }
 
@@ -27,7 +28,7 @@
         font-family: IcoFont;
         content: "";
         padding-right: 5px;
-        color: $color_analogous_1;
+        color: $color_opinion;
     }
 }
 
@@ -36,6 +37,6 @@
         font-family: IcoFont;
         content: "";
         padding-right: 5px;
-        color: $color_triadic_2;
+        color: $color_danger;
     }
 }

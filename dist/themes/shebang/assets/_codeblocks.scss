@@ -1,27 +1,27 @@
 .chroma,
 pre {
     padding: 8px;
-    border-left: 4px solid lighten($color_compl, 30%);
-    background-color: lighten($color_compl, 50%);
+    border-left: 4px solid lighten($color_output, 30%);
+    background-color: lighten($color_output, 50%);
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow: scroll;
 
     code {
-        color: $color_compl;
+        color: $color_output;
     }
 }
 
 code {
-    color: $color_analogous_2;
+    color: $color_input;
 }
 
 .chroma {
     padding: 8px;
-    border-left: 4px solid lighten($color_analogous_2, 30%);
-    background-color: lighten($color_analogous_2, 50%);
+    border-left: 4px solid lighten($color_input, 30%);
+    background-color: lighten($color_input, 50%);
 
     code {
-        color: $color_analogous_2;
+        color: $color_input;
     }
 }

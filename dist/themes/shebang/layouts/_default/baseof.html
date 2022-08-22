@@ -8,9 +8,13 @@
     {{- partial "header.html" . -}}
 
     <main>
+
+        <h1>{{ .Title }}</h1>
+        
         {{- block "main" . }}{{- end }}
+
     </main>
-    
+
     {{- partial "footer.html" . -}}
 
 </body>

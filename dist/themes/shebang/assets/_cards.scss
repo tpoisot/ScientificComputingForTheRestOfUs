@@ -1,9 +1,6 @@
 .card {
-    padding: 8px;
-    border-left: 4px solid lighten($color_meta, 30%);
-    background-color: lighten($color_meta, 50%);
     color: $color_meta;
-    margin-bottom: 1.6rem;
+    margin-bottom: 3rem;
 
     .title {
         font-variation-settings: "MONO" 0, "CASL" 1.0, "wght" 800;

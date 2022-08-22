@@ -1,10 +1,17 @@
 a {
-    color: $color_theme;
-    transition: color 3s;
-    transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
-    text-decoration-color: lighten($color_theme, 40%);
+    color: $color_link;
+    transition: color 5s;
+    transition: text-decoration-color 1s;
+    transition-timing-function: ease-in-out;
+    text-decoration-color: lighten($color_theme, 30%);
+
+    &:visited {
+        color: $color_link;
+        text-decoration-color: lighten($color_theme, 50%);
+    }
+
     &:hover {
-        color: $color_analogous_1;
-        text-decoration-color: $color_compl;
+        color: $color_hover;
+        text-decoration-color: $color_theme;
     }
 }

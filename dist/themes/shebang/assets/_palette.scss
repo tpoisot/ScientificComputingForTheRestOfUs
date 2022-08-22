@@ -1,25 +1,28 @@
-
 // Main theme color
-$color_theme: #237cd9;
-
-// Material color
-$color_compl: #d98123;
-
-$color_analogous_1: #23d6d9;
-$color_analogous_2: #2623d9;
-
-$color_triadic_1: #8123d9;
-$color_triadic_2: #d9237b;
+$color_theme: #429496;
 
 // Metadata color
-$color_meta: #737373;
+$color_meta: #5e6964;
 
-// Color for the text
-$color_copy: darken($color_theme, 30%);
-$color_bg: #fcfefd;
+// Callout colors
+$color_danger: #872200;
+$color_warning: #ff8a43;
+$color_opinion: #706EB1;
+$color_information: #0083a6;
+
+// Code colors
+$color_input: #476ea8;
+$color_output: #b17c3c;
+
+// Copy color
+$color_copy: darken($color_theme, 25%);
+$color_bg: #fcfcfc;
+
+// Links
+$color_link: $color_theme;
+$color_hover: darken($color_theme, 20%);
 
 html {
     background-color: $color_bg;
     color: $color_copy;
 }
-

@@ -1,0 +1,35 @@
+h1 {
+    font-size: calc(1.1rem*1.4);
+    color: mix($color_theme, $color_meta, 50%);
+    font-variation-settings: "CASL" 1.0;
+}
+
+h2 {
+    font-size: calc(1.1rem*1.4*0.9);
+    color: mix($color_theme, $color_meta, 40%);
+    font-variation-settings: "CASL" 0.9;
+}
+
+h3 {
+    font-size: calc(1.1rem*1.4*0.9*0.9);
+    color: mix($color_theme, $color_meta, 30%);
+    font-variation-settings: "CASL" 0.8;
+}
+
+h4 {
+    font-size: calc(1.1rem*1.4*0.9*0.9*0.9);
+    color: mix($color_theme, $color_meta, 20%);
+    font-variation-settings: "CASL" 0.7;
+}
+
+h5 {
+    font-size: calc(1.1rem*1.4*0.9*0.9*0.9*0.9);
+    color: mix($color_theme, $color_meta, 10%);
+    font-variation-settings: "CASL" 0.6;
+}
+
+h6 {
+    font-size: calc(1.1rem*1.4*0.9*0.9*0.9*0.9*0.9);
+    color: mix($color_theme, $color_meta, 0%);
+    font-variation-settings: "CASL" 0.5;
+}

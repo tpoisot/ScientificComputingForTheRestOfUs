@@ -2,6 +2,13 @@
 # title: Returning functions
 # ---
 
+# In this module, we will learn how we can write functions that return other
+# functions. Because this seems a little weird at first, we will also discuss
+# situations in which this is a useful design pattern, and see how this approach
+# can be used together with Julia's powerful dispatch system.
+
+# <!--more-->
+
 # *Julia* has a very interesting function called `isequal`. Let's see how it
 # works (don't forget to look at `?isequal` for more):
 
@@ -38,14 +45,14 @@ is_two(2)
 # or $K$ to change. So let's define a function that would *only* be a function
 # of $n$:
 
-foo(n::Float64)::Float64 = n*(1.0+r*(1-n/K))
+foo(n::Float64)::Float64 = n * (1.0 + r * (1 - n / K))
 
 # Now, this function will *not work* because we do not have defined `r` or `K`.
 # We can do that by having a function taking values of `r` and `K` as arguments,
 # and return a version of our function with these values "replaced":
 
 function discrete_logistic_growth(r::T, K::T)::Function where {T <: AbstractFloat}
-    return model(n::T)::T = n*(one(T)+r*(one(T)-n/K)) 
+    return model(n::T)::T = n * (one(T) + r * (one(T) - n / K))
 end
 
 # Note that we are using a number of tricks from the previous modules: we ensure
@@ -89,3 +96,40 @@ parameterized_model(2.2f0)
 # But *why*? Think of our function this way: as soon as it is created, using
 # `discrete_logistic_growth`, we know the parameters (because we specified
 # them), and we know that they will not change.
+
+# Can we make this approach intersect nicely with Julia's dispatch system? Of
+# course! Let's assume we want to run the model sometimes on a single point (one
+# population), and sometimes on a series of populations (a vector of
+# abundances). We can do this by having, for example, one function taking a
+# number as input, and another function taking a vector of number as inputs. But
+# can we create both these functions when we create our model?
+
+# Yes!
+
+function better_discrete_logistic_growth(r::T, K::T)::Function where {T <: AbstractFloat}
+    model(n::T)::T = n * (one(T) + r * (one(T) - n / K))
+    model(n::Vector{T})::Vector{T} = n .* (one(eltype(T)) .+ r .* (one(eltype(T)) .- n ./ K))
+    return model
+end
+
+# Remember from the [module on dispatch][fn_disp] that a function is "just" a
+# name, a big ol' bag of methods. We can declare as many methods as we want, and
+# the output is still going to be a function.
+
+# [fn_disp]: {{< ref "04_functions/02_dispatch.md" >}}
+
+# Let's verify this!
+
+parameterized_better_model = better_discrete_logistic_growth(0.2, 1.0)
+
+# This is indeed a generic function with two methods. We can see it in action:
+
+parameterized_better_model(0.5)
+
+#-
+
+parameterized_better_model([0.0, 0.2, 1.0, 1.4])
+
+# This is another reason why the dispatch system is so important in Julia -- we
+# can use it to write a lot of different things that make the syntax of our code
+# much more pleasant to read!

@@ -173,7 +173,11 @@ readdir(pwd())
 ````
 
 ````
-1-element Vector{String}:
+5-element Vector{String}:
+ "01_path.md"
+ "02_environment.md"
+ "03_booleans.md"
+ "04_boolean_operations.md"
  "data"
 ````
 
@@ -195,7 +199,11 @@ readdir(pwd())
 ````
 
 ````
-String[]
+4-element Vector{String}:
+ "01_path.md"
+ "02_environment.md"
+ "03_booleans.md"
+ "04_boolean_operations.md"
 ````
 
 As a final bit of information, *Julia* can create temporary files, *i.e.*
@@ -218,7 +226,7 @@ tempname()
 ````
 
 ````
-"/tmp/jl_lqBQhUNcx0"
+"/tmp/jl_LQZhF2"
 ````
 
 Note that this string describes just this: a path. You can turn it into a

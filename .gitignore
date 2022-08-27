@@ -11,7 +11,7 @@ content/**/*.md
 !content/**/_index.md
 !content/_index.md
 
-dist/content/**.md
+dist/content/**/*.md
 !dist/content/_index.md
 !dist/content/about.md
 

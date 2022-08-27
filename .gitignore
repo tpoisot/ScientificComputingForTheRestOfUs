@@ -13,6 +13,7 @@ content/**/*.md
 
 dist/content/**.md
 !dist/content/_index.md
+!dist/content/about.md
 
 dist/data/dependencies
 

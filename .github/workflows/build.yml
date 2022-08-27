@@ -11,18 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        julia: [1.5.2]
-        document: [
-          "lessons/planning_ahead", "lessons/conditionals", "lessons/iteration",
-          "lessons/writing_functions", "lessons/avoiding_mistakes",
-          "capstones/ABC", "capstones/genetic_algorithm",
-          "capstones/runge_kutta", "primers/advanced_control_flow",
-          "primers/indexing", "primers/map_filter_reduce",
-          "primers/optimization", "primers/parallelcomputing",
-          "primers/returning_functions",
-          "capstones/naive_bayesian_classifier",
-          "capstones/neural_network_flux"
-          ]
+        julia: [1.8]
     steps:
       - name: "Checkout action"
         uses: actions/checkout@v1.0.0
@@ -32,9 +21,9 @@ jobs:
           version: ${{ matrix.julia }}
       - name: "Build the core packages"
         uses: julia-actions/julia-buildpkg@v1
-      - name: "Build ${{ matrix.document }}"
-        run: julia --project _builder.jl ${{ matrix.document }}
-      - name: Upload result for ${{ matrix.document }}
+      - name: "Build the content"
+        run: julia --project builder.jl
+      - name: Upload results
         uses: actions/upload-artifact@v2
         continue-on-error: true
         with:
@@ -50,7 +39,7 @@ jobs:
       - name: "Setup hugo"
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: '0.74.3'
+          hugo-version: '0.93.3'
           extended: true
       - name: Download built lessons
         uses: actions/download-artifact@v2

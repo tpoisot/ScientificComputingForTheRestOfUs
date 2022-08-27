@@ -1,5 +1,6 @@
 ---
 title: Returning functions
+status: beta
 ---
 
 In this module, we will learn how we can write functions that return other
@@ -94,7 +95,7 @@ discrete_logistic_growth(1.0f0, 2.0f0)
 ````
 
 ````
-(::Main.var"##393".var"#model#1"{Float32, Float32, Float32}) (generic function with 1 method)
+(::Main.var"##354".var"#model#1"{Float32, Float32, Float32}) (generic function with 1 method)
 ````
 
 Excellent, this is a generic function with a single method! We can double
@@ -136,7 +137,7 @@ parameterized_model = discrete_logistic_growth(1.0f0, 2.0f0)
 ````
 
 ````
-(::Main.var"##393".var"#model#1"{Float32, Float32, Float32}) (generic function with 1 method)
+(::Main.var"##354".var"#model#1"{Float32, Float32, Float32}) (generic function with 1 method)
 ````
 
 We now have a fully usable function:
@@ -165,7 +166,8 @@ Yes!
 ````julia
 function better_discrete_logistic_growth(r::T, K::T)::Function where {T <: AbstractFloat}
     model(n::T)::T = n * (one(T) + r * (one(T) - n / K))
-    model(n::Vector{T})::Vector{T} = n .* (one(eltype(T)) .+ r .* (one(eltype(T)) .- n ./ K))
+    model(n::Vector{T})::Vector{T} =
+        n .* (one(eltype(T)) .+ r .* (one(eltype(T)) .- n ./ K))
     return model
 end
 ````
@@ -187,7 +189,7 @@ parameterized_better_model = better_discrete_logistic_growth(0.2, 1.0)
 ````
 
 ````
-(::Main.var"##393".var"#model#2"{Float64, Float64, Float64}) (generic function with 2 methods)
+(::Main.var"##354".var"#model#2"{Float64, Float64, Float64}) (generic function with 2 methods)
 ````
 
 This is indeed a generic function with two methods. We can see it in action:

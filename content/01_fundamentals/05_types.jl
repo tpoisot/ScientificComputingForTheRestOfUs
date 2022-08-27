@@ -1,6 +1,6 @@
 # ---
 # title: Types
-# weight: 4
+# status: alpha
 # ---
 
 # In this module, we will look at one of the most important concept in *Julia*:
@@ -71,7 +71,7 @@ typeof(two)
 # instead of 2, we try to store $2i+0$ (a complex number)?
 
 try
-    two = 2im+0
+    two = 2im + 0
 catch err
     @warn "I cannot perform this operation"
 else

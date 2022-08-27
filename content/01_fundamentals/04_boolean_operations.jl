@@ -1,6 +1,6 @@
 # ---
 # title: Booleans operations
-# weight: 3
+# status: alpha
 # ---
 
 # ## Programming really *is* a language
@@ -77,7 +77,6 @@ time_by_bike = 4
 if time_by_foot < time_by_bike
     println("You should walk")
 end
-
 
 # Uh, weird! Nothing happened.
 
@@ -159,7 +158,6 @@ println(!false)
 # There is a new word here: *or*. The *or* operator will look at both statements
 # (Is the subway faster? Is it raining?), and return `true` if *either* of them
 # is true. Let's have a look:
-
 
 println("true or false:\t", true || false)
 #-

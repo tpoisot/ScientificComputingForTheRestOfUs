@@ -16,6 +16,7 @@
                 <a href="{{ $page.Permalink }}">{{ $page.Title }}</a><br />
             </div>
             <div class="summary">
+                <span class="status status-{{ $page.Params.status }}">{{ $page.Params.status }}</span>
                 {{ $page.Summary }}
             </div>
         </div>

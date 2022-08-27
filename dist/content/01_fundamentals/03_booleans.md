@@ -1,6 +1,6 @@
 ---
 title: Booleans
-weight: 2
+status: alpha
 ---
 
 ## Programming really *is* a language

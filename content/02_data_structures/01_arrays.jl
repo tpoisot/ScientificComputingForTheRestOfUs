@@ -1,5 +1,6 @@
 # ---
 # title: Arrays
+# status: alpha
 # ---
 
 # vector matrix

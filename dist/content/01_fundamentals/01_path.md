@@ -1,5 +1,6 @@
 ---
 title: The Path
+status: beta
 ---
 
 One of the main obstacle to reproductible projects is issues with describing
@@ -228,7 +229,7 @@ tempname()
 ````
 
 ````
-"/tmp/jl_b21yH2zSRy"
+"/tmp/jl_uT6DupSDg7"
 ````
 
 Note that this string describes just this: a path. You can turn it into a

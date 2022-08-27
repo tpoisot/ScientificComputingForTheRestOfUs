@@ -10,7 +10,7 @@ pluralizelisttitles = false
     [markup.goldmark.renderer]
         unsafe= true
     [markup.highlight]
-        lineNos = true
+        lineNos = false
         lineNumbersInTable = false
 
 

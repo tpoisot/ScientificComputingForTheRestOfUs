@@ -1,5 +1,6 @@
 ---
 title: Declaring functions
+status: alpha
 ---
 
 Everything should be a function. Everything. Especially in *Julia*, for
@@ -11,7 +12,7 @@ Let us start with a function that says (or rather, `print`) `"Hello"`:
 
 ````julia
 function hello()
-    print("Hello")
+    return print("Hello")
 end
 ````
 

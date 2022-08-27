@@ -1,5 +1,6 @@
 ---
 title: Understanding multiple dispatch
+status: beta
 ---
 
 In this module, we will expand on the previous content (understanding
@@ -28,7 +29,7 @@ end
 ````
 
 ````
-(Main.var"##391".Predator("Vulpes vulpes"), Main.var"##391".Prey("Mus musculus"))
+(Main.var"##352".Predator("Vulpes vulpes"), Main.var"##352".Prey("Mus musculus"))
 ````
 
 Yes, emojis are, indeed, acceptable for variable names, function names, etc.
@@ -43,7 +44,7 @@ fox, mouse = Predator("Vulpes vulpes"), Prey("Mus musculus")
 ````
 
 ````
-(Main.var"##391".Predator("Vulpes vulpes"), Main.var"##391".Prey("Mus musculus"))
+(Main.var"##352".Predator("Vulpes vulpes"), Main.var"##352".Prey("Mus musculus"))
 ````
 
 Better. What we want to do now is functionnaly very similar to the

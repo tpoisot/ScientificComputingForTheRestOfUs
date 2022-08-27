@@ -1,5 +1,6 @@
 # ---
 # title: Declaring functions
+# status: alpha
 # ---
 
 # Everything should be a function. Everything. Especially in *Julia*, for
@@ -10,7 +11,7 @@
 # Let us start with a function that says (or rather, `print`) `"Hello"`:
 
 function hello()
-    print("Hello")
+    return print("Hello")
 end
 
 # This is a `generic function` with `1 method`, and for now we will ignore this

@@ -1,5 +1,6 @@
 # ---
 # title: Preparing a project
+# status: release
 # ---
 
 # If your working environment looks anything like mine, the first thing you may

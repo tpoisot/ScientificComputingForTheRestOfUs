@@ -1,5 +1,6 @@
 ---
 title: Exiting loops
+status: beta
 ---
 
 In the previous two modules, we have written loops that terminate when a
@@ -51,7 +52,7 @@ true
 Finally, that the last three positions are a stop codon:
 
 ````julia
-seq[(end-2):end] in ["UAA", "UAG", "UGA"]
+seq[(end - 2):end] in ["UAA", "UAG", "UGA"]
 ````
 
 ````
@@ -176,7 +177,6 @@ for start_position in findall("AUG", rnd_seq)
     global tmp_seq
     for stop_codon in ["UAA", "UAG", "UGA"]
         for stop_position in findall(stop_codon, rnd_seq)
-
             (stop_position[begin] > start_position[end]) || continue
 
             seq_length = stop_position[end] - start_position[begin] + 1
@@ -188,15 +188,12 @@ for start_position in findall("AUG", rnd_seq)
                 tmp_seq = rnd_seq[start_position[begin]:stop_position[end]]
                 break
             end
-
         end
 
         seq_found && break
-
     end
 
     seq_found && break
-
 end
 ````
 

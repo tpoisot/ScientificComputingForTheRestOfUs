@@ -1,5 +1,6 @@
 # ---
 # title: The while statement
+# status: alpha
 # ---
 
 # In this module, we will see how we can use the `while` construct to make a

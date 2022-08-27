@@ -1,5 +1,6 @@
 # ---
 # title: Returning functions
+# status: beta
 # ---
 
 # In this module, we will learn how we can write functions that return other
@@ -108,7 +109,8 @@ parameterized_model(2.2f0)
 
 function better_discrete_logistic_growth(r::T, K::T)::Function where {T <: AbstractFloat}
     model(n::T)::T = n * (one(T) + r * (one(T) - n / K))
-    model(n::Vector{T})::Vector{T} = n .* (one(eltype(T)) .+ r .* (one(eltype(T)) .- n ./ K))
+    model(n::Vector{T})::Vector{T} =
+        n .* (one(eltype(T)) .+ r .* (one(eltype(T)) .- n ./ K))
     return model
 end
 

@@ -22,7 +22,9 @@ pluralizelisttitles = false
   subtitle = "(for the rest of us)"
 
 [permalinks]
-    "00_getting_started" = "/getting_started/:slug/"
+    "00_getting_started" = "/introduction/:slug/"
+    "01_fundamentals" = "/fundamentals/:slug/"
     "02_data_structures" = "/data/:slug/"
-    "03_fundamentals" = "/fundamentals/:slug/"
+    "03_the_flow" = "/flow/:slug/"
     "04_functions" = "/functions/:slug/"
+    "05_advanced_topics" = "/advanced/:slug/"

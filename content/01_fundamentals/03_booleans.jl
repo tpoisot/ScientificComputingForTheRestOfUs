@@ -1,220 +1,111 @@
 # ---
-# title: Booleans
-# status: alpha
+# title: Introduction to Boolean values
+# status: beta
 # ---
 
-# ## Programming really *is* a language
+# In this module, we will get acquainted with one of the most important type of
+# variables: Boolean values. They represent values that are either `true` or
+# `false`, which is a key element in a number of problems.
 
-# But if you understand three words, you will be able to hold a good
-# conversation with your computer! These three words are *if*, *for*, and
-# *while*. If you have some previous experience with writing code, you can skim
-# through this lesson and the next.
+# <!--more-->
 
-# One great way to make your code robust is to keep it very simple, and one
-# great way to keep your code very simple is to recognize that often, we want to
-# do one of three things: do one thing if something happens (`if`), do one thing
-# to a series of things (`for`), or do one thing until something happens
-# (`while`). These three possibilities define what we call the *control flow*,
-# or the *flow of execution*. In the current lesson, we will focus on
-# understanding the `if` statement.
+# Computer are *really* good at handling true/false statements. In fact, deep
+# down, this is pretty much everything they know how to do. And so, getting
+# familiar with the logic of Boolean values is extremely important. The good
+# thing is that there are only two such values:
 
-# ## After this lesson, you will be able to ...
+# The first is `true`:
 
-# - ... express your problems in Boolean terms (true/false)
-# - ... understand the different Boolean operators
-# - ... create conditionals
+true
 
-# ## Tossing coins and planning trips
+# The second is `false`:
 
-# Let's imagine a situation where we have a coin, and we can toss this coin. One
-# output of this observation is whether the coin landed on its head, or on its
-# tail. We can express the outcome of coin toss as a *statement*: "it is true
-# that the coin landed on its head", or "it is not true that the coin landed on
-# its head".
+false
 
-# This is not how we would think about the outcome as humans. It would be more
-# natural to say "head" or "tail". But expressing things as *true* or not true
-# (which we call *false*) is much more easier for computers to understand. A
-# great deal of programming is finding out ways to reduce the outcomes to
-# *true*/*false* statements.
+# Why are they so important? The main reason is that we can use them to build
+# "branching paths" in our code, for example to perform different actions based
+# on whether a condition is satisfied or not. This is usually done with an `if`
+# block, like so:
 
-# In fact, there is a name for this type of data: Boolean. In the Boolean world,
-# things are either *true*, or *false*, and we decide accordingly. Very often,
-# we think in Boolean terms without noticing it! For example, when wondering if
-# it is faster to go to work by bus, or by bike, we are expressing in our own
-# way the question of "going to work by bus is faster than by bike, true or
-# false?".
-
-# And then, we will of course take a decision based on the outcome of this
-# question. "If it is faster to go by bike, then I will go by bike".
-
-# Have you noticed that the word *if* appeared a lot in the past few sentences?
-# It is because `if` is the first way to control the flow of execution. It is
-# one of the words that many programming languages already know (we call these
-# *keywords*), and it lets us decide what to do when confronted with alternative
-# choices.
-
-# Let's say I am sitting in my office, and I need to attend a meeting on the
-# other side of campus. After looking at the itinerary, I can either bike (4
-# minutes) or walk (13 minutes). To decide what to do, I can ask the following
-# question to my computer:
-
-# ~~~
-# walking takes 13 minutes
-# biking takes 4 minutes
-# if (walking is faster than biking)
-#     tell me to walk
-# ~~~
-
-# This block above is called *pseudocode*. It is a way to start expressing our
-# ideas in a language we can understand, but that resembles what the computer
-# speaks. We will write quite a lot of it.
-
-# Now, let's give this a try - before you do, what do you think will happen?
-
-time_by_foot = 13
-time_by_bike = 4
-if time_by_foot < time_by_bike
-    println("You should walk")
+if (true)
+    @info "true"
 end
 
+# The part of the code in parenthesis is *set* to `true` here, but in practice,
+# this would be the outcome of some sort of test or comparison. For example:
 
-# Uh, weird! Nothing happened.
+2 < 3
 
-# Let's think about why. We asked the computer to compare the time by foot and
-# the time by bike; if the time by foot is shorter, then we print a line
-# (`println`) telling us to walk. But we know that the time by foot is *not*
-# shorter, and so does the computer. And for this reason, whatever is between
-# `if` and `end` is *not* executed. Testing that conditions are met are one way
-# to save time -- we do not want to run operations that are not useful.
+# Indeed, many functions return `true` or `false` when they perform a
+# comparison, or look for a match, or generally bring a categorical answer to a
+# question.
 
-# In the above example, we gave no alternative to the computer. To decide
-# between two (or more) things to do, we need to use `if`'s frequent partner:
-# `else`. Let's try again:
+# The `if` blocks can have an `else` statement, which is executed only if the
+# condition for the block is `false`. We can see it in action this way:
 
-time_by_foot = 13
-time_by_bike = 4
-if time_by_foot < time_by_bike
-    println("You should walk")
+if (false)
+    @info "true"
 else
-    println("You should bike")
+    @info "false"
 end
 
-# This time, we get the right output: `You should bike`. This brings a very
-# important point: we need to be *explicit*; when talking with humans, we can
-# understand (or guess) what the alternative choice is. Computers have no such
-# abilities: everything that happens is the outcome of things we (or others)
-# have written in the code.
+# Because the test we do in the `if` block gives a result of `false`, *Julia*
+# will run the content of the `else` block. This is useful to decide what to do
+# based on a condition! For example, we may want to do something different based
+# on whether a random number is smaller than a threshold:
 
-# In practice, we will want to make decisions based on several factors. This is a
-# thing at which Boolean values excel: we can perform *operations* on them. The
-# most common ones are *not*, *or*, and *and*.
-
-# The *not* operation is, quite literaly, the opposite of a statement. For
-# example, if we state "it is true that the coin landed on its head", then *not*
-# this statement is "it is *not* true that the coin landed on its head", which
-# is the same thing as "it is false than the coin landed on its head".
-
-# Most programming languages use `!x` to mean *not x*. If we run the code below,
-# what you do think will happen?
-
-println(!true)
-
-#-
-
-println(!false)
-
-# Adding `!` in front of a statement will return the *other* Boolean value.
-
-# Boolean values can also be *combined*. Coming back to deciding on a mode of
-# transportation: the same trip by subway would take 8 minutes. Biking is still
-# faster, but what if it is raining? We can add a rule, to say:
-
-# ~~~
-# if it rains
-#     take the subway
-# else
-#     if the subway is faster than biking
-#         take the subway
-#     else
-#         take the bike
-# ~~~
-
-# This block above is called a *nested* statement. We start with an `if`, and
-# then *within it*, have another `if`. This is not *too* bad, but increasing the
-# nestedness of statements is a very effective way of having too much
-# complexity! And too much complexity is, in turn, a great way to introduce
-# mistakes that are hard to understand. This is, generally, the opposite of what
-# we want to do.
-
-# So we can re-word this expression slightly:
-
-# ~~~
-# if (the subway is faster than the bike) or (it rains)
-#     take the subway
-# else
-#     take the bike
-# ~~~
-
-# There is a new word here: *or*. The *or* operator will look at both statements
-# (Is the subway faster? Is it raining?), and return `true` if *either* of them
-# is true. Let's have a look:
-
-
-println("true or false:\t", true || false)
-#-
-println("false or false:\t", false || false)
-#-
-println("false or true:\t", false || true)
-#-
-println("true or true:\t", true || true)
-#-
-
-# Most programming languages will use `||` or `or` or `|` to write the *or*
-# operation. We can now fine tune our code, to decide between the subway and the
-# bike, as a function of the weather. Run the cell below: what do you expect?
-
-time_by_subway = 8
-time_by_bike = 4
-rain = true
-
-#-
-
-if (time_by_subway < time_by_bike) | rain
-    println("You should take the subway")
+if rand() < 0.5
+    @info "x < .5"
 else
-    println("You should bike")
+    @info "x ≤ .5"
 end
 
-# Because it rains (`rain = true`), our code is correctly telling us to take the
-# subway.
+# The beauty of Boolean values is that they can be combined, because they obey
+# some arithmetic rules, for example:
 
-# At this point, it is important to note that there are many, many ways to write
-# the same code. Maybe you would like to ask the question "Is it *not* raining?"
-# instead, or decide which mode of transporation takes the longest time. As long
-# as they give the correct answer, all of these formulations are valid. The
-# important thing is that they let you write code that is easy to read, and easy
-# to understand.
+true + true
 
-# What if nested statements are easier to understand for you? Well, this is
-# fine. The most important thing is to write code that prevents you from making
-# mistakes. If you are more confident in your nested statements, then use them!
+# Why? In brief, because `true` is given a value of `1`, and `false` a value of
+# `0`. This is a good thing (we can build some semi-clever shortcuts around this
+# property), but in practice we use specific operators for Boolean values: `!`,
+# `|` and `&`.
 
-# Before we move on, there is a final operation on Booleans we need to discuss:
-# *and*. Most programming languages will use `&` or `&&` or `and` to describe
-# it. The *and* operation will look at both statements, and return *true* only
-# if both are *true*:
+# The *not* operation (`!`) is the easiest to grasp: in front of a Boolean
+# value, it returns the other:
 
-println("true and false:\t", true && false)
-#-
-println("false and false:\t", false && false)
-#-
-println("false and true:\t", false && true)
-#-
-println("true and true:\t", true && true)
+!true
 
-# **So far**, we have learned about Boolean values, and the *if* operation.
-# Using *if* is a way to look at a statement, and do different things when it is
-# true or false. In a lot of cases, we want to also perform operations on a
-# large number of elements. To do so, we will use the second word: *for*. But
-# because it is a confusing one, we will do so in the next lesson.
+# !!! OPINION The *not* operation can, *in some contexts only*, be noted with
+# `~`. One of the ways we use `~` is to differentiate between the result of some
+# mathematical operation (`!`), or some condition on *e.g.* the existence of a
+# path (`~`). This is purely a notation convention, and it is entirely
+# appropriate to forget about the existence of `~`.
+
+# The next operation is *or* (`|`), which is `true` if at least one of the values is
+# true:
+
+true | false
+
+# !!! INFO We encourage you to experiment with other combinations of values for
+# each operator, and to notably change the order (*i.e.* `true | false` *v.*
+# `false | true`).
+
+# The last operation is *and* (`&`), which is `true` if *both* of the values are
+# true:
+
+true & false
+
+# Compare to:
+
+true & true
+
+# We can nest these operations within parentheses. For example, the following
+# statement is valid:
+
+true & !(true | false)
+
+# This evaluates as `false` because the *interior* of the parenthesis is `true`,
+# so the *not* operation returns `false`, and then `true & false` is `false`.
+
+# There is a lot more we can achieve with Boolean values, which we will cover in
+# part in the next modules.

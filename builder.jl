@@ -20,19 +20,19 @@ end
 function replace_callouts(content)
     content = replace(
         content,
-        r"!!! INFO ((.+\n)+)\n" => s"{{< callout information >}}\n\1{{< /callout >}}\n\n",
+        r"!{3}[ ]{0,1}INFO ((.+\n)+)\n" => s"{{< callout information >}}\n\1{{< /callout >}}\n\n",
     )
     content = replace(
         content,
-        r"!!! OPINION ((.+\n)+)\n" => s"{{< callout opinion >}}\n\1{{< /callout >}}\n\n",
+        r"!{3}[ ]{0,1}OPINION ((.+\n)+)\n" => s"{{< callout opinion >}}\n\1{{< /callout >}}\n\n",
     )
     content = replace(
         content,
-        r"!!! DANGER ((.+\n)+)\n" => s"{{< callout danger >}}\n\1{{< /callout >}}\n\n",
+        r"!{3}[ ]{0,1}DANGER ((.+\n)+)\n" => s"{{< callout danger >}}\n\1{{< /callout >}}\n\n",
     )
     content = replace(
         content,
-        r"!!! WARNING ((.+\n)+)\n" => s"{{< callout warning >}}\n\1{{< /callout >}}\n\n",
+        r"!{3}[ ]{0,1}WARNING ((.+\n)+)\n" => s"{{< callout warning >}}\n\1{{< /callout >}}\n\n",
     )
     return content
 end

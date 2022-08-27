@@ -68,7 +68,7 @@ rnd_seq[1:10]
 ````
 
 ````
-"CAUGUCUGAG"
+"CGCUAUACCA"
 ````
 
 We will then look for possible initiations sites (using the `findall`
@@ -88,7 +88,7 @@ start_position = findfirst("AUG", rnd_seq)
 ````
 
 ````
-2:4
+30:32
 ````
 
 The codon position is represented as a range (you can check with `typeof`),
@@ -100,7 +100,7 @@ start_position[begin]
 ````
 
 ````
-2
+30
 ````
 
 We can look for the next *UGA* stop codon after this position (this is mostly
@@ -112,7 +112,7 @@ stop_position = findnext("UGA", rnd_seq, start_position[end])
 ````
 
 ````
-7:9
+76:78
 ````
 
 Again, this is expressed as a range, and so the sequence will stop at
@@ -122,7 +122,7 @@ stop_position[end]
 ````
 
 ````
-9
+78
 ````
 
 Its *length* is therefore
@@ -132,7 +132,7 @@ stop_position[end] - start_position[begin] + 1
 ````
 
 ````
-8
+49
 ````
 
 When do we want to skip an iteration? A first criteria is that, assuming we do
@@ -202,7 +202,7 @@ print("Found a sequence of length $(length(tmp_seq)):\n$(tmp_seq)")
 ````
 
 ````
-Found a sequence of length 45:
-AUGAUCACAUGGAGGAGCUCAUCGUAAUUGUUUAAGACCAAAUGA
+Found a sequence of length 42:
+AUGUCAGUGCUGCUCGUACGUAGCUUCCCACUUGUACGGUGA
 ````
 

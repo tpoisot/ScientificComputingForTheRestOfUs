@@ -58,7 +58,7 @@ typeof(Rock())
 ````
 
 ````
-Main.var"##351".Rock
+Main.var"##783".Rock
 ````
 
 Let's finally check that an instance of `Rock` is indeed a `Rock`, but is also
@@ -170,7 +170,7 @@ end
 
 ````
 There was a MethodError:
-MethodError(Main.var"##351".move, (Main.var"##351".Paper(), Main.var"##351".Rock()), 0x0000000000007f17)
+MethodError(Main.var"##783".move, (Main.var"##783".Paper(), Main.var"##783".Rock()), 0x0000000000008481)
 
 ````
 
@@ -225,10 +225,10 @@ methods(move)
 
 ````
 # 4 methods for generic function "move":
-[1] move(::Main.var"##351".Paper, ::Main.var"##351".Rock) in Main.var"##351" at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/04_functions/02_dispatch.md:1
-[2] move(::Main.var"##351".Scissors, ::Main.var"##351".Paper) in Main.var"##351" at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/04_functions/02_dispatch.md:1
-[3] move(::Main.var"##351".Rock, ::Main.var"##351".Scissors) in Main.var"##351" at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/04_functions/02_dispatch.md:2
-[4] move(::T, ::T) where T<:Main.var"##351".Strategy in Main.var"##351" at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/04_functions/02_dispatch.md:1
+[1] move(::Main.var"##783".Paper, ::Main.var"##783".Rock) in Main.var"##783" at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/04_functions/02_dispatch.md:1
+[2] move(::Main.var"##783".Scissors, ::Main.var"##783".Paper) in Main.var"##783" at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/04_functions/02_dispatch.md:1
+[3] move(::Main.var"##783".Rock, ::Main.var"##783".Scissors) in Main.var"##783" at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/04_functions/02_dispatch.md:2
+[4] move(::T, ::T) where T<:Main.var"##783".Strategy in Main.var"##783" at /home/tpoisot/Teaching/ScientificComputingForTheRestOfUs/dist/content/04_functions/02_dispatch.md:1
 ````
 
 The problem we want to solve becomes, in plain English, "the move has two
@@ -262,15 +262,15 @@ end
 ````
 
 ````
-Main.var"##351".Rock() 	 Main.var"##351".Rock()	→	(0, 0)
-Main.var"##351".Rock() 	 Main.var"##351".Paper()	→	(0, 1)
-Main.var"##351".Rock() 	 Main.var"##351".Scissors()	→	(1, 0)
-Main.var"##351".Paper() 	 Main.var"##351".Rock()	→	(1, 0)
-Main.var"##351".Paper() 	 Main.var"##351".Paper()	→	(0, 0)
-Main.var"##351".Paper() 	 Main.var"##351".Scissors()	→	(0, 1)
-Main.var"##351".Scissors() 	 Main.var"##351".Rock()	→	(0, 1)
-Main.var"##351".Scissors() 	 Main.var"##351".Paper()	→	(1, 0)
-Main.var"##351".Scissors() 	 Main.var"##351".Scissors()	→	(0, 0)
+Main.var"##783".Rock() 	 Main.var"##783".Rock()	→	(0, 0)
+Main.var"##783".Rock() 	 Main.var"##783".Paper()	→	(0, 1)
+Main.var"##783".Rock() 	 Main.var"##783".Scissors()	→	(1, 0)
+Main.var"##783".Paper() 	 Main.var"##783".Rock()	→	(1, 0)
+Main.var"##783".Paper() 	 Main.var"##783".Paper()	→	(0, 0)
+Main.var"##783".Paper() 	 Main.var"##783".Scissors()	→	(0, 1)
+Main.var"##783".Scissors() 	 Main.var"##783".Rock()	→	(0, 1)
+Main.var"##783".Scissors() 	 Main.var"##783".Paper()	→	(1, 0)
+Main.var"##783".Scissors() 	 Main.var"##783".Scissors()	→	(0, 0)
 
 ````
 

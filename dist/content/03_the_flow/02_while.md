@@ -47,7 +47,7 @@ x, y = rand(10), rand(10)
 Their correlation is
 
 ````julia
-Statistics.cor(x,y)
+Statistics.cor(x, y)
 ````
 
 ````
@@ -58,14 +58,21 @@ What we now need to do is keep generating vectors `x` and `y` *until* the
 condition is met. In *Julia*, this is expressed as
 
 ````julia
-while !(0.6 ≤ Statistics.cor(x,y) ≤ 0.8)
+while !(0.6 ≤ Statistics.cor(x, y) ≤ 0.8)
     global x, y
     x, y = rand(10), rand(10)
 end
 ````
 
+{{< callout danger >}}
+Note that `while` loops only terminate when some condition is met.
+If the condition cannot be met, the loop can run on forever. One common
+strategy is to implement a counter with a maximum number of iterations, for
+example, and to use it to `break` out of the loop.
+{{< /callout >}}
+
 ````julia
-Statistics.cor(x,y)
+Statistics.cor(x, y)
 ````
 
 ````

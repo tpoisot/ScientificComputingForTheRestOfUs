@@ -58,11 +58,9 @@ another computer, and have it "just work". Of course in real life, things seldom
 "just work", and this is why we should pay extra care to the practices that
 maximise the chances of it being the case.
 
-{{< callout information >}}
-This is not necessarily true if your project involves remote computing - or very
-large amounts of data. But then again, if you work in such a way, we expect that
-you will have read the documentation, and sought proper training.
-{{< /callout >}}
+!!! INFO This is not necessarily true if your project involves remote computing
+- or very large amounts of data. But then again, if you work in such a way, we
+expect that you will have read the documentation, and sought proper training.
 
 Second, file paths are not your friends. By far the biggest obstacle to
 reproducibility is the difference in ways to tell the computer *where files
@@ -147,7 +145,8 @@ Finally, and these are language-specific, the [*Julia* package manager](pkg)
 will create files to track the dependencies of your project. Check out the
 documentation.
 
-[readme]: https://mozilla.github.io/open-leadership-training-series/articles/opening-your-project/write-a-great-project-readme/
+[readme]:
+    https://mozilla.github.io/open-leadership-training-series/articles/opening-your-project/write-a-great-project-readme/
 [license]: https://choosealicense.com/
 [pkg]: https://julialang.github.io/Pkg.jl/v1/
 =#

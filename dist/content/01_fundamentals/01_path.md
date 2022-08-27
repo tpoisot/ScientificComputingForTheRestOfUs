@@ -22,11 +22,13 @@ pwd()
 The working directory is a very important concept: we can look for things
 *within* it, but we cannot look for things *outside* of it.
 
-{{< callout information >}} This is not quite entirely true. In some very
+{{< callout information >}}
+This is not quite entirely true. In some very
 specific cases, we may not want to store a few Gb of data in our working
 directory, and we will refer to those using their absolute path; the best
 practice in this case is probably to setup an environment variable to point to
-the data. {{< /callout >}}
+the data.
+{{< /callout >}}
 
 Why is that? The simple answer is that when you distribute your project, you
 will not distribute the rest of your machine. When working on a laptop (at
@@ -226,7 +228,7 @@ tempname()
 ````
 
 ````
-"/tmp/jl_LQZhF2"
+"/tmp/jl_b21yH2zSRy"
 ````
 
 Note that this string describes just this: a path. You can turn it into a

@@ -6,8 +6,13 @@ pygmentsCodeFences = true
 pygmentsUseClasses = true
 pluralizelisttitles = false
 
-[markup.goldmark.renderer]
-    unsafe= true
+[markup]
+    [markup.goldmark.renderer]
+        unsafe= true
+    [markup.highlight]
+        lineNos = true
+        lineNumbersInTable = false
+
 
 [params]
   readingSpeed = 120

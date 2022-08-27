@@ -20,7 +20,7 @@ using Distributions
 n_species, n_sites = 12, 17
 𝐘 = round.(Int64, rand(𝒟, n_species, n_sites))
 
-# !!!INFO We use the `𝒟` and `𝐘` symbols because they look really nice, but
+# !!! INFO We use the `𝒟` and `𝐘` symbols because they look really nice, but
 # `D` and `Y` are equally valid choices. In order to produce the math notation,
 # you can use the LaTeX syntax: `\scrD` and `\bfY` and press tab.
 
@@ -32,7 +32,7 @@ n_species, n_sites = 12, 17
 # To work on such a matrix, it is tempting to write a function that would check
 # for an argument of the type `Matrix{Int64}` (for example).
 
-# !!!OPINION Both `Matrix{Int64}` and `Vector{Int64}` are actually aliases for
+# !!! OPINION Both `Matrix{Int64}` and `Vector{Int64}` are actually aliases for
 # `Array{2, Int64}` and `Array{2, Int64}`. We prefer the more compact notation,
 # that is also explicit about what type of mathematical object we will be
 # handling, but in some situations, expressing the number of dimensions

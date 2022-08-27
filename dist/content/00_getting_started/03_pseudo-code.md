@@ -6,10 +6,12 @@ To facilitate the transition between diagram and code, one important step is
 to write *pseudo-code*, *i.e.* text that looks reasonably like code, but is
 not.
 
-{{< callout opinion >}} Pseudo-code is mostly useful when it comes to working
-on a single function. The overall structure of the project can be done as a
-flowchart, and then each function can be written as pseudo-code. This is, in
-fact, a really good exercise to try with your own projects. {{< /callout >}}
+{{< callout opinion >}}
+Pseudo-code is mostly useful when it comes to working on a single
+function. The overall structure of the project can be done as a flowchart, and
+then each function can be written as pseudo-code. This is, in fact, a really
+good exercise to try with your own projects.
+{{< /callout >}}
 
 Let us try with an example - we want to sort numbers. We will write
 pseudo-code for a very, *very* inefficient algorithm:

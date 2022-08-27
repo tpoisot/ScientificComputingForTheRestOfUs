@@ -24,4 +24,17 @@ code {
     code {
         color: $color_input;
     }
+
+    .ln {
+        color: lighten($color_meta, 40%) !important;
+        width: 2.5rem;
+        display: inline-block;
+    }
+    .line {
+        &:hover {
+            .ln {
+                color: $color_meta !important;
+            }
+        }
+    }
 }

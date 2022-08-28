@@ -1,12 +1,14 @@
 # ---
 # title: Understanding multiple dispatch
-# status: beta
+# status: alpha
 # ---
 
 # In this module, we will expand on the previous content (understanding
 # *dispatch*) to get familiar with a central design paradigm of *Julia*:
 # multiple dispatch. We will do so by writing code to simulate the outcome of
 # encounters between different types of organisms.
+
+# <!--more-->
 
 abstract type Organism end
 

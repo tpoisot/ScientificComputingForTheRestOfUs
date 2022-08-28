@@ -23,8 +23,8 @@
                         {{ with (eq $page.Params.status "beta") }}{{ end }}
                         {{ with (eq $page.Params.status "release") }}{{ end }}
                     </span>
-                    {{ with (eq $page.Params.status "alpha") }}This module is in development, and not to be used in practice{{ end }}
-                    {{ with (eq $page.Params.status "beta") }}This module is mostly complete but not field-tested{{ end }}
+                    {{ with (eq $page.Params.status "alpha") }}This module is under development{{ end }}
+                    {{ with (eq $page.Params.status "beta") }}This module is waiting for field-testing{{ end }}
                     {{ with (eq $page.Params.status "release") }}This module has been field-tested with actual learners{{ end }}
                 </div>
             </div>

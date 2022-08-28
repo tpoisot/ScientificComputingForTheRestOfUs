@@ -9,6 +9,8 @@
 # iteration. In these cases, we can use some special keywords to jump out of the
 # loop entirely, or skip some steps.
 
+# <!--more-->
+
 # Let's say that we want to generate sequences of mRNA that look legit enough to
 # fool a very naïve program, which is a good thing because we will use a very
 # naïve program to generate them. Specifically, we want sequences that will have

@@ -16,8 +16,8 @@ y = b .* (x .+ noise) .+ m;
 
 #-
 
-figure = Figure(resolution=(600, 600))
-scplot = Axis(figure[2, 1]; xlabel = "Variable", ylabel = "Response")
+figure = Figure(resolution=(900, 300))
+scplot = Axis(figure[1, 1]; xlabel = "Variable", ylabel = "Response")
 scatter!(scplot, x, y)
 figure
 

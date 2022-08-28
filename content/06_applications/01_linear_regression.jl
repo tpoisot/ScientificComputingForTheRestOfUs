@@ -89,10 +89,10 @@ figure
 # value $L$ to the parameters values. Specifically, the *gradient* is given by
 
 # $$
-# \nabla f' = \begin{bmatrix}
+# \nabla f = \begin{bmatrix}
 #    \frac{\partial L}{\partial m} &&
 #    \frac{\partial L}{\partial b}
-# \end{bmatrix}
+# \end{bmatrix}^\intercal
 # $$
 
 # The value of $\partial L/\partial m$ is the partial derivative of the log

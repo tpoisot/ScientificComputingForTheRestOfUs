@@ -7,6 +7,8 @@
 # the correct method is called based on the arguments; we will also see how to
 # use it to write the least possible amount of code!
 
+# <!--more-->
+
 # In order to illustrate some fundamental mechanisms, we will build a
 # rock/paper/scissors game, with a twist: it will rely *entirely* on types and
 # dispatch -- there will be no `if`, and most of the functions will very likely

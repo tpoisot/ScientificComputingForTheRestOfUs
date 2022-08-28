@@ -44,7 +44,7 @@ end
 function replace_images(content)
     content = replace(
         content,
-        r"!\[\]\((\d+.\w{3})\)\n" => s"![](/plots/\1)",
+        r"!\[\]\((\d+.\w{3})\)\n" => s"\n![](/plots/\1)\n",
     )
     return content
 end

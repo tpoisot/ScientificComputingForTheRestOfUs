@@ -41,7 +41,7 @@ Y = m .* (X .+ noise) .+ b;
 # It is *always* a good idea to look at the data before attempting any
 # modelling, so we can use the *CairoMakie* package to do so:
 
-figure = Figure(; resolution = (900, 300))
+figure = Figure(; resolution = (1600, 600), fontsize = 30, backgroundcolor = :transparent)
 scplot = Axis(figure[1, 1]; xlabel = "Variable", ylabel = "Response")
 scatter!(scplot, X, Y; color = :darkgrey)
 figure

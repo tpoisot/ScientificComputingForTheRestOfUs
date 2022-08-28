@@ -8,6 +8,8 @@
 # one of the first, most significant piece of knowledge to acquire is: how do I
 # declare a function?
 
+# <!--more-->
+
 # Let us start with a function that says (or rather, `print`) `"Hello"`:
 
 function hello()

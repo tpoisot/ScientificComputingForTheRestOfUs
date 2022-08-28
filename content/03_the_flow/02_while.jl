@@ -7,7 +7,7 @@
 # series of instructions repeat until a condition is met, and how to deal with
 # common caveats that can arise when using a `while` loop.
 
-# <!-- more -->
+# <!--more-->
 
 # By opposition to a `for` loop, as we have seen in the previous module, the
 # number of times a `while` loop will happen is not limited by the length of a

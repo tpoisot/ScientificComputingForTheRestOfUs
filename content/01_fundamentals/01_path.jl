@@ -7,6 +7,8 @@
 # where files are. In this module, we will talk about the path, and how to refer
 # to locations in a way that will work on any computer.
 
+# <!--more-->
+
 # The first question we have to answer is, where are we? The answer to this
 # question is `pwd`, or *print working directory*. This is telling us where
 # *Julia* is actually executing things. In our case, the script for this lesson

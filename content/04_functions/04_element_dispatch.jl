@@ -5,7 +5,7 @@
 
 # In this module, 
 
-# <!-- more -->
+# <!--more-->
 
 # A good case study to look at element-wise dispatch is the measurement of
 # species diversity, a task of which ecologists are very fond. In a lot of

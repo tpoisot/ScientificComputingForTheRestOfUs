@@ -1,6 +1,6 @@
 .summary {
     border: 1px solid lighten($color_meta, 45%);
-    border-radius: 3px;
+    border-radius: 3px 3px;
     p {
         padding: 0.5em 1em;
     }
@@ -9,21 +9,23 @@
 .status {
     padding: 8px;
     background-color: lighten($color_meta, 55%);
-    border-radius: 3px;
+    border-radius: 0px 0px 3px 3px;
     color: $color_meta;
 }
 
 .label {
-    padding: 0px 0px;
+    font-family: IcoFont;
     display: inline-block;
     text-align: center;
-    width: 4rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    padding: 5px;
+    text-align: center;
     background-color: lighten($color_meta, 50%);
     color: $color_bg;
-    font-size: 80%;
-    line-height: 130%;
     text-transform: uppercase;
-    border-radius: 3px;
+    border-radius: 1.2rem;
 }
 
 .status-alpha {

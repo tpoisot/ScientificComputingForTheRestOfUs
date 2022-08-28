@@ -73,14 +73,10 @@ for file in files_to_build
         )
         # Move images
         images = filter(endswith(".png"), readdir(root; join = true))
-        @info images
         if ~isempty(images)
             images_go_to = joinpath(@__DIR__, "dist", "static", "plots")
             ispath(images_go_to) || mkpath(images_go_to)
             for image in images
-                @info image
-                @info images_go_to
-                @info joinpath(images_go_to, last(splitpath(image)))
                 mv(image, joinpath(images_go_to, last(splitpath(image))); force = true)
             end
         end

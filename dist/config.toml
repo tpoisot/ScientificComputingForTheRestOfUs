@@ -28,3 +28,4 @@ pluralizelisttitles = false
     "03_the_flow" = "/flow/:slug/"
     "04_functions" = "/functions/:slug/"
     "05_advanced_topics" = "/advanced/:slug/"
+    "06_applications" = "/applications/:slug/"

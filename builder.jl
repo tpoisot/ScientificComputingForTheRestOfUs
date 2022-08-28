@@ -20,21 +20,37 @@ end
 function replace_callouts(content)
     content = replace(
         content,
-        r"!{3}[ ]{0,1}INFO ((.+\n)+)\n" => s"{{< callout information >}}\n\1{{< /callout >}}\n\n",
+        r"!{3}[ ]{0,1}INFO ((.+\n)+)\n" =>
+            s"{{< callout information >}}\n\1{{< /callout >}}\n\n",
     )
     content = replace(
         content,
-        r"!{3}[ ]{0,1}OPINION ((.+\n)+)\n" => s"{{< callout opinion >}}\n\1{{< /callout >}}\n\n",
+        r"!{3}[ ]{0,1}OPINION ((.+\n)+)\n" =>
+            s"{{< callout opinion >}}\n\1{{< /callout >}}\n\n",
     )
     content = replace(
         content,
-        r"!{3}[ ]{0,1}DANGER ((.+\n)+)\n" => s"{{< callout danger >}}\n\1{{< /callout >}}\n\n",
+        r"!{3}[ ]{0,1}DANGER ((.+\n)+)\n" =>
+            s"{{< callout danger >}}\n\1{{< /callout >}}\n\n",
     )
     content = replace(
         content,
-        r"!{3}[ ]{0,1}WARNING ((.+\n)+)\n" => s"{{< callout warning >}}\n\1{{< /callout >}}\n\n",
+        r"!{3}[ ]{0,1}WARNING ((.+\n)+)\n" =>
+            s"{{< callout warning >}}\n\1{{< /callout >}}\n\n",
     )
     return content
+end
+
+function replace_images(content)
+    content = replace(
+        content,
+        r"!\[\]\((\d+.\w{3})\)\n" => s"![](/plots/\1)",
+    )
+    return content
+end
+
+function post_processor(content)
+    return content |> replace_callouts |> replace_images
 end
 
 # Actually build the content
@@ -53,8 +69,21 @@ for file in files_to_build
             flavor = Literate.CommonMarkFlavor(),
             config = Dict("credit" => false, "execute" => true),
             name = stem,
-            postprocess = replace_callouts,
+            postprocess = post_processor,
         )
+        # Move images
+        images = filter(endswith(".png"), readdir(root; join = true))
+        @info images
+        if ~isempty(images)
+            images_go_to = joinpath(@__DIR__, "dist", "static", "plots")
+            ispath(images_go_to) || mkpath(images_go_to)
+            for image in images
+                @info image
+                @info images_go_to
+                @info joinpath(images_go_to, last(splitpath(image)))
+                mv(image, joinpath(images_go_to, last(splitpath(image))); force = true)
+            end
+        end
     catch e
         print(e)
     end

@@ -16,8 +16,13 @@
                 <a href="{{ $page.Permalink }}">{{ $page.Title }}</a><br />
             </div>
             <div class="summary">
-                <span class="status status-{{ $page.Params.status }}">{{ $page.Params.status }}</span>
                 {{ $page.Summary }}
+                <div class="status">
+                    <span class="label status-{{ $page.Params.status }}">{{ $page.Params.status }}</span>
+                    {{ with (eq $page.Params.status "alpha") }}This module is in development, and not to be used in practice{{ end }}
+                    {{ with (eq $page.Params.status "beta") }}This module is mostly complete but not field-tested{{ end }}
+                    {{ with (eq $page.Params.status "release") }}This module has been field-tested with actual learners{{ end }}
+                </div>
             </div>
         </div>
         {{ end }}

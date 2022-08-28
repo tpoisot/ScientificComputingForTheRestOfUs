@@ -1,10 +1,24 @@
+.summary {
+    border: 1px solid lighten($color_meta, 45%);
+    border-radius: 3px;
+    p {
+        padding: 0.5em 1em;
+    }
+}
+
 .status {
+    padding: 8px;
+    background-color: lighten($color_meta, 55%);
+    border-radius: 3px;
+    color: $color_meta;
+}
+
+.label {
     padding: 0px 0px;
     display: inline-block;
     text-align: center;
     width: 4rem;
     background-color: lighten($color_meta, 50%);
-    border: 1px solid lighten($color_meta, 20%);
     color: $color_bg;
     font-size: 80%;
     line-height: 130%;
@@ -14,18 +28,15 @@
 
 .status-alpha {
     background-color: lighten($color_danger, 50%);
-    border: 1px solid lighten($color_danger, 20%);
     color: $color_danger;
 }
 
 .status-beta {
     background-color: lighten($color_information, 50%);
-    border: 1px solid lighten($color_information, 20%);
     color: $color_information;
 }
 
 .status-release {
     background-color: lighten($color_opinion, 35%);
-    border: 1px solid lighten($color_opinion, 20%);
     color: $color_opinion;
 }

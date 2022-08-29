@@ -47,8 +47,17 @@ function replace_images(content)
     return content
 end
 
+function replace_mermaid(content)
+    content = replace(
+        content,
+        r"MERMAID\n((.+\n)+)\n" =>
+            s"<div class='mermaid' align='center'>\n\1</div>\n\n",
+    )
+    return content
+end
+
 function post_processor(content)
-    return content |> replace_callouts |> replace_images
+    return content |> replace_callouts |> replace_images |> replace_mermaid
 end
 
 # Actually build the content

@@ -7,7 +7,7 @@
 # Boolean values. In this module, we will expand upon this knowledge in ways
 # that will enable us to be more expressive with the code we write.
 
-# [bool]: {{< ref "01_fundamentals/03_booleans.md >}}
+# [bool]: {{< ref "01_fundamentals/03_booleans.md" >}}
 
 # <!--more-->
 

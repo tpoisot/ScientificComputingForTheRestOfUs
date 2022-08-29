@@ -1,0 +1,36 @@
+svg {
+    * {
+        font-family: 'Recursive';
+        font-size-adjust: 0.5;
+        text-align: center;
+        text-transform: capitalize;
+    }
+
+    .node {
+
+        polygon,
+        rect {
+            stroke-width: 4px;
+        }
+
+        polygon {
+            fill: lighten($color_output, 50%) !important;
+            stroke: $color_output  !important;
+
+            .label {
+                color: $color_output !important;
+            }
+        }
+
+        rect {
+            fill: lighten($color_theme, 55%) !important;
+            stroke: $color_theme  !important;
+
+            .label {
+                color: $color_theme !important;
+            }
+        }
+
+
+    }
+}

@@ -4,4 +4,4 @@ Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
 
 [compat]
-julia = "1.7"
+julia = "1.8"

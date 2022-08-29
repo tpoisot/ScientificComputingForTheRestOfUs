@@ -108,4 +108,4 @@ true & !(true | false)
 # so the *not* operation returns `false`, and then `true & false` is `false`.
 
 # There is a lot more we can achieve with Boolean values, which we will cover in
-# part in the next modules.
+# part in the next modules.s

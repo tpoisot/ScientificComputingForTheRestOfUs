@@ -1,5 +1,5 @@
 # ---
-# title: Short-circuit Boolean operationss
+# title: Short-circuit Boolean operations
 # status: beta
 # ---
 

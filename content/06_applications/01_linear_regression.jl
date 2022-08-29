@@ -10,39 +10,50 @@
 
 # <!--more-->
 
-# In order to make the code reproducible, after loading the packages we need, we
-# will set a random generator seed:
-
-using Random
 using Distributions
 using CairoMakie
-Random.seed!(1234)
 
-# Here is a broad overview of the task we want to accomplish. Given a series of
-# inputs $X$, and measurements $Y$, we want to infer the value of parameters $m$
-# and $b$ so that $mX+b \approx Y$. This is a linear regression, and it is one
-# of the most basic techniques in statistics.
+# Here is a broad overview of the task we want to accomplish. The
+# [AnimalTraits][anmtr) database provides curated information about metabolic
+# rates of several species of animals. There is a linear relationship between
+# the log of body mass and the log of brain size (both expressed in kg). In this
+# module, we will estimate the parameters of this relationship using linear
+# regression.
+
+# [anmtr]: https://animaltraits.org/
 
 # !!!OPINION Machine Learning and Statistics both claim linear regression as
 # "theirs". Both are wrong. Methods belong to the people.
 
-# In order to facilitate the process, we will generate a series of random
-# measurements, with $X$ drawn in $(-3,3)$, under the known parameters $m =
-# -2.6$ and $b = 1.05$. In order to generate some stochasticity in the data, we
-# will get our values $Y$ by measuring $m(X+\epsilon)+b$, *i.e.* we add a
-# measurement error on $X$ (and assume it is normally distributed with null mean
-# and unit variance):
+# We will first download, then load, the data -- we use the `CSV.File` approach
+# here, which is great for structured data, and accepts a lot of different
+# options to only read the required columns (see `?CSV.File` for more!). We will
+# limit the output to the first three rows:
 
-n_samples = 150
-b, m, X = 1.05, -2.6, rand(Uniform(-3, 3), n_samples)
-noise = rand(Normal(0.0, 1.0), n_samples)
-Y = m .* (X .+ noise) .+ b;
+import CSV
+data_url = "https://zenodo.org/record/6468938/files/observations.csv?download=1"
+data_file = download(data_url)
+traits = CSV.File(data_file; delim=",", select=["body mass", "brain size"])
+traits[1:3]
+
+# Because some species have missing values, we can use a combination of `filter`
+# and `any` to remove them:
+
+traits = filter(v -> all(.!ismissing.(v)), traits)
+traits[1:3]
+
+# We will now extract our vectors $x$ (body mass, the predictor) and $y$ (body
+# mass, the response), and pass them through the `log10` function to have a
+# linear relationship:
+
+X = log10.([trait[Symbol("body mass")] for trait in traits]);
+Y = log10.([trait[Symbol("brain size")] for trait in traits]);
 
 # It is *always* a good idea to look at the data before attempting any
 # modelling, so we can use the *CairoMakie* package to do so:
 
-figure = Figure(; resolution = (1600, 600), fontsize = 30, backgroundcolor = :transparent)
-scplot = Axis(figure[1, 1]; xlabel = "Variable", ylabel = "Response")
+figure = Figure(; resolution = (600, 600), fontsize = 20, backgroundcolor = :transparent)
+scplot = Axis(figure[1, 1]; xlabel = "Body mass (log; kg)", ylabel = "Brain mass (log; kg)")
 scatter!(scplot, X, Y; color = :darkgrey)
 figure
 
@@ -69,7 +80,8 @@ figure
 # We can measure the loss that we would get based on random values of $m$ and
 # $b$ drawn in the unit interval:
 
-m₀, b₀ = rand(2)
+using Statistics
+m₀, b₀ = 0.0, mean(Y)
 Ŷ₀ = m₀ .* X .+ b₀
 ℒ(Y, Ŷ₀)
 
@@ -80,7 +92,7 @@ lines!(
     scplot,
     [minimum(X), maximum(X)],
     (x) -> m₀ .* x .+ b₀;
-    color = :grey,
+    color = :black,
     linestyle = :dash,
 )
 figure
@@ -174,6 +186,11 @@ lines!(
     color = :tomato,
 )
 figure
+
+# !!!DOMAIN The reason it's not super good is that there are actually two family
+# of organisms here, endotherms and ectotherms, and their allometric
+# relationships scale differently. But for the purpose of this exercise, this
+# provides a Good Enough &tm; example.
 
 # One noteworthy thing about this example is that building our own (admittedly
 # not very general, and not very efficient) gradient descent optimizer was

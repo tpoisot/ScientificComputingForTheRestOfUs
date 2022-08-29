@@ -43,6 +43,11 @@ function replace_callouts(content)
         r"!{3}[ ]{0,1}WARNING ((.+\n)+)\n" =>
             s"{{< callout warning >}}\n\1{{< /callout >}}\n\n",
     )
+    content = replace(
+        content,
+        r"!{3}[ ]{0,1}DOMAIN ((.+\n)+)\n" =>
+            s"{{< callout domain >}}\n\1{{< /callout >}}\n\n",
+    )
     return content
 end
 

@@ -14,3 +14,5 @@
 # slices
 
 # begin / end
+
+# any all only first last

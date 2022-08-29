@@ -90,6 +90,13 @@ tolerated. Disliking Windows has not made anyone edgy or cool since
 1998.
 {{< /callout >}}
 
+More rarely, there will be a fe "Big Brain Time" callouts, meant to
+contextualize the code with do with some mentions of domain knowledge.
+
+{{< callout domain >}}
+It's big brain time!
+{{< /callout >}}
+
 ## Want to see this material as a workshop?
 
 This material can be given in a workshop format, ideally over two days, covering

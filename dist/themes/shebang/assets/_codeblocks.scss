@@ -3,6 +3,7 @@ pre {
     padding: 8px;
     border-left: 4px solid lighten($color_output, 30%);
     background-color: lighten($color_output, 50%);
+    border-radius: 4px;
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow: scroll;

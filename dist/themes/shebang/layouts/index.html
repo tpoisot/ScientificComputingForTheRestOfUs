@@ -17,8 +17,7 @@
         {{ range $index, $page := (sort $section.Pages "File.Path") }}
         <div class="card">
             <div class="title">
-                <span class="index">{{ printf "%02d" $id }}/{{ printf "%02d" $index }}</span>
-                <a href="{{ $page.Permalink }}">{{ $page.Title }}</a><br />
+                <span class="index">{{ printf "%02d" $id }}/{{ printf "%02d" $index }}</span> <a href="{{ $page.Permalink }}">{{ $page.Title }}</a>
             </div>
             <div class="summary">
                 {{ $page.Summary }}
@@ -28,8 +27,8 @@
                         {{ with (eq $page.Params.status "beta") }}{{ end }}
                         {{ with (eq $page.Params.status "release") }}{{ end }}
                     </span>
-                    {{ with (eq $page.Params.status "alpha") }}This module is under development{{ end }}
-                    {{ with (eq $page.Params.status "beta") }}This module is waiting for field-testing{{ end }}
+                    {{ with (eq $page.Params.status "alpha") }}This module is not ready{{ end }}
+                    {{ with (eq $page.Params.status "beta") }}This module is ready for field-testing{{ end }}
                     {{ with (eq $page.Params.status "release") }}This module has been field-tested with actual learners{{ end }}
                 </div>
             </div>

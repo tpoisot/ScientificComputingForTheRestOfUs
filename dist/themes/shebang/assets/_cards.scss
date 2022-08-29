@@ -1,10 +1,23 @@
 .card {
+
+    border: 1px solid lighten($color_meta, 45%);
+    border-radius: 3px 3px;
+
+    p,
+    .title {
+        padding: 0.5em 1em;
+    }
+
+    .title {
+        padding-bottom: 0;
+    }
+
     color: $color_meta;
     margin-bottom: 3rem;
 
     .title {
         font-variation-settings: "MONO" 0, "CASL" 1.0, "wght" 800;
-        padding-bottom: 20px;
+
         .index {
             font-variation-settings: "MONO" 1, "CASL" 0;
             color: $color_meta;
@@ -20,5 +33,5 @@
 .blurb {
     color: darken($color_meta, 20%);
     margin-bottom: 2rem;
-    font-variation-settings: 'wght'450;
+    font-variation-settings: 'wght' 450;
 }

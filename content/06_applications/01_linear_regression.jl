@@ -4,9 +4,10 @@
 # ---
 
 # In this module, we will use the gradient descent algorithm to perform a linear
-# regression. This will draw on concepts from a number of previous modules,
-# while also presenting an example of how core programming skills can be applied
-# for research.
+# regression, to estimate the brain mass of an animal if we know its body mass.
+# This will draw on concepts from a number of previous modules, while also
+# presenting an example of how core programming skills can be applied for
+# research.
 
 # <!--more-->
 

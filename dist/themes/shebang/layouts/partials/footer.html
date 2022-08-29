@@ -11,7 +11,7 @@
             {{ $statustag := print "status-" .Page.Params.status }}
             {{ $labels := print $sectiontag "," $lessontag "," $statustag ",feedback"}}
             {{ $source := print $url $repo "/blob/main/content/" (replace .Page.File ".md" ".jl") }}
-            {{ $issue := print $url $repo "/issues/new?labels=" $labels "&assignees=@" .Site.Params.githubUser "&title=ADD A DESCRIPTIVE TITLE" "&body= **Description of your problem/comments**\n\n*Do not edit below this point*" "\n\n[💻 SOURCE][src]\n\n" "[src]: " $source "\n\n[📔 PAGE][prm]\n\n" "[prm]: " .Page.Permalink "\n\n📦 " $sectiontag "\n\n🏷️ " $lessontag }}
+            {{ $issue := print $url $repo "/issues/new?labels=" $labels "&assignees=@" .Site.Params.githubUser "&title=ADD A DESCRIPTIVE TITLE" "&body= **Description of your problem/comments**\n\n\n\n---\n*Do not edit below this point*" "\n\n[💻 SOURCE][src]\n\n" "[src]: " $source "\n\n[📔 PAGE][prm]\n\n" "[prm]: " .Page.Permalink "\n\n📦 " $sectiontag "\n\n🏷️ " $lessontag }}
             <a href="{{ $issue }}" target="_blank">Provide feedback on this module</a>
         {{ end }}
         {{ end }}

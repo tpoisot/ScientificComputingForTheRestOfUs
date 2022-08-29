@@ -12,6 +12,13 @@ for (root, dirs, files) in walkdir(content_path)
     if ~isempty(source_files)
         append!(files_to_build, joinpath.(root, source_files))
     end
+    index_file = filter(isequal("_index.md"), files)
+    if ~isempty(index_file)
+        readme = only(index_file)
+        src = joinpath(root, readme)
+        dst = replace(src, "content" => "dist/content")
+        cp(src, dst; force=true)
+    end
 end
 
 # Function for callouts

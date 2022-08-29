@@ -7,7 +7,12 @@
 
 <section class="modules">
     {{ range $id, $section := .Site.Sections }}
-    <h3>{{ title (substr ($section.Title | humanize) 3) }}</h3>
+    <h3>{{ title (substr ($section.Page.File.Dir | humanize) 3) }}</h3>
+
+    <div class="blurb">
+        {{ $section.Page.Content }}
+    </div>
+
     <div class="cards">
         {{ range $index, $page := (sort $section.Pages "File.Path") }}
         <div class="card">

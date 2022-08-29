@@ -3,16 +3,18 @@
         {{ $url := "https://github.com/" }}
         {{ $repo := print .Site.Params.githubUser "/" .Site.Params.githubRepo }}
         <a href="/about/">About this project</a>
-        <a href="{{ print $url $repo }}">See the project on GitHub</a>
+        <a href="{{ print $url $repo }}" target="_blank">See the project on GitHub</a>
         {{ if .Page.Section }}
         {{ if .Page.File }}
             {{ $sectiontag := print "section-" (substr (replace (index (split (lower .Page.File) "/") 0) ".md" "") 3) }}
             {{ $lessontag := print "module-" (substr (replace (index (split (lower .Page.File) "/") 1) ".md" "") 3) }}
             {{ $statustag := print "status-" .Page.Params.status }}
             {{ $labels := print $sectiontag "," $lessontag "," $statustag ",feedback"}}
-            {{ $issue := print $url $repo "/issues/new?labels=" $labels "&assignees=@" .Site.Params.githubUser "&title=ADD A DESCRIPTIVE TITLE" "&body=Add a description of your problem/comments here"}}
-            <a href="{{ $issue }}">Provide feedback on this module</a>
+            {{ $source := print $url $repo "/blob/main/content/" (replace .Page.File ".md" ".jl") }}
+            {{ $issue := print $url $repo "/issues/new?labels=" $labels "&assignees=@" .Site.Params.githubUser "&title=ADD A DESCRIPTIVE TITLE" "&body= **Description of your problem/comments**\n\n*Do not edit below this point*" "\n\n[💻 SOURCE][src]\n\n" "[src]: " $source "\n\n[📔 PAGE][prm]\n\n" "[prm]: " .Page.Permalink "\n\n📦 " $sectiontag "\n\n🏷️ " $lessontag }}
+            <a href="{{ $issue }}" target="_blank">Provide feedback on this module</a>
         {{ end }}
         {{ end }}
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC-BY .40 (Timothée Poisot)</a>
     </div>
 </footer>

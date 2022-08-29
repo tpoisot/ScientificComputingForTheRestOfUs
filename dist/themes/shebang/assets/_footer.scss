@@ -3,6 +3,8 @@ footer {
     color: $color_bg;
     a {
         color: $color_bg !important;
+        display: block;
+        font-size: 80%;
     }
     margin-top: 8rem;
     .wrapper {

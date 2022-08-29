@@ -1,0 +1,15 @@
+footer {
+    background-color: lighten($color_theme, 0%);
+    color: $color_bg;
+    a {
+        color: $color_bg !important;
+    }
+    margin-top: 8rem;
+    .wrapper {
+        width: 800px;
+        max-width: 90vw;
+        margin: 0 auto;
+        padding: 1em 1em;
+        border-radius: 6px 6px 0px 0px;
+    }
+}

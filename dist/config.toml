@@ -13,7 +13,6 @@ pluralizelisttitles = false
         lineNos = false
         lineNumbersInTable = false
 
-
 [params]
   readingSpeed = 120
   githubUser = "tpoisot"

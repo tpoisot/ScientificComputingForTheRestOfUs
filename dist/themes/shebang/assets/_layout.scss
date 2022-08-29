@@ -1,8 +1,15 @@
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+}
+
 html, body {
     margin: 0 0;
     padding: 0 0;
     width: 100vw;
-    height: 100vh;
 }
 
 header, main {

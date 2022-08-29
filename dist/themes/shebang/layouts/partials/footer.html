@@ -1,1 +1,12 @@
-<script>mermaid.initialize({startOnLoad:true, theme:"neutral", curve: "basis"});</script>
+<footer>
+    <div class="wrapper">
+        {{ $url := "https://github.com/" }}
+        {{ $repo := print .Site.Params.githubUser "/" .Site.Params.githubRepo }}
+        {{ $sectiontag := print "section-" (substr (replace (index (split (lower .Page.File) "/") 0) ".md" "") 3) }}
+        {{ $lessontag := print "module-" (substr (replace (index (split (lower .Page.File) "/") 1) ".md" "") 3) }}
+        {{ $statustag := print "status-" .Page.Params.status }}
+        {{ $labels := print $sectiontag "," $lessontag "," $statustag ",feedback"}}
+        {{ $issue := print $url $repo "/issues/new?labels=" $labels "&assignees=@" .Site.Params.githubUser "&title=ADD A DESCRIPTIVE TITLE" "&body=Add a description of your problem/comments here"}}
+        <a href="{{ $issue }}">Provide feedback on this module!</a>
+    </div>
+</footer>

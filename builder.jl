@@ -1,6 +1,4 @@
 using Literate
-using TOML
-using JSON
 
 # aiiiii
 files_to_build = []

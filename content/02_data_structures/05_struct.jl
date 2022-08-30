@@ -1,6 +1,6 @@
 # ---
 # title: Building your own types
-# status: alpha
+# status: beta
 # ---
 
 # In this module, we will *briefly* see how we can define our own types (*aka*

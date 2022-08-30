@@ -16,3 +16,11 @@ to maintain, easier to reproduce, and easier to debug. But it can be difficult
 to find an introduction to get you started. The goal of this project is to
 provide reproducible documents you can use to get started on the most important
 points. You can use these lessons on your own, or as a group.
+
+<div class="about">
+    <a href="about" title="About the project">About the project</a>
+    <a href="howto" title="How to use this material">How to use this material</a>
+    <a href="readinglist" title="Suggested readings">Suggested readings</a>
+</div>
+
+**TK** brief overview of the sections

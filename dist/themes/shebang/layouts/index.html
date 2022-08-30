@@ -1,12 +1,6 @@
 {{ define "main" }}
 {{.Content}}
 
-<div class="about">
-    <a href="about" title="About the project">About the project</a>
-    <a href="howto" title="How to use this material">How to use this material</a>
-    <a href="readinglist" title="Suggested readings">Suggested readings</a>
-</div>
-
 <section class="modules">
     {{ range $id, $section := .Site.Sections }}
     <h3>{{ title (substr ($section.Page.File.Dir | humanize) 3) }}</h3>

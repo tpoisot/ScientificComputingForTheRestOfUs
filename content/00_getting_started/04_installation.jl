@@ -5,7 +5,8 @@
 
 # In this module, we will see how we can install *Julia*, setup a default
 # version, and go through some of the usual tools involved in setting up a good
-# *Julia* development environment
+# *Julia* development environment. We will not deal with the installation of
+# *packages* quite yet, as this will be done with its own module.
 
 # <!--more-->
 

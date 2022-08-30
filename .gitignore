@@ -9,7 +9,7 @@ seeds.txt
 
 content/**/*.md
 !content/**/_index.md
-!content/_index.md
+!content/*.md
 
 dist/content/**/*.md
 dist/content/**/*.png

@@ -1,7 +1,7 @@
 using Luxor
 
 using Random
-Random.seed!(1234567)
+Random.seed!(123)
 
 # theme colors
 c1 = (255, 138, 67) ./ 255;
@@ -14,7 +14,7 @@ origin()
 
 setcolor(66 / 255, 148 / 255, 150 / 255)
 rotate(deg2rad(15))
-squircle(O, 200, 200; rt = 0.5, action = :stroke)
+#squircle(O, 200, 200; rt = 0.5, action = :stroke)
 rotate(deg2rad(-3))
 
 for i in 1:12

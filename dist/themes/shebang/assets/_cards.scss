@@ -8,6 +8,11 @@
         padding: 0.5em 1em;
     }
 
+    .readingtime {
+        text-align: right;
+        color: lighten($color_meta, 20%);
+    }
+
     .title {
         padding-bottom: 0;
     }

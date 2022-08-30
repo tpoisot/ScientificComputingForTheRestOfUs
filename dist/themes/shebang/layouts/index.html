@@ -21,6 +21,7 @@
             </div>
             <div class="summary">
                 {{ $page.Summary }}
+                <p class="readingtime">Reading time &asymp; {{ math.Round (div (countwords .Content) 100.0) }} minutes.</p>
                 <div class="status">
                     <span class="label status-{{ $page.Params.status }}">
                         {{ with (eq $page.Params.status "alpha") }}{{ end }}

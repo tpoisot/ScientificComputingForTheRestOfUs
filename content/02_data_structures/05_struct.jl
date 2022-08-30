@@ -83,6 +83,4 @@ catch error
     @warn "It is impossible to change the model field of a protected model!"
 end
 
-# abstract type
-
 # union types

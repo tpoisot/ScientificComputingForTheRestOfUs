@@ -6,6 +6,12 @@ files_to_build = []
 # Get the top-level folders
 content_path = joinpath(@__DIR__, "content")
 
+mdfiles = filter(endswith(".md"), readdir(content_path; join=true))
+for mdfile in mdfiles
+    dst = replace(mdfile, "content" => "dist/content")
+    cp(mdfile, dst; force=true)
+end
+
 # Walk the content directory
 for (root, dirs, files) in walkdir(content_path)
     source_files = filter(endswith(".jl"), files)

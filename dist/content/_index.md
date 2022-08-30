@@ -22,5 +22,3 @@ points. You can use these lessons on your own, or as a group.
     <a href="howto" title="How to use this material">How to use this material</a>
     <a href="readinglist" title="Suggested readings">Suggested readings</a>
 </div>
-
-BUT!

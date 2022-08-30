@@ -80,7 +80,7 @@ getfield(psm, :noise)
 try
     setfield!(psm, :model, ExponentialDecay(0.2))
 catch error 
-    @warn "It is impossible to change the model field of a $(typeof(psm))"
+    @warn "It is impossible to change the model field of a protected model!"
 end
 
 # abstract type

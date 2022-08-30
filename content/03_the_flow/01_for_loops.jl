@@ -4,3 +4,7 @@
 # ---
 
 # loopyloop
+
+# <!--more-->
+
+# how to iterate on dict

@@ -14,8 +14,6 @@ content/**/*.md
 dist/content/**/*.md
 dist/content/**/*.png
 dist/static/plots/*png
-!dist/content/_index.md
-!dist/content/about.md
 
 dist/data/dependencies
 

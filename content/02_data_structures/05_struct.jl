@@ -11,9 +11,9 @@
 
 # <!--more-->
 
-# [dispatch]: {{< ref "04_functions/02_dispatch.md" >}}
-# [elemdispatch]: {{< ref "04_functions/04_element_dispatch.md" >}}
-# [overloading]: {{< ref "05_advanced_topics/04_overloading.md" >}}
+# [dispatch]: {{< ref "04_basic_functions_usage/02_dispatch.md" >}}
+# [elemdispatch]: {{< ref "05_advanced_functions_usage/02_element_dispatch.md" >}}
+# [overloading]: {{< ref "06_advanced_topics/03_overloading.md" >}}
 
 # In order to demonstrate how useful it is to build our own types, we will build
 # a very simple system to store the values of model parameters. This is actually

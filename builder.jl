@@ -6,6 +6,8 @@ files_to_build = []
 # Get the top-level folders
 content_path = joinpath(@__DIR__, "content")
 
+mkpath(joinpath(@__DIR__, "dist", "content")) 
+
 mdfiles = filter(endswith(".md"), readdir(content_path; join=true))
 for mdfile in mdfiles
     dst = replace(mdfile, "content" => "dist/content")
@@ -17,13 +19,6 @@ for (root, dirs, files) in walkdir(content_path)
     source_files = filter(endswith(".jl"), files)
     if ~isempty(source_files)
         append!(files_to_build, joinpath.(root, source_files))
-    end
-    index_file = filter(isequal("_index.md"), files)
-    if ~isempty(index_file)
-        readme = only(index_file)
-        src = joinpath(root, readme)
-        dst = replace(src, "content" => "dist/content")
-        cp(src, dst; force=true)
     end
 end
 
@@ -107,5 +102,17 @@ for file in files_to_build
         end
     catch e
         print(e)
+    end
+end
+
+
+# Walk the content directory
+for (root, dirs, files) in walkdir(content_path)
+    index_file = filter(isequal("_index.md"), files)
+    if ~isempty(index_file)
+        readme = only(index_file)
+        src = joinpath(root, readme)
+        dst = replace(src, "content" => "dist/content")
+        cp(src, dst; force = true)
     end
 end

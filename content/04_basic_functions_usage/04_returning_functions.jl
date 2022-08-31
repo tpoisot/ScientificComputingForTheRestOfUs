@@ -118,7 +118,7 @@ end
 # name, a big ol' bag of methods. We can declare as many methods as we want, and
 # the output is still going to be a function.
 
-# [fn_disp]: {{< ref "04_functions/02_dispatch.md" >}}
+# [fn_disp]: {{< ref "04_basic_functions_usage/02_dispatch.md" >}}
 
 # Let's verify this!
 

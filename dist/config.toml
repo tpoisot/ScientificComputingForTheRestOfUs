@@ -23,8 +23,9 @@ pluralizelisttitles = false
 [permalinks]
     "00_getting_started" = "/introduction/:slug/"
     "01_fundamentals" = "/fundamentals/:slug/"
-    "02_data_structures" = "/data/:slug/"
+    "02_data_structures" = "/data-structures/:slug/"
     "03_the_flow" = "/flow/:slug/"
-    "04_functions" = "/functions/:slug/"
-    "05_advanced_topics" = "/advanced/:slug/"
-    "06_applications" = "/applications/:slug/"
+    "04_basic_functions_usage" = "/functions/:slug/"
+    "05_advanced_functions_usage" = "/advanced-functions/:slug/"
+    "06_advanced_topics" = "/advanced-topics/:slug/"
+    "07_applications" = "/applications/:slug/"

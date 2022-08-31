@@ -27,7 +27,9 @@ principles to any language you prefer to use.
 
 This material can be given in a workshop format, ideally over two days, covering
 several lessons and one or two capstone examples. Please contact [Timothée
-Poisot](mailto:timothee.poisot@umontreal.ca) for more information.
+Poisot](mailto:timothee.poisot@umontreal.ca) for more information. It is part of
+the suggested reading for classes BIO3033, BIO6033, and BIO6032 at Université de
+Montréal, in order to catch up on programming concepts used during the class.
 
 There are a number of ways to contribute. Before you start, please have a look
 at our [Code of Conduct][coc]. It boils down to *be nice and respectful* -- no

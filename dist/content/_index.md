@@ -22,3 +22,24 @@ points. You can use these lessons on your own, or as a group.
     <a href="howto" title="How to use this material">How to use this material</a>
     <a href="readinglist" title="Suggested readings">Suggested readings</a>
 </div>
+
+This material has been designed according to three core ideas:
+
+First, **each module is short** (usually no more than 10 minutes to read,
+assuming a reading speed of about 100 words a minute, which seems to be the
+average for technical texts), and introduced a *single* concept. In many places,
+you will notice advice redirecting you to the documentation. The [*Julia*
+manual](https://docs.julialang.org/en/v1/) is extremely thorough, and the point
+of this material is to show "how things work" (as opposed to going into all of
+the different ways they can be made to work).
+
+Second, **this material is *not* about showcasing different packages**. There
+are some situations where we will need to go into the details of *e.g.*
+[Makie](https://makie.juliaplots.org/stable/) for plotting, but it is expected
+that you will, again, read the documentation for the packages that are loaded.
+The material relies most of the time only on packages from *Julia*'s standard
+library.
+
+Finally, **no error messages**. This is an important design concept. Although
+error messages happen in the daily practice of programming, the point of this
+material is to anticipate and handle exceptions gracefully.

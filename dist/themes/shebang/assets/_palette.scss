@@ -1,23 +1,28 @@
-:root {
-  --color-warning: rgb(231, 147, 69);
-  --color-danger: rgb(204, 76, 53);
-  --color-opinion: rgb(98, 137, 190);
-  --color-information: rgb(141, 113, 148);
+// Main theme color
+$color_theme: rgb(66, 148, 150);
 
-  --color-fg: rgb(40, 40, 40);
-  --color-bg: rgb(255, 255, 255);
+// Metadata color
+$color_meta: #5e6964;
 
-  --color-main: #9aaae3;
-  --color-highlight: #ffdca1;
-  --color-accent: #4d6ab3;
-  --color-bright: #8eb356;
-  --color-bright-subdued: #9ecc58;
+// Callout colors
+$color_danger: #872200;
+$color_warning: rgb(255, 138, 67);
+$color_opinion: rgb(112, 110, 177);
+$color_information: rgb(0, 131, 166);
 
-  --color-lightest: hsl(204, 6%, 95%);
-  --color-lighter: hsl(204, 6%, 90%);
-  --color-light: hsl(204, 6%, 75%);
-  --color-medium: hsl(204, 6%, 60%);
-  --color-dark: hsl(204, 6%, 45%);
-  --color-darker: hsl(204, 6%, 30%);
-  --color-darkest: hsl(204, 6%, 25%);
+// Code colors
+$color_input: #476ea8;
+$color_output: #b17c3c;
+
+// Copy color
+$color_copy: darken($color_theme, 25%);
+$color_bg: #fcfcfc;
+
+// Links
+$color_link: $color_theme;
+$color_hover: darken($color_theme, 20%);
+
+html {
+    background-color: $color_bg;
+    color: $color_copy;
 }

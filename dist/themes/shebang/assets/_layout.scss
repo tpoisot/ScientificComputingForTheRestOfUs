@@ -1,39 +1,30 @@
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+}
+
 html, body {
-  height: 100vh;
+    margin: 0 0;
+    padding: 0 0;
+    width: 100vw;
 }
 
-section#content {
-  max-width: 900px;
-  padding: 50px;
-  margin: 0px auto;
-  padding-top: 5em;
-  img {
-    max-width: 100%;
-  }
+header, main {
+    width: 800px;
+    max-width: 90vw;
+    margin: 0 auto;
 }
 
-@media only screen and (min-width: 1540px) {
-  nav#main {
-    left: 0 !important;
-    .toggle {
-      display: none;
+article {
+    p {
+        padding: 0.4rem 0rem;
+        img {
+            max-width: 100%;
+            margin: auto;
+            display: block;
+        }
     }
-  }
-}
-
-figure {
-  margin: 2em 0em;
-  padding: 1em;
-  border: 1px solid var(--color-lighter);
-  text-align: center;
-  figcaption {
-    text-align: left;
-    h4 {
-      color: var(--color-darker);
-    }
-  }
-}
-
-.resource {
-  
 }

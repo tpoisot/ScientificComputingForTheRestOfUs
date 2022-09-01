@@ -1,43 +1,52 @@
 .callout {
-  font-family: var(--font-title);
-  &::before {
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    color: white;
-    margin-right: 1em;
-    font-size: 0.9rem;
-    width: 1.8rem;
-    text-align: center;
-    display: inline-block;
-    margin-left: -3.1em;
-    color: var(--color-accent);
-  }
-  &.opinion {
-    color: var(--color-opinion);
-    &::before {
-      content: "\f0eb";
-      color: var(--color-opinion);
+    padding: 8px;
+    border-left: 4px solid lighten($color_meta, 30%);
+    background-color: lighten($color_meta, 55%);
+    color: $color_meta;
+    border-radius: 4px;
+}
+
+.warning {
+    &:before {
+        font-family: IcoFont;
+        content: "";
+        padding-right: 5px;
+        color: $color_warning;
     }
-  }
-  &.warning {
-    color: var(--color-warning);
-    &::before {
-      content: "\f06a";
-      color: var(--color-warning);
+}
+
+.information {
+    &:before {
+        font-family: IcoFont;
+        content: "";
+        padding-right: 5px;
+        color: $color_information;
     }
-  }
-  &.danger {
-    color: var(--color-danger);
-    &::before {
-      content: "\f071";
-      color: var(--color-danger);
+}
+
+.opinion {
+    &:before {
+        font-family: IcoFont;
+        content: "";
+        padding-right: 5px;
+        color: $color_opinion;
     }
-  }
-  &.information {
-    color: var(--color-information);
-    &::before {
-      content: "\f075";
-      color: var(--color-information);
+}
+
+.danger {
+    &:before {
+        font-family: IcoFont;
+        content: "";
+        padding-right: 5px;
+        color: $color_danger;
     }
-  }
+}
+
+.domain {
+    &:before {
+        font-family: IcoFont;
+        content: "";
+        padding-right: 5px;
+        color: $color_theme;
+    }
 }

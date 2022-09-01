@@ -1,3 +1,38 @@
 {{ define "main" }}
-  {{.Content}}
+{{.Content}}
+
+<section class="modules">
+    {{ range $id, $section := .Site.Sections }}
+    <h3>{{ title (substr ($section.Page.File.Dir | humanize) 3) }}</h3>
+
+    <div class="blurb">
+        {{ $section.Page.Content }}
+    </div>
+
+    <div class="cards">
+        {{ range $index, $page := (sort $section.Pages "File.Path") }}
+        <div class="card">
+            <div class="title">
+                <span class="index">{{ printf "%02d" $id }}/{{ printf "%02d" $index }}</span> <a href="{{ $page.Permalink }}">{{ $page.Title }}</a>
+            </div>
+            <div class="summary">
+                {{ $page.Summary }}
+                <p class="readingtime">Reading time &asymp; {{ math.Round (div (countwords .Content) 100.0) }} minutes.</p>
+                <div class="status">
+                    <span class="label status-{{ $page.Params.status }}">
+                        {{ with (eq $page.Params.status "alpha") }}{{ end }}
+                        {{ with (eq $page.Params.status "beta") }}{{ end }}
+                        {{ with (eq $page.Params.status "release") }}{{ end }}
+                    </span>
+                    {{ with (eq $page.Params.status "alpha") }}This module is not ready{{ end }}
+                    {{ with (eq $page.Params.status "beta") }}This module is ready for field-testing{{ end }}
+                    {{ with (eq $page.Params.status "release") }}This module has been field-tested with learners{{ end }}
+                </div>
+            </div>
+        </div>
+        {{ end }}
+    </div>
+    {{ end }}
+</section>
+
 {{ end }}

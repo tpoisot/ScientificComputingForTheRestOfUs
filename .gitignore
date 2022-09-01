@@ -9,16 +9,11 @@ seeds.txt
 
 content/**/*.md
 !content/**/_index.md
-!content/_index.md
+!content/*.md
 
-dist/content/lessons/
-!dist/content/lessons/_index.md
-
-dist/content/primers/
-!dist/content/primers/_index.md
-
-dist/content/capstones/
-!dist/content/capstones/_index.md
+dist/content/**/*.md
+dist/content/**/*.png
+dist/static/plots/*png
 
 dist/data/dependencies
 
@@ -27,3 +22,6 @@ dist/**/_gen
 Manifest.toml
 
 .vscode
+.VSCodeCounter
+
+.hugo_build.lock

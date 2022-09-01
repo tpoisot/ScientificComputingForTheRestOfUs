@@ -1,115 +1,35 @@
+@font-face {
+    font-family: 'Recursive';
+    src: url('fonts/Recursive_VF_1.085.woff2') format('woff2-variations');
+    font-weight: 300 500;
+}
+
 body {
-  font-family: var(--font-main);
-  font-size: var(--font-size);
+    font-family: 'Recursive', sans-serif;
+    font-variation-settings: "CASL" 0.2;
+    font-size: 12.6pt;
+    line-height: 18pt;
 }
 
-pre, code {
-  font-family: var(--font-code);
+b,
+strong {
+    font-variation-settings: "wght" 400;
 }
 
-b, strong {
-  font-weight: 500;
+em,
+i {
+    font-style: normal;
+    font-variation-settings: "slnt" -7.2, "CASL" 0.5;
 }
 
-nav, h1, h2 {
-  font-family: var(--font-title);
-  color: var(--color-accent);
-}
-h3, h4, h5, h6 {
-  font-family: var(--font-meta);
-  color: var(--color-dark);
+code,
+.highlight {
+    font-family: 'Recursive', monospace;
+    font-variation-settings: "MONO" 1, "CASL" 0.0;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 400;
-  padding-bottom: 0px;
-  margin-bottom: 0.2em;
-  margin-top: 2.8em;
-}
-
-h1 { font-size: calc(1.1rem*1.4)}
-h2 { font-size: calc(1.1rem*1.4*0.9)}
-h3 { font-size: calc(1.1rem*1.4*0.9*0.9)}
-h4 { font-size: calc(1.1rem*1.4*0.9*0.9*0.9)}
-h5 { font-size: calc(1.1rem*1.4*0.9*0.9*0.9*0.9)}
-h6 { font-size: calc(1.1rem*1.4*0.9*0.9*0.9*0.9*0.9)}
-
-section#content {
-  line-height: var(--font-lh);
-}
-
-a {
-  color: var(--color-bright);
-  &:hover {
-    color: var(--color-bright-subdued);
-  }
-  text-decoration: none;
-}
-
-.listicle {
-  font-family: var(--font-meta);
-  color: var(--color-darkest);
-  margin-bottom: 5px;
-  i {
-    color: var(--color-main);
-  }
-  .listicleitem {
-    color: var(--color-dark);
-    margin-right: 5px;
-  }
-  .construction {
-    color: var(--color-danger);
-  }
-  .draft {
-    color: var(--color-warning);
-  }
-}
-
-.summary {
-  padding-top: 0.5em;
-  font-style: italic;
-  color: var(--color-darker);
-}
-
-table {
-  font-size: 90%;
-  width: 100%;
-  border-collapse: collapse;
-  border-bottom: 1px solid var(--color-dark);
-  thead {
-    th {
-      font-weight: 500;
-      color: var(--color-lightest);
-      background-color: var(--color-dark);
+article {
+    p:first-child {
+        font-feature-settings: "CASL" 0.3, "wght" 500;
     }
-    tr {
-      &:nth-child(2){
-        th {
-          background-color: var(--color-light);
-          color: var(--color-accent);
-          font-weight: 400;
-          font-family: var(--font-code);
-        }
-      }
-    }
-  }
-  tr{
-    &:nth-child(odd) {
-      background: var(--color-lightest);
-    }
-  }
-  tbody {
-    th {
-      color: var(--color-light);
-      font-weight: 400;
-    }
-    tr {
-      &:hover {
-        background: var(--color-highlight);
-      }
-    }
-  }
-  td, th {
-    padding: 3px 7px;
-  }
 }

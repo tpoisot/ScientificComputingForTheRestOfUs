@@ -4,29 +4,14 @@ preserveTaxonomyNames = true
 theme = "shebang"
 pygmentsCodeFences = true
 pygmentsUseClasses = true
+pluralizelisttitles = false
 
-[markup.goldmark.renderer]
-unsafe= true
-
-[menu]
-  [[menu.main]]
-    identifier = "lessons"
-    name = "Lessons"
-    url = "/lessons/"
-    weight = 1
-    pre = "fa-book-open"
-  [[menu.main]]
-    identifier = "capstones"
-    name = "Capstones"
-    url = "/capstones/"
-    weight = 3
-    pre = "fa-star"
-  [[menu.main]]
-    identifier = "primers"
-    name = "Primers"
-    url = "/primers/"
-    weight = 2
-    pre = "fa-bolt"
+[markup]
+    [markup.goldmark.renderer]
+        unsafe= true
+    [markup.highlight]
+        lineNos = false
+        lineNumbersInTable = false
 
 [params]
   readingSpeed = 120
@@ -35,6 +20,12 @@ unsafe= true
   title = "Scientific computing"
   subtitle = "(for the rest of us)"
 
-[taxonomies]
-  concept = "concepts"
-  package = "packages"
+[permalinks]
+    "00_getting_started" = "/introduction/:slug/"
+    "01_fundamentals" = "/fundamentals/:slug/"
+    "02_data_structures" = "/data-structures/:slug/"
+    "03_the_flow" = "/flow/:slug/"
+    "04_basic_functions_usage" = "/functions/:slug/"
+    "05_advanced_functions_usage" = "/advanced-functions/:slug/"
+    "06_advanced_topics" = "/advanced-topics/:slug/"
+    "07_applications" = "/applications/:slug/"

@@ -1,0 +1,36 @@
+.status {
+    padding: 8px;
+    background-color: lighten($color_meta, 55%);
+    border-radius: 0px 0px 3px 3px;
+    color: $color_meta;
+}
+
+.label {
+    font-family: IcoFont;
+    display: inline-block;
+    text-align: center;
+    width: 1.2rem;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    padding: 5px;
+    text-align: center;
+    background-color: lighten($color_meta, 50%);
+    color: $color_bg;
+    text-transform: uppercase;
+    border-radius: 1.2rem;
+}
+
+.status-alpha {
+    background-color: lighten($color_danger, 50%);
+    color: $color_danger;
+}
+
+.status-beta {
+    background-color: lighten($color_information, 50%);
+    color: $color_information;
+}
+
+.status-release {
+    background-color: lighten($color_opinion, 35%);
+    color: $color_opinion;
+}

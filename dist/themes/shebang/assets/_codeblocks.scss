@@ -1,0 +1,41 @@
+.chroma,
+pre {
+    padding: 8px;
+    border-left: 4px solid lighten($color_output, 30%);
+    background-color: lighten($color_output, 50%);
+    border-radius: 4px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: scroll;
+
+    code {
+        color: $color_output;
+    }
+}
+
+code {
+    color: $color_input;
+}
+
+.chroma {
+    padding: 8px;
+    border-left: 4px solid lighten($color_input, 30%);
+    background-color: lighten($color_input, 50%);
+
+    code {
+        color: $color_input;
+    }
+
+    .ln {
+        color: lighten($color_meta, 40%) !important;
+        width: 2.5rem;
+        display: inline-block;
+    }
+    .line {
+        &:hover {
+            .ln {
+                color: $color_meta !important;
+            }
+        }
+    }
+}

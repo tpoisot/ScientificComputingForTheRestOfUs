@@ -1,19 +1,54 @@
-@import "layout";
-@import "typography";
-@import "navigation";
-@import "callouts";
-@import "code";
-@import "questions";
+// Color palette
+@import "palette";
 
-.contributor {
-    &::after {
-        content: " // ";
-        color: var(--color-light);
-    }
-    &:last-child {
-        color: red;
-        &::after {
-            display: none;
-        }
+// Main text setting options
+@import "typography";
+
+// Titles
+@import "titles";
+
+// Page layout
+@import "layout";
+
+// Code blocks
+@import "codeblocks";
+
+// Links
+@import "links";
+
+// Callouts
+@import "callouts";
+
+// Cards (modules list)
+@import "cards";
+
+// Header
+@import "header";
+
+// Status buttons
+@import "status";
+
+// Footer
+@import "footer";
+
+// Mermaid
+@import "mermaid";
+
+// About
+.about {
+    text-align: center;
+    width: 100%;
+    display: block;
+    margin: 2rem 0;
+
+    a {
+        color: white;
+        background-color: $color_theme;
+        padding: 12px;
+        width: 25%;
+        display: inline-block;
+        text-align: center;
+        font-size: 80%;
+        margin: 2rem auto;
     }
 }

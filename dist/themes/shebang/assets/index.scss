@@ -49,6 +49,7 @@
         border: 1px solid $color_theme;
         background-color: lighten($color_meta, 58%);
         width: 40%;
+        min-width: 300px;
         margin: 20px 20px;
         text-align: right;
 

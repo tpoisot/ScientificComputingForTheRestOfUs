@@ -1,9 +1,11 @@
-on: [push, pull-request]
+on:
+  push:
+  pull_request:
 
 jobs:
   scc_job:
     runs-on: ubuntu-latest
-    name: A job to count the lines of code.
+    name: SLOC counter and COCOMO report
     steps:
       - name: Checkout
         uses: actions/checkout@v2

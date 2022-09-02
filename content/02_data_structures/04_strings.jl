@@ -1,5 +1,5 @@
 # ---
-# title: String and text
+# title: Strings and text
 # status: alpha
 # ---
 

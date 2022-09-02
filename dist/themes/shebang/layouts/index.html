@@ -20,9 +20,9 @@
                 <p class="readingtime">Reading time &asymp; {{ math.Round (div (countwords .Content) 100.0) }} minutes.</p>
                 <div class="status">
                     <span class="label status-{{ $page.Params.status }}">
-                        {{ with (eq $page.Params.status "alpha") }}{{ end }}
-                        {{ with (eq $page.Params.status "beta") }}{{ end }}
-                        {{ with (eq $page.Params.status "release") }}{{ end }}
+                        {{ with (eq $page.Params.status "alpha") }}{{ end }}
+                        {{ with (eq $page.Params.status "beta") }}{{ end }}
+                        {{ with (eq $page.Params.status "release") }}{{ end }}
                     </span>
                     {{ with (eq $page.Params.status "alpha") }}This module is not ready{{ end }}
                     {{ with (eq $page.Params.status "beta") }}This module is ready for field-testing{{ end }}

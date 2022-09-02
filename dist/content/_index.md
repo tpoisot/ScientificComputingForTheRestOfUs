@@ -17,10 +17,23 @@ to find an introduction to get you started. The goal of this project is to
 provide reproducible documents you can use to get started on the most important
 points. You can use these lessons on your own, or as a group.
 
-<div class="about">
-    <a href="about" title="About the project">About the project</a>
-    <a href="howto" title="How to use this material">How to use this material</a>
-    <a href="readinglist" title="Suggested readings">Suggested readings</a>
+<div class="main-links">
+    <span>
+        <i class="fa-solid fa-question"></i>
+        <a href="about" title="About the project">About the project</a>
+    </span>
+    <span>
+        <i class="fa-solid fa-screwdriver-wrench"></i>
+        <a href="howto" title="How to use this material">How to use this material</a>
+    </span>
+    <span>
+        <i class="fa-solid fa-book"></i>
+        <a href="readinglist" title="Suggested readings">Suggested readings</a>
+    </span>
+    <span>
+        <i class="fa-brands fa-discord"></i>
+        <a href="https://discord.gg/Ak2pK3yG9M" target="_blank" title="Join the Discord channel">Join the Discord channel</a>
+    </span>
 </div>
 
 This material has been designed according to three core ideas:

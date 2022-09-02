@@ -39,9 +39,19 @@ end
 # the user modify a tuple!
 
 # In short, values in a tuple are *safe*, because they can be read (`a[2]` would
-# return the second element), but not written to. Although we have written the
-# tuple using the position of arguments, it is possible to use a structure
-# called a *named* tuple, in which the fields of the tuple have names.
+# return the second element), but not written to. But tuple can do something
+# absolutely fantastic:
+
+x, y, z = (1, 2, 3)
+y
+
+# They can store values, and this allows us to *unpack* these tuples into
+# arguments. This is a great way to safely store values (tuples are impossible
+# to alter) until we are ready to use them with more explicit names.
+
+# Although we have written the tuple using the position of arguments, it is
+# possible to use a structure called a *named* tuple, in which the fields of the
+# tuple have names.
 
 parameters = (r = 0.8, K = 1.0, A = 0.2)
 

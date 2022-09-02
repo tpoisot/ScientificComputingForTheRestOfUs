@@ -1,6 +1,6 @@
 # ---
 # title: Dictionaries and pairs
-# status: alpha
+# status: beta
 # ---
 
 # In this module, we will explore two very useful data structures: dictionaries,
@@ -69,8 +69,84 @@ get(mus_musculus, "subgenus", nothing)
 
 get(mus_musculus, "subspecies", nothing)
 
-# collect
+# In order to get a list of the keys for a given dictionary, we can use the
+# `keys` function:
 
-# pairs
+keys(mus_musculus)
 
-# zip
+# This is a strange little object (a `KeySet`), which we can iterate over (and
+# we will see what iteration is in a future module); to get it to a format we
+# know, we can pass it through `collect`:
+
+mus_keys = collect(keys(mus_musculus))
+
+# We can do the same thing with the `values` of a dictionary:
+
+mus_values = collect(values(mus_musculus))
+
+# An interesting little command is `zip`: we can use it to create a dictionary
+# from two arrays, one with the keys and one with the values:
+
+mus_zip = Dict(zip(mus_keys, mus_values))
+
+# !!!DANGER Of course, this assumes that the keys and the values are in the
+# correct order, because there is no way for *Julia* to know which value should
+# be associated to each key.
+
+# The final data structure related to dictionaries is the Pair`. A pair
+# associates one key to one value:
+
+pair_one_two = 1 => 2
+
+# We can use a different notation as well:
+
+pair_one_two_take_2 = Pair(1,2)
+
+# The elements of a pair can be accessed using `first` and `last`:
+
+first(pair_one_two)
+
+#-
+
+last(pair_one_two)
+
+# Why are we talking about pairs here? Because dictionaries are simply a series
+# of pairs wearing a trench coat:
+
+eltype(collect(mus_musculus))
+
+# We can `collect` a dictionary into a vector of `Pair`, but more importantly,
+# we can *create* a dictionary *from* a vector of pairs. This is, indeed, what
+# we have done when we created the `mus_musculus` variable.
+
+# A final noteworthy information is that we can expand dictionaries, by adding
+# keys:
+
+mus_musculus["IUCN"] = "least concern"
+
+# This is also more properly expressed as:
+
+setindex!(mus_musculus, "IUCN", "least concern")
+
+# And we can, similarly, *remove* information from a dictionary:
+
+delete!(mus_musculus, "subgenus")
+
+# Note that this function does *not* throw an exception if we try to delete a
+# key that does not exist. If we want to delete a key but keep track of its
+# value, the right function to use is `pop!`:
+
+mus_iucn_status = pop!(mus_musculus, "IUCN", nothing)
+
+# This will remove the key from the dictionary, but save the value to a
+# variable. The third argument specifies what should be returned if the key
+# doesn't exist, in order to avoid an exception:
+
+pop!(mus_musculus, "IUCN", nothing)
+
+# In summary, pairs and dictionaries are extremely useful data structures when
+# there is a need to associate a value with a more memorable name. They have a
+# lot of uses when, for example, storing the parameters of a model, or reading
+# [JSON][json] files.
+
+# [json]: https://en.wikipedia.org/wiki/JSON

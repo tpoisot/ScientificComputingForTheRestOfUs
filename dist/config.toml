@@ -14,7 +14,7 @@ pluralizelisttitles = false
         lineNumbersInTable = false
 
 [params]
-  readingSpeed = 120
+  readingSpeed = 150
   githubUser = "tpoisot"
   githubRepo = "ScientificComputingForTheRestOfUs"
   title = "Scientific computing"

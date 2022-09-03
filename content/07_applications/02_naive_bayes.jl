@@ -1,6 +1,6 @@
 # ---
 # title: Naive Bayes Classifier
-# status: alpha
+# status: beta
 # ---
 
 # Naive Bayes Classifiers are formidable because they can learn so much about a

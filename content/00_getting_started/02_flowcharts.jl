@@ -1,6 +1,6 @@
 # ---
 # title: Flowcharts
-# status: release
+# status: beta
 # ---
 
 # One of the most powerful tool to plan a programming task is to draw a

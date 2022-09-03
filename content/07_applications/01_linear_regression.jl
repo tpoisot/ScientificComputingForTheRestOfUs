@@ -1,6 +1,6 @@
 # ---
 # title: Linear regression using gradient descent
-# status: beta
+# status: rc
 # ---
 
 # In this module, we will use the gradient descent algorithm to perform a linear

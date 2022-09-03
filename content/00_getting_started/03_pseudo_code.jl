@@ -1,6 +1,6 @@
 # ---
 # title: Pseudo-code
-# status: release
+# status: rc
 # ---
 
 # To facilitate the transition between diagram and code, one important step is

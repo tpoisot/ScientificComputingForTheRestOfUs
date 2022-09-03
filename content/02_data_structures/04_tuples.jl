@@ -1,6 +1,6 @@
 # ---
 # title: Tuples, named tuples, and sets
-# status: beta
+# status: rc
 # ---
 
 # In this module, we will explore data structures that look a lot like arrays,

@@ -1,6 +1,6 @@
 # ---
 # title: Returning functions
-# status: beta
+# status: rc
 # ---
 
 # In this module, we will learn how we can write functions that return other

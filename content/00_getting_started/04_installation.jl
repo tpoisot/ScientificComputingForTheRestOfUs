@@ -1,6 +1,6 @@
 # ---
 # title: Installing Julia
-# status: beta
+# status: rc
 # ---
 
 # In this module, we will see how we can install *Julia*, setup a default

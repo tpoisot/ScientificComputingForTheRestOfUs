@@ -1,6 +1,6 @@
 # ---
 # title: Indexing, slicing, and all that
-# status: beta
+# status: rc
 # ---
 
 # In the previous module, we have introduced the notion of `Array`s, and

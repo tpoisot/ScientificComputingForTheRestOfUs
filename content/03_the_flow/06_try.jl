@@ -1,6 +1,6 @@
 # ---
 # title: Error handling with try
-# status: beta
+# status: rc
 # ---
 
 # In previous modules, we have used a `try`/`catch` statement. In this module,

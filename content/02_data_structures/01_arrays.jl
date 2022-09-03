@@ -1,6 +1,6 @@
 # ---
 # title: An introduction to arrays
-# status: beta
+# status: rc
 # ---
 
 # A *lot* of scientific computing eventually boils down to accessing things in

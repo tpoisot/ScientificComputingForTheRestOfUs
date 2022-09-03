@@ -1,6 +1,6 @@
 # ---
 # title: Strings, symbols, and text
-# status: beta
+# status: rc
 # ---
 
 # In this module, we will look at string and characters, *i.e.* representations

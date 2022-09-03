@@ -1,12 +1,17 @@
 using Literate
 
+# References
+include(joinpath(@__DIR__, "bibliorender.jl"))
+bibfile = joinpath(@__DIR__, "references.bib")
+references = Bibliography.import_bibtex(bibfile)
+
 # aiiiii
 files_to_build = []
 
 # Get the top-level folders
 content_path = joinpath(@__DIR__, "content")
 
-mkpath(joinpath(@__DIR__, "dist", "content")) 
+mkpath(joinpath(@__DIR__, "dist", "content"))
 
 # Walk the content directory
 for (root, dirs, files) in walkdir(content_path)
@@ -63,8 +68,21 @@ function replace_mermaid(content)
     return content
 end
 
+function replace_reference(content)
+    rx = r"!{3}[ ]{0,1}REF (.+)"
+    content = replace(
+        content,
+        rx =>
+            s ->
+                "{{< callout reference >}}\n" *
+                fmt(references[match(rx, s).captures[1]]) * "{{< /callout >}}\n\n",
+    )
+    return content
+end
+
 function post_processor(content)
-    return content |> replace_callouts |> replace_images |> replace_mermaid
+    return content |> replace_callouts |> replace_images |> replace_mermaid |>
+           replace_reference
 end
 
 # Actually build the content
@@ -98,7 +116,6 @@ for file in files_to_build
         print(e)
     end
 end
-
 
 # Walk the content directory
 for (root, dirs, files) in walkdir(content_path)

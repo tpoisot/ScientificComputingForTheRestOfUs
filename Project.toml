@@ -1,4 +1,6 @@
 [deps]
+BibInternal = "2027ae74-3657-4b95-ae00-e2f7d55c3e64"
+Bibliography = "f1be7e48-bf82-45af-a471-ae754a193061"
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 Combinatorics = "861a8166-3701-5b0c-9a16-15d98fcdc6aa"

@@ -39,7 +39,7 @@ points. You can use these lessons on your own, or as a group.
 This material has been designed according to three core ideas:
 
 First, **each module is short** (usually no more than 10 minutes to read,
-assuming a reading speed of about 100 words a minute, which seems to be the
+assuming a reading speed of about 150 words a minute, which seems to be the
 average for technical texts), and introduced a *single* concept. In many places,
 you will notice advice redirecting you to the documentation. The [*Julia*
 manual](https://docs.julialang.org/en/v1/) is extremely thorough, and the point

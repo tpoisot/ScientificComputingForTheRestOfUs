@@ -1,12 +1,13 @@
 # ---
-# title: Iteration
-# status: alpha
+# title: Advanced iteration
+# status: beta
 # ---
 
 # In this module, we will see how we *actually* iterate over objects in *Julia*.
 # Although the content of the previous module is very important, as it forms the
 # basis of all ways to iterate, there are a number of functions that greatly
-# facilitate our task.
+# facilitate our task. We finish this module by simulating a simple
+# host-parasitoid model.
 
 # <!--more-->
 
@@ -48,10 +49,11 @@ for i in eachindex(our_other_seq)
     @info "i = $(i)   (xᵢ)² = $(our_other_seq[i]^2.0)"
 end
 
-# !!!INFO Ah, yes. About this. `0.2^2.0` is *not* `0.04`. There is a reason for
+# !!!WARNING Ah, yes. About this. `0.2^2.0` is *not* `0.04`. There is a reason for
 # this, and it is: [computers are not very good with
 # numbers](https://en.wikipedia.org/wiki/Round-off_error). It's OK, neither are
-# we; hopefully it'll sort itself out.
+# we; hopefully it'll sort itself out ([it
+# won't](https://slate.com/technology/2019/10/round-floor-software-errors-stock-market-battlefield.html)).
 
 # But there is a more efficient way to iterate:
 
@@ -71,3 +73,47 @@ collect(enumerate(our_other_seq))
 # from the module on tuples that they can be used to store values until we are
 # ready to use them, and so this is what `enumerate` does: it stores together
 # the position and the value.
+
+# But what about arrays with higher dimensions? The same logic applies. Let's
+# create a little matrix, and see how we can iterate over it:
+
+A = reshape(Array(7:12), 2, 3)
+
+# Let's start to get a sense of the output of `eachindex`:
+
+collect(enumerate(A))
+
+# This is very similar to the output we got for a vector, with the exception
+# that the shape of the enumerated elements matches the shape of the matrix.
+# Will it be an issue? Is there something we need to do? No.
+
+# Recall from the module on indexing that we can index a matrix linearly, so we
+# don't need to change the way we work:
+
+for (pos, val) in enumerate(A)
+    @info "A[$(pos)] = $(val)"
+end
+
+# But what if we wanted to use the fact that matrices have rows and columns? In
+# this case, we can use the `axes` function:
+
+axes(A)
+
+# When called on an array, it will return a tuple of iterators (`OneTo` is a
+# weird object, but essentially, `OneTo(3)` will return the numbers from 1 to
+# 3), one for each dimension. The `axes` function has additional methods where
+# we specify the arguments, so we can write, for example:
+
+for row in axes(A, 1)
+    for col in axes(A, 2)
+        @info "A[$(row),$(col)] = $(A[row,col])"
+    end
+end
+
+# But wait! This is two loops, one nested in the other. There has got to be an
+# easier way to write this. When we are are dealing with nested loops, we can
+# declare all of them on the same line:
+
+for row in axes(A, 1), col in axes(A, 2)
+    @info row, col
+end

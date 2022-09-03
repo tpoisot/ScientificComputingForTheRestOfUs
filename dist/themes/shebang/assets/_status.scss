@@ -26,7 +26,12 @@
 }
 
 .status-beta {
-    background-color: lighten($color_information, 50%);
+    background-color: lighten($color_warning, 30%);
+    color: $color_warning;
+}
+
+.status-rc {
+    background-color: lighten($color_information, 35%);
     color: $color_information;
 }
 

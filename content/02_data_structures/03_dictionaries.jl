@@ -1,6 +1,6 @@
 # ---
 # title: Dictionaries and pairs
-# status: beta
+# status: rc
 # ---
 
 # In this module, we will explore two very useful data structures: dictionaries,

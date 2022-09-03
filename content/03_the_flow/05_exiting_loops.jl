@@ -1,6 +1,6 @@
 # ---
 # title: Exiting loops
-# status: beta
+# status: rc
 # ---
 
 # In the previous two modules, we have written loops that terminate when a

@@ -1,6 +1,6 @@
 # ---
 # title: Short-circuit Boolean operations
-# status: beta
+# status: rc
 # ---
 
 # In the [previous module][bool], we have introduce important notions about

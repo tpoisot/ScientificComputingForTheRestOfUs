@@ -1,6 +1,6 @@
 # ---
 # title: Understanding multiple dispatch
-# status: alpha
+# status: beta
 # ---
 
 # In this module, we will expand on the previous content (understanding

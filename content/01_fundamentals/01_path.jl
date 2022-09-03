@@ -1,6 +1,6 @@
 # ---
 # title: The Path
-# status: beta
+# status: rc
 # ---
 
 # One of the main obstacle to reproductible projects is issues with describing

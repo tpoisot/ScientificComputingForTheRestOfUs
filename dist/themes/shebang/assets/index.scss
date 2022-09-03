@@ -35,20 +35,46 @@
 @import "mermaid";
 
 // About
-.about {
+.main-links {
     text-align: center;
     width: 100%;
     display: block;
     margin: 2rem 0;
 
-    a {
-        color: white;
-        background-color: $color_theme;
-        padding: 12px;
-        width: 25%;
+    span {
+        height: 40px;
+        line-height: 40px;
         display: inline-block;
-        text-align: center;
-        font-size: 80%;
-        margin: 2rem auto;
+        border-radius: 20px;
+        border: 1px solid $color_theme;
+        background-color: lighten($color_meta, 58%);
+        width: 40%;
+        min-width: 300px;
+        margin: 20px 20px;
+        text-align: right;
+
+        a {
+            padding-right: 20px;
+        }
+
+        i {
+            text-align: center;
+            margin-left: -1px;
+            float: left;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            color: $color_bg;
+            background-color: $color_theme;
+            border-radius: 20px;
+        }
+
+        &:hover {
+            border: 1px solid $color_theme;
+            background-color: lighten($color_theme, 50%);
+            i {
+                color: lighten($color_warning, 20%);
+            }
+        }
     }
 }

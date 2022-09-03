@@ -8,8 +8,9 @@
 
 .warning {
     &:before {
-        font-family: IcoFont;
-        content: "";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 400;
+        content: "\f06a";
         padding-right: 5px;
         color: $color_warning;
     }
@@ -17,8 +18,9 @@
 
 .information {
     &:before {
-        font-family: IcoFont;
-        content: "";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 400;
+        content: "\f05a";
         padding-right: 5px;
         color: $color_information;
     }
@@ -26,8 +28,9 @@
 
 .opinion {
     &:before {
-        font-family: IcoFont;
-        content: "";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 400;
+        content: "\f005";
         padding-right: 5px;
         color: $color_opinion;
     }
@@ -35,8 +38,9 @@
 
 .danger {
     &:before {
-        font-family: IcoFont;
-        content: "";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 400;
+        content: "\f0e7";
         padding-right: 5px;
         color: $color_danger;
     }
@@ -44,8 +48,9 @@
 
 .domain {
     &:before {
-        font-family: IcoFont;
-        content: "";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 400;
+        content: "\f5dc";
         padding-right: 5px;
         color: $color_theme;
     }

@@ -35,13 +35,13 @@ typeof(two)
 
 # Let's start with the naive 2.0+1:
 
-@code_llvm two + 1
+InteractiveUtils.@code_llvm two + 1
 
 # As you see, there are a lot of lines about *promotion*, which is to say, about
 # representing a variable as another type. What happens if we use 2.0+1.0 (note
 # that we can generate a one of the correct type using the `one` function):
 
-@code_llvm two + one(two)
+InteractiveUtils.@code_llvm two + one(two)
 
 # The code is much smaller, and notably has *no promotion*. We have gained some
 # valuable execution time by using two variables with correct types.

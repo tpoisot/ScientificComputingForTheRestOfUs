@@ -5,34 +5,24 @@ Random.seed!(420)
 
 # theme colors
 c0 = (66, 148, 150) ./ 255;
-c1 = (255, 138, 67) ./ 255;
-c2 = (112, 110, 177) ./ 255;
-c3 = (0, 131, 166) ./ 255;
 
 Drawing(500, 500, joinpath(@__DIR__, "..", "dist", "static", "logo.svg"))
 
 origin()
 
-setline(1)
+setline(4)
 setcolor(c0)
 
-for i in 1:8
-    circle(rand(-15:15), rand(-15:15), rand(200:240), action = :stroke)
+for i in 1:6
+    rotate(deg2rad(30))
+    squircle(O, 180, 180, :fill; rt = 0.2)
 end
 
-setline(3)
-setcolor(c2)
-circle(O, 220, action = :stroke)
-
-for i in 1:10
-    rotate(deg2rad(3i))
-    corners = ngon(Point(0, 0), 20 + 15i, 5; vertices = true)
-    for corner in corners
-        rotate(deg2rad(rand(-5:5)))
-        setline(rand(2:5))
-        setcolor(rand([c1, c3]))
-        circle(corner, rand(2:6); action = rand([:fill, :stroke]))
-    end
+setcolor("white")
+for i in 1:8
+    rotate(i * deg2rad(3))
+    corners = ngon(Point(0, 0), 40 + 18i, 10; vertices = true)
+    circle.(corners, 6, action = :fill)
 end
 
 finish()

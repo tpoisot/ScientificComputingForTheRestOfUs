@@ -35,6 +35,7 @@ typeof(two)
 
 # Let's start with the naive 2.0+1:
 
+import InteractiveUtils
 InteractiveUtils.@code_llvm two + 1
 
 # As you see, there are a lot of lines about *promotion*, which is to say, about

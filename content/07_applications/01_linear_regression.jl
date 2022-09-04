@@ -15,7 +15,7 @@ using Distributions
 using CairoMakie
 
 # Here is a broad overview of the task we want to accomplish. The
-# [AnimalTraits][anmtr) database provides curated information about metabolic
+# [AnimalTraits][anmtr] database provides curated information about metabolic
 # rates of several species of animals. There is a linear relationship between
 # the log of body mass and the log of brain size (both expressed in kg). In this
 # module, we will estimate the parameters of this relationship using linear
@@ -23,8 +23,7 @@ using CairoMakie
 
 # [anmtr]: https://animaltraits.org/
 
-# !!!OPINION Machine Learning and Statistics both claim linear regression as
-# "theirs". Both are wrong. Methods belong to the people.
+# !!!REF Herberstein2022Animaltraits
 
 # We will first download, then load, the data -- we use the `CSV.File` approach
 # here, which is great for structured data, and accepts a lot of different
@@ -34,7 +33,7 @@ using CairoMakie
 import CSV
 data_url = "https://zenodo.org/record/6468938/files/observations.csv?download=1"
 data_file = download(data_url)
-traits = CSV.File(data_file; delim=",", select=["body mass", "brain size"])
+traits = CSV.File(data_file; delim = ",", select = ["body mass", "brain size"])
 traits[1:3]
 
 # Because some species have missing values, we can use a combination of `filter`
@@ -49,6 +48,9 @@ traits[1:3]
 
 X = log10.([trait[Symbol("body mass")] for trait in traits]);
 Y = log10.([trait[Symbol("brain size")] for trait in traits]);
+
+# !!!OPINION Machine Learning and Statistics both claim linear regression as
+# "theirs". Both are wrong. Methods belong to the people.
 
 # It is *always* a good idea to look at the data before attempting any
 # modelling, so we can use the *CairoMakie* package to do so:

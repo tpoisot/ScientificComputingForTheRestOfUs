@@ -25,3 +25,6 @@ Manifest.toml
 .VSCodeCounter
 
 .hugo_build.lock
+
+references.bib.bak
+references.bib.sav.tmp

@@ -47,7 +47,7 @@
         display: inline-block;
         border-radius: 20px;
         border: 1px solid $color_theme;
-        background-color: lighten($color_meta, 58%);
+        background-color: lighten($color_meta, 70%);
         width: 40%;
         min-width: 300px;
         margin: 20px 20px;
@@ -55,6 +55,8 @@
 
         a {
             padding-right: 20px;
+            text-decoration: none;
+            font-variation-settings: 'wght' 550;
         }
 
         i {
@@ -71,10 +73,7 @@
 
         &:hover {
             border: 1px solid $color_theme;
-            background-color: lighten($color_theme, 50%);
-            i {
-                color: lighten($color_warning, 20%);
-            }
+            background-color: lighten($color_meta, 65%);
         }
     }
 }

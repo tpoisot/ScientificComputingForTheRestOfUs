@@ -10,7 +10,7 @@
 
     .readingtime {
         text-align: left;
-        color: lighten($color_meta, 20%);
+        color: lighten($color_meta, 10%);
     }
 
     .title {
@@ -36,7 +36,7 @@
 }
 
 .blurb {
-    color: darken($color_meta, 20%);
+    color: $color_copy;
     margin-bottom: 2rem;
     font-variation-settings: 'wght' 450;
 }

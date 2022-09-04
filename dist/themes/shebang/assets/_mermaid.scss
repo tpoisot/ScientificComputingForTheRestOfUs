@@ -14,7 +14,7 @@ svg {
         }
 
         polygon {
-            fill: lighten($color_output, 50%) !important;
+            fill: lighten($color_output, 65%) !important;
             stroke: $color_output  !important;
 
             .label {
@@ -23,8 +23,8 @@ svg {
         }
 
         rect {
-            fill: lighten($color_theme, 55%) !important;
-            stroke: $color_theme  !important;
+            fill: lighten($color_input, 65%) !important;
+            stroke: $color_input  !important;
 
             .label {
                 color: $color_theme !important;

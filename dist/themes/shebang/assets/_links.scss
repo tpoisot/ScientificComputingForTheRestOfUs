@@ -3,11 +3,11 @@ a {
     transition: color 5s;
     transition: text-decoration-color 1s;
     transition-timing-function: ease-in-out;
-    text-decoration-color: lighten($color_theme, 30%);
+    text-decoration-color: lighten($color_meta, 30%);
 
     &:visited {
         color: $color_link;
-        text-decoration-color: lighten($color_theme, 50%);
+        text-decoration-color: lighten($color_meta, 30%);
     }
 
     &:hover {

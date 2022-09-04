@@ -1,27 +1,28 @@
 // Main theme color
-$color_theme: hsl(181, 39%, 42%);
+$color_theme: #0f6c61;
 
 // Metadata color
-$color_meta: hsl(153, 6%, 39%);
+$color_meta: #3A413E;
 
 // Callout colors
-$color_danger: hsl(15, 100%, 40%);
-$color_warning: hsl(23, 80%, 60%);
-$color_opinion: hsl(242, 30%, 60%);
-$color_information: hsl(193, 60%, 40%);
-$color_reference: hsl(101, 35%, 39%);
+$color_danger: #cc3300;
+$color_warning: #eb8647;
+$color_opinion: #7c7ab8;
+$color_information: #2989a3;
+$color_reference: #578641;
 
 // Code colors
-$color_input: hsl(216, 55%, 45%);
-$color_output: hsl(33, 55%, 45%);
+$color_input: #1E3B67;
+$color_output: #4F3617;
+$code_background: #f7f3f0;
 
 // Copy color
-$color_copy: darken($color_theme, 25%);
-$color_bg: #fcfcfc;
+$color_copy: darken($color_theme, 12%);
+$color_bg: #FBFAF9;
 
 // Links
 $color_link: $color_theme;
-$color_hover: darken($color_theme, 20%);
+$color_hover: darken($color_theme, 5%);
 
 html {
     background-color: $color_bg;

@@ -1,8 +1,8 @@
 .chroma,
 pre {
     padding: 8px;
-    border-left: 4px solid lighten($color_output, 30%);
-    background-color: lighten($color_output, 50%);
+    border-left: 4px solid $color_output;
+    background-color: $code_background;
     border-radius: 4px;
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -19,8 +19,8 @@ code {
 
 .chroma {
     padding: 8px;
-    border-left: 4px solid lighten($color_input, 30%);
-    background-color: lighten($color_input, 50%);
+    border-left: 4px solid $color_input;
+    background-color: $code_background;
 
     code {
         color: $color_input;

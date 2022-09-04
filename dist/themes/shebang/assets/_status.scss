@@ -2,7 +2,7 @@
     padding: 7px 12px;
     border-radius: 0px 0px 3px 3px;
     color: $color_meta;
-    background-color: lighten($color_meta, 57%);
+    background-color: lighten($color_meta, 68%);
     flex-direction: row;
     display: flex;
 }
@@ -39,15 +39,15 @@
         line-height: 20px;
         font-size: 12px;
         border-radius: 50%;
-        border: 3px solid lighten($color_meta, 35%);
-        background: lighten($color_meta, 55%);
-        color: lighten($color_meta, 35%);
+        border: 3px solid lighten($color_meta, 45%);
+        background: lighten($color_meta, 65%);
+        color: lighten($color_meta, 45%);
     }
 
     &::after {
         position: absolute;
         content: "";
-        border-bottom: 4px solid lighten($color_meta, 35%);
+        border-bottom: 4px solid lighten($color_meta, 45%);
         width: 100%;
         top: 14px;
         left: 0%;

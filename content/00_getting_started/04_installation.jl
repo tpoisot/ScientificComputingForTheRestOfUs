@@ -63,19 +63,27 @@
 # mathematical notation. This assumes that your font will have good support for
 # these characters.
 
-# One such font is [JuliaMono](https://juliamono.netlify.app/). Other very
-# popular alternatives, all free, are [Recursive](https://www.recursive.design/)
-# (this entire website is set in Recursive!), [JetBrains
-# Mono](https://www.jetbrains.com/lp/mono/), [Plex Mono](https://github.com/IBM/plex), [Victor Mono](https://rubjo.github.io/victor-mono/), 
-# [Fira Code](https://github.com/tonsky/FiraCode), 
-# [Hack](https://sourcefoundry.org/hack/), [Cascadia
-# Code](https://github.com/microsoft/cascadia-code), and
-# [Iosevka](https://typeof.net/Iosevka/). There are many others, but these fonts
-# have good symbol coverage, and tend to be very legible on all screens. Feel
-# free to experiment with one that suits you -- setting up a good environment is
-# also about your own user experience, and having a font that does not strain
-# your eyes or make differentiating between symbols difficult is *definitely* a
-# part of it.
+# One such font is [JuliaMono][JuliaMono]. Other very popular alternatives, all
+# free, are [Recursive][Recursive] (this entire website is set in Recursive!),
+# [JetBrains Mono][JetBrains], [Plex Mono][Plex], [Victor Mono][VictorMono],
+# [Fira Code][FiraCode], [Noto Sans Mono][NotoSansMono], [Hack][Hack], [Cascadia
+# Code][CascadiaCode], and [Iosevka][Iosevka]. There are many others, but these
+# fonts have good symbol coverage, and tend to be very legible on all screens.
+# Feel free to experiment with one that suits you -- setting up a good
+# environment is also about your own user experience, and having a font that
+# does not strain your eyes or make differentiating between symbols difficult is
+# *definitely* a part of it.
+
+# [JuliaMono]: https://juliamono.netlify.app/
+# [Recursive]: https://www.recursive.design/
+# [JetBrains]: https://www.jetbrains.com/lp/mono/
+# [Plex]: https://github.com/IBM/plex
+# [VictorMono]: https://rubjo.github.io/victor-mono/
+# [FiraCode]: https://github.com/tonsky/FiraCode/
+# [NotoSansMono]: https://fonts.google.com/noto/specimen/Noto+Sans+Mono
+# [Hack]: https://sourcefoundry.org/hack/
+# [CascadiaCode]: https://github.com/microsoft/cascadia-code
+# [Iosevka]: https://typeof.net/Iosevka/
 
 # Ideally, the font you pick should let you differentiate between these
 # characters:

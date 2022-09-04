@@ -1,41 +1,130 @@
-.status {
-    padding: 8px;
-    background-color: lighten($color_meta, 55%);
+.card-footer {
+    padding: 7px 12px;
     border-radius: 0px 0px 3px 3px;
     color: $color_meta;
+    background-color: lighten($color_meta, 57%);
+    flex-direction: row;
+    display: flex;
+}
+
+.status {
+    justify-content: space-between;
+    display: flex;
+    flex: 1 0 70%
+}
+
+.explanation {
+    display: flex;
+    flex: 1 0 30%;
+    align-items: center;
+    justify-content: right;
 }
 
 .label {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
     font-family: "Font Awesome 6 Free";
-    display: inline-block;
-    text-align: center;
-    width: 1.2rem;
-    height: 1.2rem;
-    line-height: 1.2rem;
-    padding: 5px;
-    text-align: center;
-    background-color: lighten($color_meta, 50%);
-    color: $color_bg;
-    text-transform: uppercase;
-    border-radius: 1.2rem;
+
+    .step {
+        position: relative;
+        z-index: 5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 27px;
+        height: 27px;
+        line-height: 20px;
+        font-size: 12px;
+        border-radius: 50%;
+        border: 3px solid lighten($color_meta, 35%);
+        background: lighten($color_meta, 55%);
+        color: lighten($color_meta, 35%);
+    }
+
+    &::after {
+        position: absolute;
+        content: "";
+        border-bottom: 4px solid lighten($color_meta, 35%);
+        width: 100%;
+        top: 14px;
+        left: 0%;
+        z-index: 2;
+    }
+
+    &:last-child {
+        &::after {
+            content: none;
+        }
+    }
+
 }
 
+
 .status-alpha {
-    background-color: lighten($color_danger, 50%);
-    color: $color_danger;
+    .step-alpha {
+        background-color: lighten($color_danger, 50%);
+        color: $color_danger;
+        border: 2px solid $color_danger;
+    }
 }
 
 .status-beta {
-    background-color: lighten($color_warning, 30%);
-    color: $color_warning;
+
+    .step-alpha,
+    .step-beta {
+        background-color: lighten($color_warning, 30%);
+        color: $color_warning;
+        border: 3px solid $color_warning;
+    }
+
+    .alpha {
+        &::after {
+            border: 2px solid $color_warning;
+        }
+    }
+
 }
 
+
 .status-rc {
-    background-color: lighten($color_information, 35%);
-    color: $color_information;
+
+    .step-alpha,
+    .step-beta,
+    .step-rc {
+        background-color: lighten($color_opinion, 35%);
+        color: $color_opinion;
+        border: 3px solid $color_opinion;
+    }
+
+    .alpha,
+    .beta {
+        &::after {
+            border: 2px solid $color_opinion;
+        }
+    }
+
 }
 
 .status-release {
-    background-color: lighten($color_opinion, 35%);
-    color: $color_opinion;
+
+    .step-alpha,
+    .step-beta,
+    .step-rc,
+    .step-release {
+        background-color: lighten($color_reference, 35%);
+        color: $color_reference;
+        border: 3px solid $color_reference;
+    }
+
+    .alpha,
+    .beta,
+    .rc {
+        &::after {
+            border: 2px solid $color_reference;
+        }
+    }
+
 }

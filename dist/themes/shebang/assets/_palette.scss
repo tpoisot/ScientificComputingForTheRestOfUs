@@ -1,18 +1,19 @@
 // Main theme color
-$color_theme: rgb(66, 148, 150);
+$color_theme: hsl(181, 39%, 42%);
 
 // Metadata color
-$color_meta: #5e6964;
+$color_meta: hsl(153, 6%, 39%);
 
 // Callout colors
-$color_danger: #872200;
-$color_warning: rgb(255, 138, 67);
-$color_opinion: rgb(112, 110, 177);
-$color_information: rgb(0, 131, 166);
+$color_danger: hsl(15, 100%, 40%);
+$color_warning: hsl(23, 80%, 60%);
+$color_opinion: hsl(242, 30%, 60%);
+$color_information: hsl(193, 60%, 40%);
+$color_reference: hsl(101, 35%, 39%);
 
 // Code colors
-$color_input: #476ea8;
-$color_output: #b17c3c;
+$color_input: hsl(216, 55%, 45%);
+$color_output: hsl(33, 55%, 45%);
 
 // Copy color
 $color_copy: darken($color_theme, 25%);

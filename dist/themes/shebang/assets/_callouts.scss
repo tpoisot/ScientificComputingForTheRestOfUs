@@ -1,7 +1,7 @@
 .callout {
     padding: 8px;
     border-left: 4px solid lighten($color_meta, 30%);
-    background-color: lighten($color_meta, 55%);
+    background-color: lighten($color_meta, 56%);
     color: $color_meta;
     border-radius: 4px;
 }
@@ -51,6 +51,16 @@
         font-family: "Font Awesome 6 Free";
         font-weight: 400;
         content: "\f5dc";
+        padding-right: 5px;
+        color: $color_theme;
+    }
+}
+
+.reference {
+    &:before {
+        font-family: "Font Awesome 6 Free";
+        font-weight: 400;
+        content: "\f5da";
         padding-right: 5px;
         color: $color_theme;
     }

@@ -2,7 +2,6 @@
 # title: How to use this material
 # ---
 
-
 # The best way to read this material is to keep a terminal running *Julia* open,
 # and **type** the code. It is tempting to copy and paste, but typing the code
 # actually matters. The sections (and modules within them) are presented in
@@ -10,6 +9,20 @@
 # concept at a time. Every so often, an illustration or example will start to
 # re-use previous knowledge, and this gets more common in the later sections.
 # The content is definitely designed to be read from beginning to end!
+
+# The lessons have a release cycle, and the current position of the modules in
+# this cycle is indicated below the module summary. The release cycle has four
+# steps: not usable (which is self explanatory), in development (most of the
+# content is present but the lesson is probably not sufficiently polished for
+# self-directed learning), awaiting testing (we are confident that the material
+# is ready but this has not been tested with enough learners), and finally,
+# release (we have observed this module working well in the wild). A very good
+# way to contribute is to look at modules awaiting testing and give feedback
+# (using [Discord][discord] or [GitHub issues][issues]), or to check out modules
+# in development and jumping into adding content!
+
+# [discord]: https://discord.gg/Ak2pK3yG9M
+# [issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues
 
 # You will notice that there are very few comments in the material. This is
 # because the text surrounding the code *are* the comments. The modules are
@@ -64,3 +77,12 @@
 # contextualize the code with do with some mentions of domain knowledge.
 
 # !!!DOMAIN It's big brain time!
+
+# If you want to contribute, there are a number of ways to do so! Before you
+# start, please have a look at our [Code of Conduct][coc]. It boils down to *be
+# nice and respectful* -- no contribution, no matter how amazing it may be,
+# justifies or excuses bad behaviour. For the actual details on how to
+# contribute, head over to the [guidelines][guid].
+
+# [coc]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/master/CODE_OF_CONDUCT.md
+# [guid]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/CONTRIBUTING.md

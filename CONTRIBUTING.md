@@ -18,11 +18,10 @@ seeking community feedback, and anyone is always welcome to chime in.
 
 [feedback]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/labels/request%20for%20feedback
 
-If you are not sure about opening an issue, you can use the
-[chatroom][gitterlink]. We'll be glad to have a more informal conversation with
-you!
+If you are not sure about opening an issue, you can use the [chatroom][discord].
+We'll be glad to have a more informal conversation with you!
 
-[gitterlink]: https://gitter.im/ScientificComputingForTheRestOfUs/Lobby
+[discord]: https://discord.gg/Ak2pK3yG9M
 
 If there is a more specific point you would like to raise, you can [create a new
 Issue][new_issue], and explain your idea, critique, or comment. And of course,
@@ -42,4 +41,11 @@ some inspiration.
 
 ## How to setup your development environment?
 
-**TODO**
+All of the content is built using *Literate.jl*. The lessons themselves are
+*Julia* scripts, and they are compiled to markdown using github actions. It is a
+good idea to look at existing modules to get a sense of how to do callouts, etc.
+
+The references are in the `references.bib` file at the root of the project.
+
+Finally, *all lessons* undergo formatting (using the "Format Document") command
+in VSCode.

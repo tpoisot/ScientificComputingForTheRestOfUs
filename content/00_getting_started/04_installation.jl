@@ -66,7 +66,8 @@
 # One such font is [JuliaMono](https://juliamono.netlify.app/). Other very
 # popular alternatives, all free, are [Recursive](https://www.recursive.design/)
 # (this entire website is set in Recursive!), [JetBrains
-# Mono](https://www.jetbrains.com/lp/mono/),
+# Mono](https://www.jetbrains.com/lp/mono/), [Plex Mono](https://github.com/IBM/plex), [Victor Mono](https://rubjo.github.io/victor-mono/), 
+# [Fira Code](https://github.com/tonsky/FiraCode), 
 # [Hack](https://sourcefoundry.org/hack/), [Cascadia
 # Code](https://github.com/microsoft/cascadia-code), and
 # [Iosevka](https://typeof.net/Iosevka/). There are many others, but these fonts

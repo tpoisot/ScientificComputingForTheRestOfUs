@@ -24,6 +24,11 @@
 # [discord]: https://discord.gg/Ak2pK3yG9M
 # [issues]: https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues
 
+# Whenever a package is discussed, it will be presented in a little box, like
+# *e.g.* {{Distributions}}. Clicking on this link will open a new window with
+# the Julia packages documentation hub, which will hopefully provide you with an
+# incentive to checkout what the packages do!
+
 # You will notice that there are very few comments in the material. This is
 # because the text surrounding the code *are* the comments. The modules are
 # actual *Julia* scripts, executed using the {{Literate}} package. This ensure

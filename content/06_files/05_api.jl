@@ -14,8 +14,8 @@
 # <!--more-->
 
 # In order to make this example work, we will need two things: a way to interact
-# with remote servers (provided by the *HTTP* package), and a way to read JSON
-# data (using *JSON*, as we have seen in the previous module.)
+# with remote servers (provided by the {{HTTP}} package), and a way to read JSON
+# data (using {{JSON}}, as we have seen in the previous module.)
 
 import HTTP
 import JSON
@@ -102,14 +102,14 @@ body = res.body
 # This is unexpected! We were promised an `application/json` content, and here
 # we are with a long array of unsigned 8-bit encoded integers. Why? In a
 # nutshell: there is no reason to expect that we will be querying text. We can
-# use *HTTP* to request sound, images, videos, or even streaming data. And so
+# use {{HTTP}} to request sound, images, videos, or even streaming data. And so
 # what we get is the *raw* output. Thankfully, we can transform it into a
 # string:
 
 String(copy(body))
 
 # !!!WARNING We are using `copy` here because if we access `body` directly, it
-# *will* be cleared. The recommended design pattern when dealing with *HTTP*
+# *will* be cleared. The recommended design pattern when dealing with {{HTTP}}
 # responses it to process the `body` field in one go, to avoid losing this
 # information:
 

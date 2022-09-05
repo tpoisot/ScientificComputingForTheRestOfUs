@@ -26,7 +26,7 @@
 
 # You will notice that there are very few comments in the material. This is
 # because the text surrounding the code *are* the comments. The modules are
-# actual *Julia* scripts, executed using the *Literate* package. This ensure
+# actual *Julia* scripts, executed using the {{Literate}} package. This ensure
 # that whatever you see on screen is the result of an actual code execution.
 # Furthermore, there is no hidden code!
 

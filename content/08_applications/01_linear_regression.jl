@@ -53,16 +53,16 @@ Y = log10.([trait[Symbol("brain size")] for trait in traits]);
 # "theirs". Both are wrong. Methods belong to the people.
 
 # It is *always* a good idea to look at the data before attempting any
-# modelling, so we can use the *CairoMakie* package to do so:
+# modelling, so we can use the {{CairoMakie}} package to do so:
 
 figure = Figure(; resolution = (600, 600), fontsize = 20, backgroundcolor = :transparent)
 scplot = Axis(figure[1, 1]; xlabel = "Body mass (log; kg)", ylabel = "Brain mass (log; kg)")
 scatter!(scplot, X, Y; color = :darkgrey)
 figure
 
-# !!!INFO There are multiple plotting packages in *Julia*, including *Plots*,
-# *Makie*, *Gadfly*, *Winston*, and probably a few others. We like *Makie* for
-# complex layouts and fine-grained controls.
+# !!!INFO There are multiple plotting packages in *Julia*, including {{Plots}},
+# {{Makie}}, {{Gadfly}}, {{Winston}}, and probably a few others. We like
+# {{Makie}} for complex layouts and fine-grained controls.
 
 # After checking that the relationship between $Y$ abd $X$ looks suitably
 # linear, we can start thinking about the optimization algorithm. Optimization
@@ -113,8 +113,8 @@ figure
 # The value of $\partial L/\partial m$ is the partial derivative of the log
 # function with regards to $m$, and can be calculated from the definition of the
 # loss function. In *Julia*, there are a number of autodiff packages like
-# *Zygote* who make this task a lot easier, but for the purpose of this example,
-# it is a good idea to see what we can build out of the base language.
+# {{Zygote}} who make this task a lot easier, but for the purpose of this
+# example, it is a good idea to see what we can build out of the base language.
 
 # After some calculations, we can get the two components of the gradient. We
 # will express them as functions:

@@ -55,7 +55,7 @@
 # !!!OPINION We like Julia in VSCode because there are a lot of user-friendly
 # additions that make it easy to track bug, identify bottlenecks, and understand
 # what is loaded in your environment. That being said, there are a number of
-# other solutions to develop *Julia* documents, including *Jupyter*, *Pluto*,
+# other solutions to develop *Julia* documents, including {{IJulia}}, {{Pluto}},
 # *Quarto*, vim and lsp, etc...
 
 # One characteristic of *Julia* is that it has amazing support for unicode

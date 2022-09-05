@@ -1,15 +1,16 @@
 name: Links
 
-on:
-  push:
-    branches:
-      - gh-pages
+on: 
+  schedule:
+   - cron: "0 11 * * *"
 
 jobs:
   linkChecker:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: gh-pages
 
       - name: Link Checker
         id: lychee

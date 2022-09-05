@@ -101,20 +101,24 @@
 # most informative. It is, indeed, a very good idea to read the content of these
 # links as well.
 
-# The [README](readme) is a standard file for all projects, which gives
+# The [README][readme] is a standard file for all projects, which gives
 # information about the project, how to run it, the dependencies, who is in
 # charge, *etc*. Writing a good README is a difficult task, but this is going to
 # be the point of entry in your project. Show it some love.
 
-# [LICENSE](license) is the text of a license, which gives information about
+# [LICENSE][license] is the text of a license, which gives information about
 # intellectual property and your own liability regarding the use of your
 # project. Picking FOSS (Free and Open Source Software) licenses is recommended,
 # and there are a lot of the to accomodate different use cases. The [choose a
 # license][cal] website is a very good place to get started.
 
-# Finally, and these are language-specific, the [*Julia* package manager](pkg)
+# Finally, and these are language-specific, the [*Julia* package manager][pkg]
 # will create files to track the dependencies of your project. Check out the
 # documentation.
+
+# !!!INFO We will spend more time with the *Julia* package manager soon. It is a
+# slightly unusual piece of software when coming from *e.g.* *R* or *Python*,
+# but it is very powerful and makes reproducibility much, much easier.
 
 # [readme]: https://mozilla.github.io/open-leadership-training-series/articles/opening-your-project/write-a-great-project-readme/
 # [license]: https://choosealicense.com/

@@ -3,7 +3,7 @@
 
 <section class="modules">
     {{ range $id, $section := .Site.Sections }}
-    <h3>{{ title (substr ($section.Page.File.Dir | humanize) 3) }}</h3>
+    <h3 class="newsection">{{ title (substr ($section.Page.File.Dir | humanize) 3) }}</h3>
 
     <div class="blurb">
         {{ $section.Page.Content }}

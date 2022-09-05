@@ -4,7 +4,7 @@ using Random
 Random.seed!(420)
 
 # theme colors
-c0 = (15, 108, 97) ./ 255;
+c0 = (0, 121, 107) ./ 255;
 
 Drawing(500, 500, joinpath(@__DIR__, "..", "dist", "static", "logo.svg"))
 

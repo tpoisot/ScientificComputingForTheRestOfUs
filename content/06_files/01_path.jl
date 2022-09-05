@@ -19,11 +19,10 @@ pwd()
 # The working directory is a very important concept: we can look for things
 # *within* it, but we cannot look for things *outside* of it.
 
-# !!! INFO This is not quite entirely true. In some very
-# specific cases, we may not want to store a few Gb of data in our working
-# directory, and we will refer to those using their absolute path; the best
-# practice in this case is probably to setup an environment variable to point to
-# the data.
+# !!! INFO This is not quite entirely true. In some very specific cases, we may
+# not want to store a few Gb of data in our working directory, and we will refer
+# to those using their absolute path; the best practice in this case is probably
+# to setup an environment variable to point to the data.
 
 # Why is that? The simple answer is that when you distribute your project, you
 # will not distribute the rest of your machine. When working on a laptop (at

@@ -1,0 +1,17 @@
+.package {
+    background-color: lighten($color_meta, 68%);
+    border: 1px solid lighten($color_meta, 50%);
+    padding: 2px 2px;
+    margin: -2px -2px;
+    border-radius: 4px;
+    a {
+        text-decoration: none;
+        &:before {
+                font-family: "Font Awesome 6 Free";
+                font-weight: 400;
+                content: "\f466";
+                padding: 0px 3px;
+                color: lighten($color_meta, 30%);
+            }
+    }
+}

@@ -1,6 +1,6 @@
 # ---
 # title: Consuming data from APIs
-# status: beta
+# status: rc
 # ---
 
 # Not all data come from static files. In a large number of scientific

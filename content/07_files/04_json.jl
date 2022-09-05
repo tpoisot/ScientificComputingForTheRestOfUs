@@ -84,7 +84,7 @@ day_0 = dates[1]
 # And the number of days elapsed since:
 
 days_elapsed = [Dates.value(day - day_0) for day in dates]
-days_elapsed[1:10]
+days_elapsed[1:5]
 
 # We can finally plot these data:
 

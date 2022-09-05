@@ -1,16 +1,18 @@
 name: Links
 
-on:
+on: 
   repository_dispatch:
   workflow_dispatch:
   schedule:
-    - cron: "00 18 * * *"
+   - cron: "0 11 * * *"
 
 jobs:
   linkChecker:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: gh-pages
 
       - name: Link Checker
         id: lychee

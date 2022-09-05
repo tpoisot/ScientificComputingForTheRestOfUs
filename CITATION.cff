@@ -1,0 +1,15 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Scientific Computing (for the rest of us)
+message: >-
+  If you use this material, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Timothée
+    family-names: Poisot
+    email: timothee.poisot@umontreal.ca
+    affiliation: Université de Montréal
+    orcid: 'https://orcid.org/0000-0002-0735-5184'

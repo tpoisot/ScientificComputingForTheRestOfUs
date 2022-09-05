@@ -64,7 +64,7 @@
 # folder in which your project lives. We will talk more about dealing with
 # directories and paths and files in the [path] module.
 
-# [path]: {{< ref "06_files/01_path.md" >}}
+# [path]: {{< ref "07_files/01_path.md" >}}
 
 # Third, and final principle, similar things should be grouped together. In other
 # words, it will be easier to navigate our project if there is a folder called

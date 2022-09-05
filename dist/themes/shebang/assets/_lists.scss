@@ -1,0 +1,32 @@
+main {
+    ol {
+        list-style: lower-roman;
+        counter-reset: list;
+        padding-left: 0px;
+        padding-bottom: 8px;
+
+        li {
+            list-style: none;
+            counter-increment: step-counter;
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 0px;
+
+            &:before {
+                background-color: lighten($color_meta, 65%);
+                border-radius: 2px;
+                color: $color_meta;
+                content: counter(step-counter);
+                counter-increment: list;
+                font-size: 80%;
+                font-weight: bold;
+                left: -25px;
+                top: -2px;
+                margin-left: -5px;
+                margin-right: 5px;
+                padding: 2px 6px;
+                position: absolute;
+            }
+        }
+    }
+}

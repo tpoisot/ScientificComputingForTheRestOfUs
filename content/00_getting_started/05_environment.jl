@@ -1,6 +1,6 @@
 # ---
 # title: Environment and projects
-# status: beta
+# status: alpha
 # ---
 
 # In this previous module, we did not load a single package: everything we

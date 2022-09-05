@@ -25,18 +25,14 @@ jobs:
         run: julia --project builder.jl
       - name: "Word count in the build folder"
         id: word-count
-        uses: actions/github-script@v4
         if: github.event_name == 'pull_request'
-        with:
-          github-token: ${{ github.token }}
-          result-encoding: string
-          script: wc -w `find dist/content/ -type f`
+        run: echo "::set-output name=count::$(wc -w `find dist/content/ -type f`)"
       - name: "Comment on wordcount"
         uses: thollander/actions-comment-pull-request@v1
         if: github.event_name == 'pull_request'
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          message: ${{ steps.word-count.outputs.result }}
+          message: ${{ steps.word-count.outputs.count }}
       - name: Upload results
         uses: actions/upload-artifact@v2
         continue-on-error: true
@@ -53,7 +49,7 @@ jobs:
       - name: "Setup hugo"
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: '0.93.3'
+          hugo-version: "0.93.3"
           extended: true
       - name: Download built lessons
         uses: actions/download-artifact@v2

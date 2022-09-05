@@ -1,6 +1,6 @@
 # ---
 # title: Downloading files
-# status: alpha
+# status: beta
 # ---
 
 # In this module, we will see how *Julia* allows downloading files from the

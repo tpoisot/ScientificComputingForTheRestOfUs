@@ -1,24 +1,29 @@
-// Main theme color
-$color_theme: #0f6c61;
+// Main theme colors
+$color_theme: #00796b;
+$color_copy: #455a64;
+$color_bg: #FAFAFA;
 
 // Metadata color
-$color_meta: #3A413E;
+$color_meta: #424242;
 
 // Callout colors
-$color_danger: #cc3300;
-$color_warning: #eb8647;
-$color_opinion: #7c7ab8;
-$color_information: #2989a3;
-$color_reference: #578641;
+$color_danger: #f44336;
+$color_warning: #ff9800;
+$color_opinion: #9c27b0;
+$color_information: #3f51b5;
+$color_reference: #00bcd4;
+
+// Status colors
+$color_alpha: #f4511e;
+$color_beta: #ffb300;
+$color_rc: #039be5;
+$color_release: #7cb342;
 
 // Code colors
-$color_input: #1E3B67;
-$color_output: #4F3617;
-$code_background: #f7f3f0;
-
-// Copy color
-$color_copy: darken($color_theme, 12%);
-$color_bg: #FBFAF9;
+$color_input: #388e3c;
+$color_output: #795548;
+$code_input_background: #e8f5e9;
+$code_output_background: #efebe9;
 
 // Links
 $color_link: $color_theme;

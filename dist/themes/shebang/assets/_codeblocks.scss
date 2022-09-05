@@ -2,7 +2,7 @@
 pre {
     padding: 8px;
     border-left: 4px solid $color_output;
-    background-color: $code_background;
+    background-color: $code_output_background;
     border-radius: 4px;
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -20,7 +20,7 @@ code {
 .chroma {
     padding: 8px;
     border-left: 4px solid $color_input;
-    background-color: $code_background;
+    background-color: $code_input_background;
 
     code {
         color: $color_input;

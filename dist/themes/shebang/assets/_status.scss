@@ -65,9 +65,9 @@
 
 .status-alpha {
     .step-alpha {
-        background-color: lighten($color_danger, 50%);
-        color: $color_danger;
-        border: 2px solid $color_danger;
+        background-color: lighten($color_alpha, 40%);
+        color: $color_alpha;
+        border: 3px solid $color_alpha;
     }
 }
 
@@ -75,14 +75,14 @@
 
     .step-alpha,
     .step-beta {
-        background-color: lighten($color_warning, 30%);
-        color: $color_warning;
-        border: 3px solid $color_warning;
+        background-color: lighten($color_beta, 40%);
+        color: $color_beta;
+        border: 3px solid $color_beta;
     }
 
     .alpha {
         &::after {
-            border: 2px solid $color_warning;
+            border: 2px solid $color_beta;
         }
     }
 
@@ -94,15 +94,15 @@
     .step-alpha,
     .step-beta,
     .step-rc {
-        background-color: lighten($color_opinion, 35%);
-        color: $color_opinion;
-        border: 3px solid $color_opinion;
+        background-color: lighten($color_rc, 40%);
+        color: $color_rc;
+        border: 3px solid $color_rc;
     }
 
     .alpha,
     .beta {
         &::after {
-            border: 2px solid $color_opinion;
+            border: 2px solid $color_rc;
         }
     }
 
@@ -114,16 +114,16 @@
     .step-beta,
     .step-rc,
     .step-release {
-        background-color: lighten($color_reference, 35%);
-        color: $color_reference;
-        border: 3px solid $color_reference;
+        background-color: lighten($color_release, 35%);
+        color: $color_release;
+        border: 3px solid $color_release;
     }
 
     .alpha,
     .beta,
     .rc {
         &::after {
-            border: 2px solid $color_reference;
+            border: 2px solid $color_release;
         }
     }
 

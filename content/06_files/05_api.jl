@@ -98,6 +98,7 @@ Dict(res.headers)["Content-Type"]
 # do not want to lose our request!) is to store it in a variable.
 
 body = res.body
+typeof(body)
 
 # This is unexpected! We were promised an `application/json` content, and here
 # we are with a long array of unsigned 8-bit encoded integers. Why? In a
@@ -129,4 +130,6 @@ for place in riki["places"]
 end
 
 # Most APIs we use in practice for research are a lot more data-rich, and can
-# have highly structured fields.
+# have highly structured fields. When this is the case, it is a good idea to
+# take the output and represent it as a custom type: an example of this approach
+# can be found in, *e.g.*, the {{GBIF}} package for biodiversity data retrieval.

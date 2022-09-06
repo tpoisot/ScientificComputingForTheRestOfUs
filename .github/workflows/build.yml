@@ -26,7 +26,7 @@ jobs:
       - name: "Word count in the build folder"
         id: word-count
         if: github.event_name == 'pull_request'
-        run: echo "::set-output name=count::Current word count is $(wc -w `find dist/content/ -type f` | tail -n 1 | cut -d' ' -f2') words"
+        run: echo "::set-output name=count::Current word count is $(wc -w `find dist/content/ -type f` | tail -n 1 | cut -d' ' -f2) words"
       - name: "Comment on wordcount"
         uses: thollander/actions-comment-pull-request@v1
         if: github.event_name == 'pull_request'

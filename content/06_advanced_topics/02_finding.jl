@@ -7,6 +7,10 @@
 
 # first last
 
-# find
+# count
+
+# find, findall, findnext, ...
+
+# something
 
 # any only all

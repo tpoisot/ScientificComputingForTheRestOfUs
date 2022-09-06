@@ -11,7 +11,7 @@ end
 
 function fmt(access::BibInternal.Access)
     if ~isempty(access.doi)
-        return "[`$(access.doi)`](https://dx.doi.org/$(access.doi))"
+        return "[`$(access.doi)`](https://doi.org/$(access.doi))"
     elseif ~isempty(access.url)
         return "[URL]($(access.url))"
     end

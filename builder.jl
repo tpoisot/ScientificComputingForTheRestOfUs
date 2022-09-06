@@ -1,4 +1,5 @@
 using Literate
+import HTTP
 
 # References
 include(joinpath(@__DIR__, "bibliorender.jl"))
@@ -80,10 +81,21 @@ function replace_reference(content)
     return content
 end
 
+function fmt_pkg(pkgname)
+    hub_url = "https://juliapackages.com/p/$(pkgname)"
+    hub_res = HTTP.request("GET", hub_url)
+    if isequal(200)(hub_res)
+        return "<span class='package'><a href='$(hub_url)' target='_blank'>$(pkgname)</a></span>"
+    else
+        return "<span class='package no-hub'>$(pkgname)</span>"
+    end
+end
+
 function replace_packagename(content)
-    content = replace(content,
-        r"{{(\w+)}}" =>
-            s"<span class='package'><a href='https://juliapackages.com/p/\1' target='_blank'>\1</a></span>",
+    rx = r"{{(\w+)}}"
+    content = replace(
+        content,
+        rx => s -> fmt_pkg(references[match(rx, s).captures[1]]),
     )
     return content
 end

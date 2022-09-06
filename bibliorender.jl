@@ -2,16 +2,21 @@ import Bibliography
 import BibInternal
 
 function fmt(name::BibInternal.Name)
-    replace(join([name.first, name.middle, name.last], " "), r"(\s+)" => s" ")
+    joined_name = replace(join([name.first, name.middle, name.last], " "), r"(\s+)" => s" ")
+    return joined_name
 end
 
 function fmt(authors::Vector{BibInternal.Name})
-    join(fmt.(authors), ", ", " & ")
+    if length(authors) >= 3
+        return fmt(first(authors)) * " *et al.*"
+    else
+        return join(fmt.(authors), ", ", " & ")
+    end
 end
 
 function fmt(access::BibInternal.Access)
     if ~isempty(access.doi)
-        return "[`$(access.doi)`](https://dx.doi.org/$(access.doi))"
+        return "[`$(access.doi)`](https://doi.org/$(access.doi))"
     elseif ~isempty(access.url)
         return "[URL]($(access.url))"
     end
@@ -27,5 +32,8 @@ function fmt(entry::BibInternal.Entry)
     title = "\"$(entry.title)\""
     link = fmt(entry.access)
     pubedin = fmt(entry.in)
-    return "$(auth) ($(entry.date.year)). $(title); $(pubedin)\n$(link)"
+    bib_string = "$(auth) ($(entry.date.year)). $(title); $(pubedin)\n$(link)"
+    bib_string = replace(bib_string, "{\\c{c}}" => "ç")
+    bib_string = replace(bib_string, r"{(\w+)}" => s"\1")
+    return bib_string
 end

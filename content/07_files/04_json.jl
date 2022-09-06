@@ -89,6 +89,10 @@ days_elapsed[1:5]
 # We can finally plot these data:
 
 using CairoMakie
+CairoMakie.activate!(; px_per_unit = 2) # This ensures high-res figures
+
+#-
+
 figure = Figure(; resolution = (600, 600), fontsize = 20, backgroundcolor = :transparent)
 scplot = Axis(
     figure[1, 1];

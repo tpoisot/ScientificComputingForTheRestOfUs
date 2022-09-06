@@ -83,11 +83,12 @@ end
 
 function fmt_pkg(pkgname)
     hub_url = "https://juliapackages.com/p/$(pkgname)"
-    hub_res = HTTP.request("GET", hub_url)
-    if isequal(200)(hub_res)
-        return "<span class='package'><a href='$(hub_url)' target='_blank'>$(pkgname)</a></span>"
+    try
+        HTTP.request("GET", hub_url)
+    catch error
+        return "<span class='package no-hub'><span class='pkgname'>$(pkgname)</span></span>"
     else
-        return "<span class='package no-hub'>$(pkgname)</span>"
+        return "<span class='package'><span class='pkgname'><a href='$(hub_url)' target='_blank'>$(pkgname)</a></span></span>"
     end
 end
 
@@ -95,7 +96,7 @@ function replace_packagename(content)
     rx = r"{{(\w+)}}"
     content = replace(
         content,
-        rx => s -> fmt_pkg(references[match(rx, s).captures[1]]),
+        rx => s -> fmt_pkg(match(rx, s).captures[1]),
     )
     return content
 end

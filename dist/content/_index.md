@@ -48,11 +48,12 @@ the different ways they can be made to work).
 
 Second, **this material is *not* about showcasing different packages**. There
 are some situations where we will need to go into the details of *e.g.*
-<span class='package'><a href='https://juliapackages.com/p/Makie' target='_blank'>Makie</a></span> for plotting, but it is expected that you will, again, read the
+<span class='package'><span class='pkgname'><a href='https://juliapackages.com/p/Makie' target='_blank'>Makie</a></span></span> for plotting, but it is expected that you will, again, read the
 documentation for the packages that are loaded. Every time a package is
 mentioned, you can click on its name to be redirected to the [Julia Packages
-page][jlhub]. The material relies most of the time only on packages from
-*Julia*'s standard library.
+page][jlhub]; packages with no documentation on the hub (like *e.g.* <span class='package no-hub'><span class='pkgname'>Base</span></span>
+have a different styling). The material relies most of the time only on
+packages from *Julia*'s standard library.
 
 [jlhub]: https://juliapackages.com/
 

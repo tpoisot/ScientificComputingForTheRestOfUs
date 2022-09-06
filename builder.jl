@@ -80,9 +80,17 @@ function replace_reference(content)
     return content
 end
 
+function replace_packagename(content)
+    content = replace(content,
+        r"{{(\w+)}}" =>
+            s"<span class='package'><a href='https://juliapackages.com/p/\1' target='_blank'>\1</a></span>",
+    )
+    return content
+end
+
 function post_processor(content)
     return content |> replace_callouts |> replace_images |> replace_mermaid |>
-           replace_reference
+           replace_reference |> replace_packagename
 end
 
 # Actually build the content

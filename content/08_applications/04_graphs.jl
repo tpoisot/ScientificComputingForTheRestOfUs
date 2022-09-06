@@ -17,7 +17,8 @@ end
 # We can now define a graph generator based on the Erdős–Rényi model -- the
 # function to do so is a good encapsulation of concepts from the previous
 # modules, notably conditionals, the creation of `struct`, and list
-# comprehensions:
+# comprehensions. We will use the {{Combinatorics}} package to iterate over
+# nodes combinations:
 
 using Combinatorics
 function ER(vertices; p::T = 0.2) where {T <: AbstractFloat}

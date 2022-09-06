@@ -1,0 +1,24 @@
+.package {
+    background-color: lighten($color_meta, 70%);
+    border: 1px solid lighten($color_meta, 60%);
+    padding: 1px 3px;
+    margin: -1px 0px;
+    border-radius: 4px;
+    a {
+        text-decoration: none;
+        font-variation-settings: "MONO"0.7, "wght"370;
+        &:before {
+                font-family: "Font Awesome 6 Free";
+                font-weight: 400;
+                content: "\f466";
+                padding: 0px 0px;
+                padding-right: 6px;
+                color: lighten($color_meta, 30%);
+            }
+        &:hover {
+            &:before {
+                color: $color_theme;
+            }
+        }
+    }
+}

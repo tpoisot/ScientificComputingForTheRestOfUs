@@ -28,4 +28,5 @@ pluralizelisttitles = false
     "04_basic_functions_usage" = "/functions/:slug/"
     "05_advanced_functions_usage" = "/advanced-functions/:slug/"
     "06_advanced_topics" = "/advanced-topics/:slug/"
-    "07_applications" = "/applications/:slug/"
+    "07_files" = "/files/:slug/"
+    "08_applications" = "/applications/:slug/"

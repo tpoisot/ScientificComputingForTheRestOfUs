@@ -44,7 +44,7 @@ for t in axes(timeseries, 2)
     end
 end
 
-# We can plot the output of this simulation. This is a lot of *Makie* code,
+# We can plot the output of this simulation. This is a lot of {{Makie}} code,
 # which is not *really* important. It will generate the multi-panel figure
 # below:
 

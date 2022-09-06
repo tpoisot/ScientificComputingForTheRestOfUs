@@ -48,10 +48,13 @@ the different ways they can be made to work).
 
 Second, **this material is *not* about showcasing different packages**. There
 are some situations where we will need to go into the details of *e.g.*
-[Makie](https://makie.juliaplots.org/stable/) for plotting, but it is expected
-that you will, again, read the documentation for the packages that are loaded.
-The material relies most of the time only on packages from *Julia*'s standard
-library.
+<span class='package'><a href='https://juliapackages.com/p/Makie' target='_blank'>Makie</a></span> for plotting, but it is expected that you will, again, read the
+documentation for the packages that are loaded. Every time a package is
+mentioned, you can click on its name to be redirected to the [Julia Packages
+page][jlhub]. The material relies most of the time only on packages from
+*Julia*'s standard library.
+
+[jlhub]: https://juliapackages.com/
 
 Finally, **no error messages**. This is an important design concept. Although
 error messages happen in the daily practice of programming, the point of this

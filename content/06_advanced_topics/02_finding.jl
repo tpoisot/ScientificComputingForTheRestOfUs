@@ -103,6 +103,7 @@ findprev(x -> 0.5 <= x <= 0.6, ts, 10)
 position = findnext(x -> 0.5 <= x <= 0.6, ts, 10)
 @info position
 while ~isnothing(findnext(x -> 0.5 <= x <= 0.6, ts, position + 10))
+    global position
     position = findnext(x -> 0.5 <= x <= 0.6, ts, position + 10)
     @info position
 end

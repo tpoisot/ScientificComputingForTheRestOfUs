@@ -1,6 +1,6 @@
 # ---
 # title: Working with delimited files
-# status: alpha
+# status: beta
 # ---
 
 # A lot of files we use in scientific computing are very simple, and organized

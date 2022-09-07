@@ -13,6 +13,7 @@
 
 using Distributions
 using CairoMakie
+CairoMakie.activate!(; px_per_unit = 2) # This ensures high-res figures
 
 # Here is a broad overview of the task we want to accomplish. The
 # [AnimalTraits][anmtr] database provides curated information about metabolic

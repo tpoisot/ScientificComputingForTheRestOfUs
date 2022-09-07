@@ -49,6 +49,7 @@ end
 # below:
 
 using CairoMakie
+CairoMakie.activate!(; px_per_unit = 2) # This ensures high-res figures
 
 figure = Figure(; resolution = (600, 600), fontsize = 20, backgroundcolor = :transparent)
 mainplot = Axis(figure[1, 1:2]; ylabel = "Population size", yscale = log10)

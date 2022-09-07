@@ -1,6 +1,6 @@
 # ---
 # title: The ternary operator
-# status: alpha
+# status: beta
 # ---
 
 # In this module, we will look at the "ternary operator", a very efficient
@@ -36,15 +36,31 @@ x = rand() < 0.5 ? 0.25 : 0.75
 
 true ? print(2) : print(3)
 
-# !!!INFO In fact, using the `Meta.@lower` macro, we can see that this is
-# converted to a `goto` statement, but this is a little beyond the scope of an
-# introduction module.
+# We can check this using the `@lower` macro from {{Meta}}: it is translating
+# *Julia* code into something of a lower-level, and is an interesting
+# opportunity to check what is going on "under the hood":
 
-# In fact, we can use this to build a very naive function that reproduces the
-# Kronecker $\delta$ function: it returns 1 if the two inputs are equal, and 0
-# if they are not.
+Meta.@lower true ? cos(4) : sin(3)
+
+# We see in the output above that the *operations* (like `cos(4)`) have *not*
+# been expanded yet -- the ternary operator is "pointing" *Julia* towards the
+# right branch.
+
+# We can use the ternary operator as the most basic ingredient in a very naive
+# function that reproduces the Kronecker $\delta$ function: it returns 1 if the
+# two inputs are equal, and 0 if they are not. This function is generally
+# applied to non-negative integers.
 
 # !!!INFO Of course, if we wanted to do this properly, we could remember that
 # `false` *is* 0 and `true` *is* 1, and our function is not necessary.
-# Nevertheless, this is an interesting example.
+# Nevertheless, this is an interesting example to write from scratch:
 
+function δ(i::T, j::T) where {T <: Integer}
+    return i == j ? one(T) : zero(T)
+end
+
+# We can see what our function would do when applied to actual numbers:
+
+for i in 1:3, j in 1:3
+    @info "δ($(i), $(j)) = $(δ(i, j))"
+end

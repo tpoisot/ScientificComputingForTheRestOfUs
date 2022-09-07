@@ -141,6 +141,7 @@ iszero(count(x -> x >= 10, 1:5))
 
 nothingator() = rand() < 0.9 ? nothing : rand(1:10)
 series = [nothingator() for i in 1:10]
+series[rand(3:length(series))] = rand(1:10) # We have at least one non-nothing value
 
 #- 
 

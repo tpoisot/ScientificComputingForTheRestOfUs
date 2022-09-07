@@ -136,12 +136,11 @@ iszero(count(x -> x >= 10, 1:5))
 # `nothing`, `missing`, and `NaN` is one of the language's best features,
 # especially for data analysis.
 
-# Let's see them in action - we will create a mock function to return `nothing`
-# most of the time, and a random number between 1 and 10 some of the time:
+# Let's see them in action - we will create a mock array with some `nothing` and
+# some numbers:
 
-nothingator() = rand() < 0.9 ? nothing : rand(1:10)
-series = [nothingator() for i in 1:10]
-series[rand(3:length(series))] = rand(1:10) # We have at least one non-nothing value
+
+series = [nothing 3 4 nothing 5]
 
 #- 
 

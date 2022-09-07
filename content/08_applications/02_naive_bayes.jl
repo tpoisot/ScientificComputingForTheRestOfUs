@@ -105,7 +105,7 @@ pdf.(D[:, 3], x) |> prod
 # In order to scale this to the entire matrix `D`, we can use the `mapslices`
 # function, which will apply a function to slices of an array:
 
-scores = vec(mapslices(d -> prod(pdf.(d, x)), D; dims=1))
+scores = vec(mapslices(d -> prod(pdf.(d, x)), D; dims = 1))
 
 # These scores do not sum to one (because we do not really use the Bayes
 # formula). In this situation, it is probably a good idea to pass the output
@@ -135,8 +135,8 @@ for i in axes(features, 1)
     local x, y, scores
     x = features[i, :]
     y = classes[i]
-    scores = vec(mapslices(d -> prod(pdf.(d, x)), D; dims=1))
-    ŷ =  argmax(softmax(scores))
+    scores = vec(mapslices(d -> prod(pdf.(d, x)), D; dims = 1))
+    ŷ = argmax(softmax(scores))
     C[y, ŷ] += 1
 end
 
@@ -147,5 +147,5 @@ C
 # Check the accuracy
 
 using LinearAlgebra
-accuracy = sum(diag(C))/sum(C)
+accuracy = sum(diag(C)) / sum(C)
 println("Leave-One-Out (not really) accuracy: $(round(Int64, accuracy*100))%")

@@ -44,7 +44,14 @@ typeof(y)
 # The variable `x` is a floating point number using 64 bits of memory; the
 # variable `y` is an integer using 64 bits of memory. These are very different
 # objects: there is nothing existing between `2` and `3` (the two nearest
-# integers)
+# integers), but there's an infinite number of things between `2.0` and `3.0`.
+
+# !!!WARNING The last point is not actually quite true. Because bits are finite
+# resource, there is a finite number of steps between `2.0` and `3.0`, but we
+# assume that it is large enough that we can cross our fingers and hope for the
+# best.
+
+# Why do types matter so much? In a sense, it is because they give the 
 
 two::Float64 = 2.0
 

@@ -4,19 +4,47 @@
 # ---
 
 # In this module, we will look at one of the most important concept in *Julia*:
-# types. TK
+# types. Types are, to be really imprecise, the way a programming language
+# thinks about a value. A lot of problems arise from the fact that programming
+# languages are very opinionated.
 
 # <!--more-->
 
-#-
+# Let's think about $2$, a real number that exists somewhere on the numbers
+# line, roughly two steps to the right of 0:
 
 x = 2.0
 
-#-
+# We can also think about $2$, a real number that exists somewhere on the
+# numbers line, roughly two steps to the right of 0:
 
 y = 2
 
+# These are different numbers. Well, not really. Not mathematically anyways,
+# since as we expect:
+
+x == y
+
+# So `x` and `y` are equal, but they're actually not equal-equal. They're
+# equal-ish:
+
+x === y
+
+# In the previous modules, we have discussed `==` as an equality comparison
+# operator. This new operator, `===` is a "distinguishability" operator. What
+# does this means? It lets us know that there exists a program that is able to
+# make a difference between `2` and `2.0`. The reason is types.
+
+typeof(x)
+
 #-
+
+typeof(y)
+
+# The variable `x` is a floating point number using 64 bits of memory; the
+# variable `y` is an integer using 64 bits of memory. These are very different
+# objects: there is nothing existing between `2` and `3` (the two nearest
+# integers)
 
 two::Float64 = 2.0
 

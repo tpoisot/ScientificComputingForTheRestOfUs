@@ -1,6 +1,6 @@
 # ---
 # title: Types
-# status: alpha
+# status: beta
 # ---
 
 # In this module, we will look at one of the most important concept in *Julia*:
@@ -51,7 +51,11 @@ typeof(y)
 # assume that it is large enough that we can cross our fingers and hope for the
 # best.
 
-# Why do types matter so much? In a sense, it is because they give the 
+# Why do types matter so much? In a sense, it is because they give the compiler
+# (or the interpreter) some valuable information as to what it should expect. A
+# feature of *Julia* is that we can annotate every variable (even non `const`)
+# with a type, which will ensure that this variable will *never* store data from
+# a different type.
 
 two::Float64 = 2.0
 
@@ -59,14 +63,21 @@ two::Float64 = 2.0
 
 typeof(two)
 
+# !!!OPINION The best practice is still to have be variables declared outside of
+# functions be constants (*i.e.* `const a = 2.0`), because it gives more
+# guarantees to the compiler and produces more efficient code. In a learning
+# context, it does make things easier to not write everything within functions,
+# and in this case annotating variables with a type provides some degree of
+# protection as well as (modest) performance improvements.
+
 # Why does this matter? The answer is simple -- as much as we like to think of
 # 2.0+1 and 2.0+1.0 as the same operation, they are very different *to a
 # computer*. Specifically, although they write almost the same, they turn out to
 # be transformed to different code. In *Julia*, we can use the `@code_llvm`
-# macro to look at the way the code we write is transformed into compiler
-# instructions. This sounds like a lot of information (and it is, although when
-# optimizing code it is often required to use these macros), but this will
-# nicely illustrate the possible issue.
+# macro, from {{InteractiveUtils}}, to look at the way the code we write is
+# transformed into compiler instructions. This sounds like a lot of information
+# (and it is, although when optimizing code it is often required to use these
+# macros), but this will nicely illustrate the possible issue.
 
 # Let's start with the naive 2.0+1:
 
@@ -80,7 +91,15 @@ InteractiveUtils.@code_llvm two + 1
 InteractiveUtils.@code_llvm two + one(two)
 
 # The code is much smaller, and notably has *no promotion*. We have gained some
-# valuable execution time by using two variables with correct types.
+# valuable execution time by using two variables with correct types. Another
+# useful macro is `@code_warntype`. For example, this will show the promotion
+# step:
+
+InteractiveUtils.@code_warntype 2 + 1.0
+
+# But the correctly typed version will simply show the addition:
+
+InteractiveUtils.@code_warntype 2.0 + 1.0
 
 # Recall that when we created the variable `two`, we *annotated* it with the
 # type `Float64`. This is, in a way, a good protection against over-writing this
@@ -103,8 +122,16 @@ end
 typeof(two)
 
 # Because it is possible to turn `2` into `2.0`, *Julia* will do it here, and
-# the type annotation (`two` must be a `Float64`) is still satisfied. What if
-# instead of 2, we try to store $2i+0$ (a complex number)?
+# the type annotation (`two` must be a `Float64`) is still satisfied.
+# Transforming a variable into another type is something we can do manually (and
+# in fact, have to do fairly frequently). For example, we might want to be very
+# cheap (efficient) with memory, and represent `2.0` as an unsigned integer on 8
+# bits:
+
+convert(UInt8, two)
+
+# But what if instead of 2, we try to store $2i+0$ (a complex number) in our
+# original variable?
 
 try
     two = 2im + 0
@@ -118,3 +145,8 @@ end
 # a complex number into a floating point number. Therefore, storing $2i+0$ in
 # `two` would break the requirement that `two` is of the `Float64` type!
 
+# Understanding types, which comes through a lot of practice, is key to
+# accessing some of *Julia*'s most interesting features, notably the dispatch
+# system. In the following modules, we will introduce a lot more types, and see
+# how they are organized in types hierarchies, and how we can use this
+# information to refine the behavior of our functions.

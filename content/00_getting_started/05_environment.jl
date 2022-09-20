@@ -70,6 +70,10 @@ Pkg.status()
 
 Pkg.add("Distributions")
 
+# Note that the package manager informs us on the specific dependencies of the
+# package we want to install. This management of the network of dependencies is
+# largely invisible to the user, but is reported at install (and removal) time.
+
 # We can check that it has been installed:
 
 Pkg.status()
@@ -81,14 +85,19 @@ Pkg.status()
 # We can now use the {{Distributions}} package:
 
 using Distributions
-𝒩 = Normal(0.0, 0.2)
+Normal(0.0, 0.2)
 
 # In some cases, we may want to *remove* an existing package from our
 # environment, because we have found an alternative solution. It is good
 # practice to *only* keep the dependencies you actually need and use.
 
-Pkg.rm("Distributions")
+Pkg.rm("Distributions");
 Pkg.status("Distributions")
+
+# !!!INFO The package manager *would* report the dependencies that have been
+# removed, but we silenced this by adding `;` at the end of the line. This works
+# for all commands, and is a great way to prevent some output from taking up too
+# much space.
 
 # Another thing that the package manager can do is *garbage collection*, *i.e.*
 # cleaning the versions and environments that are not used anymore:

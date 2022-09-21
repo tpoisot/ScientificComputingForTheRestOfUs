@@ -1,5 +1,6 @@
 using Literate
 import HTTP
+import Pkg
 
 # References
 include(joinpath(@__DIR__, "bibliorender.jl"))
@@ -108,6 +109,10 @@ end
 
 # Actually build the content
 for file in files_to_build
+    # This is super-duper required because when calling Pkg stuff within a
+    # module, it changes the current project outside of the module as well,
+    # which is supercharged turbo mega-bullshit
+    Pkg.activate(pwd())
     try
         destination_folder = replace(file, "content" => joinpath("dist", "content"))
         path_elements = splitpath(destination_folder)

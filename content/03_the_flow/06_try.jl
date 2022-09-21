@@ -71,7 +71,7 @@ end
 
 oops_handler(::E) where {E <: Exception} = "I caught an error of the type $(E)"
 
-# !!!INFO In practice, the `oops_handler` would do much more interesting signs.
+# !!!INFO In practice, the `oops_handler` would do much more interesting things.
 # For example, it can try to fix the issue in the original function, or exit a
 # loop, or an infinite number of variations of things
 

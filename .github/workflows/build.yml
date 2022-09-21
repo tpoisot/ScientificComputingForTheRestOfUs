@@ -21,8 +21,12 @@ jobs:
           version: ${{ matrix.julia }}
       - name: "Build the core packages"
         uses: julia-actions/julia-buildpkg@v1
+        env: 
+          GKSwstype: "100"
       - name: "Build the content"
         run: julia --project builder.jl
+        env: 
+          GKSwstype: "100"
       - name: "Word count in the build folder"
         id: word-count
         if: github.event_name == 'pull_request'

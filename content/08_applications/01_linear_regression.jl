@@ -20,7 +20,7 @@ CairoMakie.activate!(; px_per_unit = 2) # This ensures high-res figures
 # rates of several species of animals. There is a linear relationship between
 # the log of body mass and the log of brain size (both expressed in kg). In this
 # module, we will estimate the parameters of this relationship using linear
-# regression.
+# regression for birds.
 
 # [anmtr]: https://animaltraits.org/
 
@@ -34,13 +34,14 @@ CairoMakie.activate!(; px_per_unit = 2) # This ensures high-res figures
 import CSV
 data_url = "https://zenodo.org/record/6468938/files/observations.csv?download=1"
 data_file = download(data_url)
-traits = CSV.File(data_file; delim = ",", select = ["body mass", "brain size"])
+traits = CSV.File(data_file; delim = ",", select = ["class", "body mass", "brain size"])
 traits[1:3]
 
 # Because some species have missing values, we can use a combination of `filter`
 # and `any` to remove them:
 
 traits = filter(v -> all(.!ismissing.(v)), traits)
+traits = filter(v -> v.class == "Aves", traits)
 traits[1:3]
 
 # We will now extract our vectors $x$ (body mass, the predictor) and $y$ (body
@@ -59,7 +60,7 @@ Y = log10.([trait[Symbol("brain size")] for trait in traits]);
 figure = Figure(; resolution = (600, 600), fontsize = 20, backgroundcolor = :transparent)
 scplot = Axis(figure[1, 1]; xlabel = "Body mass (log; kg)", ylabel = "Brain mass (log; kg)")
 scatter!(scplot, X, Y; color = :darkgrey)
-figure
+current_figure()
 
 # !!!INFO There are multiple plotting packages in *Julia*, including {{Plots}},
 # {{Makie}}, {{Gadfly}}, {{Winston}}, and probably a few others. We like
@@ -99,7 +100,7 @@ lines!(
     color = :black,
     linestyle = :dash,
 )
-figure
+current_figure()
 
 # How do we fix this? The gradient descent algorithm works by mapping the loss
 # value $L$ to the parameters values. Specifically, the *gradient* is given by
@@ -189,12 +190,7 @@ lines!(
     (x) -> 𝐩[1] .* x .+ 𝐩[2];
     color = :tomato,
 )
-figure
-
-# !!!DOMAIN The reason it's not super good is that there are actually two family
-# of organisms here, endotherms and ectotherms, and their allometric
-# relationships scale differently. But for the purpose of this exercise, this
-# provides a Good Enough &tm; example.
+current_figure()
 
 # One noteworthy thing about this example is that building our own (admittedly
 # not very general, and not very efficient) gradient descent optimizer was

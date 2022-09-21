@@ -6,13 +6,12 @@
 # In this module, we will *briefly* see how we can define our own types (*aka*
 # `struct`), and give them a hierarchy. We will barely scratch the surface of
 # what can be done with custom types, as the real fun will take place in the
-# modules on [dispatch][dispatch], [element dispatch][elemdispatch], and
-# [overloading][overloading] (don't read them yet!).
+# modules on [dispatch][dispatch] and [overloading][overloading] (don't read
+# them yet!).
 
 # <!--more-->
 
 # [dispatch]: {{< ref "04_basic_functions_usage/02_dispatch.md" >}}
-# [elemdispatch]: {{< ref "05_advanced_functions_usage/02_element_dispatch.md" >}}
 # [overloading]: {{< ref "06_advanced_topics/03_overloading.md" >}}
 
 # In order to demonstrate how useful it is to build our own types, we will build

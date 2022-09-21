@@ -20,7 +20,7 @@ CairoMakie.activate!(; px_per_unit = 2) # This ensures high-res figures
 # rates of several species of animals. There is a linear relationship between
 # the log of body mass and the log of brain size (both expressed in kg). In this
 # module, we will estimate the parameters of this relationship using linear
-# regression.
+# regression for birds.
 
 # [anmtr]: https://animaltraits.org/
 
@@ -34,13 +34,14 @@ CairoMakie.activate!(; px_per_unit = 2) # This ensures high-res figures
 import CSV
 data_url = "https://zenodo.org/record/6468938/files/observations.csv?download=1"
 data_file = download(data_url)
-traits = CSV.File(data_file; delim = ",", select = ["body mass", "brain size"])
+traits = CSV.File(data_file; delim = ",", select = ["class", "body mass", "brain size"])
 traits[1:3]
 
 # Because some species have missing values, we can use a combination of `filter`
 # and `any` to remove them:
 
 traits = filter(v -> all(.!ismissing.(v)), traits)
+traits = filter(v -> v.class == "Aves", traits)
 traits[1:3]
 
 # We will now extract our vectors $x$ (body mass, the predictor) and $y$ (body
@@ -190,11 +191,6 @@ lines!(
     color = :tomato,
 )
 current_figure()
-
-# !!!DOMAIN The reason it's not super good is that there are actually two family
-# of organisms here, endotherms and ectotherms, and their allometric
-# relationships scale differently. But for the purpose of this exercise, this
-# provides a Good Enough &tm; example.
 
 # One noteworthy thing about this example is that building our own (admittedly
 # not very general, and not very efficient) gradient descent optimizer was

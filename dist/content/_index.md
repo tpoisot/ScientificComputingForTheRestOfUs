@@ -38,13 +38,11 @@ points. You can use these lessons on your own, or as a group.
 
 This material has been designed according to three core ideas:
 
-First, **each module is short** (usually no more than 10 minutes to read,
-assuming a reading speed of about 150 words a minute, which seems to be the
-average for technical texts), and introduced a *single* concept. In many places,
-you will notice advice redirecting you to the documentation. The [*Julia*
-manual](https://docs.julialang.org/en/v1/) is extremely thorough, and the point
-of this material is to show "how things work" (as opposed to going into all of
-the different ways they can be made to work).
+First, **each module is short**, and introduces a *single* concept. In many
+places, you will notice advice redirecting you to the documentation. The
+[*Julia* manual](https://docs.julialang.org/en/v1/) is extremely thorough, and
+the point of this material is to show "how things work" (as opposed to going
+into all of the different ways they can be made to work).
 
 Second, **this material is *not* about showcasing different packages**. There
 are some situations where we will need to go into the details of *e.g.*

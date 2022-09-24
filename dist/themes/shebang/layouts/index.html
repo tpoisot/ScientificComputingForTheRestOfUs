@@ -18,9 +18,11 @@
             </div>
             <div class="summary">
                 {{ $page.Summary }}
+                <!--
                 <p class="readingtime">Estimated reading time &asymp; {{ math.Round (div (countwords .Content) 100.0) }}
                     minutes.
                 </p>
+                -->
                 <div class="card-footer">
                     <div class="status status-{{ $page.Params.status }}">
                         <span class="label alpha"><span class="step step-alpha"></span></span>

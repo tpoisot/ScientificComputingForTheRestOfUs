@@ -45,8 +45,12 @@ for t in axes(timeseries, 2)
 end
 
 # We can plot the output of this simulation. This is a lot of {{Makie}} code,
-# which is not *really* important. It will generate the multi-panel figure
-# below:
+# specifically using the {{CairoMakie}} package as we do not need advanced GPU
+# support. This is not *really* important, but {{Makie}} is an excellent
+# plotting package and especially pleasant to work with when using complex
+# layout.
+
+# The code to generate the figure is as follows:
 
 using CairoMakie
 CairoMakie.activate!(; px_per_unit = 2) # This ensures high-res figures

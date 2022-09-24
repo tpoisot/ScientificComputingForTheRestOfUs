@@ -14,12 +14,16 @@
 # dispatch -- there will be no `if`, and most of the functions will very likely
 # be one-liners with almost no code at all.
 
-# TK
+# The first thing we will declare is an *abstract* type. Abstract types are
+# documented in the *Julia* manual (we know you don't want to, but you still
+# have to read it), and are essentially a way to group types that share some
+# form of kinship.
 
 abstract type Strategy end
 
 # Based on this, we can define a series of possible moves, which are *sub-types*
-# of `Strategy`:
+# of `Strategy`. These types are not abstract, and called *concrete*, because we
+# can actually create them:
 
 struct Rock <: Strategy end
 struct Paper <: Strategy end
@@ -49,6 +53,10 @@ isa(Rock(), Rock)
 #-
 
 isa(Rock(), Strategy)
+
+# There is an *infix* version of `isa`, so we can use it with
+
+Rock() isa Strategy
 
 # Surprisingly, this is enough to build our rock/papers/scissors game. We will
 # build the most basic components: a function called `move`, which is going to

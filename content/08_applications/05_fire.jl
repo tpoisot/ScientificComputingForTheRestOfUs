@@ -78,14 +78,18 @@ B = zeros(Int64, length(epochs))
 # this is very slow rn
 
 function _deal_empty!(changeto, forest, p)
-    plt = (rand(Float64, size(forest)) .<= p).&(iszero.(forest))
-    changeto[plt] .= 2
+    plt = (rand(Float64, size(forest)) .<= p) .& (iszero.(forest))
+    return changeto[plt] .= 2
 end
 
+#-
+
 function _deal_planted!(changeto, forest, f)
-    plt = (rand(Float64, size(forest)) .<= f).&(isequal(2).(forest))
-    changeto[plt] .= 1
+    plt = (rand(Float64, size(forest)) .<= f) .& (isequal(2).(forest))
+    return changeto[plt] .= 1
 end
+
+#-
 
 function _deal_fire!(changeto, forest, position, stencil)
     if forest[position] == 1
@@ -101,6 +105,8 @@ function _deal_fire!(changeto, forest, position, stencil)
     end
 end
 
+#-
+
 function one_step!(changeto, forest, p, f, stencil)
     _deal_empty!(changeto, forest, p)
     _deal_planted!(changeto, forest, f)
@@ -112,7 +118,9 @@ function one_step!(changeto, forest, p, f, stencil)
     end
 end
 
-@profview for epoch in epochs
+#-
+
+for epoch in epochs
     one_step!(changeto, forest, p, f, stencil)
     V[epoch] = count(iszero, forest)
     B[epoch] = count(isone, forest)

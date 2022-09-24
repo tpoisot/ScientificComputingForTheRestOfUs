@@ -18,7 +18,7 @@ CairoMakie.activate!(; px_per_unit = 2)
 
 #-
 
-grid_size = (600, 600)
+grid_size = (200, 200)
 
 # We will use the following convention: an empty cell is 0, a burning cell is 1,
 # and a planted cell is 2. The reason we are using numbers here is that they
@@ -26,10 +26,11 @@ grid_size = (600, 600)
 # nifty tricks with the color palette as we will see later).
 
 forest = zeros(Int64, grid_size)
+changeto = zeros(Int64, grid_size)
 
 # probabilities
 
-p, f = 1e-2, 1e-5
+p, f = 1e-2, 0.5e-4
 
 # !!!DOMAIN The model starts to have interesting behaviors when the $p/f$ ratio
 # reaches 100. Keeping $p$ as is, and decreasing the value of $f$ leads to more
@@ -37,7 +38,7 @@ p, f = 1e-2, 1e-5
 
 # how do we spread the fire
 
-stencil = permutedims(vec(CartesianIndices((-1:1, -1:1))))
+stencil = CartesianIndices((-1:1, -1:1))
 
 # color mapping
 
@@ -50,52 +51,82 @@ forest[locations_to_plant] .+= 2
 
 #-
 
-figure = Figure(; resolution = (900, 300), fontsize = 20, backgroundcolor = :transparent)
-forest_plot = Axis(figure[1, 1]; xlabel = "", ylabel = "")
-time_plot = Axis(figure[1, 2:3]; xlabel = "Time", ylabel = "Pixels")
+figure = Figure(; resolution = (600, 300), fontsize = 20, backgroundcolor = :transparent)
+forest_plot = Axis(figure[1:3, 1]; xlabel = "", ylabel = "")
+B_plot = Axis(figure[1, 2]; xlabel = "Time", ylabel = "Burning")
+P_plot = Axis(figure[2, 2]; xlabel = "Time", ylabel = "Planted")
+V_plot = Axis(figure[3, 2]; xlabel = "Time", ylabel = "Empty")
 hidedecorations!(forest_plot)
+hidedecorations!(B_plot)
+hidedecorations!(P_plot)
+hidedecorations!(V_plot)
 heatmap!(forest_plot, forest; colormap = fire_state_palette)
 current_figure()
 
 # steps
 
-epochs = 1000
+epochs = 1:1000
 
 # states
 
-V = zeros(Int64, epochs)
-P = zeros(Int64, epochs)
-B = zeros(Int64, epochs)
+V = zeros(Int64, length(epochs))
+P = zeros(Int64, length(epochs))
+B = zeros(Int64, length(epochs))
 
 # stochastic processes without the need for iteration 
 
 # this is very slow rn
 
-for i in 1:epochs
-    new_trees = filter(i -> rand() <= p, findall(isequal(0), forest))
-    new_fires = filter(i -> rand() <= f, findall(isequal(2), forest))
-    burned_trees = findall(isequal(1), forest)
+function _deal_empty!(changeto, forest, position, p)
+    if forest[position] == 0
+        if rand() <= p
+            changeto[position] = 2
+        end
+    end
+end
 
-    active_fires_position = findall(isone, forest)
-    around =
-        unique(filter(p -> p in CartesianIndices(forest), active_fires_position .+ stencil))
-    on_fire = findall(isequal(2), forest[around])
-    fire_spread = around[on_fire]
+function _deal_planted!(changeto, forest, position, f)
+    if forest[position] == 2
+        if rand() <= f
+            changeto[position] = 1
+        end
+    end
+end
 
-    forest[new_trees] .= 2
-    forest[new_fires] .= 1
-    forest[burned_trees] .= 0
-    forest[fire_spread] .= 1
+function _deal_fire!(changeto, forest, position, stencil)
+    if forest[position] == 1
+        changeto[position] = 0
+        arounds = CartesianIndices(forest)[position] .+ stencil
+        for around in arounds
+            if around in CartesianIndices(forest)
+                if forest[around] == 2
+                    changeto[around] = 1
+                end
+            end
+        end
+    end
+end
 
-    V[i] = count(iszero, forest)
-    B[i] = count(isone, forest)
-    P[i] = prod(size(forest)) - (V[i] + B[i])
+@profview for epoch in epochs
+    for (position,state) in enumerate(forest)
+        _deal_empty!(changeto, forest, position, p)
+        _deal_planted!(changeto, forest, position, f)
+        _deal_fire!(changeto, forest, position, stencil)
+    end
+    
+    for i in eachindex(forest)
+        forest[i] = changeto[i]
+    end
+    
+    V[epoch] = count(iszero, forest)
+    B[epoch] = count(isone, forest)
+    P[epoch] = prod(size(forest)) - (V[epoch] + B[epoch])
 end
 
 # plot
 
 heatmap!(forest_plot, forest; colormap = fire_state_palette)
-lines!(time_plot, P; color = :green, label="Planted")
-lines!(time_plot, B; color = :orange, label="On fire")
-axislegend(time_plot, position=:lb)
+lines!(P_plot, P; color = :green)
+lines!(B_plot, B; color = :orange)
+lines!(V_plot, V; color = :black, linestyle=:dot)
 current_figure()

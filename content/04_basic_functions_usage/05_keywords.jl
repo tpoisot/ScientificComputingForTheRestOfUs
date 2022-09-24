@@ -25,10 +25,11 @@
 """
     relu(x; a=0)
 
-Parameteric leaky ReLU, where the gradient is `x` if `x` is positive, and `a*x`
-if not. The rate of the gradient for negative values of `x` is given by the
-keyword argument `a`, which has a default value of `zero(typeof(x))` --
-**without changing the value of `a`, this function is the "standard" ReLU**.
+Parameteric leaky ReLU for a given activation `x`, where the gradient is `x` if
+`x` is positive, and `a*x` if not. The rate of the gradient for negative values
+of `x` is given by the keyword argument `a`, which has a default value of
+`zero(typeof(x))` -- **without changing the value of `a`, this function is the
+"standard" ReLU**.
 """
 function relu(x::T; a::T = zero(T))::T where {T <: Real}
     return x <= zero(T) ? a * x : x
@@ -37,6 +38,11 @@ end
 # You can now type `?relu` in your REPL to see the documentation of this
 # function. Note that the function docstring is written in mardkown, so you can
 # use bold, italic, lists, code, etc..
+
+# We can also use the `@doc relu` macro (in the REPL), or call the
+# `Base.Docs.doc` function:
+
+Base.Docs.doc(relu)
 
 # How do we use our function?
 

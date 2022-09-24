@@ -98,7 +98,7 @@ parameterized_model(2.2f0)
 # `discrete_logistic_growth`, we know the parameters (because we specified
 # them), and we know that they will not change.
 
-# Can we make this approach intersect nicely with Julia's dispatch system? Of
+# Can we make this approach intersect nicely with *Julia*'s dispatch system? Of
 # course! Let's assume we want to run the model sometimes on a single point (one
 # population), and sometimes on a series of populations (a vector of
 # abundances). We can do this by having, for example, one function taking a
@@ -117,6 +117,10 @@ end
 # Remember from the [module on dispatch][fn_disp] that a function is "just" a
 # name, a big ol' bag of methods. We can declare as many methods as we want, and
 # the output is still going to be a function.
+
+# !!!INFO The second version of `model` (with the
+# `model(n::Vector{T})::Vector{T}`) signature uses the *dot* notation, and we
+# will see what it is in the next module.
 
 # [fn_disp]: {{< ref "04_basic_functions_usage/02_dispatch.md" >}}
 

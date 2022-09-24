@@ -35,7 +35,7 @@ twice(A)
 
 A
 
-# !!DANGER Yeah. You see how that can be a problem, right? `A` has been changed
+# !!!DANGER Yeah. You see how that can be a problem, right? `A` has been changed
 # because we passed it through the `twice` function. This is super dangerous.
 # But also really useful. With great power, and all that.
 

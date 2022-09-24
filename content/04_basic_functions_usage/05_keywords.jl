@@ -40,7 +40,9 @@ end
 # use bold, italic, lists, code, etc..
 
 # We can also use the `@doc relu` macro (in the REPL), or call the
-# `Base.Docs.doc` function:
+# `Base.Docs.doc` function. Note that because the docstring is written in
+# markdown, this will render the function signature as a codeblock, and the
+# documentation proper as normal text.
 
 Base.Docs.doc(relu)
 

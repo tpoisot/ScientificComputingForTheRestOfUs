@@ -18,7 +18,7 @@ CairoMakie.activate!(; px_per_unit = 2)
 
 #-
 
-grid_size = (200, 200)
+grid_size = (300, 300)
 
 # We will use the following convention: an empty cell is 0, a burning cell is 1,
 # and a planted cell is 2. The reason we are using numbers here is that they
@@ -30,7 +30,7 @@ changeto = zeros(Int64, grid_size)
 
 # probabilities
 
-p, f = 1e-2, 0.5e-4
+p, f = 1e-2, 0.9e-4
 
 # !!!DOMAIN The model starts to have interesting behaviors when the $p/f$ ratio
 # reaches 100. Keeping $p$ as is, and decreasing the value of $f$ leads to more
@@ -77,20 +77,14 @@ B = zeros(Int64, length(epochs))
 
 # this is very slow rn
 
-function _deal_empty!(changeto, forest, position, p)
-    if forest[position] == 0
-        if rand() <= p
-            changeto[position] = 2
-        end
-    end
+function _deal_empty!(changeto, forest, p)
+    plt = (rand(Float64, size(forest)) .<= p).&(iszero.(forest))
+    changeto[plt] .= 2
 end
 
-function _deal_planted!(changeto, forest, position, f)
-    if forest[position] == 2
-        if rand() <= f
-            changeto[position] = 1
-        end
-    end
+function _deal_planted!(changeto, forest, f)
+    plt = (rand(Float64, size(forest)) .<= f).&(isequal(2).(forest))
+    changeto[plt] .= 1
 end
 
 function _deal_fire!(changeto, forest, position, stencil)
@@ -107,17 +101,19 @@ function _deal_fire!(changeto, forest, position, stencil)
     end
 end
 
-@profview for epoch in epochs
-    for (position,state) in enumerate(forest)
-        _deal_empty!(changeto, forest, position, p)
-        _deal_planted!(changeto, forest, position, f)
+function one_step!(changeto, forest, p, f, stencil)
+    _deal_empty!(changeto, forest, p)
+    _deal_planted!(changeto, forest, f)
+    for position in eachindex(forest)
         _deal_fire!(changeto, forest, position, stencil)
     end
-    
     for i in eachindex(forest)
         forest[i] = changeto[i]
     end
-    
+end
+
+@profview for epoch in epochs
+    one_step!(changeto, forest, p, f, stencil)
     V[epoch] = count(iszero, forest)
     B[epoch] = count(isone, forest)
     P[epoch] = prod(size(forest)) - (V[epoch] + B[epoch])
@@ -128,5 +124,5 @@ end
 heatmap!(forest_plot, forest; colormap = fire_state_palette)
 lines!(P_plot, P; color = :green)
 lines!(B_plot, B; color = :orange)
-lines!(V_plot, V; color = :black, linestyle=:dot)
+lines!(V_plot, V; color = :black, linestyle = :dot)
 current_figure()

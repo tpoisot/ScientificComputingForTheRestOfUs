@@ -18,7 +18,7 @@ CairoMakie.activate!(; px_per_unit = 2)
 
 #-
 
-grid_size = (400, 400)
+grid_size = (600, 600)
 
 # We will use the following convention: an empty cell is 0, a burning cell is 1,
 # and a planted cell is 2. The reason we are using numbers here is that they
@@ -29,7 +29,11 @@ forest = zeros(Int64, grid_size)
 
 # probabilities
 
-p, f = 1e-2, 1e-4
+p, f = 1e-2, 1e-5
+
+# !!!DOMAIN The model starts to have interesting behaviors when the $p/f$ ratio
+# reaches 100. Keeping $p$ as is, and decreasing the value of $f$ leads to more
+# spiral, and longer oscillations in the number of patches.
 
 # how do we spread the fire
 

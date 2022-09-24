@@ -22,7 +22,7 @@ CairoMakie.activate!(; px_per_unit = 2)
 # corresponding to patches of re-growing forest, but a small grid will run much
 # faster.
 
-grid_size = (400, 400)
+grid_size = (450, 450)
 
 # !!!DOMAIN This model is not *really* about fires and forest, which have more
 # complex dynamics than that (we think). It is a hallmark of complex system
@@ -54,7 +54,7 @@ changeto = zeros(Int64, grid_size .+ 2);
 # effect of lightning, for example).
 
 p = 1e-2
-S = 130
+S = 110
 f = p * (1 / S)
 
 # !!!DOMAIN The model starts to have interesting behaviors when the $S = p/f$
@@ -115,7 +115,7 @@ current_figure()
 # Because this is an iterative model, *i.e.* we will run it a lot of times to
 # look at its behavior, we need to define our epochs:
 
-epochs = 1:1000
+epochs = 1:2000
 
 # To keep track of the state of the model, we will pre-allocate a number of
 # empty arrays:
@@ -156,7 +156,8 @@ function fire!(change, state, p_tree, p_fire; stencil = CartesianIndices((-1:1, 
         end
     end
     for pixel_position in used_indices
-        state[pixel_position] = changeto[pixel_position]
+        state[pixel_position] = change[pixel_position]
+        change[pixel_position] = state[pixel_position]
     end
     return (count(iszero, state), count(isone, state), count(isequal(2), state))
 end

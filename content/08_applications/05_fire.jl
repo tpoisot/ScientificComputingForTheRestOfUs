@@ -22,7 +22,7 @@ CairoMakie.activate!(; px_per_unit = 2)
 # corresponding to patches of re-growing forest, but a small grid will run much
 # faster.
 
-grid_size = (450, 450)
+grid_size = (550, 550)
 
 # !!!DOMAIN This model is not *really* about fires and forest, which have more
 # complex dynamics than that (we think). It is a hallmark of complex system
@@ -38,7 +38,7 @@ grid_size = (450, 450)
 # let us use the `iszero` and `isone` to pick the empty and burning pixels.
 
 forest = zeros(Int64, grid_size .+ 2);
-changeto = zeros(Int64, grid_size .+ 2);
+forestchange = zeros(Int64, grid_size .+ 2);
 
 # You might notice that we are cheating a little bit by assigning a larger grid
 # than we decided. There is a simple reason for this: we will spend time looking
@@ -54,7 +54,7 @@ changeto = zeros(Int64, grid_size .+ 2);
 # effect of lightning, for example).
 
 p = 1e-2
-S = 110
+S = 130
 f = p * (1 / S)
 
 # !!!DOMAIN The model starts to have interesting behaviors when the $S = p/f$
@@ -67,14 +67,15 @@ f = p * (1 / S)
 # "burning" state to its neighbors. In order to do this, we can define a
 # "stencil", or a collection of *relative* positions one-next to the focal cell:
 
-stencil = CartesianIndices((-1:1, -1:1))
+CartesianIndices((-1:1, -1:1))
 
 # This is nothing more than a square matrix wearing a trench coat:
 
-collect(stencil)
+collect(CartesianIndices((-1:1, -1:1)))
 
-# In order to have a starting state, we will seed the landscape with a few
-# trees:
+# The reason we are not assigning this to a variable is because we will pass it
+# as a keyword argument to our simulation function later on. In order to have a
+# starting state, we will seed the landscape with a few trees:
 
 locations_to_plant = filter(i -> rand() <= p, eachindex(forest[2:(end - 1), 2:(end - 1)]))
 forest[locations_to_plant] .= 2;
@@ -115,7 +116,7 @@ current_figure()
 # Because this is an iterative model, *i.e.* we will run it a lot of times to
 # look at its behavior, we need to define our epochs:
 
-epochs = 1:2000
+epochs = 1:1000
 
 # To keep track of the state of the model, we will pre-allocate a number of
 # empty arrays:
@@ -132,27 +133,27 @@ B = zeros(Int64, length(epochs));
 
 # The second rule of the model is that trees catch fire at random when struck by
 # lightning (with probability $f$). The third rule is that a burning tree
-# immediately dies and becomes and empty pixel. The final rule is that any tree
-# next to a burning tree will catch on fire.
+# immediately dies oof and becomes an empty pixel. The final rule is that any
+# tree next to a burning tree will catch on fire.
 
 # Well, it definitely does not makes sense to iterate over the entire forest for
 # each of these rules, so we will write a longer function that only iterates
 # once:
 
-function fire!(change, state, p_tree, p_fire; stencil = CartesianIndices((-1:1, -1:1)))
-    used_indices = CartesianIndices(state)[(begin + 1):(end - 1), (begin + 1):(end - 1)]
+function fire!(change, state, p_tree, p_fire; kernel = CartesianIndices((-1:1, -1:1)))
+    used_indices = CartesianIndices(forest)[(begin + 1):(end - 1), (begin + 1):(end - 1)]
     for pixel_position in used_indices
-        if iszero(state[pixel_position])
+        if state[pixel_position] == 0
             change[pixel_position] = rand() <= p_tree ? 2 : 0
-        elseif isone(state[pixel_position])
-            change[pixel_position] = 0
-            for adjacent_position in stencil
-                if state[pixel_position + adjacent_position] == 2
-                    change[pixel_position + adjacent_position] = 1
+        elseif state[pixel_position] == 2
+            change[pixel_position] = rand() <= p_fire ? 1 : change[pixel_position]
+        elseif state[pixel_position] == 1
+            for adjacent_position in (pixel_position .+ kernel)
+                if state[adjacent_position] == 2
+                    change[adjacent_position] = 1
                 end
             end
-        else
-            change[pixel_position] = rand() <= p_fire ? 1 : 2
+            change[pixel_position] = 0
         end
     end
     for pixel_position in used_indices
@@ -173,13 +174,13 @@ count(isequal(2), forest)
 
 # And after:
 
-fire!(changeto, forest, p, f)
+fire!(forestchange, forest, p, f)
 
 # Equipped with this function, it is very simple to repeat the cycle until all
 # of the epochs have been done:
 
 for epoch in epochs
-    V[epoch], B[epoch], P[epoch] = fire!(changeto, forest, p, f)
+    V[epoch], B[epoch], P[epoch] = fire!(forestchange, forest, p, f)
 end
 
 # This simulation may take a little time, as we could optimize a number of

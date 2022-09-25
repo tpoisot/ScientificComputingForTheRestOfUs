@@ -60,11 +60,13 @@ end
 
 # This function is a bit fucky because the plots all get sent to a specific
 # folder in the static files folder, so we need to look at every image link and
-# correct it directly in the markdown file
+# correct it directly in the markdown file. Also Literate is really fond of
+# changing the naming of images and so this wrecks out shit everytime. Thanks
+# Literate.
 function replace_images(content)
     content = replace(
         content,
-        r"!\[\]\((\d+.\w{3})\)\n" => s"\n![](/plots/\1)\n",
+        r"!\[\]\((.+.\w{3})\)\n" => s"\n![](/plots/\1)\n",
     )
     return content
 end

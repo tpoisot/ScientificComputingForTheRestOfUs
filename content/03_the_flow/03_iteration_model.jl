@@ -1,6 +1,6 @@
 # ---
 # title: Iteration in action!
-# status: beta
+# status: rc
 # ---
 
 # In this module, we will start integrating skills from the previous modules,

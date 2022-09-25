@@ -24,7 +24,11 @@ function fmt(access::BibInternal.Access)
 end
 
 function fmt(pubedin::BibInternal.In)
-    return "*$(pubedin.journal)* $(pubedin.volume)($(pubedin.number)) $(pubedin.pages)"
+    if isempty(pubedin.journal)
+        return "*$(pubedin.publisher)*"
+    else
+        return "*$(pubedin.journal)* $(pubedin.volume)($(pubedin.number)) $(pubedin.pages)"
+    end
 end
 
 function fmt(entry::BibInternal.Entry)

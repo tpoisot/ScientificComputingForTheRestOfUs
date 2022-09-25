@@ -1,7 +1,8 @@
 .chroma,
 pre {
+    font-size: 92%;
     padding: 8px;
-    border-left: 4px solid $color_output;
+    border-left: 4px solid $code_input_background;
     background-color: $code_output_background;
     border-radius: 4px;
     white-space: pre-wrap;
@@ -9,7 +10,7 @@ pre {
     overflow: scroll;
 
     code {
-        color: $color_output;
+        color: $code_input_background;
     }
 }
 
@@ -19,13 +20,28 @@ code {
 
 .chroma {
     padding: 8px;
-    border-left: 4px solid $color_input;
+    border-left: 4px solid $code_input_background;
     background-color: $code_input_background;
 
     code {
-        color: $color_input;
+        color: $color_code_0;
         .c {
-            color: $color_meta;
+            color: $color_code_6;
+        }
+        .k, .kt {
+            color: $color_code_1;
+        }
+        .n {
+            color: $color_code_2;
+        }
+        .mi {
+            color: $color_code_5;
+        }
+        .nd {
+            color: $color_code_4;
+        }
+        .s {
+            color: $color_code_3;
         }
     }
 

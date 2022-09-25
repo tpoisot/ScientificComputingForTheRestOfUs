@@ -11,6 +11,13 @@
 
 # <!--more-->
 
+# This applications is inspired by the chapter on forest fire dynamics in Paul
+# Charbonneau's book on natural complexity, which is extremely well written and
+# illustrated, and full of applications (with *Python*) code to explore the
+# behavior of complex systems.
+
+# !!!REF Charbonneau2017Natural
+
 # We will rely on {{CairoMakie}} for plotting, and nothing else!
 
 using CairoMakie
@@ -99,12 +106,15 @@ P_plot = Axis(figure[2, 2])
 V_plot = Axis(figure[3, 2])
 current_figure()
 
-# Because the numbers do not really matter, we can hide all of the decorations:
+# Because the numbers do not really matter, we can hide all of the decorations,
+# and also tighten the layout a little bit to avoid the big gap between panels:
 
 hidedecorations!(forest_plot)
 hidedecorations!(B_plot)
 hidedecorations!(P_plot)
 hidedecorations!(V_plot)
+rowgap!(figure.layout, 5)
+colgap!(figure.layout, 5)
 current_figure()
 
 # And we can start by showing the initial state of our forest, which is mostly
@@ -131,6 +141,12 @@ B = zeros(Int64, length(epochs));
 # at a set probability $p$. It may be tempting to *iterate* now, but let's see
 # what the other rules are first.
 
+# !!!DOMAIN A more realistic approach would be to keep planting trees at random,
+# but also to plant trees in cells that are neighboring an existing tree. Maybe
+# this can be regulated by another parameter $\alpha$, so that trees appear at
+# random with probabiloty $\alpha p$, and near other trees with probability
+# $(1-\alpha) p$. This is, in fact, a good programming exercise.
+
 # The second rule of the model is that trees catch fire at random when struck by
 # lightning (with probability $f$). The third rule is that a burning tree
 # immediately dies oof and becomes an empty pixel. The final rule is that any
@@ -138,22 +154,54 @@ B = zeros(Int64, length(epochs));
 
 # Well, it definitely does not makes sense to iterate over the entire forest for
 # each of these rules, so we will write a longer function that only iterates
-# once:
+# once. But in the spirit of writing small functions, we will first implement
+# the rules as function of their own.
+
+# The first rule is simple: if the empty cell gets a tree, we change its value
+# in the matrix of change:
+
+function _manage_empty_cells!(change, state, position, p_tree)
+    if rand() <= p_tree
+        setindex!(change, 2, position)
+    else
+        setindex!(change, 0, position)
+    end
+    return nothing
+end
+
+# The second rule is very similar:
+
+function _manage_planted_cells!(change, state, position, p_fire)
+    if rand() <= p_fire
+        setindex!(change, 1, position)
+    end
+    return nothing
+end
+
+# The third rule is a little more complex, as we will need to account for the
+# dispersal kernel, which we will pass as a final argument:
+
+function _manage_burning_cells!(change, state, position, kernel)
+    for surrounding in kernel
+        if state[position + surrounding] == 2
+            setindex!(change, 1, position + surrounding)
+        end
+    end
+    setindex!(change, 0, position)
+    return nothing
+end
+
+# We can now wrap everything in a function called `fire!`:
 
 function fire!(change, state, p_tree, p_fire; kernel = CartesianIndices((-1:1, -1:1)))
     used_indices = CartesianIndices(forest)[(begin + 1):(end - 1), (begin + 1):(end - 1)]
     for pixel_position in used_indices
         if state[pixel_position] == 0
-            change[pixel_position] = rand() <= p_tree ? 2 : 0
+            _manage_empty_cells!(change, state, pixel_position, p_tree)
         elseif state[pixel_position] == 2
-            change[pixel_position] = rand() <= p_fire ? 1 : change[pixel_position]
+            _manage_planted_cells!(change, state, pixel_position, p_fire)
         elseif state[pixel_position] == 1
-            for adjacent_position in (pixel_position .+ kernel)
-                if state[adjacent_position] == 2
-                    change[adjacent_position] = 1
-                end
-            end
-            change[pixel_position] = 0
+            _manage_burning_cells!(change, state, pixel_position, kernel)
         end
     end
     for pixel_position in used_indices

@@ -131,6 +131,7 @@ for file in files_to_build
         )
         # Move images
         images = filter(endswith(".png"), readdir(root; join = true))
+        append!(images, filter(endswith(".svg"), readdir(root; join = true)))
         if ~isempty(images)
             images_go_to = joinpath(@__DIR__, "dist", "static", "plots")
             ispath(images_go_to) || mkpath(images_go_to)

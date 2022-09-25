@@ -1,6 +1,6 @@
 # ---
 # title: Iteration in action!
-# status: beta
+# status: rc
 # ---
 
 # In this module, we will start integrating skills from the previous modules,
@@ -26,11 +26,14 @@
 
 timeseries = zeros(Float64, 2, 36);
 
-# We can also store our parameters in a `NamedTuple`:
+# We can also store our parameters in a `NamedTuple` - this will make it easier
+# to access them in the loop:
 
 parameters = (k = 1.5, c = 1.2, a = 1.02)
 
-# We need to set our initial populations to something that is not 0:
+# We need to set our initial populations to something that is not 0! This is
+# very important, as $(0,0)$ is an equilibrium of the model for which neither
+# population grows.
 
 timeseries[1, 1], timeseries[2, 1] = (1.0, 1.0)
 
@@ -50,25 +53,37 @@ end
 # plotting package and especially pleasant to work with when using complex
 # layout.
 
-# The code to generate the figure is as follows:
-
 using CairoMakie
 CairoMakie.activate!(; px_per_unit = 2) # This ensures high-res figures
 
+# The code to generate the figure is as follows:
+
 figure = Figure(; resolution = (600, 600), fontsize = 20, backgroundcolor = :transparent)
+
+# The first step is to define an axis, with a scale and labels, and to add a
+# `scatterline` to it:
+
 mainplot = Axis(figure[1, 1:2]; ylabel = "Population size", yscale = log10)
+
 scatterlines!(
     mainplot,
     axes(timeseries, 2),
     timeseries[1, :];
     label = "Hosts",
 )
+
 scatterlines!(
     mainplot,
     axes(timeseries, 2),
     timeseries[2, :];
     label = "Parasitoids",
 )
+
+current_figure()
+
+# We will add a second axis for the phase plot, and then add the points
+# corresponding to the timeseries:
+
 subplot = Axis(
     figure[2, 1];
     xlabel = "Host",
@@ -76,11 +91,17 @@ subplot = Axis(
     xscale = log10,
     yscale = log10,
 )
+
 scatterlines!(subplot, timeseries[1, :], timeseries[2, :]; color = :black)
+
+current_figure()
+
+# Finally, we can add the legend to the side of the phase plane:
+
 legend = Legend(figure[2, 2], mainplot; framevisible = false)
 legend.tellheight = false
 legend.tellwidth = true
-figure
+current_figure()
 
 # This wraps the module on iteration. In the next modules, we will go through
 # additional structures to control the flow of our programs. 

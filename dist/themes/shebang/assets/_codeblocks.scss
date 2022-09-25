@@ -1,3 +1,7 @@
+code {
+    color: $color_theme;
+}
+
 .chroma,
 pre {
     font-size: 92%;
@@ -12,10 +16,6 @@ pre {
     code {
         color: $code_input_background;
     }
-}
-
-code {
-    color: $color_input;
 }
 
 .chroma {

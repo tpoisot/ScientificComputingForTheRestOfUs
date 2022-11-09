@@ -43,6 +43,10 @@ pwd()
 # different system, you would see a different path leading up to your
 # `@__DIR__`.
 
+# !!! INFO In practice, there is little need to use `@__DIR__`, because we will only really
+# care about working within a directory, and therefore we can express paths *relative* to
+# this directory, which makes things a lot simpler.
+
 # *Julia* can also print the actual name of the file:
 
 @__FILE__

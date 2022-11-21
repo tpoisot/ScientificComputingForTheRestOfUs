@@ -1,35 +1,41 @@
-@font-face {
-    font-family: 'Recursive';
-    src: url('fonts/Recursive_VF_1.085.woff2') format('woff2-variations');
-    font-weight: 300 500;
-}
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap');
 
 body {
-    font-family: 'Recursive', sans-serif;
-    font-variation-settings: "CASL" 0.2;
-    font-size: 12.6pt;
-    line-height: 19pt;
+    font-family: 'Merriweather', serif;
+    font-size: 13pt;
+    line-height: 24pt;
+    font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, h6, footer, .callout, .main-links, .card {
+    font-family: 'Merriweather Sans', sans-serif;
 }
 
 b,
 strong {
-    font-variation-settings: "wght" 400;
+    font-weight: 700;
 }
 
 em,
 i {
-    font-style: normal;
-    font-variation-settings: "slnt" -7.2, "CASL" 0.5;
+    font-style: italic;
 }
 
 code,
-.highlight {
-    font-family: 'Recursive', monospace;
-    font-variation-settings: "MONO" 1, "CASL" 0.0;
+.highlight, .pkgname {
+    font-family: 'Iosevka Custom Web', monospace;
+    font-stretch: expanded;
+    font-weight: 500;
+}
+
+.pkgname{
+    font-weight: inherit;
+    font-stretch: normal;
 }
 
 article {
     p:first-child {
-        font-feature-settings: "CASL" 0.3, "wght" 500;
+        font-weight: 700;
     }
 }

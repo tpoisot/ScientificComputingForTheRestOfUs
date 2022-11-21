@@ -1,13 +1,16 @@
 .callout {
     padding: 8px;
-    border-left: 4px solid $color_meta;
-    background-color: lighten($color_meta, 65%);
+    margin: 40px 20px;
+    border: 1px solid $color_meta;
+    background-color: lighten($color_meta, 71%);
     color: $color_meta;
     border-radius: 4px;
+    font-weight: 300;
+    line-height: 24px;
 }
 
 .warning {
-    border-left: 4px solid $color_warning;
+    border: 1px solid $color_warning;
     &:before {
         font-family: "Font Awesome 6 Free";
         font-weight: 400;
@@ -18,7 +21,7 @@
 }
 
 .information {
-    border-left: 4px solid $color_information;
+    border: 1px solid $color_information;
     &:before {
         font-family: "Font Awesome 6 Free";
         font-weight: 400;
@@ -29,7 +32,7 @@
 }
 
 .opinion {
-    border-left: 4px solid $color_opinion;
+    border: 1px solid $color_opinion;
     &:before {
         font-family: "Font Awesome 6 Free";
         font-weight: 400;
@@ -40,7 +43,7 @@
 }
 
 .danger {
-    border-left: 4px solid $color_danger;
+    border: 1px solid $color_danger;
     &:before {
         font-family: "Font Awesome 6 Free";
         font-weight: 400;
@@ -51,7 +54,7 @@
 }
 
 .domain {
-    border-left: 4px solid $color_theme;
+    border: 1px solid $color_theme;
     &:before {
         font-family: "Font Awesome 6 Free";
         font-weight: 400;
@@ -62,7 +65,7 @@
 }
 
 .reference {
-    border-left: 4px solid $color_reference;
+    border: 1px solid $color_reference;
     &:before {
         font-family: "Font Awesome 6 Free";
         font-weight: 400;

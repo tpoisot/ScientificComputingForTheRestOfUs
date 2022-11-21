@@ -6,42 +6,48 @@ code {
 pre {
     font-size: 92%;
     padding: 8px;
-    border-left: 4px solid $code_input_background;
     background-color: $code_output_background;
     border-radius: 4px;
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow: scroll;
+    margin-left: -20px;
+    margin-right: -20px;
+    margin-bottom: 30px;
+    margin-top: 30px;
 
     code {
-        color: $code_input_background;
+        color: $color_output;
     }
 }
 
 .chroma {
     padding: 8px;
-    border-left: 4px solid $code_input_background;
     background-color: $code_input_background;
+    border: 1px solid $code_output_background;
 
     code {
-        color: $color_code_0;
+        color: $color_input;
         .c {
-            color: $color_code_6;
+            color: $code_red;
         }
-        .k, .kt {
-            color: $color_code_1;
+        .k {
+            color: $code_magenta;
+        }
+        .kt {
+            color: $code_orange;
         }
         .n {
-            color: $color_code_2;
+            color: $color_input;
         }
         .mi {
-            color: $color_code_5;
+            color: $code_purple;
         }
         .nd, .nb {
-            color: $color_code_4;
+            color: $code_cyan;
         }
         .s, .ss {
-            color: $color_code_3;
+            color: $code_green;
         }
     }
 

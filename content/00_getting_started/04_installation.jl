@@ -55,13 +55,17 @@
 # !!!OPINION We like Julia in VSCode because there are a lot of user-friendly
 # additions that make it easy to track bug, identify bottlenecks, and understand
 # what is loaded in your environment. That being said, there are a number of
-# other solutions to develop *Julia* documents, including {{IJulia}}, {{Pluto}},
-# *Quarto*, vim and lsp, etc...
+# other solutions to develop *Julia* programs, including {{IJulia}}, {{Pluto}},
+# *Quarto*, (neo)vim and lsp, etc... The examples in this class have been built using
+# a mix of these tools!
 
 # One characteristic of *Julia* is that it has amazing support for unicode
 # characters, enabling to, for example, use mathematical symbols to reproduce
 # mathematical notation. This assumes that your font will have good support for
-# these characters.
+# these characters. The project [Beautiful Algorithms][BA] showcases various algorithms
+# written to use *Julia*'s support for unicode.
+
+# [BA]: https://github.com/mossr/BeautifulAlgorithms.jl
 
 # One such font is [JuliaMono][JuliaMono]. Other very popular alternatives, all
 # free, are [Recursive][Recursive],

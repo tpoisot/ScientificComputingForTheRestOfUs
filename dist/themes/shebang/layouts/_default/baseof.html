@@ -20,4 +20,12 @@
 </body>
 
 
+    <script>
+        const readingBarInner = document.querySelector('#reading-bar-inner');
+        document.addEventListener('scroll', function(e) {
+            let width = (document.body.scrollTop || document.documentElement.scrollTop) / (document.documentElement.scrollHeight - document.documentElement.clientHeight) * 100;
+            readingBarInner.style.setProperty('width', width + '%');
+        });
+    </script>
+
 </html>

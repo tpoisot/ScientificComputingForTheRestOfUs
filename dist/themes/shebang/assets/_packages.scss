@@ -1,14 +1,13 @@
 .package {
     background-color: lighten($color_meta, 70%);
     border: 1px solid lighten($color_meta, 60%);
-    padding: 1px 3px;
-    margin: -1px 0px;
-    border-radius: 4px;
+    padding: 5px 3px 1px 3px;
+    margin: -2px 1px;
+    border-radius: 0px;
 
     .pkgname {
         a {
             text-decoration: none;
-            font-variation-settings: "MONO" 0.7, "wght" 370;
         }
 
         &:hover {

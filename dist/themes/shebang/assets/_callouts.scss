@@ -1,12 +1,8 @@
 .callout {
-    padding: 8px;
-    margin: 40px 20px;
-    border: 1px solid $color_meta;
+    padding: 20px;
+    margin: 40px 0px;
     background-color: lighten($color_meta, 71%);
     color: $color_meta;
-    border-radius: 4px;
-    font-weight: 300;
-    line-height: 24px;
 }
 
 .warning {

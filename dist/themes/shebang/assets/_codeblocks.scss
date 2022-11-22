@@ -2,27 +2,39 @@ code {
     color: $color_theme;
 }
 
-.chroma,
-pre {
-    font-size: 92%;
-    padding: 8px;
-    background-color: $code_output_background;
-    border-radius: 4px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow: scroll;
-    margin-left: -20px;
-    margin-right: -20px;
-    margin-bottom: 30px;
-    margin-top: 30px;
-
-    code {
-        color: $color_output;
+.highlight {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 50px 0px;
+    pre {
+        max-width: 90vw;
+        width: 800px;
+        margin: 0px auto;
+        overflow: hidden;
     }
 }
 
-.chroma {
-    padding: 8px;
+pre {
+    font-stretch: normal;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: scroll;
+    code {
+        color: $color_output;
+        font-size: 90%;
+        font-stretch: normal;
+        line-height: 120%;
+    }
+}
+
+.highlight+pre {
+    margin-top: -30px;
+    margin-bottom: 50px;
+}
+
+.highlight {
     background-color: $code_input_background;
     border: 1px solid $code_output_background;
 

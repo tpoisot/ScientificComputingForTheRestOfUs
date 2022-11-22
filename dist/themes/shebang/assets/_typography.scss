@@ -1,20 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Epilogue:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap');
 
 body {
-    font-family: 'Merriweather', serif;
-    font-size: 13pt;
+    font-family: 'Epilogue', sans-serif;
+    font-size: 14pt;
     line-height: 24pt;
     font-weight: 400;
 }
 
-h1, h2, h3, h4, h5, h6, footer, .callout, .main-links, .card {
-    font-family: 'Merriweather Sans', sans-serif;
-}
-
 b,
 strong {
-    font-weight: 700;
+    font-weight: 500;
 }
 
 em,
@@ -26,7 +21,8 @@ code,
 .highlight, .pkgname {
     font-family: 'Iosevka Custom Web', monospace;
     font-stretch: expanded;
-    font-weight: 500;
+    font-weight: 400;
+    font-size: 14.5pt;
 }
 
 .pkgname{

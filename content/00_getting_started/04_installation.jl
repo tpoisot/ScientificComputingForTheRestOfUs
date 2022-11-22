@@ -64,10 +64,11 @@
 # these characters.
 
 # One such font is [JuliaMono][JuliaMono]. Other very popular alternatives, all
-# free, are [Recursive][Recursive] (this entire website is set in Recursive!),
+# free, are [Recursive][Recursive],
 # [JetBrains Mono][JetBrains], [Plex Mono][Plex], [Victor Mono][VictorMono],
 # [Fira Code][FiraCode], [Noto Sans Mono][NotoSansMono], [Hack][Hack], [Cascadia
-# Code][CascadiaCode], and [Iosevka][Iosevka]. There are many others, but these
+# Code][CascadiaCode], and [Iosevka][Iosevka] (the code in this website is set in *Iosevka*).
+# There are many others, but these
 # fonts have good symbol coverage, and tend to be very legible on all screens.
 # Feel free to experiment with one that suits you -- setting up a good
 # environment is also about your own user experience, and having a font that

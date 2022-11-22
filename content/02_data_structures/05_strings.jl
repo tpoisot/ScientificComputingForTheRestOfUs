@@ -24,7 +24,7 @@ typeof("Hello, world")
 # Note that *Julia* is not really picky about what goes into a string. Unicode
 # characters are perfectly valid:
 
-"こんにちは世界!" |> typeof
+"Γεια!" |> typeof
 
 # Strings behave a little like arrays. They have a length:
 

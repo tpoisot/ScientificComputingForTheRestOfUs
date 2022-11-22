@@ -17,7 +17,9 @@
 pwd()
 
 # The working directory is a very important concept: we can look for things
-# *within* it, but we cannot look for things *outside* of it.
+# *within* it, but we cannot look for things *outside* of it. In general, it is 
+# a good idea to have your working directory be the place where your `Project.toml`
+# lives, as this is the place where *Julia* will look for package information.
 
 # !!! INFO This is not quite entirely true. In some very specific cases, we may
 # not want to store a few Gb of data in our working directory, and we will refer
@@ -45,7 +47,7 @@ pwd()
 
 # !!! INFO In practice, there is little need to use `@__DIR__`, because we will only really
 # care about working within a directory, and therefore we can express paths *relative* to
-# this directory, which makes things a lot simpler.
+# this directory, where our `Project.toml` lives, which makes things a lot simpler.
 
 # *Julia* can also print the actual name of the file:
 
@@ -108,6 +110,11 @@ readdir(pwd())
 # There seems to be a `data` directory. Note that `readdir` has a number of
 # options, and that *Julia* offers additional ways to walk through a series of
 # nested directories if neede.
+
+# !!! WARNING There is an important difference between `mkpath` and `mkdir`. The
+# first will create *all* intermediate folders, allowing to create, for example, 
+# `data/experiments/pilot` at once, whereas `mkdir` can only create *one* directory
+# at a time.
 
 # To finish up, let's remove this directory. We will use `isdir` again because
 # we do not want to remove a directory that doesn't exist. It is worth looking

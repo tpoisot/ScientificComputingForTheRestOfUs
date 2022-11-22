@@ -12,32 +12,12 @@
     <div class="cards">
         {{ range $index, $page := (sort $section.Pages "File.Path") }}
         <div class="card">
-            <div class="title">
+            <div class="title status-{{ $page.Params.status }}">
                 <span class="index">{{ printf "%02d" $id }}/{{ printf "%02d" $index }}</span> <a
-                    href="{{ $page.Permalink }}">{{ $page.Title }}</a>
+                      href="{{ $page.Permalink }}">{{ $page.Title }}</a>
             </div>
             <div class="summary">
                 {{ $page.Summary }}
-                <!--
-                <p class="readingtime">Estimated reading time &asymp; {{ math.Round (div (countwords .Content) 100.0) }}
-                    minutes.
-                </p>
-                -->
-                <div class="card-footer">
-                    <div class="status status-{{ $page.Params.status }}">
-                        <span class="label alpha"><span class="step step-alpha"></span></span>
-                        <span class="label beta"><span class="step step-beta"></span></span>
-                        <span class="label rc"><span class="step step-rc"></span></span>
-                        <span class="label release"><span class="step step-release"></span></span>
-                    </div>
-                    <div class="explanation">
-                        {{ with (eq $page.Params.status "alpha") }}Module not ready for use{{ end }}
-                        {{ with (eq $page.Params.status "beta") }}Module in development{{ end }}
-                        {{ with (eq $page.Params.status "rc") }}Module awaiting testing{{ end }}
-                        {{ with (eq $page.Params.status "release") }}Field-tested module{{ end }}
-                    </div>
-                </div>
-
             </div>
         </div>
         {{ end }}

@@ -1,32 +1,85 @@
 .card {
 
-    border: 1px solid lighten($color_meta, 45%);
-    border-radius: 3px 3px;
-
-    p,
-    .title {
-        padding: 0.5em 1em;
+    border-left: 2px solid lighten($color_meta, 35%);
+    &:last-child {
+        border-left: 2px solid white;
     }
-
-    .readingtime {
-        text-align: left;
-        color: lighten($color_meta, 10%);
-    }
-
-    .title {
-        padding-bottom: 0;
-    }
-
     color: $color_meta;
-    margin-bottom: 3rem;
+    margin-bottom: 0rem;
+    padding-bottom: 3rem;
+
+    .title, p {
+        padding-left: 1rem;
+        margin: 0px 0px;
+        margin-bottom: 2rem;
+    }
+
+    p {
+        padding-left: calc(1rem + 26px);
+    }
 
     .title {
-        font-variation-settings: "MONO" 0, "CASL" 1.0, "wght" 800;
-
+        font-size: 18px;
+        line-height: 18px;
         .index {
-            font-variation-settings: "MONO" 1, "CASL" 0;
             color: $color_meta;
-
+        }
+        &::before{
+            content: " ";
+            border: 2px solid $color_meta;
+            width: 18px;
+            display: inline-table;
+            height: 18px;
+            background-color: white;
+            border-radius: 22px;
+            position: relative;
+            left: calc(-1rem - 12px);
+        }
+        &::after {
+            color: white;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 2px;
+            margin: 4px 0px;
+            font-size: 14px;
+            line-height: 14px;
+            float: right;
+        }
+        &.status-alpha {
+            &::after {
+                content: "Not ready";
+                background-color: $color_alpha;
+            }
+            &::before {
+                border-color: $color_alpha;
+            }
+        }
+        &.status-beta {
+            &::after {
+                content: "In development";
+                background-color: $color_beta;
+            }
+            &::before {
+                border-color: $color_beta;
+            }
+        }
+        &.status-rc {
+            &::after {
+                content: "In incubation";
+                background-color: $color_rc;
+            }
+            &::before {
+                border-color: $color_rc;
+            }
+        }
+        &.status-release {
+            &::after {
+                content: "Released";
+                background-color: $color_release;
+            }
+            &::before {
+                border-color: $color_release;
+            }
         }
     }
 
@@ -37,6 +90,6 @@
 
 .blurb {
     color: $color_copy;
-    margin-bottom: 2rem;
-    font-variation-settings: 'wght' 450;
+    margin-bottom: 6rem;
 }
+

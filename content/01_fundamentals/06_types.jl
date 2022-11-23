@@ -13,43 +13,42 @@
 # Let's think about $2$, a real number that exists somewhere on the numbers
 # line, roughly two steps to the right of 0:
 
-x = 2.0
+2.0
 
 # We can also think about $2$, a real number that exists somewhere on the
-# numbers line, roughly two steps to the right of 0:
+# numbers line, exactly two steps to the right of 0:
 
-y = 2
+2
 
 # These are different numbers. Well, not really. Not mathematically anyways,
 # since as we expect:
 
-x == y
+2.0 == 2
 
-# So `x` and `y` are equal, but they're actually not equal-equal. They're
+# So $2.0$ and $2$ are equal, but they're actually not equal-equal. They're
 # equal-ish:
 
-x === y
+2.0 === 2
 
 # In the previous modules, we have discussed `==` as an equality comparison
-# operator. This new operator, `===` is a "distinguishability" operator. What
-# does this means? It lets us know that there exists a program that is able to
-# make a difference between `2` and `2.0`. The reason is types.
+# operator. This new operator, `===` (the `=` symbol repeated *three* times) is a "distinguishability" operator. What
+# does this means? It lets us know that there exists a program able to
+# make a difference between `2` and `2.0`. The reason why such a program exists is types.
 
-typeof(x)
+typeof(2.0)
 
 #-
 
-typeof(y)
+typeof(2)
 
-# The variable `x` is a floating point number using 64 bits of memory; the
-# variable `y` is an integer using 64 bits of memory. These are very different
+# The construct `2.0` is a floating point number using 64 bits of memory; `2` is an integer using 64 bits of memory. These are very different
 # objects: there is nothing existing between `2` and `3` (the two nearest
 # integers), but there's an infinite number of things between `2.0` and `3.0`.
 
 # !!!WARNING The last point is not actually quite true. Because bits are finite
 # resource, there is a finite number of steps between `2.0` and `3.0`, but we
 # assume that it is large enough that we can cross our fingers and hope for the
-# best.
+# best. Larger representations of floating point numbers are available.
 
 # Why do types matter so much? In a sense, it is because they give the compiler
 # (or the interpreter) some valuable information as to what it should expect. A
@@ -68,7 +67,7 @@ typeof(two)
 # guarantees to the compiler and produces more efficient code. In a learning
 # context, it does make things easier to not write everything within functions,
 # and in this case annotating variables with a type provides some degree of
-# protection as well as (modest) performance improvements.
+# protection as well as (maybe, modest) performance improvements.
 
 # Why does this matter? The answer is simple -- as much as we like to think of
 # 2.0+1 and 2.0+1.0 as the same operation, they are very different *to a
@@ -155,4 +154,5 @@ end
 # accessing some of *Julia*'s most interesting features, notably the dispatch
 # system. In the following modules, we will introduce a lot more types, and see
 # how they are organized in types hierarchies, and how we can use this
-# information to refine the behavior of our functions.
+# information to refine the behavior of our functions. Remember that you can always inspect
+# the type of a variable using `typeof`.

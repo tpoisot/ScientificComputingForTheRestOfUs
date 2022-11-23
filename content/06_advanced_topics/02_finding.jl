@@ -1,6 +1,6 @@
 # ---
 # title: Finding things in arrays
-# status: beta
+# status: rc
 # ---
 
 # In this module, we will see how to locate interesting values in collections,
@@ -129,7 +129,7 @@ iszero(count(x -> x >= 10, 1:5))
 # these functions (or indeed, of any array, but this is most closely related to
 # working on the output of searches).
 
-# The first functions are `something` `coalesce` -- in essence, they return the
+# The first functions are `something` and `coalesce` -- in essence, they return the
 # first value that is not `nothing` or not `missing`.
 
 # !!!OPINION We think that *Julia*'s insistence of making a difference between
@@ -138,7 +138,6 @@ iszero(count(x -> x >= 10, 1:5))
 
 # Let's see them in action - we will create a mock array with some `nothing` and
 # some numbers:
-
 
 series = [nothing 3 4 nothing 5]
 
@@ -149,6 +148,17 @@ something(series...)
 # !!!WARNING These functions *must* be called on a splatted collection; if not,
 # they will simply return the collection, because it isn't `nothing` or
 # `missing`.
+
+# If we call `coalesce`, we will get `nothing` as a result, because `coalesce` will look for
+# the first *non-nothing* value:
+
+coalesce(series...)
+
+# If we change the series to have a `missing` element, we can see how `something` and
+# `coalesce` differ:
+
+series = [missing 3 4 nothing 5]
+coalesce(series...)
 
 # In brief, `something` and `coalesce` are extremely useful when you can
 # anticipate that your collection may have some `missing` or `nothing` values,

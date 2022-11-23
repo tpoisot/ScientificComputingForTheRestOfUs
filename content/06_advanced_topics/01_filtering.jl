@@ -1,6 +1,6 @@
 # ---
 # title: Map, Filter, Accumulate, Reduce
-# status: beta
+# status: rc
 # ---
 
 # In a lot of applications, we want to apply some operation to all elements in a

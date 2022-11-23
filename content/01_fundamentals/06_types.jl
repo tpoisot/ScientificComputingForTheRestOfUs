@@ -1,6 +1,6 @@
 # ---
 # title: Types
-# status: beta
+# status: rc
 # ---
 
 # In this module, we will look at one of the most important concept in *Julia*:

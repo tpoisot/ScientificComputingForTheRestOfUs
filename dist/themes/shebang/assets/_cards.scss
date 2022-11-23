@@ -2,7 +2,7 @@
 
     border-left: 2px solid lighten($color_meta, 35%);
     &:last-child {
-        border-left: 2px solid white;
+        border-left: 2px solid $color_bg;
     }
     color: $color_meta;
     margin-bottom: 0rem;
@@ -30,13 +30,13 @@
             width: 18px;
             display: inline-table;
             height: 18px;
-            background-color: white;
+            background-color: $color_bg;
             border-radius: 22px;
             position: relative;
             left: calc(-1rem - 12px);
         }
         &::after {
-            color: white;
+            color: $color_bg;
             text-transform: uppercase;
             padding: 3px 8px;
             border-radius: 2px;

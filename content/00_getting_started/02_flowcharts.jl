@@ -4,7 +4,7 @@
 # ---
 
 # One of the most powerful tool to plan a programming task is to draw a
-# flochart. In simple terms, a flowchart will let you map the different steps
+# flowchart. In simple terms, a flowchart will let you map the different steps
 # that the program will have to follow, and see what is required for each of
 # them. To illustrate, we will use a flowchart not of a program, but of a
 # pancake recipe.

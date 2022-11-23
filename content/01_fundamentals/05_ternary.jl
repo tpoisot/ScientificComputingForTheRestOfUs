@@ -1,11 +1,12 @@
 # ---
 # title: The ternary operator
-# status: beta
+# status: rc
 # ---
 
 # In this module, we will look at the "ternary operator", a very efficient
 # shortcut to perform a logical test in a single line. This is a construct we
-# will use quite a lot to express a conditional expression in a single line.
+# will use quite a lot to express both possible outcomes of a conditional expression using
+# a single line!
 
 # <!--more-->
 
@@ -24,12 +25,22 @@ end
 # *boss*". Thankfully there is a way to simplify this expression greatly, and it
 # does of course involve learning some more operators.
 
+# But before we start doing this, as a little bit of recall from the previous module, note
+# that we can do the same thing with short-circuit operators:
+
+x = 0.75
+rand() < 0.5 && (x = 0.25)
+
+# But there is a reason why we don't do everything we technically can, and in this instance,
+# the reason is that this notation is absolutely vile. So we will address our problem in
+# a more elegant way, using the *ternary operator*:
+
 x = rand() < 0.5 ? 0.25 : 0.75
 
-# This is called a ternary operator. The basic syntax is `condition ? if true :
+# This little `=`/`?`/`:` sequence is called a ternary operator. The basic syntax is `condition ? if true :
 # if false`. It fits in a single line, and we can handle both cases. Note that
 # the cases are *returned* as a function of whether the condition is satisfied,
-# which is a way to rapidly fill a variable.
+# which is a way to rapidly give a value to a variable.
 
 # Another source of efficiency is that both sides of the `:` are *not*
 # evaluated, unlike other languages:
@@ -58,6 +69,10 @@ Meta.@lower true ? cos(4) : sin(3)
 function δ(i::T, j::T) where {T <: Integer}
     return i == j ? one(T) : zero(T)
 end
+
+# !!!WARNING We have not yet covered how to declare functions, and how to handle the types
+# of arguments. This will happen later in the material. For now, just trust us when we say
+# that all of the bits that aren't the ternary operator are required for a function to run.
 
 # We can see what our function would do when applied to actual numbers:
 

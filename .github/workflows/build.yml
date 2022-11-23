@@ -14,7 +14,7 @@ jobs:
         julia: [1.8]
     steps:
       - name: "Checkout action"
-        uses: actions/checkout@v1.0.0
+        uses: actions/checkout@v3.1.0
       - name: "Setup julia"
         uses: julia-actions/setup-julia@v1
         with:
@@ -49,7 +49,7 @@ jobs:
     name: "Make the website"
     steps:
       - name: "Checkout action"
-        uses: actions/checkout@v1.0.0
+        uses: actions/checkout@v3.1.0
       - name: "Setup hugo"
         uses: peaceiris/actions-hugo@v2
         with:

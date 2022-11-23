@@ -28,8 +28,10 @@ CairoMakie.activate!(; px_per_unit = 2) # This ensures high-res figures
 
 # We will first download, then load, the data -- we use the `CSV.File` approach
 # here, which is great for structured data, and accepts a lot of different
-# options to only read the required columns (see `?CSV.File` for more!). We will
-# limit the output to the first three rows:
+# options to only read the required columns (see `?CSV.File` for more!). {{CSV}} has plenty
+# of additional features, and works really well with *e.g.* {{DataFrames}}.
+
+# We will limit the output to the first three rows:
 
 import CSV
 data_url = "https://zenodo.org/record/6468938/files/observations.csv?download=1"
@@ -51,8 +53,10 @@ traits[1:3]
 X = log10.([trait[Symbol("body mass")] for trait in traits]);
 Y = log10.([trait[Symbol("brain size")] for trait in traits]);
 
-# !!!OPINION Machine Learning and Statistics both claim linear regression as
-# "theirs". Both are wrong. Methods belong to the people.
+# !!!DOMAIN There is maybe a more elegant way to handle the log-log relationship, by
+# questionning whether a base 10 is the right one, given the way body mass and brain size
+# scale. The question of scaling in biology is not relevant here, and we will get good
+# enough results with a `log10` transform.
 
 # It is *always* a good idea to look at the data before attempting any
 # modelling, so we can use the {{CairoMakie}} package to do so:
@@ -66,7 +70,7 @@ current_figure()
 # {{Makie}}, {{Gadfly}}, {{Winston}}, and probably a few others. We like
 # {{Makie}} for complex layouts and fine-grained controls.
 
-# After checking that the relationship between $Y$ abd $X$ looks suitably
+# After checking that the relationship between $Y$ and $X$ looks suitably
 # linear, we can start thinking about the optimization algorithm. Optimization
 # requires a target, otherwise known as a loss function. We will use the mean
 # squared error estimator, which as its name suggests, compare the actual values
@@ -82,8 +86,8 @@ current_figure()
 # underlying theory, now is a good time to pause your reading and have a look at
 # these resources.
 
-# We can measure the loss that we would get based on random values of $m$ and
-# $b$ drawn in the unit interval:
+# We can measure the loss that we would get based on no slope and an intercept equal to the
+# average of $y$:
 
 using Statistics
 m₀, b₀ = 0.0, mean(Y)
@@ -112,7 +116,7 @@ current_figure()
 # \end{bmatrix}^\intercal
 # $$
 
-# The value of $\partial L/\partial m$ is the partial derivative of the log
+# The value of $\partial L/\partial m$ is the partial derivative of the loss
 # function with regards to $m$, and can be calculated from the definition of the
 # loss function. In *Julia*, there are a number of autodiff packages like
 # {{Zygote}} who make this task a lot easier, but for the purpose of this

@@ -47,7 +47,7 @@
         }
         &.status-alpha {
             &::after {
-                content: "Not ready";
+                content: "Building";
                 background-color: $color_alpha;
             }
             &::before {
@@ -56,7 +56,7 @@
         }
         &.status-beta {
             &::after {
-                content: "In development";
+                content: "Writing";
                 background-color: $color_beta;
             }
             &::before {
@@ -65,7 +65,7 @@
         }
         &.status-rc {
             &::after {
-                content: "In incubation";
+                content: "Testing";
                 background-color: $color_rc;
             }
             &::before {

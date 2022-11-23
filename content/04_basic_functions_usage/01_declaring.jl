@@ -1,6 +1,6 @@
 # ---
 # title: Declaring functions
-# status: beta
+# status: rc
 # ---
 
 # Everything should be a function. Everything. Especially in *Julia*, for
@@ -47,16 +47,17 @@ logit(p) = log(p / (1.0 - p))
 # Hey there's something new! We have added `x` (and `p`) in the declaration of
 # the function. What are these?
 
-# They are called *argument*. The arguments of a function (and their type!) are
+# They are called *arguments*. The arguments of a function (and their type!) are
 # called its *signature* (there is a second part to the signature of a function,
-# and we will get to it much, much later).
+# and we will get to it much, much later). Arguments are used to provide information about
+# the outside world to a function.
 
 # We can have many arguments to a function. For example, we can have a function
 # called `linear`, with three arguments `x`, `m`, and `b`, which would return
 # $mx+b$.
 
 function linear(x, m, b)
-    return m*x+b
+    return m * x + b
 end
 
 # We can check that it works, maybe by testing different values of `x`, with the
@@ -72,20 +73,23 @@ end
 
 # !!!WARNING The downside of positional arguments is that, of course, you need
 # to pass them to the function in the right order, as specified by the
-# signature.
+# signature. Thankfully, most decent text editors will provide you with information about
+# the signature as you type the name of the function, so you do not need to have a complete
+# mental model of your entire code every time you want to write something.
 
 # One thing that the function cannot do yet is deal with us giving it no
 # arguments. We can fix this by giving default values to some arguments. Note
 # how we also change the name of the arguments to make it far more obvious what
 # the function will do:
 
-function linear(x, slope, intercept=0.0)
-    return slope*x+intercept
+function linear(x, slope, intercept = 0.0)
+    return slope * x + intercept
 end
 
 # !!!OPINION Using descriptive variable names is a *Good Thing*. Most text
 # editors will auto-complete, but most importantly, it makes the code readable
-# by humans.
+# by humans. You will spend a lot of time dealing with your code, and it makes sense to have
+# names that help you figure out what the *purpose* of the code is.
 
 # One small (or, well, actually, gigantic) caveat with default values for
 # positional arguments is that you *cannot* mix and match the order: the
@@ -98,14 +102,17 @@ end
 
 f = (x) -> x^2
 
-# This makes `f` a function returning the square of its argument:
+# The `->` symbol is called a *coding ligature*, and they are all the rage in programming
+# fonts. In practice, this is simply the characters `-` `>`, but replaced with a nice little
+# arrow. Font ligatures notwisthanding, this notations makes `f` a function returning the square of its argument:
 
 f(2.0)
 
 # !!!INFO Anonymous functions are more difficult to debug, optimize, and
 # generally deal with than "proper" functions. That being said, they are very
 # useful when you need a function somewhere, but do not feel like writing one
-# for a single operation.
+# for a single operation. We will make ample use of the when looking for stuff in things (or
+# is it the other way around?).
 
 # In this module, we went through the different ways to declare a function. In
 # the following module, we will go in a lot of details into the dispatch

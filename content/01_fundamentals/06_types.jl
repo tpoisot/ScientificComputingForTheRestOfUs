@@ -134,7 +134,7 @@ convert(UInt8, two)
 # original variable?
 
 try
-    two = 2im + 0
+    global two = 2im + 0
 catch err
     @warn "I cannot perform this operation"
 else
@@ -144,6 +144,12 @@ end
 # This time, the assignment is failing because there is no automatic way to turn
 # a complex number into a floating point number. Therefore, storing $2i+0$ in
 # `two` would break the requirement that `two` is of the `Float64` type!
+
+# !!!WARNING We are using `global two` to refer to the variable `two`, because the scoping
+# rules (*i.e.* which part of the code are allowed to access which variables) say that,
+# *outside of a function*, variables in a loop or a `try` block belong to this structure.
+# This works differently within a function, where the variables defined within the function
+# are accessible everywhere within this function.
 
 # Understanding types, which comes through a lot of practice, is key to
 # accessing some of *Julia*'s most interesting features, notably the dispatch

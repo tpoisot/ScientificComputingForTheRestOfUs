@@ -48,7 +48,8 @@ A
 # regardless of the size of the array you work on, it "costs" the same memory
 # footprint to send it to a function.
 
-# *Julia* functions are, by default, performing *mutations* on their arguments.
+# For this reason, it is very easy (in fact, it is the default) for *Julia* functions
+# to perform *mutations* on their arguments.
 # By *convention*, this behavior is indicated by a `!` at the end of the
 # function name. Think of it as the language going *Hey, listen!*, and asking
 # you to pay attention.
@@ -67,8 +68,14 @@ function remainder!(X::Matrix{T}, d::T) where {T <: Integer}
     return X
 end
 
-# This function will *overwrite* its argument `X`. How do we avoid this? Well,
-# quite simply! We write a function that works on a *copy* of `X`:
+# !!!INFO Note that we use `eachindex` to move through the matrix linearly, as we discussed
+# in the module on iteration. We would get the same behavior iterating over rows and columns
+# explicitly, but this notation is more concise, and therefore more readable and "better".
+
+# This function will *overwrite* its argument `X`. How do we avoid this? We cannot. It is
+# a consequence of functions receiving the memory location of collections, as opposed to
+# a copy of the collection. But wait! This is our solution! If we do not want the function
+# to modify our original collection, we can point it towards a *copy* of this collection!
 
 function remainder(X::Matrix{T}, d::T) where {T <: Integer}
     Y = copy(X)
@@ -79,7 +86,11 @@ end
 # This function does *not* end with a `!`: this is because it is *not* modifying
 # its first argument. Instead, we create a *copy* of this argument. This is when
 # we re-use the function that changes its argument, to modify the copy, which we
-# then return.
+# then return. This forms the basis of a very powerful (and common) design pattern in
+# *Julia*: write a function `foo!`, then write a function `foo` who copies its first
+# argument and calls `foo!` on the copy.
+
+# We can call our new function:
 
 remainder(A, 3)
 

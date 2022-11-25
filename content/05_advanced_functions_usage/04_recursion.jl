@@ -1,6 +1,6 @@
 # ---
 # title: Recursion
-# status: alpha
+# status: beta
 # ---
 
 # What is recursion, if not recursion persevering? In this module, we will see

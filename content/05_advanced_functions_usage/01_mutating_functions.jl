@@ -1,6 +1,6 @@
 # ---
 # title: Mutating functions
-# status: beta
+# status: rc
 # ---
 
 # In this module, we will see how *Julia* deals with collections when they are
@@ -110,6 +110,10 @@ A
 # over-writes, not its original argument, but an arbitrary array:
 
 Z = similar(A)
+
+# !!!INFO The  `similar` function will create an object that is *similar* to its argument in
+# the sense that it will have the same shape and type, but the value inside this object are
+# not predictible.
 
 # This might be a placeholder array we will use to store results temporarily.
 # For example, when we perform thousands of iterations, we might not need to

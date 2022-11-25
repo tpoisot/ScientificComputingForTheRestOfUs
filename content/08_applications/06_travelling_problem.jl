@@ -3,7 +3,9 @@
 # status: beta
 # ---
 
-# In this module
+# In this module, we will look at a way to start working on the travelling salesperson
+# problem. This is mostly an excuse to play around with indexing, as we will not explore the
+# many ways to actually optimize this problem.
 
 # <!--more-->
 
@@ -84,7 +86,8 @@ current_figure()
 
 # What is the total travel distance of this route? In order to know this, we only need to
 # read the pairwise distances between adjacent cities in the route, and add the return step
-# at the end.
+# at the end. This is feasible with a list comprehension, as we need to read the distance
+# between step $i$ and step $i-1$ of the route, which are mapped to two different cities:
 
 global distance =
     sum([D[route[i], route[i + 1]] for i in axes(route, 1)[1:(end - 1)]]) +
@@ -93,24 +96,44 @@ global distance =
 # Problem solved! Now what we need to do is find a way to decrease this distance, which
 # would represent a shortest path. We can (sort of) brute force our way to a solution.
 
-for i in 1:10000
+# !!!DOMAIN This is not the best way to approach this problem. In practice, we would use
+# something like a genetic algorithm. This would be a lot more work, but give much better
+# results. The way we use here is almost demonstrably the worst possible way to solve the
+# problem.
+
+# Our approach will work as follows: every step, we will pick two random steps along the
+# route, and switch them. For example, the route `[1, 2, 3, 4]` can become `[1, 4, 3, 2]`.
+# This is something we can do through the fact that `x[[i,j]] = x[[j,i]]` will switch the
+# positions of `i` and `j` in `x`. But also, we know that `[j, i]` is `reverse([i, j])`; so
+# if we have a vector with two positions on the route, we can switch them very easily!
+
+# This *would* modify our route "in place", which is good, but implies that we need to keep
+# track of the positions we switched so we can switch them back if the proposed solution is
+# bad. Here, we will define *bad* as "making the distance increase". If a proposed solution
+# is *good*, we want to keep the switch (we have nothing to do), and re-write the value of
+# `distance` to be the new value to beat.
+
+# We will keep track of the progress of our algorithm in an array of "best distance found so
+# far":
+
+best_distance = zeros(Float64, 10_000)
+best_distance[1] = distance
+
+# We now have everything we need to run the algorithm:
+
+for i in axes(best_distance, 1)[2:end]
     switches = rand(eachindex(route), 2)
-    route[reverse(switches)] .= route[switches]
-    new_distance =
+    route[reverse(switches)] = route[switches]
+    best_distance[i] =
         sum([D[route[i], route[i + 1]] for i in axes(route, 1)[1:(end - 1)]]) +
         D[route[end], route[begin]]
-    if new_distance < distance
-        global distance = new_distance
-    else
-        route[reverse(switches)] .= route[switches]
+    if !(best_distance[i] <= best_distance[i - 1])
+        route[reverse(switches)] = route[switches]
+        best_distance[i] = best_distance[i - 1]
     end
 end
 
-# !!!DOMAIN This is not the best way to approach this problem. In practice, we would use
-# something like a genetic algorithm. This would be a lot more work, but give much better
-# results.
-
-# After 10000 iterations, we can have a look at the new solution:
+# After all the iterations are done, we can have a look at the new solution:
 
 scatter(
     cities;
@@ -121,6 +144,16 @@ scatter(
 lines!(cities[:, route]; color = :black)
 current_figure()
 
-#-
+# We can also check that the solution has been decreasing over time:
 
-distance
+lines(
+    best_distance;
+    axis = (; xlabel = "Step", ylabel = "Route distance"),
+    figure = (; backgroundcolor = :transparent),
+)
+
+# This algorithm is *very* prone to getting stuck in local minima, so it is not surprising
+# that it is not generating a *good* solution. A formative excercise to do is to (i) add the
+# possibility to shuffle larger sections of the route, like for example `1:5` and `30:34`,
+# and (ii) come up with a way to accept a move that is just a "little bit" bad, which is the
+# basis for *e.g.* simulated annealling.

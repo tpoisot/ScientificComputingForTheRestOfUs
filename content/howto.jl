@@ -11,12 +11,20 @@
 # The content is definitely designed to be read from beginning to end!
 
 # The lessons have a release cycle, and the current position of the modules in
-# this cycle is indicated below the module summary. The release cycle has four
-# steps: not usable (which is self explanatory), in development (most of the
-# content is present but the lesson is probably not sufficiently polished for
-# self-directed learning), awaiting testing (we are confident that the material
-# is ready but this has not been tested with enough learners), and finally,
-# release (we have observed this module working well in the wild). A very good
+# this cycle is indicated next to their title in the main page (and their node on the
+# timeline for each module is also color-coded). The cycle has four steps. "Building" means
+# that the lesson is not ready to be used at all. We are working on it. "Writing" means that
+# there is some information, but it can change at any time, or be updated and overhauled, or
+# that the content is ready but has not been used for actual training yet.
+# "Testing" means that the lesson is ready to be used, and will receive updates based on the
+# experience of actually teaching it. Finally, "Released" is the most mature step in the
+# cycle, and means that after sufficiently many uses of the lesson, it is not expected to
+# change in significant ways. Lessons labelled as released or in testing are meant to be
+# usable in a self-directed learning way, although the later will need some clarifications.
+# Almost all "in testing" lessons have been used for actual training, but will only move up
+# to the "released" stage when we are ready to stop tinkering with them.
+
+# A very good
 # way to contribute is to look at modules awaiting testing and give feedback
 # (using [Discord][discord] or [GitHub issues][issues]), or to check out modules
 # in development and jumping into adding content!

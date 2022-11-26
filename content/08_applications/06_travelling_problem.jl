@@ -1,11 +1,11 @@
 # ---
-# title: The travelling salespserson problem
-# status: beta
+# title: The travelling salesperson problem
+# status: rc
 # ---
 
 # In this module, we will look at a way to start working on the travelling salesperson
-# problem. This is mostly an excuse to play around with indexing, as we will not explore the
-# many ways to actually optimize this problem.
+# problem. This is mostly an excuse to play with simulated annealing, which is a really cool
+# optimisation algorithm.
 
 # <!--more-->
 
@@ -17,11 +17,17 @@
 using CairoMakie
 CairoMakie.activate!(; px_per_unit = 2) # This ensures high-res figures
 
+# As this problem involves some stochasticity, we will set a seed for our random number
+# generator, using the {{Random}} package from the standard library:
+
+import Random
+Random.seed!(12345678)
+
 # There is a *lot* of information in this statement, and we will need to translate it into
 # code. But we can work on these elements one at a time. First, there is a list of cities,
 # and these cities are represented by their coordinates. We can set a few limits here: first
 # the world exists in two dimensions; second, there are 50 cities to visit. We will arrange
-# these cities on a circle, with some small perturbations;
+# these cities on a circle, with some small perturbations:
 
 angles = rand(50) .* 2π
 radii = sqrt.(8.0 .+ rand(length(angles)) .* 2.0)
@@ -47,17 +53,32 @@ scatter(
 # distances between these cities, and so we can pre-calculate these distances, assuming that
 # the Euclidean distance is suitable here.
 
-D = zeros(Float16, size(cities, 2), size(cities, 2));
-
-# !!!OPINION We are using `Float16` here because it takes us less space in memory, and we do
-# not care so much about the precision.
-
 # We need to fill our matrix - this is going to be made easier by the fact that the distance
-# is symmetric, but this is not a requirement here.
+# is symmetric, but this is not a requirement here. We will use the `foo`/`foo!` design
+# pattern to write two functions to perform this operation.
 
-for i in axes(cities, 2)[1:(end - 1)], j in axes(cities, 2)[(i + 1):end]
-    D[i, j] = D[j, i] = sqrt(sum((cities[:, i] .- cities[:, j]) .^ 2.0))
+function distancematrix!(
+    D::Matrix{T1},
+    cities::Matrix{T2},
+) where {T1 <: AbstractFloat, T2 <: AbstractFloat}
+    for i in axes(cities, 2)[1:(end - 1)], j in axes(cities, 2)[(i + 1):end]
+        D[i, j] = D[j, i] = sqrt(sum((cities[:, i] .- cities[:, j]) .^ 2.0))
+    end
+    return D
 end
+
+# !!!OPINION We are using different floating point precisions here because the distance
+# matrix might be large, and because we don't really care about getting a lot of precision.
+# By default, we will use `Float16`.
+
+function distancematrix(cities::Matrix{T}; dtype::Type = Float16) where {T <: Number}
+    D = zeros(dtype, size(cities, 2), size(cities, 2))
+    return distancematrix!(D, cities)
+end
+
+# With these two functions, we can generate our distance matrix:
+
+D = distancematrix(cities; dtype = Float16);
 
 # The third element of the problem is that we have a "route", which is the order in which we
 # visit cities. Each city is visited only once (so we know how many stops there are), and
@@ -89,47 +110,98 @@ current_figure()
 # at the end. This is feasible with a list comprehension, as we need to read the distance
 # between step $i$ and step $i-1$ of the route, which are mapped to two different cities:
 
-global distance =
-    sum([D[route[i], route[i + 1]] for i in axes(route, 1)[1:(end - 1)]]) +
-    D[route[end], route[begin]]
+function routedistance(route, D)
+    pairwise_distances = [D[route[i - 1], route[i]] for i in axes(route, 1)[2:end]]
+    return_home = D[route[end], route[begin]]
+    return sum(pairwise_distances) + return_home
+end
+
+# We know that our distance matrix is not going to change, so in the spirit of being very
+# lazy, we can add a method to `routedistance` that returns a function based on distance
+# matrix:
+
+function routedistance(D)
+    return (route) -> routedistance(route, D)
+end
+
+# We can use this function to write our distance calculator:
+
+RD = routedistance(D)
+
+# With this function, we can calculate our current best distance ($d_0$):
+
+δ₀ = RD(route)
 
 # Problem solved! Now what we need to do is find a way to decrease this distance, which
-# would represent a shortest path. We can (sort of) brute force our way to a solution.
+# would represent a shortest path. We could brute-force our way through the solution, but
+# this would take a lot of time. Instead, we are going to rely on simulated annealing to
+# optimize the problem for us, in a way that is going to be able to jump over local minima.
 
-# !!!DOMAIN This is not the best way to approach this problem. In practice, we would use
-# something like a genetic algorithm. This would be a lot more work, but give much better
-# results. The way we use here is almost demonstrably the worst possible way to solve the
-# problem.
+# In simulated annealing, we have an *energy budget*, which is exhausted in a time-dependent
+# way, which can be exponential, inverse-log, or geometric (the function we will implement
+# here). The energy budget serves to calculate the probability of accepting a bad move, *i.e.* a move
+# that would make the route *longer*.
 
-# Our approach will work as follows: every step, we will pick two random steps along the
-# route, and switch them. For example, the route `[1, 2, 3, 4]` can become `[1, 4, 3, 2]`.
-# This is something we can do through the fact that `x[[i,j]] = x[[j,i]]` will switch the
-# positions of `i` and `j` in `x`. But also, we know that `[j, i]` is `reverse([i, j])`; so
-# if we have a vector with two positions on the route, we can switch them very easily!
+function energy(T₀, λ, t)
+    return T₀ * (λ^t)
+end
 
-# This *would* modify our route "in place", which is good, but implies that we need to keep
-# track of the positions we switched so we can switch them back if the proposed solution is
-# bad. Here, we will define *bad* as "making the distance increase". If a proposed solution
-# is *good*, we want to keep the switch (we have nothing to do), and re-write the value of
-# `distance` to be the new value to beat.
+# Accepting a *bad* move is based on a probability, which is given by the exponential of
+# minus the cost of the move divided by the energy. The cost of the move, in turn, is
+# defined as the differentce between the route length and the best route length so far:
 
-# We will keep track of the progress of our algorithm in an array of "best distance found so
-# far":
+function move_probability(δᵢ, δ₀, ε)
+    return exp(-(δᵢ - δ₀) / ε)
+end
 
-best_distance = zeros(Float64, 10_000)
-best_distance[1] = distance
+# The best distance, initially, is given by `δ₀`. We need to define what a *move* is. There
+# are a few different ways, but the simplest one is probably to switch the order in which we
+# visit two cities. We can pick to positions in the route with:
 
-# We now have everything we need to run the algorithm:
+switch = rand(eachindex(route), 2)
 
-for i in axes(best_distance, 1)[2:end]
-    switches = rand(eachindex(route), 2)
-    route[reverse(switches)] = route[switches]
-    best_distance[i] =
-        sum([D[route[i], route[i + 1]] for i in axes(route, 1)[1:(end - 1)]]) +
-        D[route[end], route[begin]]
-    if !(best_distance[i] <= best_distance[i - 1])
-        route[reverse(switches)] = route[switches]
-        best_distance[i] = best_distance[i - 1]
+# This corresponds to two cities:
+
+route[switch]
+
+# We can now flip them by changing the route *in place*:
+
+route[switch] = route[reverse(switch)]
+
+# And we now have all of the ingredients to build our simulated annealing optimisation of the
+# travelling salesperson problem! All we need to do is run it a long enough time. The secret
+# in simulated annealing is to use a long run time with a very gradual cooling schedule.
+
+best_distance = zeros(Float64, 200_000)
+best_distance[1] = δ₀
+
+# We now have everything we need to run the algorithm. If a move is good, we will always
+# accept it, and if it is bad, we will accept it with a probability dependent on the current
+# energy of the system. We need to decide on a value for `T₀` and `λ`, which require some
+# manual tweaking. As a good heuristic, starting with an initial temperature equal to twice
+# the best solution often "just works", and a value of the decay parameter very close to
+# unity ensures that the cooling is very gradual.
+
+T₀, λ = 2δ₀, 0.9999
+
+# We can now run everything. This problem is very simple, so this will only take a few
+# seconds. We will use `@elapsed` in front of the loop, to se how many seconds it actually
+# took:
+
+@elapsed for i in axes(best_distance, 1)[2:end]
+    local switch
+    switch = rand(eachindex(route), 2)
+    route[switch] = route[reverse(switch)]
+    δᵢ = RD(route)
+    if δᵢ < best_distance[i - 1]
+        best_distance[i] = δᵢ
+    else
+        if rand() <= move_probability(δᵢ, best_distance[i - 1], energy(T₀, λ, i))
+            best_distance[i] = δᵢ
+        else
+            route[switch] = route[reverse(switch)]
+            best_distance[i] = best_distance[i - 1]
+        end
     end
 end
 
@@ -144,16 +216,22 @@ scatter(
 lines!(cities[:, route]; color = :black)
 current_figure()
 
-# We can also check that the solution has been decreasing over time:
+# We can also check that the solution has been getting better over time, by looking at the
+# distance:
 
 lines(
-    best_distance;
-    axis = (; xlabel = "Step", ylabel = "Route distance"),
+    log.(best_distance);
+    axis = (; xlabel = "Step", ylabel = "Route distance (log)"),
     figure = (; backgroundcolor = :transparent),
 )
 
-# This algorithm is *very* prone to getting stuck in local minima, so it is not surprising
-# that it is not generating a *good* solution. A formative excercise to do is to (i) add the
-# possibility to shuffle larger sections of the route, like for example `1:5` and `30:34`,
-# and (ii) come up with a way to accept a move that is just a "little bit" bad, which is the
-# basis for *e.g.* simulated annealling.
+# This works rather well! 
+
+# !!!OPINION If we're being fully honest? We tried different seeds for the random number
+# generator until finding one that gave the "perfect" result. Sorry.
+
+# An interesting observation is that the shortest distance had not changed for a large
+# number of iterations. This is because the energy in the system was very close to 0, and so
+# even a barely bad move had no chance of being accepted. A possible refinement of this
+# algorithm would be to keep track of the number of steps since there was last an
+# improvement, and fix a point at which we stop.

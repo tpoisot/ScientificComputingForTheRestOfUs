@@ -1,0 +1,138 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Naive Bayes Classifier · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Naive Bayes Classifier</h1><article>
+<p>Naive Bayes Classifiers are formidable because they can learn so much about a
+dataset based on relatively scarce information. In this module, we will build
+one from scratch, using (mostly) methods from <em>Julia</em>&rsquo;s standard library.</p><p>The logic under Naive Bayes Classifiers (NBC) is really simple: there is a
+sample (an instance), defined by a series of values (the features), called
+$\mathbf{x}$. These values are</p><div class="callout warning">As with all modules in this section, the point is not to give a
+throrough treatment of the algorithm. You can explore the many resources
+explaining how NBC works.</div><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>raw_seeds_file</span> <span class=o>=</span> <span class=n>download</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=s>&#34;https://archive.ics.uci.edu/ml/&#34;</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl>    <span class=s>&#34;machine-learning-databases/00236/seeds_dataset.txt&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;/tmp/jl_pCRqTclw5E&#34;
+</code></pre><p>The original dataset has a few issues, notably related to the fact that some
+rows have two tabulation characters where they should only have one. In order
+to correct this, we will replace every instance of <code>\t\t</code> with <code>\t</code>, then save
+and load the correct dataset &ndash; do check out the documentation for <code>open</code> and
+<code>write</code> if you need a refresher on how they operate.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>seeds_file</span> <span class=o>=</span> <span class=n>tempname</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>open</span><span class=p>(</span><span class=n>seeds_file</span><span class=p>,</span> <span class=s>&#34;w&#34;</span><span class=p>)</span> <span class=k>do</span> <span class=n>f</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>write</span><span class=p>(</span><span class=n>f</span><span class=p>,</span> <span class=n>replace</span><span class=p>(</span><span class=kt>String</span><span class=p>(</span><span class=n>read</span><span class=p>(</span><span class=n>raw_seeds_file</span><span class=p>)),</span> <span class=s>&#34;</span><span class=se>\t\t</span><span class=s>&#34;</span> <span class=o>=&gt;</span> <span class=s>&#34;</span><span class=se>\t</span><span class=s>&#34;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>9287
+</code></pre><p>Now that we do have the dataset in a temporary file, we can use
+<code>DelimitedFiles</code> to load it, and specify that the field separator is <code>\t</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>using</span> <span class=n>DelimitedFiles</span>
+</span></span><span class=line><span class=cl><span class=n>seeds</span> <span class=o>=</span> <span class=n>readdlm</span><span class=p>(</span><span class=n>seeds_file</span><span class=p>,</span> <span class=sc>&#39;\t&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>seeds</span><span class=p>[</span><span class=mi>1</span><span class=o>:</span><span class=mi>3</span><span class=p>,</span> <span class=o>:</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>3×8 Matrix{Float64}:
+ 15.26  14.84  0.871   5.763  3.312  2.221  5.22   1.0
+ 14.88  14.57  0.8811  5.554  3.333  1.018  4.956  1.0
+ 14.29  14.09  0.905   5.291  3.337  2.699  4.825  1.0
+</code></pre><p>The first seven columns are features, and the last column is the class. The
+features are well documented on the <a href=https://archive-beta.ics.uci.edu/ml/datasets/seeds>dataset page</a>. It does make
+sense to extract the features as their own matrix, and the classes as their
+own vector:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>features</span> <span class=o>=</span> <span class=n>seeds</span><span class=p>[</span><span class=o>:</span><span class=p>,</span> <span class=mi>1</span><span class=o>:</span><span class=p>(</span><span class=k>end</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)];</span>
+</span></span><span class=line><span class=cl><span class=n>classes</span> <span class=o>=</span> <span class=kt>Int</span><span class=o>.</span><span class=p>(</span><span class=n>vec</span><span class=p>(</span><span class=n>seeds</span><span class=p>[</span><span class=o>:</span><span class=p>,</span> <span class=k>end</span><span class=p>]));</span>
+</span></span></code></pre></div><p>With this is mind, we can start thinking about the way to setup our
+distributions to build our NBC. We might fit the &ldquo;correct&rdquo; distribution for
+each instance. For the purpose of this exercise, we will simply assume that we
+can get a good summary distribution by assuming that we know the mean and
+standard deviation for each column (within each cultivar), and use a Normal
+distribution.</p><div class="callout information">The choice of the Normal distribution here can be motivated by the
+fact that, if we know $\mu$ and $\sigma$, this is the distribution with
+maximum entropy; in other words, it is an admission that we don&rsquo;t know a lot.</div><p>We know the total number of dimensions, so we can initialize an empty array of
+<code>Normal{Float64</code> distributions:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>using</span> <span class=n>Distributions</span>
+</span></span><span class=line><span class=cl><span class=n>D</span> <span class=o>=</span> <span class=kt>Matrix</span><span class=p>{</span><span class=kt>Normal</span><span class=p>{</span><span class=kt>Float64</span><span class=p>}}(</span><span class=nb>undef</span><span class=p>,</span> <span class=n>size</span><span class=p>(</span><span class=n>features</span><span class=p>,</span> <span class=mi>2</span><span class=p>),</span> <span class=n>length</span><span class=p>(</span><span class=n>unique</span><span class=p>(</span><span class=n>classes</span><span class=p>)))</span>
+</span></span><span class=line><span class=cl><span class=n>size</span><span class=p>(</span><span class=n>D</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>(7, 3)
+</code></pre><p>With this done, we can start updating the values of our Normal distributions:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>using</span> <span class=n>Statistics</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>class</span> <span class=k>in</span> <span class=n>unique</span><span class=p>(</span><span class=n>classes</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>subfeatures</span> <span class=o>=</span> <span class=n>features</span><span class=p>[</span><span class=n>findall</span><span class=p>(</span><span class=n>isequal</span><span class=p>(</span><span class=n>class</span><span class=p>),</span> <span class=n>classes</span><span class=p>),</span> <span class=o>:</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=n>μ</span> <span class=o>=</span> <span class=n>mean</span><span class=p>(</span><span class=n>subfeatures</span><span class=p>;</span> <span class=n>dims</span> <span class=o>=</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>σ</span> <span class=o>=</span> <span class=n>std</span><span class=p>(</span><span class=n>subfeatures</span><span class=p>;</span> <span class=n>dims</span> <span class=o>=</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>feature</span> <span class=k>in</span> <span class=mi>1</span><span class=o>:</span><span class=n>size</span><span class=p>(</span><span class=n>features</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>D</span><span class=p>[</span><span class=n>feature</span><span class=p>,</span> <span class=n>class</span><span class=p>]</span> <span class=o>=</span> <span class=n>Normal</span><span class=p>(</span><span class=n>μ</span><span class=p>[</span><span class=n>feature</span><span class=p>],</span> <span class=n>σ</span><span class=p>[</span><span class=n>feature</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><p>We can have a look at, <em>e.g.</em>, the first four features for the first cultivar:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>D</span><span class=p>[</span><span class=mi>1</span><span class=o>:</span><span class=mi>4</span><span class=p>,</span> <span class=mi>1</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>4-element Vector{Distributions.Normal{Float64}}:
+ Distributions.Normal{Float64}(μ=14.334428571428573, σ=1.215703572415347)
+ Distributions.Normal{Float64}(μ=14.294285714285714, σ=0.5765830669784657)
+ Distributions.Normal{Float64}(μ=0.8800699999999998, σ=0.016190929201432423)
+ Distributions.Normal{Float64}(μ=5.508057142857142, σ=0.23150802945440865)
+</code></pre><p>And just like this, we are <em>almost</em> ready to run our analysis. Recall from the
+very brief introduction to NBC that the point is to (i) measure the pdf of a
+point in the distribution of its feature within the class, (ii) multiply these
+values across features, and (iii) take the argmax across classes to get an
+answer.</p><p>We can grab a point to test:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>test_idx</span> <span class=o>=</span> <span class=n>rand</span><span class=p>(</span><span class=mi>1</span><span class=o>:</span><span class=n>size</span><span class=p>(</span><span class=n>features</span><span class=p>,</span> <span class=mi>1</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>x</span> <span class=o>=</span> <span class=n>features</span><span class=p>[</span><span class=n>test_idx</span><span class=p>,</span> <span class=o>:</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>y</span> <span class=o>=</span> <span class=n>classes</span><span class=p>[</span><span class=n>test_idx</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>println</span><span class=p>(</span><span class=s>&#34;Point </span><span class=si>$</span><span class=p>(</span><span class=n>test_idx</span><span class=p>)</span><span class=s> with class </span><span class=si>$</span><span class=p>(</span><span class=n>y</span><span class=p>)</span><span class=s>&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Point 78 with class 2
+</code></pre><p>We can check the score that we would get for this test point on class 3 with a
+really nifty one-liner:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>pdf</span><span class=o>.</span><span class=p>(</span><span class=n>D</span><span class=p>[</span><span class=o>:</span><span class=p>,</span> <span class=mi>3</span><span class=p>],</span> <span class=n>x</span><span class=p>)</span> <span class=o>|&gt;</span> <span class=n>prod</span>
+</span></span></code></pre></div><pre tabindex=0><code>4.1175620450572807e-106
+</code></pre><p>In order to scale this to the entire matrix <code>D</code>, we can use the <code>mapslices</code>
+function, which will apply a function to slices of an array:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>scores</span> <span class=o>=</span> <span class=n>vec</span><span class=p>(</span><span class=n>mapslices</span><span class=p>(</span><span class=n>d</span> <span class=o>-&gt;</span> <span class=n>prod</span><span class=p>(</span><span class=n>pdf</span><span class=o>.</span><span class=p>(</span><span class=n>d</span><span class=p>,</span> <span class=n>x</span><span class=p>)),</span> <span class=n>D</span><span class=p>;</span> <span class=n>dims</span> <span class=o>=</span> <span class=mi>1</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>3-element Vector{Float64}:
+ 1.76069132222711e-24
+ 0.014740565924525138
+ 4.1175620450572807e-106
+</code></pre><p>These scores do not sum to one (because we do not really use the Bayes
+formula). In this situation, it is probably a good idea to pass the output
+through the softmax function:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>softmax</span><span class=p>(</span><span class=n>v</span><span class=o>::</span><span class=kt>Vector</span><span class=p>{</span><span class=kt>T</span><span class=p>})</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>Real</span><span class=p>}</span> <span class=o>=</span> <span class=n>exp</span><span class=o>.</span><span class=p>(</span><span class=n>v</span><span class=p>)</span> <span class=o>./</span> <span class=n>sum</span><span class=p>(</span><span class=n>exp</span><span class=o>.</span><span class=p>(</span><span class=n>v</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>scores</span> <span class=o>|&gt;</span> <span class=n>softmax</span>
+</span></span></code></pre></div><pre tabindex=0><code>3-element Vector{Float64}:
+ 0.3316914887842275
+ 0.33661702243154495
+ 0.3316914887842275
+</code></pre><p>Remember that the information we want to get is our argmax, which is to say:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>scores</span> <span class=o>|&gt;</span> <span class=n>softmax</span> <span class=o>|&gt;</span> <span class=n>argmax</span>
+</span></span></code></pre></div><pre tabindex=0><code>2
+</code></pre><p>The output of <code>argmax</code> is the predicted class of our sample.</p><p>Of course, we can now perform this process on <em>all</em> points in the dataset.
+Before we do so, we will create a <em>confusion table</em>, in which we will track
+the predicted <em>v.</em> observed scores:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>C</span> <span class=o>=</span> <span class=n>zeros</span><span class=p>(</span><span class=kt>Int64</span><span class=p>,</span> <span class=n>length</span><span class=p>(</span><span class=n>unique</span><span class=p>(</span><span class=n>classes</span><span class=p>)),</span> <span class=n>length</span><span class=p>(</span><span class=n>unique</span><span class=p>(</span><span class=n>classes</span><span class=p>)))</span>
+</span></span></code></pre></div><pre tabindex=0><code>3×3 Matrix{Int64}:
+ 0  0  0
+ 0  0  0
+ 0  0  0
+</code></pre><div class="callout warning"><strong>SOMETHING ABOUT TEST AND TRAIN AND HOW THIS IS NOT REAL
+VALIDATION</strong> but also NBC works with summary statistics really well</div><p>And we loop</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=k>in</span> <span class=n>axes</span><span class=p>(</span><span class=n>features</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>local</span> <span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>,</span> <span class=n>scores</span>
+</span></span><span class=line><span class=cl>    <span class=n>x</span> <span class=o>=</span> <span class=n>features</span><span class=p>[</span><span class=n>i</span><span class=p>,</span> <span class=o>:</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=n>y</span> <span class=o>=</span> <span class=n>classes</span><span class=p>[</span><span class=n>i</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=n>scores</span> <span class=o>=</span> <span class=n>vec</span><span class=p>(</span><span class=n>mapslices</span><span class=p>(</span><span class=n>d</span> <span class=o>-&gt;</span> <span class=n>prod</span><span class=p>(</span><span class=n>pdf</span><span class=o>.</span><span class=p>(</span><span class=n>d</span><span class=p>,</span> <span class=n>x</span><span class=p>)),</span> <span class=n>D</span><span class=p>;</span> <span class=n>dims</span> <span class=o>=</span> <span class=mi>1</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=n>ŷ</span> <span class=o>=</span> <span class=n>argmax</span><span class=p>(</span><span class=n>softmax</span><span class=p>(</span><span class=n>scores</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=n>C</span><span class=p>[</span><span class=n>y</span><span class=p>,</span> <span class=n>ŷ</span><span class=p>]</span> <span class=o>+=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><p>We can check the performance of the NBC approach for this dataset:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>C</span>
+</span></span></code></pre></div><pre tabindex=0><code>3×3 Matrix{Int64}:
+ 59   3   8
+  5  65   0
+  3   0  67
+</code></pre><p>Check the accuracy</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>using</span> <span class=n>LinearAlgebra</span>
+</span></span><span class=line><span class=cl><span class=n>accuracy</span> <span class=o>=</span> <span class=n>sum</span><span class=p>(</span><span class=n>diag</span><span class=p>(</span><span class=n>C</span><span class=p>))</span> <span class=o>/</span> <span class=n>sum</span><span class=p>(</span><span class=n>C</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>println</span><span class=p>(</span><span class=s>&#34;Leave-One-Out (not really) accuracy: </span><span class=si>$</span><span class=p>(</span><span class=n>round</span><span class=p>(</span><span class=kt>Int64</span><span class=p>,</span> <span class=n>accuracy</span><span class=o>*</span><span class=mi>100</span><span class=p>))</span><span class=s>%&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Leave-One-Out (not really) accuracy: 91%
+</code></pre></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-applications,module-naive_bayes,status-beta,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/08_applications/02_naive_bayes.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/applications/naive-bayes-classifier/%0a%0a%f0%9f%93%a6%20section-applications%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-naive_bayes" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

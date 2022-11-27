@@ -1,0 +1,63 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Downloading files · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Downloading files</h1><article>
+<p>In this module, we will see how <em>Julia</em> allows downloading files from the
+internet, and how we can decide where to store them. This is a common task
+when getting external data, and will be the basis of a number of advanced
+training modules in the final section of this material.</p><p>The <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Downloads target=_blank>Downloads</a></span></span> package is part of the standard library, and is one of the
+simplest package we can think of: it only exports a single function, called
+<code>download</code>, whose purpose is to download things. Would that programming were
+always that easy.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>import</span> <span class=n>Downloads</span>
+</span></span></code></pre></div><p>By default, <code>download</code> will store the download in a temporary file, which as
+we saw before, will be stored in <code>tempdir()</code>. To illustrate, we can download
+the &ldquo;seeds&rdquo; dataset (we will use it in a later advanced example):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>seeds_url</span> <span class=o>=</span> <span class=s>&#34;https://archive.ics.uci.edu/ml/machine-learning-databases/00236/seeds_dataset.txt&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>raw_seeds_file</span> <span class=o>=</span> <span class=n>Downloads</span><span class=o>.</span><span class=n>download</span><span class=p>(</span><span class=n>seeds_url</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;/tmp/jl_ijq9Cb6FMb&#34;
+</code></pre><div class="callout warning">In versions of <em>Julia</em> before 1.6, the <span class="package no-hub"><span class=pkgname>Base</span></span> package also
+exported a <code>download</code> function, but it is slowly being phased out. The version
+provided by <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Downloads target=_blank>Downloads</a></span></span> has a lot more flexibility, and should be used.</div><p>Note that calling <code>download</code> has returned a path to a temporary file. We can
+also specify where things should be stored, using a second argument to
+<code>download</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>raw_seeds_file</span> <span class=o>=</span> <span class=n>Downloads</span><span class=o>.</span><span class=n>download</span><span class=p>(</span><span class=n>seeds_url</span><span class=p>,</span> <span class=s>&#34;seeds.txt&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;seeds.txt&#34;
+</code></pre><p>We can check that the file exists:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>isfile</span><span class=p>(</span><span class=n>raw_seeds_file</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>One advantage of the <code>download</code> function is that it can be tweaked to display
+a progress indicator, using a <em>callback</em> function.</p><div class="callout information">A Callback function is any function that is executed on the side of
+the important process, in order to update the user on the progress, or to
+check that the conditions of executions are still met.</div><p>The progress callback we will use here is simply displaying the (rounded)
+percentage of the file that has been downloaded. Because the file is very
+small, it will jump to 100% almost immediately, but this would be more
+informative with longer downloads, and a package like <span class=package><span class=pkgname><a href=https://juliapackages.com/p/ProgressMeter target=_blank>ProgressMeter</a></span></span> to
+display an actual progressbar.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>progress_callback</span><span class=p>(</span><span class=n>total</span><span class=o>::</span><span class=kt>Integer</span><span class=p>,</span> <span class=n>now</span><span class=o>::</span><span class=kt>Integer</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>total</span> <span class=o>&gt;</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>        <span class=nd>@info</span> <span class=s>&#34;Progress: </span><span class=si>$</span><span class=p>(</span><span class=n>rpad</span><span class=p>(</span><span class=kt>Int</span><span class=p>(</span><span class=n>round</span><span class=p>(</span><span class=n>now</span><span class=o>/</span><span class=n>total</span> <span class=o>*</span> <span class=mi>100</span><span class=p>;</span> <span class=n>digits</span><span class=o>=</span><span class=mi>0</span><span class=p>)),</span> <span class=mi>4</span><span class=p>))</span><span class=s>%&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>progress_callback (generic function with 1 method)
+</code></pre><p>We can now add this callback to our <code>download</code> function:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>raw_seeds_file</span> <span class=o>=</span> <span class=n>Downloads</span><span class=o>.</span><span class=n>download</span><span class=p>(</span><span class=n>seeds_url</span><span class=p>;</span> <span class=n>progress</span> <span class=o>=</span> <span class=n>progress_callback</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;/tmp/jl_w3qlSNcLGd&#34;
+</code></pre><p>The <code>download</code> function has a few additional options we can use, like setting
+a timeout for long downloads, or using a different downloader like <code>curl</code> or
+<code>wget</code>. In most cases, these options are not required, and getting a single
+file from a remote location is very straightforward.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-files,module-downloading,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/07_files/02_downloading.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/files/downloading-files/%0a%0a%f0%9f%93%a6%20section-files%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-downloading" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

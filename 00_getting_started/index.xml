@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title/><link>https://sciencecomputing.io/00_getting_started/</link><description>Recent content on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://sciencecomputing.io/00_getting_started/index.xml" rel="self" type="application/rss+xml"/><item><title>Environment and projects</title><link>https://sciencecomputing.io/introduction/environment-and-projects/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/introduction/environment-and-projects/</guid><description>&lt;p>In this previous module, we did not load a single package: everything we
+wanted to do was provided by &lt;em>Julia&lt;/em> &amp;ldquo;out of the box&amp;rdquo;. In most applications,
+we will need to get functionalities from other packages, and this is where
+&lt;em>Julia&lt;/em>&amp;rsquo;s package manager shines.&lt;/p></description></item><item><title>Flowcharts</title><link>https://sciencecomputing.io/introduction/flowcharts/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/introduction/flowcharts/</guid><description>&lt;p>One of the most powerful tool to plan a programming task is to draw a
+flowchart. In simple terms, a flowchart will let you map the different steps
+that the program will have to follow, and see what is required for each of
+them. To illustrate, we will use a flowchart not of a program, but of a
+pancake recipe.&lt;/p></description></item><item><title>Installing Julia</title><link>https://sciencecomputing.io/introduction/installing-julia/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/introduction/installing-julia/</guid><description>&lt;p>In this module, we will see how we can install &lt;em>Julia&lt;/em>, setup a default
+version, and go through some of the usual tools involved in setting up a good
+&lt;em>Julia&lt;/em> development environment. We will not deal with the installation of
+&lt;em>packages&lt;/em> quite yet, as this will be done with its own module.&lt;/p></description></item><item><title>Preparing a project</title><link>https://sciencecomputing.io/introduction/preparing-a-project/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/introduction/preparing-a-project/</guid><description>&lt;p>In this module, before we write any code, we will start thinking about what a
+project is, how we can set one up on our computer, and why this might help
+defeat coder&amp;rsquo;s block.&lt;/p></description></item><item><title>Pseudo-code</title><link>https://sciencecomputing.io/introduction/pseudo-code/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/introduction/pseudo-code/</guid><description>&lt;p>To facilitate the transition between diagram and code, one important step is
+to write &lt;em>pseudo-code&lt;/em>, &lt;em>i.e.&lt;/em> text that looks reasonably like code, but is
+not. This pseudo-code will not help the computer think about our problem,
+but it might help &lt;em>us&lt;/em> think about the problem in ways that will make the
+actual programming easier.&lt;/p></description></item></channel></rss>

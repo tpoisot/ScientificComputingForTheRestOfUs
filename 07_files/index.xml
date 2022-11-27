@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title/><link>https://sciencecomputing.io/07_files/</link><description>Recent content on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://sciencecomputing.io/07_files/index.xml" rel="self" type="application/rss+xml"/><item><title>Consuming data from APIs</title><link>https://sciencecomputing.io/files/consuming-data-from-apis/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/files/consuming-data-from-apis/</guid><description>&lt;p>Not all data come from static files. In a large number of scientific
+applications, we need to collect data from websites, often using a &lt;a href="https://www.redhat.com/en/topics/api/what-is-a-rest-api">RESTful
+API&lt;/a>. In this module, we will use a very simple example to show how we
+can collect data about postal codes, get them as a JSON file, and process
+them.&lt;/p></description></item><item><title>Downloading files</title><link>https://sciencecomputing.io/files/downloading-files/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/files/downloading-files/</guid><description>&lt;p>In this module, we will see how &lt;em>Julia&lt;/em> allows downloading files from the
+internet, and how we can decide where to store them. This is a common task
+when getting external data, and will be the basis of a number of advanced
+training modules in the final section of this material.&lt;/p></description></item><item><title>The JSON format</title><link>https://sciencecomputing.io/files/the-json-format/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/files/the-json-format/</guid><description>&lt;p>The JSON format is really interesting to store highly structured information.
+In this module, we will see how it maps naturally on the &lt;code>Dict&lt;/code> data
+structure, how to use it to load and save data, and how to print the contents
+of a JSON file. As an illustration, we will look at the time series of
+vaccination against COVID-19 in New Zealand.&lt;/p></description></item><item><title>The Path</title><link>https://sciencecomputing.io/files/the-path/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/files/the-path/</guid><description>&lt;p>One of the main obstacle to reproductible projects is issues with describing
+where files are. In this module, we will talk about the path, and how to refer
+to locations in a way that will work on any computer.&lt;/p></description></item><item><title>Working with delimited files</title><link>https://sciencecomputing.io/files/working-with-delimited-files/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/files/working-with-delimited-files/</guid><description>&lt;p>A lot of files we use in scientific computing are very simple, and organized
+as tables. There are a lot of packages in &lt;em>Julia&lt;/em> to handle these files,
+including the full-featured &lt;span class='package'>&lt;span class='pkgname'>&lt;a href='https://juliapackages.com/p/DataFrames' target='_blank'>DataFrames&lt;/a>&lt;/span>&lt;/span> and &lt;span class='package'>&lt;span class='pkgname'>&lt;a href='https://juliapackages.com/p/DataFramesMeta' target='_blank'>DataFramesMeta&lt;/a>&lt;/span>&lt;/span>. But in this
+module, we will focus on the standard library package &lt;span class='package no-hub'>&lt;span class='pkgname'>DelimitedFiles&lt;/span>&lt;/span>,
+which allows to store files where fields are separated by a specified
+character.&lt;/p></description></item></channel></rss>

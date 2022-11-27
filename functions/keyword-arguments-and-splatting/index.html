@@ -1,0 +1,126 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Keyword arguments and splatting · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Keyword arguments and splatting</h1><article>
+<p>In the previous modules, we have defined functions that used <em>positional</em>
+arguments, some with default values, some without. In this module, we will
+look at keyword arguments and splatting, to build functions that we can
+control a bit more.</p><p>A common activation function in neural networks is the parametric leaky ReLU,
+where the gradient is the input if the input is positive, and a small fraction
+of the input if not. The weight of how small the gradient is can be an
+hyper-parameter, or a parameter that is learned alongside the model itself.</p><p>Commonly, the leaky ReLU uses a weight of $10^{-3}$, so this makes sense as a
+<em>default</em> value. Or would $0$ be a better value, so that our default leaky
+ReLU is the original ReLU? Who knows?</p><div class="callout opinion">Eh, whatever, just document it. To give you an idea of how this is
+done, we will add a <em>docstring</em> to the function just below.</div><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=s>&#34;&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s>    relu(x; a=0)
+</span></span></span><span class=line><span class=cl><span class=s>
+</span></span></span><span class=line><span class=cl><span class=s>Parameteric leaky ReLU for a given activation `x`, where the gradient is `x` if
+</span></span></span><span class=line><span class=cl><span class=s>`x` is positive, and `a*x` if not. The rate of the gradient for negative values
+</span></span></span><span class=line><span class=cl><span class=s>of `x` is given by the keyword argument `a`, which has a default value of
+</span></span></span><span class=line><span class=cl><span class=s>`zero(typeof(x))` -- **without changing the value of `a`, this function is the
+</span></span></span><span class=line><span class=cl><span class=s>&#34;standard&#34; ReLU**.
+</span></span></span><span class=line><span class=cl><span class=s>&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>function</span> <span class=n>relu</span><span class=p>(</span><span class=n>x</span><span class=o>::</span><span class=kt>T</span><span class=p>;</span> <span class=n>a</span><span class=o>::</span><span class=kt>T</span> <span class=o>=</span> <span class=n>zero</span><span class=p>(</span><span class=n>T</span><span class=p>))</span><span class=o>::</span><span class=kt>T</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>Real</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>x</span> <span class=o>&lt;=</span> <span class=n>zero</span><span class=p>(</span><span class=n>T</span><span class=p>)</span> <span class=o>?</span> <span class=n>a</span> <span class=o>*</span> <span class=n>x</span> <span class=o>:</span> <span class=n>x</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>Main.var&#34;##341&#34;.relu
+</code></pre><p>You can now type <code>?relu</code> in your REPL to see the documentation of this
+function. Note that the function docstring is written in mardkown, so you can
+use bold, italic, lists, code, etc..</p><p>We can also use the <code>@doc relu</code> macro (in the REPL), or call the
+<code>Base.Docs.doc</code> function. Note that because the docstring is written in
+markdown, this will render the function signature as a codeblock, and the
+documentation proper as normal text.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>Base</span><span class=o>.</span><span class=n>Docs</span><span class=o>.</span><span class=n>doc</span><span class=p>(</span><span class=n>relu</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>relu(x; a=0)
+</code></pre><p>Parameteric leaky ReLU for a given activation <code>x</code>, where the gradient is <code>x</code> if <code>x</code> is positive, and <code>a*x</code> if not. The rate of the gradient for negative values of <code>x</code> is given by the keyword argument <code>a</code>, which has a default value of <code>zero(typeof(x))</code> – <strong>without changing the value of <code>a</code>, this function is the &ldquo;standard&rdquo; ReLU</strong>.</p><p>How do we use our function?</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>for</span> <span class=n>activation</span> <span class=k>in</span> <span class=p>[</span><span class=o>-</span><span class=mf>0.2</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;∇(</span><span class=si>$</span><span class=p>(</span><span class=n>activation</span><span class=p>)</span><span class=s>)</span><span class=se>\t</span><span class=s> →    </span><span class=si>$</span><span class=p>(</span><span class=n>relu</span><span class=p>(</span><span class=n>activation</span><span class=p>))</span><span class=s>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: ∇(-0.2)	 →    -0.0
+[ Info: ∇(0.0)	 →    0.0
+[ Info: ∇(0.2)	 →    0.2
+</code></pre><p>As we have specified, the <em>default</em> behavior is to use the standard ReLU
+function. We can change this behavior when calling the function:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>relu</span><span class=p>(</span><span class=o>-</span><span class=mf>0.4</span><span class=p>;</span> <span class=n>a</span> <span class=o>=</span> <span class=mf>1e-3</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>-0.0004
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>relu</span><span class=p>(</span><span class=mf>0.4</span><span class=p>;</span> <span class=n>a</span> <span class=o>=</span> <span class=mf>1e-3</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>0.4
+</code></pre><p>This works! We can tweak the parameter values using their name, and not only
+their position.</p><div class="callout opinion">We are <strong>big fans</strong> of using <code>;</code> to indicate the separation between
+positional and keyword arguments. This is actually required for some cases,
+and so it makes sense to use it everywhere.</div><p>We can define another version of <code>relu</code> that has no position argument. Before
+we do so, let&rsquo;s justify this. Let&rsquo;s say we want to keep the weight of negative
+activations the same, so we want to (as in the previous modules) return a
+function. The issue is that our <code>relu</code> function has keyword arguments in its
+signature (just one, but in some cases we can have dozens). And so, it would
+be far better for us not to have to type all of this.</p><p>Here is what we will do: we can create a new method of <code>relu</code> where the
+signature is <em>no positional arguments, followed by a bunch of keyword
+arguments</em>: the syntax of this is <code>relu(; kwargs...)</code>.</p><div class="callout information">The <code>kwargs</code> name is not <em>required</em>, but it is shared across many
+languages as a signifier for &ldquo;the kewyord arguments&rdquo;. You can name this in
+anyway you want.</div><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=s>&#34;&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s>    relu(;kwargs...)
+</span></span></span><span class=line><span class=cl><span class=s>
+</span></span></span><span class=line><span class=cl><span class=s>Curried version of `relu` that will return a function to be called on an
+</span></span></span><span class=line><span class=cl><span class=s>activation value.
+</span></span></span><span class=line><span class=cl><span class=s>&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>function</span> <span class=n>relu</span><span class=p>(;</span> <span class=n>kwargs</span><span class=o>...</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=n>kwargs</span> <span class=c># Show the keyword arguments</span>
+</span></span><span class=line><span class=cl>    <span class=n>prelu</span><span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=o>=</span> <span class=n>relu</span><span class=p>(</span><span class=n>x</span><span class=p>;</span> <span class=n>kwargs</span><span class=o>...</span><span class=p>)</span> <span class=c># Create a function</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>prelu</span> <span class=c># Return the function</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>Main.var&#34;##341&#34;.relu
+</code></pre><p>Let&rsquo;s call this function, and see what happens:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>relu</span><span class=p>(;</span> <span class=n>a</span> <span class=o>=</span> <span class=mf>0.3</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>(::Main.var&#34;##341&#34;.var&#34;#prelu#3&#34;{Base.Pairs{Symbol, Float64, Tuple{Symbol}, NamedTuple{(:a,), Tuple{Float64}}}}) (generic function with 1 method)
+</code></pre><p>Interestingly, the <code>kwargs</code> variable contains a series of <code>Pair</code>s, mapping a
+keyword to its value. But let&rsquo;s take a moment to talk about <code>...</code>. This
+operator does something called <em>splatting</em>, which is essentially &ldquo;capturing or
+expanding multiple arguments&rdquo;. It is restricted to being used within function
+calls.</p><p>When we call <code>kwargs...</code> in the <code>prelu</code> function, it will <em>simply</em> (well&mldr;)
+unpack the keywords and their values. We can check that our function actually
+works:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>relu</span><span class=p>(;</span> <span class=n>a</span> <span class=o>=</span> <span class=mf>1e-2</span><span class=p>)(</span><span class=o>-</span><span class=mf>0.2</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>-0.002
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>relu</span><span class=p>(;</span> <span class=n>a</span> <span class=o>=</span> <span class=mf>1e-2</span><span class=p>)(</span><span class=mf>0.2</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>0.2
+</code></pre><div class="callout warning">This use-case is the one situation where <code>;</code> is mandatory. It tells
+<em>Julia</em> where the keyword arguments start. Using <code>;</code> to signify that there are
+no positional arguments is good practice.</div><p>There is a nice little trick we can play with splatting: storing arguments in
+<code>NamedTuple</code>s:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>linear</span><span class=p>(</span><span class=n>x</span><span class=p>;</span> <span class=n>m</span> <span class=o>=</span> <span class=mf>1.0</span><span class=p>,</span> <span class=n>b</span> <span class=o>=</span> <span class=mf>0.0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>m</span> <span class=o>*</span> <span class=n>x</span> <span class=o>+</span> <span class=n>b</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>linear (generic function with 1 method)
+</code></pre><p>Now, we can have a specific series of parameters:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>p</span> <span class=o>=</span> <span class=p>(</span><span class=n>m</span><span class=o>=</span><span class=mf>2.1</span><span class=p>,</span> <span class=n>b</span><span class=o>=-</span><span class=mf>0.3</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>(m = 2.1, b = -0.3)
+</code></pre><p>And call the function by <em>unpacking</em> (with splatting) these keyworks:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>linear</span><span class=p>(</span><span class=mf>0.0</span><span class=p>;</span> <span class=n>p</span><span class=o>...</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>-0.3
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>linear</span><span class=p>(</span><span class=mf>1.0</span><span class=p>;</span> <span class=n>p</span><span class=o>...</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>1.8
+</code></pre><p>Note that we are not restricted to <code>NamedTuple</code>s! We can use an array of
+<code>Pair</code>s:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>q</span> <span class=o>=</span> <span class=p>[</span><span class=ss>:m</span> <span class=o>=&gt;</span> <span class=mf>2.1</span><span class=p>,</span> <span class=ss>:b</span> <span class=o>=&gt;</span> <span class=o>-</span><span class=mf>0.3</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>2-element Vector{Pair{Symbol, Float64}}:
+ :m =&gt; 2.1
+ :b =&gt; -0.3
+</code></pre><p>This will give the same result, and shows how much flexibility we have when
+passing arguments to functions:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>linear</span><span class=p>(</span><span class=mf>1.0</span><span class=p>;</span> <span class=n>q</span><span class=o>...</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>1.8
+</code></pre><p>As a conclusion: in addition to positional arguments, we can use <em>keyword</em>
+arguments, and store the value of these keyword arguments in structures that
+are then unpacked. This, in conjunction with <code>kwargs...</code> makes it easy to
+expand our function, or write multiple methods to make the code easier to
+maintain.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-basic_functions_usage,module-keywords,status-beta,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/04_basic_functions_usage/05_keywords.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/functions/keyword-arguments-and-splatting/%0a%0a%f0%9f%93%a6%20section-basic_functions_usage%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-keywords" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

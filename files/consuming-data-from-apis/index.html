@@ -1,0 +1,141 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Consuming data from APIs · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Consuming data from APIs</h1><article>
+<p>Not all data come from static files. In a large number of scientific
+applications, we need to collect data from websites, often using a <a href=https://www.redhat.com/en/topics/api/what-is-a-rest-api>RESTful
+API</a>. In this module, we will use a very simple example to show how we
+can collect data about postal codes, get them as a JSON file, and process
+them.</p><p>In order to make this example work, we will need two things: a way to interact
+with remote servers (provided by the <span class=package><span class=pkgname><a href=https://juliapackages.com/p/HTTP target=_blank>HTTP</a></span></span> package), and a way to read JSON
+data (using <span class=package><span class=pkgname><a href=https://juliapackages.com/p/JSON target=_blank>JSON</a></span></span>, as we have seen in the previous module.)</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>import</span> <span class=n>HTTP</span>
+</span></span><span class=line><span class=cl><span class=k>import</span> <span class=n>JSON</span>
+</span></span></code></pre></div><p>In this example, we will get the names and coordinates of the various post
+codes in <a href=https://en.wikipedia.org/wiki/Rimouski>Rimouski</a>, a (small) city in Québec, Canada. The
+<a href=https://api.zippopotam.us><code>zippopotam.us</code></a> website offers an API that we can access without a
+login or an access token, and is therefore perfect for this example.</p><p>The basic loop of interaction with an API for data retrieval is:</p><ol>
+<li>Figure out the correct query parameters; there is no global recipe here,
+each API will have its documentation explaining which keywords can be used
+and what values they accept</li><li>Write the URL to the correct endpoint, composed of the API root and the
+query parameters</li><li>Perform an HTTP request (usually <code>GET</code>) on this endpoint</li><li>Check the response status (<code>200</code> is a good sign, anything else should be
+checked against the <a href=https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml>IANA status codes list</a>)</li><li>Read the body of the response in the correct format (usually JSON, but each
+API will have its own documentation)</li></ol><div class="callout information">HTTP status codes are a &ldquo;soft&rdquo; standard that most people and services
+agree on. For example, <code>404</code> means that the resource was not found, <code>403</code> that
+it is forbidden to access, and <code>500</code> that something went wrong on the server.
+If you work with APIs often as part of your work, it is very important to get
+acquainted with them.</div><p>In our case, after reading the API documentation, we know that we need to get
+to the endpoint that is given by <code>country/province/name</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>api_root</span> <span class=o>=</span> <span class=s>&#34;https://api.zippopotam.us&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>place</span> <span class=o>=</span> <span class=p>(</span><span class=n>country</span> <span class=o>=</span> <span class=s>&#34;ca&#34;</span><span class=p>,</span> <span class=n>province</span> <span class=o>=</span> <span class=s>&#34;qc&#34;</span><span class=p>,</span> <span class=n>name</span> <span class=o>=</span> <span class=s>&#34;rimouski&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>endpoint</span> <span class=o>=</span> <span class=s>&#34;</span><span class=si>$</span><span class=p>(</span><span class=n>api_root</span><span class=p>)</span><span class=s>/</span><span class=si>$</span><span class=p>(</span><span class=n>place</span><span class=o>.</span><span class=n>country</span><span class=p>)</span><span class=s>/</span><span class=si>$</span><span class=p>(</span><span class=n>place</span><span class=o>.</span><span class=n>province</span><span class=p>)</span><span class=s>/</span><span class=si>$</span><span class=p>(</span><span class=n>place</span><span class=o>.</span><span class=n>name</span><span class=p>)</span><span class=s>&#34;</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;https://api.zippopotam.us/ca/qc/rimouski&#34;
+</code></pre><p>Now that we have this endpoint setup, we can perform a <code>GET</code> request, which is
+one of the many <a href=https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods>HTTP verbs</a>. A <code>GET</code> request will request the content
+of a page for our consumption. Other commnly used verbs include <code>LIST</code> (to get
+a list of multiple resources), <code>POST</code> to upload formatted data, and <code>PATCH</code> to
+edit data on the API.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>res</span> <span class=o>=</span> <span class=n>HTTP</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>endpoint</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>HTTP.Messages.Response:
+&#34;&#34;&#34;
+HTTP/1.1 200 OK
+Date: Sun, 27 Nov 2022 17:23:26 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+x-cache: hit
+charset: UTF-8
+vary: Accept-Encoding
+CF-Cache-Status: DYNAMIC
+Report-To: {&#34;endpoints&#34;:[{&#34;url&#34;:&#34;https:\/\/a.nel.cloudflare.com\/report\/v3?s=BNwdU3r4L8lcWQ%2Fs1%2F3NA93ePi%2FOEL%2Fo4g%2BQu7DSxcVxKxJRfUaPisAmVs2zvpPZAghN7Fek4lFss64MCRbxCAEwo8I9LORkvEqj5WnorqSeH3X7eorqIs53ZQ4qOvdDEF%2FvxA%3D%3D&#34;}],&#34;group&#34;:&#34;cf-nel&#34;,&#34;max_age&#34;:604800}
+NEL: {&#34;success_fraction&#34;:0,&#34;report_to&#34;:&#34;cf-nel&#34;,&#34;max_age&#34;:604800}
+access-control-allow-origin: *
+Server: cloudflare
+CF-RAY: 770c8d3c1fa596e7-SJC
+Content-Encoding: gzip
+alt-svc: h3=&#34;:443&#34;; ma=86400, h3-29=&#34;:443&#34;; ma=86400
+
+{&#34;country abbreviation&#34;: &#34;CA&#34;, &#34;places&#34;: [{&#34;place name&#34;: &#34;Rimouski Central&#34;, &#34;longitude&#34;: &#34;-68.5232&#34;, &#34;post code&#34;: &#34;G5L&#34;, &#34;latitude&#34;: &#34;48.4525&#34;}, {&#34;place name&#34;: &#34;Rimouski Northeast&#34;, &#34;longitude&#34;: &#34;-68.4973&#34;, &#34;post code&#34;: &#34;G5M&#34;, &#34;latitude&#34;: &#34;48.4547&#34;}, {&#34;place name&#34;: &#34;Rimouski Southwest&#34;, &#34;longitude&#34;: &#34;-68.5122&#34;, &#34;post code&#34;: &#34;G5N&#34;, &#34;latitude&#34;: &#34;48.4277&#34;}], &#34;country&#34;: &#34;Canada&#34;, &#34;place name&#34;: &#34;Rimouski Central&#34;, &#34;state&#34;: &#34;Quebec&#34;, &#34;state abbreviation&#34;: &#34;QC&#34;}&#34;&#34;&#34;
+</code></pre><p>Because <code>res</code> is a new type of object, we can take a look at its fields:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>typeof</span><span class=p>(</span><span class=n>res</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>HTTP.Messages.Response
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>fieldnames</span><span class=p>(</span><span class=n>typeof</span><span class=p>(</span><span class=n>res</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>(:version, :status, :headers, :body, :request)
+</code></pre><p>The first thing we want to check is the response status, specifically that it
+is equal to <code>200</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>isequal</span><span class=p>(</span><span class=mi>200</span><span class=p>)(</span><span class=n>res</span><span class=o>.</span><span class=n>status</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>We can also inspect the headers:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>res</span><span class=o>.</span><span class=n>headers</span>
+</span></span></code></pre></div><pre tabindex=0><code>15-element Vector{Pair{SubString{String}, SubString{String}}}:
+                        &#34;Date&#34; =&gt; &#34;Sun, 27 Nov 2022 17:23:26 GMT&#34;
+                &#34;Content-Type&#34; =&gt; &#34;application/json&#34;
+           &#34;Transfer-Encoding&#34; =&gt; &#34;chunked&#34;
+                  &#34;Connection&#34; =&gt; &#34;keep-alive&#34;
+                     &#34;x-cache&#34; =&gt; &#34;hit&#34;
+                     &#34;charset&#34; =&gt; &#34;UTF-8&#34;
+                        &#34;vary&#34; =&gt; &#34;Accept-Encoding&#34;
+             &#34;CF-Cache-Status&#34; =&gt; &#34;DYNAMIC&#34;
+                   &#34;Report-To&#34; =&gt; &#34;{\&#34;endpoints\&#34;:[{\&#34;url\&#34;:\&#34;https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=BNwdU3r4L8lcWQ%2Fs1%2F3NA93ePi%2FOEL%2Fo4g%2BQu7DSxcVxKxJRfUaPisAmVs2zvpPZAghN7Fek4lFss64MCRbxCAEwo8I9LORkvEqj5WnorqSeH3X7eorqIs53ZQ4qOvdDEF%2FvxA%3D%3D\&#34;}],\&#34;group\&#34;:\&#34;cf-nel\&#34;,\&#34;max_age\&#34;:604800}&#34;
+                         &#34;NEL&#34; =&gt; &#34;{\&#34;success_fraction\&#34;:0,\&#34;report_to\&#34;:\&#34;cf-nel\&#34;,\&#34;max_age\&#34;:604800}&#34;
+ &#34;access-control-allow-origin&#34; =&gt; &#34;*&#34;
+                      &#34;Server&#34; =&gt; &#34;cloudflare&#34;
+                      &#34;CF-RAY&#34; =&gt; &#34;770c8d3c1fa596e7-SJC&#34;
+            &#34;Content-Encoding&#34; =&gt; &#34;gzip&#34;
+                     &#34;alt-svc&#34; =&gt; &#34;h3=\&#34;:443\&#34;; ma=86400, h3-29=\&#34;:443\&#34;; ma=86400&#34;
+</code></pre><p>This stores a lot of interesting information, but as a vector of pairs. We can
+make our life significantly easier by turning this into a dictionary. For
+example, we can confirm that the API is indeed giving us data in the
+<code>application/json</code> format:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=kt>Dict</span><span class=p>(</span><span class=n>res</span><span class=o>.</span><span class=n>headers</span><span class=p>)[</span><span class=s>&#34;Content-Type&#34;</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;application/json&#34;
+</code></pre><p>With this information, we can get the actual content of our request, which is
+stored in the <code>body</code> field.</p><div class="callout danger">The <code>body</code> field is <em>cleared</em> when first accessed. This is a strange
+quirk, but it do be like that. The safest way to handle the body (because we
+do not want to lose our request!) is to store it in a variable.</div><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>body</span> <span class=o>=</span> <span class=n>res</span><span class=o>.</span><span class=n>body</span>
+</span></span><span class=line><span class=cl><span class=n>typeof</span><span class=p>(</span><span class=n>body</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Vector{UInt8} (alias for Array{UInt8, 1})
+</code></pre><p>This is unexpected! We were promised an <code>application/json</code> content, and here
+we are with a long array of unsigned 8-bit encoded integers. Why? In a
+nutshell: there is no reason to expect that we will be querying text. We can
+use <span class=package><span class=pkgname><a href=https://juliapackages.com/p/HTTP target=_blank>HTTP</a></span></span> to request sound, images, videos, or even streaming data. And so
+what we get is the <em>raw</em> output. Thankfully, we can transform it into a
+string:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=kt>String</span><span class=p>(</span><span class=n>copy</span><span class=p>(</span><span class=n>body</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;{\&#34;country abbreviation\&#34;: \&#34;CA\&#34;, \&#34;places\&#34;: [{\&#34;place name\&#34;: \&#34;Rimouski Central\&#34;, \&#34;longitude\&#34;: \&#34;-68.5232\&#34;, \&#34;post code\&#34;: \&#34;G5L\&#34;, \&#34;latitude\&#34;: \&#34;48.4525\&#34;}, {\&#34;place name\&#34;: \&#34;Rimouski Northeast\&#34;, \&#34;longitude\&#34;: \&#34;-68.4973\&#34;, \&#34;post code\&#34;: \&#34;G5M\&#34;, \&#34;latitude\&#34;: \&#34;48.4547\&#34;}, {\&#34;place name\&#34;: \&#34;Rimouski Southwest\&#34;, \&#34;longitude\&#34;: \&#34;-68.5122\&#34;, \&#34;post code\&#34;: \&#34;G5N\&#34;, \&#34;latitude\&#34;: \&#34;48.4277\&#34;}], \&#34;country\&#34;: \&#34;Canada\&#34;, \&#34;place name\&#34;: \&#34;Rimouski Central\&#34;, \&#34;state\&#34;: \&#34;Quebec\&#34;, \&#34;state abbreviation\&#34;: \&#34;QC\&#34;}&#34;
+</code></pre><div class="callout warning">We are using <code>copy</code> here because if we access <code>body</code> directly, it
+<em>will</em> be cleared. The recommended design pattern when dealing with <span class=package><span class=pkgname><a href=https://juliapackages.com/p/HTTP target=_blank>HTTP</a></span></span>
+responses it to process the <code>body</code> field in one go, to avoid losing this
+information:</div><p>We are now a step away from having our JSON object:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>riki</span> <span class=o>=</span> <span class=n>JSON</span><span class=o>.</span><span class=n>parse</span><span class=p>(</span><span class=kt>String</span><span class=p>(</span><span class=n>body</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>Dict{String, Any} with 6 entries:
+  &#34;state abbreviation&#34; =&gt; &#34;QC&#34;
+  &#34;country abbreviation&#34; =&gt; &#34;CA&#34;
+  &#34;place name&#34; =&gt; &#34;Rimouski Central&#34;
+  &#34;places&#34; =&gt; Any[Dict{String, Any}(&#34;post code&#34;=&gt;&#34;G5L&#34;, &#34;latitude&#34;=&gt;&#34;48.4525&#34;, &#34;longitude&#34;=&gt;&#34;-68.5232&#34;, &#34;place name&#34;=&gt;&#34;Rimouski Central&#34;), Dict{String, Any}(&#34;post code&#34;=&gt;&#34;G5M&#34;, &#34;latitude&#34;=&gt;&#34;48.4547&#34;, &#34;longitude&#34;=&gt;&#34;-68.4973&#34;, &#34;place name&#34;=&gt;&#34;Rimouski Northeast&#34;), Dict{String, Any}(&#34;post code&#34;=&gt;&#34;G5N&#34;, &#34;latitude&#34;=&gt;&#34;48.4277&#34;, &#34;longitude&#34;=&gt;&#34;-68.5122&#34;, &#34;place name&#34;=&gt;&#34;Rimouski Southwest&#34;)]
+  &#34;country&#34; =&gt; &#34;Canada&#34;
+  &#34;state&#34; =&gt; &#34;Quebec&#34;
+</code></pre><div class="callout warning">If you run this line a second time, it will fail &ndash; this is because
+you have access these <code>body</code> already, and so it is now empty. This module has
+a lot of warnings. Welcome to working with remote data.</div><p>The output we get is now our standard JSON object, so we can do a little thing
+like:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>for</span> <span class=n>place</span> <span class=k>in</span> <span class=n>riki</span><span class=p>[</span><span class=s>&#34;places&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;The post code for </span><span class=si>$</span><span class=p>(</span><span class=n>place</span><span class=p>[</span><span class=s>&#34;place name&#34;</span><span class=p>])</span><span class=s> is </span><span class=si>$</span><span class=p>(</span><span class=n>place</span><span class=p>[</span><span class=s>&#34;post code&#34;</span><span class=p>])</span><span class=s>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: The post code for Rimouski Central is G5L
+[ Info: The post code for Rimouski Northeast is G5M
+[ Info: The post code for Rimouski Southwest is G5N
+</code></pre><p>Most APIs we use in practice for research are a lot more data-rich, and can
+have highly structured fields. When this is the case, it is a good idea to
+take the output and represent it as a custom type: an example of this approach
+can be found in, <em>e.g.</em>, the <span class=package><span class=pkgname><a href=https://juliapackages.com/p/GBIF target=_blank>GBIF</a></span></span> package for biodiversity data retrieval.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-files,module-api,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/07_files/05_api.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/files/consuming-data-from-apis/%0a%0a%f0%9f%93%a6%20section-files%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-api" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

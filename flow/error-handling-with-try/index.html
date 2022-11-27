@@ -1,0 +1,145 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Error handling with try · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Error handling with try</h1><article>
+<p>In previous modules, we have used a <code>try</code>/<code>catch</code> statement. In this module,
+we will go into some detail about what it means, and how to use them to write
+code that handles errors gracefully.</p><div class="callout opinion">A very important design principle of this course is that we write
+and demonstrate code that will <em>not</em> fail. In practice, mistakes happen, and
+there are errors we cannot fully anticipate. But we are convinced that anytime
+we think an error can happen, it must be handled.</div><p>Let us start with a good example - we can try to get the natural log of
+negative two, which is quite obviously not going to work. A really nice thing
+with <em>Julia</em> errors is that they all have a type:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>try</span>
+</span></span><span class=line><span class=cl>    <span class=n>log</span><span class=p>(</span><span class=o>-</span><span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>catch</span> <span class=n>error</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;I caught a </span><span class=si>$</span><span class=p>(</span><span class=n>typeof</span><span class=p>(</span><span class=n>error</span><span class=p>))</span><span class=s>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: I caught a DomainError
+</code></pre><p>Not only do they have a type, they have a type hierarchy!</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=kt>DomainError</span> <span class=o>&lt;:</span> <span class=kt>Exception</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>Errors are nested under <code>Exception</code>s, which is a very nice way to think about
+them &ndash; it&rsquo;s not that something went wrong (it did!), but something went wrong
+that we did not anticipate in our code. It sounds trivial, but the point of
+code is to have it run without erroring: first by ensuring that we run things
+that make sense, and second by handling exceptions appropriately.</p><p>We can use the type system to dispatch on exceptions. To illustrate this, we
+can write a function whose sole purpose is to generate exceptions.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>oops</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>rand</span><span class=p>()</span> <span class=o>&lt;</span> <span class=mf>0.5</span> <span class=o>&amp;&amp;</span> <span class=p>(</span><span class=kt>DimensionMismatch</span><span class=p>(</span><span class=s>&#34;oh noes&#34;</span><span class=p>)</span> <span class=o>|&gt;</span> <span class=n>throw</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>rand</span><span class=p>()</span> <span class=o>&lt;</span> <span class=mf>0.5</span> <span class=o>&amp;&amp;</span> <span class=p>(</span><span class=kt>DomainError</span><span class=p>(</span><span class=s>&#34;lol wut?&#34;</span><span class=p>)</span> <span class=o>|&gt;</span> <span class=n>throw</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>rand</span><span class=p>()</span> <span class=o>&lt;</span> <span class=mf>0.5</span> <span class=o>&amp;&amp;</span> <span class=p>(</span><span class=kt>MethodError</span><span class=p>(</span><span class=s>&#34;sike you thought&#34;</span><span class=p>)</span> <span class=o>|&gt;</span> <span class=n>throw</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=kt>ErrorException</span><span class=p>(</span><span class=s>&#34;oopsie&#34;</span><span class=p>)</span> <span class=o>|&gt;</span> <span class=n>throw</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>oops (generic function with 1 method)
+</code></pre><div class="callout warning">This is actually terrible practice. Just awful. The worst. All of
+these exception types are not just ways to halt the execution of your program,
+but ways to communicate what went wrong to your user. Do not throw a random
+exception, and remember that you can define your own!</div><p>This has 50% chance of returning a <code>DimensionMismatch</code>, then a 50% chance of a
+<code>DomainError</code>, then a 50% chance of of <code>MethodError</code>, then in anycase an
+<code>ExceptionError</code>. Note that exceptions are not passed throught the <code>return</code>
+keyword, but throught the <code>throw</code> function &ndash; this is probably a good idea to
+have a look at the documentation for <code>throw</code> when you are done reading this
+module.</p><p>Because our function will throw an exception, we will wrap it in a
+<code>try</code>/<code>catch</code> block:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>try</span>
+</span></span><span class=line><span class=cl>    <span class=n>oops</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=k>catch</span> <span class=n>err</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;I caught a </span><span class=si>$</span><span class=p>(</span><span class=n>typeof</span><span class=p>(</span><span class=n>err</span><span class=p>))</span><span class=s>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: I caught a DomainError
+</code></pre><p>It&rsquo;s all well and good, but we want to handle each type of error separately!
+We can write a function call <code>oops_handler</code>, and have it do different things
+for different error messages:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>oops_handler</span><span class=p>(</span><span class=o>::</span><span class=kt>E</span><span class=p>)</span> <span class=k>where</span> <span class=p>{</span><span class=kt>E</span> <span class=o>&lt;:</span> <span class=kt>Exception</span><span class=p>}</span> <span class=o>=</span> <span class=s>&#34;I caught an error of the type </span><span class=si>$</span><span class=p>(</span><span class=n>E</span><span class=p>)</span><span class=s>&#34;</span>
+</span></span></code></pre></div><pre tabindex=0><code>oops_handler (generic function with 1 method)
+</code></pre><div class="callout information">In practice, the <code>oops_handler</code> would do much more interesting things.
+For example, it can try to fix the issue in the original function, or exit a
+loop, or an infinite number of variations of things</div><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>try</span>
+</span></span><span class=line><span class=cl>    <span class=n>oops</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=k>catch</span> <span class=n>err</span>
+</span></span><span class=line><span class=cl>    <span class=n>oops_handler</span><span class=p>(</span><span class=n>err</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;I caught an error of the type DimensionMismatch&#34;
+</code></pre><p>Because this is all dispatch, we can refine the behavior of the <code>oops_handler</code>
+based on different types of errors:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>oops_handler</span><span class=p>(</span><span class=o>::</span><span class=kt>DimensionMismatch</span><span class=p>)</span> <span class=o>=</span> <span class=s>&#34;The dimensions of your input arguments are wrong&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>oops_handler</span><span class=p>(</span><span class=o>::</span><span class=kt>MethodError</span><span class=p>)</span> <span class=o>=</span> <span class=s>&#34;There is no available method here&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>oops_handler</span><span class=p>(</span><span class=o>::</span><span class=kt>DomainError</span><span class=p>)</span> <span class=o>=</span> <span class=s>&#34;The input value is outside the correct domain&#34;</span>
+</span></span></code></pre></div><pre tabindex=0><code>oops_handler (generic function with 4 methods)
+</code></pre><p>Let&rsquo;s now do a simple loop, and see what we get!</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=k>in</span> <span class=mi>1</span><span class=o>:</span><span class=mi>10</span>
+</span></span><span class=line><span class=cl>    <span class=k>try</span>
+</span></span><span class=line><span class=cl>        <span class=n>oops</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=k>catch</span> <span class=n>err</span>
+</span></span><span class=line><span class=cl>        <span class=nd>@info</span> <span class=n>oops_handler</span><span class=p>(</span><span class=n>err</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: The dimensions of your input arguments are wrong
+[ Info: The dimensions of your input arguments are wrong
+[ Info: The dimensions of your input arguments are wrong
+[ Info: The input value is outside the correct domain
+[ Info: The dimensions of your input arguments are wrong
+[ Info: I caught an error of the type ErrorException
+[ Info: The dimensions of your input arguments are wrong
+[ Info: The dimensions of your input arguments are wrong
+[ Info: I caught an error of the type ErrorException
+[ Info: The input value is outside the correct domain
+</code></pre><p>Notice that our code is able to handle different types of exceptions, thanks
+to the magic of dispatch and the use of <code>try</code>/<code>catch</code>.</p><p>But what if the code worked? This might seem like a stretch of the
+imagination, but it happens! And <code>try</code>/<code>catch</code> blocks can very easily be
+extended to accomodate this uncommon situation. Enter the <code>finally</code> keyword,
+and the <code>else</code> keyword we already encountered when talking about Booleans
+values.</p><p>Let&rsquo;s try with something that is going to throw an exception, because we make
+it:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>try</span>
+</span></span><span class=line><span class=cl>    <span class=n>throw</span><span class=p>(</span><span class=kt>ErrorException</span><span class=p>(</span><span class=s>&#34;This is not going to work&#34;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=k>catch</span> <span class=n>error</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;I got a </span><span class=si>$</span><span class=p>(</span><span class=n>typeof</span><span class=p>(</span><span class=n>error</span><span class=p>))</span><span class=s>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>else</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;This part runs because there is no exception!&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>finally</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;This part will always run no matter what!&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: I got a ErrorException
+[ Info: This part will always run no matter what!
+</code></pre><p>And now, compare with something that is not throwing an exception:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>try</span>
+</span></span><span class=line><span class=cl>    <span class=nb>true</span>
+</span></span><span class=line><span class=cl><span class=k>catch</span> <span class=n>error</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;I got a </span><span class=si>$</span><span class=p>(</span><span class=n>typeof</span><span class=p>(</span><span class=n>error</span><span class=p>))</span><span class=s>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>else</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;This part runs because there is no exception!&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>finally</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;This part will always run no matter what!&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: This part runs because there is no exception!
+[ Info: This part will always run no matter what!
+</code></pre><p>The <code>else</code> and <code>finally</code> keywords are very important! The content of the
+<code>else</code> block will <em>only</em> run if no exception was thrown, and the content of
+the <code>finally</code> block will run no matter what happens. Here is a good use-case:</p><pre tabindex=0><code>try
+  run_my_model()
+catch err
+  handle_my_errors(err)
+else
+  plot_my_results()
+finally
+  remove_temporary_files()
+end
+</code></pre><p>In a lot of cases, we do not want the analysis to progress until the previous
+steps are done well &ndash; this is a situation where <code>try</code> works perfectly, with
+the added benefit of easily letting us specify what we want to do for each
+type of exception, in case of a success, in case of a failure, and regardless
+of the outcome. The <code>try</code>/<code>catch</code> construct is very powerful (and very
+under-used by novice programmers!).</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-the_flow,module-try,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/03_the_flow/06_try.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/flow/error-handling-with-try/%0a%0a%f0%9f%93%a6%20section-the_flow%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-try" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

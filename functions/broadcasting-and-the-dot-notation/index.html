@@ -1,0 +1,119 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Broadcasting and the dot notation · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Broadcasting and the dot notation</h1><article>
+<p>In some of the previous modules, we have used a notation that looked like
+<code>function.(arguments)</code>, or <code>x .+ y</code>. In this module, we will talk about what
+the <code>.</code> notation does, and more broadly, what <em>broadcasting</em> is.</p><p>Let&rsquo;s generate two arrays:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>x</span><span class=p>,</span> <span class=n>y</span> <span class=o>=</span> <span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=p>[</span><span class=mi>4</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>1</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>([1, 2, 0], [4, 2, 1])
+</code></pre><p>We think of them as arrays, but in practice, they are <em>column vectors</em>, and
+therefore have their own arithmetic. For example, we can add them
+(element-wise):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>x</span> <span class=o>+</span> <span class=n>y</span>
+</span></span></code></pre></div><pre tabindex=0><code>3-element Vector{Int64}:
+ 5
+ 4
+ 1
+</code></pre><p>But the multiplication is not defined. If we want to do an element-wise
+multiplication, we need to specify that we are applying an operation to each
+elements:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>x</span> <span class=o>.*</span> <span class=n>y</span>
+</span></span></code></pre></div><pre tabindex=0><code>3-element Vector{Int64}:
+ 4
+ 4
+ 0
+</code></pre><p>We can also take the difference between these vectors (element-wise):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>x</span> <span class=o>-</span> <span class=n>y</span>
+</span></span></code></pre></div><pre tabindex=0><code>3-element Vector{Int64}:
+ -3
+  0
+ -1
+</code></pre><p>But diving one by the other can give an unexpected result:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>x</span> <span class=o>/</span> <span class=n>y</span>
+</span></span></code></pre></div><pre tabindex=0><code>3×3 Matrix{Float64}:
+ 0.190476  0.0952381  0.047619
+ 0.380952  0.190476   0.0952381
+ 0.0       0.0        0.0
+</code></pre><p>What is going on? In simple terms, <code>/</code> is defined as the multiplication of its
+first argument by the inverse of its second, and because <em>Julia</em> will adhere
+very strictly to what symbols means mathematically, this operation works.</p><p>This behavior can be surprising when coming from other languages, but this is
+a fact of life. If we want to <em>ensure</em> we work in an element-wise way, we need
+to use the <code>.</code> notation:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>x</span> <span class=o>./</span> <span class=n>y</span>
+</span></span></code></pre></div><pre tabindex=0><code>3-element Vector{Float64}:
+ 0.25
+ 1.0
+ 0.0
+</code></pre><p>This (using <code>.</code> to work on the elements instead of the entire object) is a
+nice little bit of syntactic sugar around what the operation actually is:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>broadcast</span><span class=p>(</span><span class=o>*</span><span class=p>,</span> <span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>3-element Vector{Int64}:
+ 4
+ 4
+ 0
+</code></pre><p>In fact, we can call the <code>.*</code> version with the <code>@lower</code> macro from <span class="package no-hub"><span class=pkgname>Meta</span></span>,
+and see that it is indeed performing broadcasting:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>Meta</span><span class=o>.</span><span class=nd>@lower</span> <span class=n>x</span> <span class=o>.*</span> <span class=n>y</span>
+</span></span></code></pre></div><pre tabindex=0><code>:($(Expr(:thunk, CodeInfo(
+    @ none within `top-level scope`
+1 ─ %1 = Base.broadcasted(*, x, y)
+│   %2 = Base.materialize(%1)
+└──      return %2
+))))
+</code></pre><p>Using element-wise notation can be extremely important when dealing with
+higher dimensional objects. For example, if we have two matrices:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>U</span> <span class=o>=</span> <span class=p>[</span><span class=mi>1</span> <span class=mi>0</span><span class=p>;</span> <span class=mi>0</span> <span class=mi>1</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>V</span> <span class=o>=</span> <span class=p>[</span><span class=mi>1</span> <span class=mi>2</span><span class=p>;</span> <span class=mi>1</span> <span class=mi>3</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>2×2 Matrix{Int64}:
+ 1  2
+ 1  3
+</code></pre><p>Calling <code>*</code> will perform <em>matrix multiplication</em>, because the <code>*</code> operator has
+a well accepted behavior when its arguments are matrices:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>U</span> <span class=o>*</span> <span class=n>V</span>
+</span></span></code></pre></div><pre tabindex=0><code>2×2 Matrix{Int64}:
+ 1  2
+ 1  3
+</code></pre><p>In order to perform the Hadamard product, we need to call <code>.*</code> instead:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>U</span> <span class=o>.*</span> <span class=n>V</span>
+</span></span></code></pre></div><pre tabindex=0><code>2×2 Matrix{Int64}:
+ 1  0
+ 0  3
+</code></pre><p>Again, this is equivalent to</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>broadcast</span><span class=p>(</span><span class=o>*</span><span class=p>,</span> <span class=n>U</span><span class=p>,</span> <span class=n>V</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>2×2 Matrix{Int64}:
+ 1  0
+ 0  3
+</code></pre><p>The <code>.</code> can also be used <em>betwen</em> a function and its arguments. For example,
+we can check for the odd elements in a matrix:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>isodd</span><span class=o>.</span><span class=p>(</span><span class=n>V</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>2×2 BitMatrix:
+ 1  0
+ 1  1
+</code></pre><p>Which is again identical to</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>broadcast</span><span class=p>(</span><span class=n>isodd</span><span class=p>,</span> <span class=n>V</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>2×2 BitMatrix:
+ 1  0
+ 1  1
+</code></pre><p>There is an interesting bit of notation we can use, which is to prefix a line
+where we <em>only</em> do element-wise operations with <code>@.</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=nd>@.</span> <span class=p>(</span><span class=n>x</span> <span class=o>-</span> <span class=n>y</span><span class=p>)</span> <span class=o>/</span> <span class=p>(</span><span class=n>x</span> <span class=o>+</span> <span class=n>y</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>3-element Vector{Float64}:
+ -0.6
+  0.0
+ -1.0
+</code></pre><p>This is equivalent to the more lengthy form using a <code>.</code> before each operator:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=p>(</span><span class=n>x</span> <span class=o>.-</span> <span class=n>y</span><span class=p>)</span> <span class=o>./</span> <span class=p>(</span><span class=n>x</span> <span class=o>.+</span> <span class=n>y</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>3-element Vector{Float64}:
+ -0.6
+  0.0
+ -1.0
+</code></pre><p>Using this notation will often be a good way to avoid writing a loop, and to
+apply a function rapidly to any collection. Named tuples and dictionaries are
+still going to resist this syntax, for reasons that are not necessarilly worth
+explaining here; but we have seen in previous modules how we can iterate over
+them regardless.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-basic_functions_usage,module-broadcasting,status-beta,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/04_basic_functions_usage/05_broadcasting.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/functions/broadcasting-and-the-dot-notation/%0a%0a%f0%9f%93%a6%20section-basic_functions_usage%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-broadcasting" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

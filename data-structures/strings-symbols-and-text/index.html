@@ -1,0 +1,97 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Strings, symbols, and text · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Strings, symbols, and text</h1><article>
+<p>In this module, we will look at string and characters, <em>i.e.</em> representations
+of text. These objects are really interesting in <em>Julia</em> because not only do
+they store information, they can store a little bit of computation as well.
+The point of this module is to go through the basics of what strings are, and
+we will revisit advanced operations in later sections.</p><p>A few modules into this class, it is time to write what we usually write as a
+first instruction:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=s>&#34;Hello, world&#34;</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;Hello, world&#34;
+</code></pre><p>This is a <code>String</code> &ndash; we can check that it is a string by asking for its type,
+which is</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>typeof</span><span class=p>(</span><span class=s>&#34;Hello, world&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>String
+</code></pre><p>Note that <em>Julia</em> is not really picky about what goes into a string. Unicode
+characters are perfectly valid:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=s>&#34;Γεια!&#34;</span> <span class=o>|&gt;</span> <span class=n>typeof</span>
+</span></span></code></pre></div><pre tabindex=0><code>String
+</code></pre><p>Strings behave a little like arrays. They have a length:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>length</span><span class=p>(</span><span class=s>&#34;Hello, world!&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>13
+</code></pre><p>This length is the number of characters, including spaces, in the string. As a
+rule, almost everything with a length can be indexed:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=s>&#34;Hello, world!&#34;</span><span class=p>[</span><span class=mi>1</span><span class=o>:</span><span class=mi>5</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;Hello&#34;
+</code></pre><p>And as before, indexing from the end works as well:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=s>&#34;Hello, world!&#34;</span><span class=p>[(</span><span class=k>end</span> <span class=o>-</span> <span class=mi>5</span><span class=p>)</span><span class=o>:</span><span class=p>(</span><span class=k>end</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)]</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;world&#34;
+</code></pre><p>Strings have a number of specific methods to transform them:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>titlecase</span><span class=p>(</span><span class=s>&#34;Hello, world!&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;Hello, World!&#34;
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>lowercase</span><span class=p>(</span><span class=s>&#34;Hello, world!&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;hello, world!&#34;
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>uppercase</span><span class=p>(</span><span class=s>&#34;Hello, world!&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;HELLO, WORLD!&#34;
+</code></pre><p>There are a few others, that are all documented. Looking at <code>?titlecase</code>
+should set you on your way.</p><p>One of the reasons why strings are special is that we can sneak a little
+computation in them, using something called string interpolation:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=s>&#34;The answer to Life, the Universe and Everything is </span><span class=si>$</span><span class=p>(</span><span class=n>rand</span><span class=p>(</span><span class=mi>1</span><span class=o>:</span><span class=mi>100</span><span class=p>))</span><span class=s>&#34;</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;The answer to Life, the Universe and Everything is 47&#34;
+</code></pre><p>This is an interesting construct when we want to print out some information.
+Everything that is wrapper in the <code>$()</code> block will be executed first, and the
+output will be replaced within the string.</p><p>It is also possible to join strings together, in a most unintuitive way:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=s>&#34;Hello&#34;</span> <span class=o>*</span> <span class=s>&#34;, &#34;</span> <span class=o>*</span> <span class=s>&#34;world&#34;</span> <span class=o>*</span> <span class=s>&#34;!&#34;</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;Hello, world!&#34;
+</code></pre><div class="callout information">There is, actually, a reason for which strings are concatenated using
+<code>*</code>, and it has to do with this representing the least amount of departure
+from what <code>*</code> means in a mathematical context.</div><p>String can also have multiple lines:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=s>&#34;&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s>Hello
+</span></span></span><span class=line><span class=cl><span class=s>world
+</span></span></span><span class=line><span class=cl><span class=s>!
+</span></span></span><span class=line><span class=cl><span class=s>&#34;&#34;&#34;</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;Hello\nworld\n!\n&#34;
+</code></pre><p>Note that the line breaks have been replaced by the line break character
+(<code>\n</code>). Indeed, you can use line breaks and tabulations (<code>\t</code>) in your
+strings. They will be correctly replaced when using the <code>print</code> (or <code>println</code>;
+see the documentation of both to see how they differ) function:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=s>&#34;This</span><span class=se>\t</span><span class=s>is</span><span class=se>\t</span><span class=s>a</span><span class=se>\t</span><span class=s>tabulation&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>This	is	a	tabulation
+</code></pre><p><em>Julia</em> can also represent single characters. We can for example compare <code>a</code>
+and <code>É</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=sc>&#39;a&#39;</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#39;a&#39;: ASCII/Unicode U+0061 (category Ll: Letter, lowercase)
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=sc>&#39;É&#39;</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#39;É&#39;: Unicode U+00C9 (category Lu: Letter, uppercase)
+</code></pre><p>The representation of a character is a little bit more rich than that of a
+string, and we can get information about its case, its unicode value, its
+category, and a number of other informations that can be useful when dealing
+with a string.</p><p>We can extract the characters of a string in the following way:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=kt>Char</span><span class=p>(</span><span class=s>&#34;Hello world!&#34;</span><span class=p>[</span><span class=k>end</span><span class=p>])</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#39;!&#39;: ASCII/Unicode U+0021 (category Po: Punctuation, other)
+</code></pre><p>But importantly, we can also create a string out of characters:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=kt>String</span><span class=p>([</span><span class=sc>&#39;H&#39;</span><span class=p>,</span> <span class=sc>&#39;e&#39;</span><span class=p>,</span> <span class=sc>&#39;l&#39;</span><span class=p>,</span> <span class=sc>&#39;l&#39;</span><span class=p>,</span> <span class=sc>&#39;o&#39;</span><span class=p>])</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;Hello&#34;
+</code></pre><p>Strings are not <em>quite</em> a vector of characters, but we can convert a vector of
+characters into a string!</p><p>There is one more data structure to represent textual or categorical
+information: symbols. Symbols are incredibly powerful. The way to declare a
+symbol is to preface it with <code>:</code>, or to call the <code>Symbol</code> function on a
+string:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=ss>:α</span>
+</span></span></code></pre></div><pre tabindex=0><code>:α
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=kt>Symbol</span><span class=p>(</span><span class=s>&#34;α&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>:α
+</code></pre><p>Symbols are not mutable, and are extremely useful to represent categories. In
+many situations, comparing the equality of two symbols is also much faster
+than comparing the equality of two strings, which is important when working
+with increasing data volumes.</p><p>There are a number of additional operations on text-like objects we can do,
+including substitutions, matching, and advanced replacements. They will be
+covered in later modules.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-data_structures,module-strings,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/02_data_structures/05_strings.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/data-structures/strings-symbols-and-text/%0a%0a%f0%9f%93%a6%20section-data_structures%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-strings" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

@@ -1,0 +1,70 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Installing Julia · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Installing Julia</h1><article>
+<p>In this module, we will see how we can install <em>Julia</em>, setup a default
+version, and go through some of the usual tools involved in setting up a good
+<em>Julia</em> development environment. We will not deal with the installation of
+<em>packages</em> quite yet, as this will be done with its own module.</p><p>The easiest way to install <em>Julia</em> is to rely on the <code>juliaup</code> utility, which
+can be downloaded for most platforms from its <a href=https://github.com/JuliaLang/juliaup>GitHub page</a>.</p><p>Once the <code>juliaup</code> program is executed, installing the current released
+version of <em>Julia</em> can be done by starting your command prompt, and typing</p><pre tabindex=0><code>juliaup add release
+</code></pre><p>This will take care of downloading and installing the correct latest release
+for your computer, but also make it available on your path (which is to say,
+if you type <code>julia</code> in a command prompt, <em>Julia</em> will start).</p><p>Another function of <code>juliaup</code> is to serve a version multiplexer: it allows to
+have different versions of the <em>Julia</em> installed on the same computer. We will
+not use this functionality here, but for the sake of being epxlicit, we will
+specify a default version:</p><pre tabindex=0><code>juliaup default release
+</code></pre><p>This will ensure that the command <code>julia</code> will start the currently released
+version. This is important to keep in mind, because this website is generated
+using the current <em>Julia</em> release, and so you might not get the exact same
+result if you use a very old version of the language.</p><p>The idea behind this material is to type as much of it as possible in the
+<em>Julia</em> REPL (<em>i.e.</em> what happens when you start <code>julia</code>). In practice, most
+(all?) coding is done in a text editor. For <em>Julia</em>, the one with the best
+support is VSCode, which is free, and has a <a href=https://www.julia-vscode.org/>dedicated <em>Julia</em>
+plugin</a>.</p><p>The Julia VSCode plugin website has a full documentation of what can be done
+&ndash; it is, essentially, working under the same logic as <em>e.g.</em> RStudio, only
+for any language.</p><div class="callout opinion">We like Julia in VSCode because there are a lot of user-friendly
+additions that make it easy to track bug, identify bottlenecks, and understand
+what is loaded in your environment. That being said, there are a number of
+other solutions to develop <em>Julia</em> programs, including <span class=package><span class=pkgname><a href=https://juliapackages.com/p/IJulia target=_blank>IJulia</a></span></span>, <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Pluto target=_blank>Pluto</a></span></span>,
+<em>Quarto</em>, (neo)vim and lsp, etc&mldr; The examples in this class have been built using
+a mix of these tools!</div><p>One characteristic of <em>Julia</em> is that it has amazing support for unicode
+characters, enabling to, for example, use mathematical symbols to reproduce
+mathematical notation. This assumes that your font will have good support for
+these characters. The project <a href=https://github.com/mossr/BeautifulAlgorithms.jl>Beautiful Algorithms</a> showcases various algorithms
+written to use <em>Julia</em>&rsquo;s support for unicode.</p><p>One such font is <a href=https://juliamono.netlify.app/>JuliaMono</a>. Other very popular alternatives, all
+free, are <a href=https://www.recursive.design/>Recursive</a>,
+<a href=https://www.jetbrains.com/lp/mono/>JetBrains Mono</a>, <a href=https://github.com/IBM/plex>Plex Mono</a>, <a href=https://rubjo.github.io/victor-mono/>Victor Mono</a>,
+<a href=https://github.com/tonsky/FiraCode/>Fira Code</a>, <a href=https://fonts.google.com/noto/specimen/Noto+Sans+Mono>Noto Sans Mono</a>, <a href=https://sourcefoundry.org/hack/>Hack</a>, <a href=https://github.com/microsoft/cascadia-code>Cascadia
+Code</a>, and <a href=https://typeof.net/Iosevka/>Iosevka</a> (the code in this website is set in <em>Iosevka</em>).
+There are many others, but these
+fonts have good symbol coverage, and tend to be very legible on all screens.
+Feel free to experiment with one that suits you &ndash; setting up a good
+environment is also about your own user experience, and having a font that
+does not strain your eyes or make differentiating between symbols difficult is
+<em>definitely</em> a part of it.</p><p>Ideally, the font you pick should let you differentiate between these
+characters:</p><pre tabindex=0><code>1lIL
+0Oo
+</code></pre><p>When you are all set with your installation of <em>Julia</em> (and any additional
+packages), it is time to conclude this section, and start with the
+fundamentals.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-getting_started,module-installation,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/00_getting_started/04_installation.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/introduction/installing-julia/%0a%0a%f0%9f%93%a6%20section-getting_started%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-installation" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

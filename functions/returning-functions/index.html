@@ -1,0 +1,110 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Returning functions · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Returning functions</h1><article>
+<p>In this module, we will learn how we can write functions that return other
+functions. Because this seems a little weird at first, we will also discuss
+situations in which this is a useful design pattern, and see how this approach
+can be used together with Julia&rsquo;s powerful dispatch system.</p><p><em>Julia</em> has a very interesting function called <code>isequal</code>. Let&rsquo;s see how it
+works (don&rsquo;t forget to look at <code>?isequal</code> for more):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>is_two</span> <span class=o>=</span> <span class=n>isequal</span><span class=p>(</span><span class=mf>2.0</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>(::Base.Fix2{typeof(isequal), Float64}) (generic function with 1 method)
+</code></pre><p>When we call this function, we get back <em>another function</em>. We can apply this
+new function to a few arguments:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>is_two</span><span class=p>(</span><span class=nb>π</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>false
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>is_two</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>This is actually rather helpful! In this module, we will illustrate how
+returning functions works, and see a simple example from population dynamics.
+But first, why should we want to return functions? A common example is when we
+want to run multiple parameterizations of a model. We <em>could</em> write the model
+function in such a way that we would give it all of the parameters, but it
+might lead to long function calls. What if we could have a function that only
+depends on the variables? To do this, we can write a fist function to generate
+the function we will actually call.</p><p>An illustration is probably more useful here. Let&rsquo;s assume that we are
+interesting in the logistic growth of a population in discrete time, which is
+a simple process we can represent with the following model:</p><p>$$ n(t+1) = n(t)\times(1 + r (1 - n(t)/K)) $$</p><p>A way to simulate this could rely on a function that would be called with
+something like <code>f(n, r, K)</code> &ndash; but within a simulation, we do not expect $r$
+or $K$ to change. So let&rsquo;s define a function that would <em>only</em> be a function
+of $n$:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>foo</span><span class=p>(</span><span class=n>n</span><span class=o>::</span><span class=kt>Float64</span><span class=p>)</span><span class=o>::</span><span class=kt>Float64</span> <span class=o>=</span> <span class=n>n</span> <span class=o>*</span> <span class=p>(</span><span class=mf>1.0</span> <span class=o>+</span> <span class=n>r</span> <span class=o>*</span> <span class=p>(</span><span class=mi>1</span> <span class=o>-</span> <span class=n>n</span> <span class=o>/</span> <span class=n>K</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>foo (generic function with 1 method)
+</code></pre><p>Now, this function will <em>not work</em> because we do not have defined <code>r</code> or <code>K</code>.
+We can do that by having a function taking values of <code>r</code> and <code>K</code> as arguments,
+and return a version of our function with these values &ldquo;replaced&rdquo;:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>discrete_logistic_growth</span><span class=p>(</span><span class=n>r</span><span class=o>::</span><span class=kt>T</span><span class=p>,</span> <span class=n>K</span><span class=o>::</span><span class=kt>T</span><span class=p>)</span><span class=o>::</span><span class=kt>Function</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>AbstractFloat</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>model</span><span class=p>(</span><span class=n>n</span><span class=o>::</span><span class=kt>T</span><span class=p>)</span><span class=o>::</span><span class=kt>T</span> <span class=o>=</span> <span class=n>n</span> <span class=o>*</span> <span class=p>(</span><span class=n>one</span><span class=p>(</span><span class=n>T</span><span class=p>)</span> <span class=o>+</span> <span class=n>r</span> <span class=o>*</span> <span class=p>(</span><span class=n>one</span><span class=p>(</span><span class=n>T</span><span class=p>)</span> <span class=o>-</span> <span class=n>n</span> <span class=o>/</span> <span class=n>K</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>discrete_logistic_growth (generic function with 1 method)
+</code></pre><p>Note that we are using a number of tricks from the previous modules: we ensure
+that <code>r</code> and <code>K</code> have the same type (a floating point value), we let <em>Julia</em>
+know that <code>discrete_logistic_growth</code> returns a function, <em>and</em> we re-use the
+type of the parameters to constrain the type of the variables.</p><p>What does it looks like in practice? We will use <code>Float32</code> values to get a
+sense that all of the annotations on our function were not in vain:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>discrete_logistic_growth</span><span class=p>(</span><span class=mf>1.0f0</span><span class=p>,</span> <span class=mf>2.0f0</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>(::Main.var&#34;##339&#34;.var&#34;#model#1&#34;{Float32, Float32, Float32}) (generic function with 1 method)
+</code></pre><p>Excellent, this is a generic function with a single method! We can double
+check that it is, indeed, a <code>Function</code>, by using the <code>isa</code> operator (it also
+works as a function!):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>discrete_logistic_growth</span><span class=p>(</span><span class=mf>1.0f0</span><span class=p>,</span> <span class=mf>2.0f0</span><span class=p>)</span> <span class=k>isa</span> <span class=kt>Function</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>Excellent! Let&rsquo;s take a step back. That we are able to return functions should
+not be very surprising, because functions are just another category of things.
+There&rsquo;s not really a lot of conceptual difference between returning a number
+and returning a function. But some of the difficulty comes from the fact that
+the parameters of <code>discrete_logistic_growth</code> are now baked in the function we
+return.</p><p>So how do we <em>use</em> this function? We can simply add a set of parentheses at
+the end. For example, if our population has a growth rate of 1, a carrying
+capacity of 2, and a current population size of 2.2, we should get a value
+lower than 2:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>discrete_logistic_growth</span><span class=p>(</span><span class=mf>1.0f0</span><span class=p>,</span> <span class=mf>2.0f0</span><span class=p>)(</span><span class=mf>2.2f0</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>1.98f0
+</code></pre><p>Now, we can of course assign the first part of this expression to a variable:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>parameterized_model</span> <span class=o>=</span> <span class=n>discrete_logistic_growth</span><span class=p>(</span><span class=mf>1.0f0</span><span class=p>,</span> <span class=mf>2.0f0</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>(::Main.var&#34;##339&#34;.var&#34;#model#1&#34;{Float32, Float32, Float32}) (generic function with 1 method)
+</code></pre><p>We now have a fully usable function:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>parameterized_model</span><span class=p>(</span><span class=mf>2.2f0</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>1.98f0
+</code></pre><p>But <em>why</em>? Think of our function this way: as soon as it is created, using
+<code>discrete_logistic_growth</code>, we know the parameters (because we specified
+them), and we know that they will not change.</p><p>Can we make this approach intersect nicely with <em>Julia</em>&rsquo;s dispatch system? Of
+course! Let&rsquo;s assume we want to run the model sometimes on a single point (one
+population), and sometimes on a series of populations (a vector of
+abundances). We can do this by having, for example, one function taking a
+number as input, and another function taking a vector of number as inputs. But
+can we create both these functions when we create our model?</p><p>Yes!</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>better_discrete_logistic_growth</span><span class=p>(</span><span class=n>r</span><span class=o>::</span><span class=kt>T</span><span class=p>,</span> <span class=n>K</span><span class=o>::</span><span class=kt>T</span><span class=p>)</span><span class=o>::</span><span class=kt>Function</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>AbstractFloat</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=n>model</span><span class=p>(</span><span class=n>n</span><span class=o>::</span><span class=kt>T</span><span class=p>)</span><span class=o>::</span><span class=kt>T</span> <span class=o>=</span> <span class=n>n</span> <span class=o>*</span> <span class=p>(</span><span class=n>one</span><span class=p>(</span><span class=n>T</span><span class=p>)</span> <span class=o>+</span> <span class=n>r</span> <span class=o>*</span> <span class=p>(</span><span class=n>one</span><span class=p>(</span><span class=n>T</span><span class=p>)</span> <span class=o>-</span> <span class=n>n</span> <span class=o>/</span> <span class=n>K</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=n>model</span><span class=p>(</span><span class=n>n</span><span class=o>::</span><span class=kt>Vector</span><span class=p>{</span><span class=kt>T</span><span class=p>})</span><span class=o>::</span><span class=kt>Vector</span><span class=p>{</span><span class=kt>T</span><span class=p>}</span> <span class=o>=</span>
+</span></span><span class=line><span class=cl>        <span class=n>n</span> <span class=o>.*</span> <span class=p>(</span><span class=n>one</span><span class=p>(</span><span class=n>eltype</span><span class=p>(</span><span class=n>T</span><span class=p>))</span> <span class=o>.+</span> <span class=n>r</span> <span class=o>.*</span> <span class=p>(</span><span class=n>one</span><span class=p>(</span><span class=n>eltype</span><span class=p>(</span><span class=n>T</span><span class=p>))</span> <span class=o>.-</span> <span class=n>n</span> <span class=o>./</span> <span class=n>K</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>model</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>better_discrete_logistic_growth (generic function with 1 method)
+</code></pre><p>Remember from the <a href=https://sciencecomputing.io/functions/understanding-dispatch/>module on dispatch</a> that a function is &ldquo;just&rdquo; a
+name, a big ol&rsquo; bag of methods. We can declare as many methods as we want, and
+the output is still going to be a function.</p><div class="callout information">The second version of <code>model</code> (with the
+<code>model(n::Vector{T})::Vector{T}</code>) signature uses the <em>dot</em> notation, and we
+will see what it is in the next module.</div><p>Let&rsquo;s verify this!</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>parameterized_better_model</span> <span class=o>=</span> <span class=n>better_discrete_logistic_growth</span><span class=p>(</span><span class=mf>0.2</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>(::Main.var&#34;##339&#34;.var&#34;#model#2&#34;{Float64, Float64, Float64}) (generic function with 2 methods)
+</code></pre><p>This is indeed a generic function with two methods. We can see it in action:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>parameterized_better_model</span><span class=p>(</span><span class=mf>0.5</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>0.55
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>parameterized_better_model</span><span class=p>([</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.4</span><span class=p>])</span>
+</span></span></code></pre></div><pre tabindex=0><code>4-element Vector{Float64}:
+ 0.0
+ 0.23200000000000004
+ 1.0
+ 1.288
+</code></pre><p>This is another reason why the dispatch system is so important in Julia &ndash; we
+can use it to write a lot of different things that make the syntax of our code
+much more pleasant to read!</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-basic_functions_usage,module-returning_functions,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/04_basic_functions_usage/04_returning_functions.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/functions/returning-functions/%0a%0a%f0%9f%93%a6%20section-basic_functions_usage%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-returning_functions" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

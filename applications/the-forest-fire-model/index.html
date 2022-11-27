@@ -1,0 +1,193 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>The forest-fire model · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>The forest-fire model</h1><article>
+<p>In this module, we will have a look at indexing in order to simulate the
+behavior of a forest when trees can catch on fire, be planted, and regrow.
+This is a common example in complex system studies, and produces very visually
+pleasing structures in space! As a treat, we will spend a little more time
+learning about how <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Makie target=_blank>Makie</a></span></span> works.</p><p>This applications is inspired by the chapter on forest fire dynamics in Paul
+Charbonneau&rsquo;s book on natural complexity, which is extremely well written and
+illustrated, and full of applications (with <em>Python</em>) code to explore the
+behavior of complex systems.</p><div class="callout reference">Paul Charbonneau (2017). &ldquo;Natural Complexity: A Modeling Handbook&rdquo;; <em>Princeton University Press</em></div><p>We will rely on <span class=package><span class=pkgname><a href=https://juliapackages.com/p/CairoMakie target=_blank>CairoMakie</a></span></span> for plotting, and nothing else!</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>using</span> <span class=n>CairoMakie</span>
+</span></span><span class=line><span class=cl><span class=n>CairoMakie</span><span class=o>.</span><span class=n>activate!</span><span class=p>(;</span> <span class=n>px_per_unit</span> <span class=o>=</span> <span class=mi>2</span><span class=p>)</span>
+</span></span></code></pre></div><p>The first decision we need to make it to set a grid for the size of our
+forest. Large grids take more time to simulate, and the number of cells is the
+square of the grid dimension. A large grid will let us see the <em>grey</em>
+corresponding to patches of re-growing forest, but a small grid will run much
+faster.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>grid_size</span> <span class=o>=</span> <span class=p>(</span><span class=mi>550</span><span class=p>,</span> <span class=mi>550</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>(550, 550)
+</code></pre><div class="callout domain">This model is not <em>really</em> about fires and forest, which have more
+complex dynamics than that (we think). It is a hallmark of complex system
+studies because it starts from simple rules, but generates very complex
+spatially mobile patterns while showing nice temporal dynamics.</div><p>We will use the following convention: an empty cell is 0, a burning cell is 1,
+and a planted cell is 2. The reason we are using numbers here is that they
+take less memory footprint than strings or symbols would, and that&rsquo;s about it.
+There are many other ways to solve this problem, including defining an
+enumerated type, or a type for each state, but using a basic type will also
+have the benefit of mapping directly into colormaps for visualization, and to
+let us use the <code>iszero</code> and <code>isone</code> to pick the empty and burning pixels.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>forest</span> <span class=o>=</span> <span class=n>zeros</span><span class=p>(</span><span class=kt>Int64</span><span class=p>,</span> <span class=n>grid_size</span> <span class=o>.+</span> <span class=mi>2</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>forestchange</span> <span class=o>=</span> <span class=n>zeros</span><span class=p>(</span><span class=kt>Int64</span><span class=p>,</span> <span class=n>grid_size</span> <span class=o>.+</span> <span class=mi>2</span><span class=p>);</span>
+</span></span></code></pre></div><p>You might notice that we are cheating a little bit by assigning a larger grid
+than we decided. There is a simple reason for this: we will spend time looking
+at the neighborhood of pixels, and it is faster to pad the grid with empty
+states than it is to filter the neighborhood to ensure that all of the
+positions are in the grid. Thankfully, we know how to use slices like
+<code>[(begin+1):(end-1)]</code> to handle this!</p><p>The next step is to decide on two probabilities: the probability of a tree
+appearing in an empty cell (assume that birds are dispersing the seeds, and
+that trees appear fully mature), $p$; and the probability that a fire will
+start in a pixel occupied by a tree, $f$ (this is usually assumed to be the
+effect of lightning, for example).</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>p</span> <span class=o>=</span> <span class=mf>1e-2</span>
+</span></span><span class=line><span class=cl><span class=n>S</span> <span class=o>=</span> <span class=mi>130</span>
+</span></span><span class=line><span class=cl><span class=n>f</span> <span class=o>=</span> <span class=n>p</span> <span class=o>*</span> <span class=p>(</span><span class=mi>1</span> <span class=o>/</span> <span class=n>S</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>7.692307692307693e-5
+</code></pre><div class="callout domain">The model starts to have interesting behaviors when the $S = p/f$
+ratio reaches 100 and more; this is why we used $S$ in our code. Keeping $p$
+as is, and decreasing the value of $f$ leads to more spirals, and to longer
+oscillations in the number of forested/burning patches. Very large values of
+$S$ (like $10^4$) can give rise to a single landscape-wide spiral fire.</div><p>One of the rules of the model is that a tree on fire will propagate the
+&ldquo;burning&rdquo; state to its neighbors. In order to do this, we can define a
+&ldquo;stencil&rdquo;, or a collection of <em>relative</em> positions one-next to the focal cell:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=kt>CartesianIndices</span><span class=p>((</span><span class=o>-</span><span class=mi>1</span><span class=o>:</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=o>:</span><span class=mi>1</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>CartesianIndices((-1:1, -1:1))
+</code></pre><p>This is nothing more than a square matrix wearing a trench coat:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>collect</span><span class=p>(</span><span class=kt>CartesianIndices</span><span class=p>((</span><span class=o>-</span><span class=mi>1</span><span class=o>:</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=o>:</span><span class=mi>1</span><span class=p>)))</span>
+</span></span></code></pre></div><pre tabindex=0><code>3×3 Matrix{CartesianIndex{2}}:
+ CartesianIndex(-1, -1)  CartesianIndex(-1, 0)  CartesianIndex(-1, 1)
+ CartesianIndex(0, -1)   CartesianIndex(0, 0)   CartesianIndex(0, 1)
+ CartesianIndex(1, -1)   CartesianIndex(1, 0)   CartesianIndex(1, 1)
+</code></pre><p>The reason we are not assigning this to a variable is because we will pass it
+as a keyword argument to our simulation function later on. In order to have a
+starting state, we will seed the landscape with a few trees:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>locations_to_plant</span> <span class=o>=</span> <span class=n>filter</span><span class=p>(</span><span class=n>i</span> <span class=o>-&gt;</span> <span class=n>rand</span><span class=p>()</span> <span class=o>&lt;=</span> <span class=n>p</span><span class=p>,</span> <span class=n>eachindex</span><span class=p>(</span><span class=n>forest</span><span class=p>[</span><span class=mi>2</span><span class=o>:</span><span class=p>(</span><span class=k>end</span> <span class=o>-</span> <span class=mi>1</span><span class=p>),</span> <span class=mi>2</span><span class=o>:</span><span class=p>(</span><span class=k>end</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)]))</span>
+</span></span><span class=line><span class=cl><span class=n>forest</span><span class=p>[</span><span class=n>locations_to_plant</span><span class=p>]</span> <span class=o>.=</span> <span class=mi>2</span><span class=p>;</span>
+</span></span></code></pre></div><p>We will soon want to gaze upon the greatness that is our simulation, so it
+makes sense to create a color gradient to pass to the <code>heatmap</code> function &ndash; we
+will use white for empty cells, orange for active fires, and green for trees.
+We also specify that this gradient has three categorical endpoints, so that
+our three categories will map to their colors.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>fire_state_palette</span> <span class=o>=</span> <span class=n>cgrad</span><span class=p>([</span><span class=ss>:white</span><span class=p>,</span> <span class=ss>:orange</span><span class=p>,</span> <span class=ss>:green</span><span class=p>],</span> <span class=mi>3</span><span class=p>;</span> <span class=n>categorical</span> <span class=o>=</span> <span class=nb>true</span><span class=p>)</span>
+</span></span></code></pre></div><p><img src=/plots/05_fire-24.svg alt></p><p>In order to keep track of everything, we will setup a figure with four panels.
+The heatmap representing the state of our forest, and then the time series for
+the number of burning, planted, and empty pixels on the right.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>figure</span> <span class=o>=</span> <span class=n>Figure</span><span class=p>(;</span> <span class=n>resolution</span> <span class=o>=</span> <span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>300</span><span class=p>),</span> <span class=n>fontsize</span> <span class=o>=</span> <span class=mi>20</span><span class=p>,</span> <span class=n>backgroundcolor</span> <span class=o>=</span> <span class=ss>:transparent</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>forest_plot</span> <span class=o>=</span> <span class=n>Axis</span><span class=p>(</span><span class=n>figure</span><span class=p>[</span><span class=mi>1</span><span class=o>:</span><span class=mi>3</span><span class=p>,</span> <span class=mi>1</span><span class=p>])</span>
+</span></span><span class=line><span class=cl><span class=n>B_plot</span> <span class=o>=</span> <span class=n>Axis</span><span class=p>(</span><span class=n>figure</span><span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>])</span>
+</span></span><span class=line><span class=cl><span class=n>P_plot</span> <span class=o>=</span> <span class=n>Axis</span><span class=p>(</span><span class=n>figure</span><span class=p>[</span><span class=mi>2</span><span class=p>,</span> <span class=mi>2</span><span class=p>])</span>
+</span></span><span class=line><span class=cl><span class=n>V_plot</span> <span class=o>=</span> <span class=n>Axis</span><span class=p>(</span><span class=n>figure</span><span class=p>[</span><span class=mi>3</span><span class=p>,</span> <span class=mi>2</span><span class=p>])</span>
+</span></span><span class=line><span class=cl><span class=n>current_figure</span><span class=p>()</span>
+</span></span></code></pre></div><p><img src=/plots/05_fire-26.png alt></p><p>Because the numbers do not really matter, we can hide all of the decorations,
+and also tighten the layout a little bit to avoid the big gap between panels:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>hidedecorations!</span><span class=p>(</span><span class=n>forest_plot</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>hidedecorations!</span><span class=p>(</span><span class=n>B_plot</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>hidedecorations!</span><span class=p>(</span><span class=n>P_plot</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>hidedecorations!</span><span class=p>(</span><span class=n>V_plot</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>rowgap!</span><span class=p>(</span><span class=n>figure</span><span class=o>.</span><span class=n>layout</span><span class=p>,</span> <span class=mi>5</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>colgap!</span><span class=p>(</span><span class=n>figure</span><span class=o>.</span><span class=n>layout</span><span class=p>,</span> <span class=mi>5</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>current_figure</span><span class=p>()</span>
+</span></span></code></pre></div><p><img src=/plots/05_fire-28.png alt></p><p>And we can start by showing the initial state of our forest, which is mostly
+empty with a small number of spatially unstructured trees:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>heatmap!</span><span class=p>(</span><span class=n>forest_plot</span><span class=p>,</span> <span class=n>forest</span><span class=p>;</span> <span class=n>colormap</span> <span class=o>=</span> <span class=n>fire_state_palette</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>current_figure</span><span class=p>()</span>
+</span></span></code></pre></div><p><img src=/plots/05_fire-30.png alt></p><p>Because this is an iterative model, <em>i.e.</em> we will run it a lot of times to
+look at its behavior, we need to define our epochs:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>epochs</span> <span class=o>=</span> <span class=mi>1</span><span class=o>:</span><span class=mi>1000</span>
+</span></span></code></pre></div><pre tabindex=0><code>1:1000
+</code></pre><p>To keep track of the state of the model, we will pre-allocate a number of
+empty arrays:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>V</span> <span class=o>=</span> <span class=n>zeros</span><span class=p>(</span><span class=kt>Int64</span><span class=p>,</span> <span class=n>length</span><span class=p>(</span><span class=n>epochs</span><span class=p>));</span>
+</span></span><span class=line><span class=cl><span class=n>P</span> <span class=o>=</span> <span class=n>zeros</span><span class=p>(</span><span class=kt>Int64</span><span class=p>,</span> <span class=n>length</span><span class=p>(</span><span class=n>epochs</span><span class=p>));</span>
+</span></span><span class=line><span class=cl><span class=n>B</span> <span class=o>=</span> <span class=n>zeros</span><span class=p>(</span><span class=kt>Int64</span><span class=p>,</span> <span class=n>length</span><span class=p>(</span><span class=n>epochs</span><span class=p>));</span>
+</span></span></code></pre></div><p>We are now ready to start implementing the model. It is a simple model (as
+complex systems often are), with four rules, that are executed simultaneously.
+The first rule of the forest fire model is that trees appear in empty pixels
+at a set probability $p$. It may be tempting to <em>iterate</em> now, but let&rsquo;s see
+what the other rules are first.</p><div class="callout domain">A more realistic approach would be to keep planting trees at random,
+but also to plant trees in cells that are neighboring an existing tree. Maybe
+this can be regulated by another parameter $\alpha$, so that trees appear at
+random with probabiloty $\alpha p$, and near other trees with probability
+$(1-\alpha) p$. This is, in fact, a good programming exercise.</div><p>The second rule of the model is that trees catch fire at random when struck by
+lightning (with probability $f$). The third rule is that a burning tree
+immediately dies oof and becomes an empty pixel. The final rule is that any
+tree next to a burning tree will catch on fire.</p><p>Well, it definitely does not makes sense to iterate over the entire forest for
+each of these rules, so we will write a longer function that only iterates
+once. But in the spirit of writing small functions, we will first implement
+the rules as function of their own.</p><p>The first rule is simple: if the empty cell gets a tree, we change its value
+in the matrix of change:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>_manage_empty_cells!</span><span class=p>(</span><span class=n>change</span><span class=p>,</span> <span class=n>state</span><span class=p>,</span> <span class=n>position</span><span class=p>,</span> <span class=n>p_tree</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>rand</span><span class=p>()</span> <span class=o>&lt;=</span> <span class=n>p_tree</span>
+</span></span><span class=line><span class=cl>        <span class=n>setindex!</span><span class=p>(</span><span class=n>change</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=n>position</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>        <span class=n>setindex!</span><span class=p>(</span><span class=n>change</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>position</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>nothing</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>_manage_empty_cells! (generic function with 1 method)
+</code></pre><p>The second rule is very similar:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>_manage_planted_cells!</span><span class=p>(</span><span class=n>change</span><span class=p>,</span> <span class=n>state</span><span class=p>,</span> <span class=n>position</span><span class=p>,</span> <span class=n>p_fire</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>rand</span><span class=p>()</span> <span class=o>&lt;=</span> <span class=n>p_fire</span>
+</span></span><span class=line><span class=cl>        <span class=n>setindex!</span><span class=p>(</span><span class=n>change</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=n>position</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>nothing</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>_manage_planted_cells! (generic function with 1 method)
+</code></pre><p>The third rule is a little more complex, as we will need to account for the
+dispersal kernel, which we will pass as a final argument:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>_manage_burning_cells!</span><span class=p>(</span><span class=n>change</span><span class=p>,</span> <span class=n>state</span><span class=p>,</span> <span class=n>position</span><span class=p>,</span> <span class=n>kernel</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>surrounding</span> <span class=k>in</span> <span class=n>kernel</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>state</span><span class=p>[</span><span class=n>position</span> <span class=o>+</span> <span class=n>surrounding</span><span class=p>]</span> <span class=o>==</span> <span class=mi>2</span>
+</span></span><span class=line><span class=cl>            <span class=n>setindex!</span><span class=p>(</span><span class=n>change</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=n>position</span> <span class=o>+</span> <span class=n>surrounding</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=n>setindex!</span><span class=p>(</span><span class=n>change</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>position</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>nothing</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>_manage_burning_cells! (generic function with 1 method)
+</code></pre><p>We can now wrap everything in a function called <code>fire!</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>fire!</span><span class=p>(</span><span class=n>change</span><span class=p>,</span> <span class=n>state</span><span class=p>,</span> <span class=n>p_tree</span><span class=p>,</span> <span class=n>p_fire</span><span class=p>;</span> <span class=n>kernel</span> <span class=o>=</span> <span class=kt>CartesianIndices</span><span class=p>((</span><span class=o>-</span><span class=mi>1</span><span class=o>:</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=o>:</span><span class=mi>1</span><span class=p>)))</span>
+</span></span><span class=line><span class=cl>    <span class=n>used_indices</span> <span class=o>=</span> <span class=kt>CartesianIndices</span><span class=p>(</span><span class=n>forest</span><span class=p>)[(</span><span class=k>begin</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span><span class=o>:</span><span class=p>(</span><span class=k>end</span> <span class=o>-</span> <span class=mi>1</span><span class=p>),</span> <span class=p>(</span><span class=k>begin</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span><span class=o>:</span><span class=p>(</span><span class=k>end</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)]</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>pixel_position</span> <span class=k>in</span> <span class=n>used_indices</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>state</span><span class=p>[</span><span class=n>pixel_position</span><span class=p>]</span> <span class=o>==</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>            <span class=n>_manage_empty_cells!</span><span class=p>(</span><span class=n>change</span><span class=p>,</span> <span class=n>state</span><span class=p>,</span> <span class=n>pixel_position</span><span class=p>,</span> <span class=n>p_tree</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>elseif</span> <span class=n>state</span><span class=p>[</span><span class=n>pixel_position</span><span class=p>]</span> <span class=o>==</span> <span class=mi>2</span>
+</span></span><span class=line><span class=cl>            <span class=n>_manage_planted_cells!</span><span class=p>(</span><span class=n>change</span><span class=p>,</span> <span class=n>state</span><span class=p>,</span> <span class=n>pixel_position</span><span class=p>,</span> <span class=n>p_fire</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>elseif</span> <span class=n>state</span><span class=p>[</span><span class=n>pixel_position</span><span class=p>]</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>            <span class=n>_manage_burning_cells!</span><span class=p>(</span><span class=n>change</span><span class=p>,</span> <span class=n>state</span><span class=p>,</span> <span class=n>pixel_position</span><span class=p>,</span> <span class=n>kernel</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>pixel_position</span> <span class=k>in</span> <span class=n>used_indices</span>
+</span></span><span class=line><span class=cl>        <span class=n>state</span><span class=p>[</span><span class=n>pixel_position</span><span class=p>]</span> <span class=o>=</span> <span class=n>change</span><span class=p>[</span><span class=n>pixel_position</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>        <span class=n>change</span><span class=p>[</span><span class=n>pixel_position</span><span class=p>]</span> <span class=o>=</span> <span class=n>state</span><span class=p>[</span><span class=n>pixel_position</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=p>(</span><span class=n>count</span><span class=p>(</span><span class=n>iszero</span><span class=p>,</span> <span class=n>state</span><span class=p>),</span> <span class=n>count</span><span class=p>(</span><span class=n>isone</span><span class=p>,</span> <span class=n>state</span><span class=p>),</span> <span class=n>count</span><span class=p>(</span><span class=n>isequal</span><span class=p>(</span><span class=mi>2</span><span class=p>),</span> <span class=n>state</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>fire! (generic function with 1 method)
+</code></pre><div class="callout information">We use the not-very-nice <code>return</code> of a tuple here, while the
+convention would be to return the state matrix. This is because&mldr; well, it&rsquo;s
+more convenient for now.</div><p>We can test that this function works by counting the number of trees in the
+new state matrix before:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>count</span><span class=p>(</span><span class=n>isequal</span><span class=p>(</span><span class=mi>2</span><span class=p>),</span> <span class=n>forest</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>2947
+</code></pre><p>And after:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>fire!</span><span class=p>(</span><span class=n>forestchange</span><span class=p>,</span> <span class=n>forest</span><span class=p>,</span> <span class=n>p</span><span class=p>,</span> <span class=n>f</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>(301597, 1, 3106)
+</code></pre><p>Equipped with this function, it is very simple to repeat the cycle until all
+of the epochs have been done:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>for</span> <span class=n>epoch</span> <span class=k>in</span> <span class=n>epochs</span>
+</span></span><span class=line><span class=cl>    <span class=n>V</span><span class=p>[</span><span class=n>epoch</span><span class=p>],</span> <span class=n>B</span><span class=p>[</span><span class=n>epoch</span><span class=p>],</span> <span class=n>P</span><span class=p>[</span><span class=n>epoch</span><span class=p>]</span> <span class=o>=</span> <span class=n>fire!</span><span class=p>(</span><span class=n>forestchange</span><span class=p>,</span> <span class=n>forest</span><span class=p>,</span> <span class=n>p</span><span class=p>,</span> <span class=n>f</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><p>This simulation may take a little time, as we could optimize a number of
+things. Notably, this problem is <em>very</em> easy to distribute across multiple
+threads, which could give a solid speed-up. But at the end, we can <em>overwrite</em>
+the panel with the state of the forest:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>heatmap!</span><span class=p>(</span><span class=n>forest_plot</span><span class=p>,</span> <span class=n>forest</span><span class=p>;</span> <span class=n>colormap</span> <span class=o>=</span> <span class=n>fire_state_palette</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>current_figure</span><span class=p>()</span>
+</span></span></code></pre></div><p><img src=/plots/05_fire-55.png alt></p><p>And then we can add the dynamics of the different categories of pixels, to see
+the oscillations hapenning:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>lines!</span><span class=p>(</span><span class=n>P_plot</span><span class=p>,</span> <span class=n>P</span><span class=p>;</span> <span class=n>color</span> <span class=o>=</span> <span class=ss>:green</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>lines!</span><span class=p>(</span><span class=n>B_plot</span><span class=p>,</span> <span class=n>B</span><span class=p>;</span> <span class=n>color</span> <span class=o>=</span> <span class=ss>:orange</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>lines!</span><span class=p>(</span><span class=n>V_plot</span><span class=p>,</span> <span class=n>V</span><span class=p>;</span> <span class=n>color</span> <span class=o>=</span> <span class=ss>:black</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>current_figure</span><span class=p>()</span>
+</span></span></code></pre></div><p><img src=/plots/05_fire-57.png alt></p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-applications,module-fire,status-beta,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/08_applications/05_fire.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/applications/the-forest-fire-model/%0a%0a%f0%9f%93%a6%20section-applications%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-fire" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

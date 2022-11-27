@@ -1,0 +1,137 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>An introduction to arrays · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>An introduction to arrays</h1><article>
+<p>A <em>lot</em> of scientific computing eventually boils down to accessing things in
+structures that look like vectors or matrices. In this module, we will examine
+the basic syntax to create, interact with, and transpose these structures. This is
+one of the most foundational module in the class, as we will be using an
+absurd quantity of vectors and matrices moving forward.</p><p>We can start with a simple vector, <em>i.e.</em> a series of numbers (for example)
+organized in a structure:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>3-element Vector{Int64}:
+ 1
+ 2
+ 3
+</code></pre><p>The way in which this <code>Vector{Int64}</code> is presented to you hides two extremely
+valuable pieces of information. First, it is a <code>Vector</code>, and the type of the
+elements in this vector are <code>Int64</code>. Paying attention to the type of things
+will rapidly become second nature, because it really opens up the full
+capacities of <em>Julia</em> as an expressive language for research.</p><p>The second, and possibly more important piece of information, is that this is
+a <em>column</em> vector. In other words, when we type <code>[1, 2, 3]</code>, <em>Julia</em>
+understands that we really mean $[1\quad 2\quad 3]^\intercal$. Vectors are
+represented as columns, the way things should be.</p><p>We can of course transpose this vector to make it into a <em>row</em> vector:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span><span class=o>&#39;</span>
+</span></span></code></pre></div><pre tabindex=0><code>1×3 adjoint(::Vector{Int64}) with eltype Int64:
+ 1  2  3
+</code></pre><p>Yes! If you want to transpose a vector, you can add <code>'</code> at the end of it (or
+use the <code>transpose</code> function), which is a really nice bit of notation.</p><p>But why do we care that the vectors are by default laid out as columns? There
+are two reasons. First, <em>Julia</em> is &ldquo;column-major&rdquo;, meaning that things are
+stored alongside columns. This will be important to keep in mind when dealing
+with iteration a little later one (but you can forget it for now).</p><p>Second, when it will be the time to multiply things together, it will be
+important to know if our vectors are represented as columns or rows. For
+example, the $\mathbf{u}\mathbf{v}&rsquo;$ operation can be written as:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>𝐮</span> <span class=o>=</span> <span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>𝐯</span> <span class=o>=</span> <span class=p>[</span><span class=mi>2</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>𝐮</span> <span class=o>*</span> <span class=n>𝐯</span><span class=o>&#39;</span>
+</span></span></code></pre></div><pre tabindex=0><code>3×4 Matrix{Int64}:
+ 2  1  0  1
+ 4  2  0  2
+ 6  3  0  3
+</code></pre><p>This is nice! We have a code notation that looks like the way we would write
+this on paper.</p><div class="callout opinion"><em>Julia</em> has extensive unicode support, documented at
+<a href=https://docs.julialang.org/en/v1/manual/unicode-input/>https://docs.julialang.org/en/v1/manual/unicode-input/</a>. It is very possible
+to overuse this feature. Do not forget that not all fonts will have a version
+of these characters. The selections presented in the installation section
+should have most of them.</div><p>But wait! This operation created a new beast we hadn&rsquo;t seen yet: a
+<code>Matrix{Int64}</code>. A <code>Matrix</code> and a <code>Vector</code> are actually very close cousins:
+both are examples of <code>Array</code>s. An array with a single dimension is a column
+vector, an array with two dimensions is a matrix, an array with three
+dimensions is a cube, etc.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=kt>Vector</span><span class=p>{</span><span class=kt>Int64</span><span class=p>}</span> <span class=o>==</span> <span class=kt>Array</span><span class=p>{</span><span class=kt>Int64</span><span class=p>,</span> <span class=mi>1</span><span class=p>}</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=kt>Matrix</span><span class=p>{</span><span class=kt>Int64</span><span class=p>}</span> <span class=o>==</span> <span class=kt>Array</span><span class=p>{</span><span class=kt>Int64</span><span class=p>,</span> <span class=mi>2</span><span class=p>}</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>There is no alias for arrays in higher dimensions than 2, but it does not
+really matter, as we do not need them anyways.</p><div class="callout information">Note that the type of <code>Array{Int64, 2}</code> is parametric, but one of the
+parameters is a <em>value</em> (giving the number of dimensions). This is interesting
+if you want to perform some operations based on the dimensionality of the
+objects, although we won&rsquo;t be talking about ways to extract this information
+quite yet.</div><p>In order to better understand vectors and matrices, let&rsquo;s get back to our
+example:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>𝐀</span> <span class=o>=</span> <span class=n>𝐮</span> <span class=o>*</span> <span class=n>𝐯</span><span class=o>&#39;</span>
+</span></span></code></pre></div><pre tabindex=0><code>3×4 Matrix{Int64}:
+ 2  1  0  1
+ 4  2  0  2
+ 6  3  0  3
+</code></pre><p>We can have a look at the <em>size</em> of these structures:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>size</span><span class=p>(</span><span class=n>𝐮</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>(3,)
+</code></pre><p>In the case of <code>𝐮</code>, the size is <code>(3,)</code>, which means that it has a single
+dimension, with three elements in it. If we apply the same function to <code>𝐀</code>,
+we get:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>size</span><span class=p>(</span><span class=n>𝐀</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>(3, 4)
+</code></pre><p>This matrix has, indeed, three rows and four columns. We can query the number
+of elements alongside a dimension directly:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>size</span><span class=p>(</span><span class=n>𝐀</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>3
+</code></pre><p>This gives the number of rows (using <code>size(𝐀, 2)</code> would give the number of
+columns, etc.).</p><p>The size (or shape) of an array is something we can manipulate. Let&rsquo;s say that
+we have a vector:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>𝐰</span> <span class=o>=</span> <span class=p>[</span><span class=nb>true</span><span class=p>,</span> <span class=nb>false</span><span class=p>,</span> <span class=nb>false</span><span class=p>,</span> <span class=nb>true</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>4-element Vector{Bool}:
+ 1
+ 0
+ 0
+ 1
+</code></pre><p>We can reshape it into an identity matrix, using</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>reshape</span><span class=p>(</span><span class=n>𝐰</span><span class=p>,</span> <span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=mi>2</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>2×2 Matrix{Bool}:
+ 1  0
+ 0  1
+</code></pre><div class="callout warning">We would not generate an identity matrix this way in practice! The
+<code>LinearAlgebra</code>, from the standard library, has everything you will ever need
+to create one.</div><p>Note that much like we can transpose vectors, we can transpose matrices:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>𝐀</span><span class=o>&#39;</span>
+</span></span></code></pre></div><pre tabindex=0><code>4×3 adjoint(::Matrix{Int64}) with eltype Int64:
+ 2  4  6
+ 1  2  3
+ 0  0  0
+ 1  2  3
+</code></pre><p>But pay attention to the type of <code>𝐀'</code> compared to the following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>transpose</span><span class=p>(</span><span class=n>𝐀</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>4×3 transpose(::Matrix{Int64}) with eltype Int64:
+ 2  4  6
+ 1  2  3
+ 0  0  0
+ 1  2  3
+</code></pre><p>By looking into the <em>Julia</em> documentation, it shall be revealed that these
+operations are meant for linear algebra use only. If you want to pivot a
+matrix, there is a function to do that:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>permutedims</span><span class=p>(</span><span class=n>𝐀</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>4×3 Matrix{Int64}:
+ 2  4  6
+ 1  2  3
+ 0  0  0
+ 1  2  3
+</code></pre><p>These three operations give you the same numbers in the same order, but they
+have different types, because <em>Julia</em> is so very particular about its type
+system (for good reasons). Note that if you <em>really</em> want to use the <code>'</code>
+operator because it looks nice, but you <em>really</em> want a matrix, you can:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=kt>Matrix</span><span class=p>(</span><span class=n>𝐀</span><span class=o>&#39;</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>4×3 Matrix{Int64}:
+ 2  4  6
+ 1  2  3
+ 0  0  0
+ 1  2  3
+</code></pre><p>In the next module, we will see how we can get values <em>out</em> of arrays, use
+different indexing systems to access values, and how we can take slices of
+these objects.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-data_structures,module-arrays,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/02_data_structures/01_arrays.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/data-structures/an-introduction-to-arrays/%0a%0a%f0%9f%93%a6%20section-data_structures%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-arrays" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

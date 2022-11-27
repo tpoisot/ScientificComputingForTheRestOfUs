@@ -1,0 +1,184 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Dictionaries and pairs · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Dictionaries and pairs</h1><article>
+<p>In this module, we will explore two very useful data structures: dictionaries,
+which serve as &ldquo;key-value&rdquo; stores, and pairs, which serve as (essentially) the
+same thing but smaller.</p><p>What is a dictionary? Essentially, it is a data structure that is mutable (we
+can modify it), and associates a value to a key. Let&rsquo;s start with a simple
+illustration, to give a taxonomic description of the common house mouse, <a href=https://en.wikipedia.org/wiki/House_mouse><em>Mus
+musculus</em></a>:</p><div class="callout opinion">In practice, and this is a feature we will explore later,
+representation of highly structured information is a good opportunity to
+define one&rsquo;s own types.</div><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>mus_musculus</span> <span class=o>=</span> <span class=kt>Dict</span><span class=p>([</span>
+</span></span><span class=line><span class=cl>    <span class=s>&#34;vernacular&#34;</span> <span class=o>=&gt;</span> <span class=s>&#34;House mouse&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s>&#34;kingdom&#34;</span> <span class=o>=&gt;</span> <span class=s>&#34;Animalia&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s>&#34;phylum&#34;</span> <span class=o>=&gt;</span> <span class=s>&#34;Chordata&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s>&#34;class&#34;</span> <span class=o>=&gt;</span> <span class=s>&#34;Mammalia&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s>&#34;order&#34;</span> <span class=o>=&gt;</span> <span class=s>&#34;Rodentia&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s>&#34;family&#34;</span> <span class=o>=&gt;</span> <span class=s>&#34;Muridae&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s>&#34;genus&#34;</span> <span class=o>=&gt;</span> <span class=s>&#34;Mus&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s>&#34;subgenus&#34;</span> <span class=o>=&gt;</span> <span class=s>&#34;Mus&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s>&#34;species&#34;</span> <span class=o>=&gt;</span> <span class=s>&#34;musculus&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s>&#34;authority&#34;</span> <span class=o>=&gt;</span> <span class=s>&#34;L. 1758&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>])</span>
+</span></span></code></pre></div><pre tabindex=0><code>Dict{String, String} with 10 entries:
+  &#34;phylum&#34; =&gt; &#34;Chordata&#34;
+  &#34;vernacular&#34; =&gt; &#34;House mouse&#34;
+  &#34;family&#34; =&gt; &#34;Muridae&#34;
+  &#34;genus&#34; =&gt; &#34;Mus&#34;
+  &#34;subgenus&#34; =&gt; &#34;Mus&#34;
+  &#34;class&#34; =&gt; &#34;Mammalia&#34;
+  &#34;order&#34; =&gt; &#34;Rodentia&#34;
+  &#34;authority&#34; =&gt; &#34;L. 1758&#34;
+  &#34;kingdom&#34; =&gt; &#34;Animalia&#34;
+  &#34;species&#34; =&gt; &#34;musculus&#34;
+</code></pre><p>The construction of the dictionary is a call to <code>Dict</code>, and the argument is an
+array (we know because it starts with <code>[</code> and ends with <code>]</code>) of pairs of
+elements. A pair is noted as <code>key => value</code>, which is something we will
+explore a little bit more in just a minute.</p><p>Note how the keys in the input and the keys in the output are in different
+orders. By default, the order of elements in dictionaries is not fixed, but
+this is not particulary concerning because we can access the different entries
+in a lot of ways.</p><p>Additionally, note that the dictionary we have created is <em>parametric</em>: its
+keys are of the <code>String</code> type, and its values are of the <code>String</code> type as
+well. In a few modules, we will explore a concept called &ldquo;element dispatch&rdquo;,
+where we can use this information. For now, just use this as a reminder of
+what is stored in your dictionary.</p><div class="callout information">In some cases, we would prefer an ordered dictionary. This is a
+feature offered by a few different packages. As we tend to not rely on ordered
+dictionaries, we will not discuss these packages here.</div><p>In order to extract a value from a dictionary, we access is using its key:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>mus_musculus</span><span class=p>[</span><span class=s>&#34;order&#34;</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;Rodentia&#34;
+</code></pre><p>Of course, this is going to fail if there is no <code>"order"</code> key to be found. For
+example, not all species will have a <code>"subgenus"</code>, or a <code>"subspecies"</code> key. It
+is therefore safer to handle data access with <code>get</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>get</span><span class=p>(</span><span class=n>mus_musculus</span><span class=p>,</span> <span class=s>&#34;subgenus&#34;</span><span class=p>,</span> <span class=nb>nothing</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;Mus&#34;
+</code></pre><p>The last argument of <code>get</code> is the value to be returned in case the key does
+not exist. We can check that this is indeed protecting us against exceptions
+by trying to access a key that is not in our object:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>get</span><span class=p>(</span><span class=n>mus_musculus</span><span class=p>,</span> <span class=s>&#34;subspecies&#34;</span><span class=p>,</span> <span class=nb>nothing</span><span class=p>)</span>
+</span></span></code></pre></div><p>In order to get a list of the keys for a given dictionary, we can use the
+<code>keys</code> function:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>keys</span><span class=p>(</span><span class=n>mus_musculus</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>KeySet for a Dict{String, String} with 10 entries. Keys:
+  &#34;phylum&#34;
+  &#34;vernacular&#34;
+  &#34;family&#34;
+  &#34;genus&#34;
+  &#34;subgenus&#34;
+  &#34;class&#34;
+  &#34;order&#34;
+  &#34;authority&#34;
+  &#34;kingdom&#34;
+  &#34;species&#34;
+</code></pre><p>This is a strange little object (a <code>KeySet</code>), which we can iterate over (and
+we will see what iteration is in a future module); to get it to a format we
+know, we can pass it through <code>collect</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>mus_keys</span> <span class=o>=</span> <span class=n>collect</span><span class=p>(</span><span class=n>keys</span><span class=p>(</span><span class=n>mus_musculus</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>10-element Vector{String}:
+ &#34;phylum&#34;
+ &#34;vernacular&#34;
+ &#34;family&#34;
+ &#34;genus&#34;
+ &#34;subgenus&#34;
+ &#34;class&#34;
+ &#34;order&#34;
+ &#34;authority&#34;
+ &#34;kingdom&#34;
+ &#34;species&#34;
+</code></pre><p>We can do the same thing with the <code>values</code> of a dictionary:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>mus_values</span> <span class=o>=</span> <span class=n>collect</span><span class=p>(</span><span class=n>values</span><span class=p>(</span><span class=n>mus_musculus</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>10-element Vector{String}:
+ &#34;Chordata&#34;
+ &#34;House mouse&#34;
+ &#34;Muridae&#34;
+ &#34;Mus&#34;
+ &#34;Mus&#34;
+ &#34;Mammalia&#34;
+ &#34;Rodentia&#34;
+ &#34;L. 1758&#34;
+ &#34;Animalia&#34;
+ &#34;musculus&#34;
+</code></pre><p>An interesting little command is <code>zip</code>: we can use it to create a dictionary
+from two arrays, one with the keys and one with the values:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>mus_zip</span> <span class=o>=</span> <span class=kt>Dict</span><span class=p>(</span><span class=n>zip</span><span class=p>(</span><span class=n>mus_keys</span><span class=p>,</span> <span class=n>mus_values</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>Dict{String, String} with 10 entries:
+  &#34;phylum&#34; =&gt; &#34;Chordata&#34;
+  &#34;vernacular&#34; =&gt; &#34;House mouse&#34;
+  &#34;family&#34; =&gt; &#34;Muridae&#34;
+  &#34;genus&#34; =&gt; &#34;Mus&#34;
+  &#34;subgenus&#34; =&gt; &#34;Mus&#34;
+  &#34;class&#34; =&gt; &#34;Mammalia&#34;
+  &#34;order&#34; =&gt; &#34;Rodentia&#34;
+  &#34;authority&#34; =&gt; &#34;L. 1758&#34;
+  &#34;kingdom&#34; =&gt; &#34;Animalia&#34;
+  &#34;species&#34; =&gt; &#34;musculus&#34;
+</code></pre><div class="callout danger">Of course, this assumes that the keys and the values are in the
+correct order, because there is no way for <em>Julia</em> to know which value should
+be associated to each key.</div><p>The final data structure related to dictionaries is the Pair`. A pair
+associates one key to one value:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>pair_one_two</span> <span class=o>=</span> <span class=mi>1</span> <span class=o>=&gt;</span> <span class=mi>2</span>
+</span></span></code></pre></div><pre tabindex=0><code>1 =&gt; 2
+</code></pre><p>We can use a different notation as well:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>pair_one_two_take_2</span> <span class=o>=</span> <span class=kt>Pair</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=mi>2</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>1 =&gt; 2
+</code></pre><p>The elements of a pair can be accessed using <code>first</code> and <code>last</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>first</span><span class=p>(</span><span class=n>pair_one_two</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>1
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>last</span><span class=p>(</span><span class=n>pair_one_two</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>2
+</code></pre><p>Why are we talking about pairs here? Because dictionaries are simply a series
+of pairs wearing a trench coat:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>eltype</span><span class=p>(</span><span class=n>collect</span><span class=p>(</span><span class=n>mus_musculus</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>Pair{String, String}
+</code></pre><p>We can <code>collect</code> a dictionary into a vector of <code>Pair</code>, but more importantly,
+we can <em>create</em> a dictionary <em>from</em> a vector of pairs. This is, indeed, what
+we have done when we created the <code>mus_musculus</code> variable.</p><p>A final noteworthy information is that we can expand dictionaries, by adding
+keys:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>mus_musculus</span><span class=p>[</span><span class=s>&#34;IUCN&#34;</span><span class=p>]</span> <span class=o>=</span> <span class=s>&#34;least concern&#34;</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;least concern&#34;
+</code></pre><p>This is also more properly expressed as:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>setindex!</span><span class=p>(</span><span class=n>mus_musculus</span><span class=p>,</span> <span class=s>&#34;IUCN&#34;</span><span class=p>,</span> <span class=s>&#34;least concern&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Dict{String, String} with 12 entries:
+  &#34;family&#34; =&gt; &#34;Muridae&#34;
+  &#34;subgenus&#34; =&gt; &#34;Mus&#34;
+  &#34;genus&#34; =&gt; &#34;Mus&#34;
+  &#34;least concern&#34; =&gt; &#34;IUCN&#34;
+  &#34;vernacular&#34; =&gt; &#34;House mouse&#34;
+  &#34;IUCN&#34; =&gt; &#34;least concern&#34;
+  &#34;class&#34; =&gt; &#34;Mammalia&#34;
+  &#34;kingdom&#34; =&gt; &#34;Animalia&#34;
+  &#34;species&#34; =&gt; &#34;musculus&#34;
+  &#34;phylum&#34; =&gt; &#34;Chordata&#34;
+  &#34;authority&#34; =&gt; &#34;L. 1758&#34;
+  &#34;order&#34; =&gt; &#34;Rodentia&#34;
+</code></pre><p>And we can, similarly, <em>remove</em> information from a dictionary:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>delete!</span><span class=p>(</span><span class=n>mus_musculus</span><span class=p>,</span> <span class=s>&#34;subgenus&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Dict{String, String} with 11 entries:
+  &#34;family&#34; =&gt; &#34;Muridae&#34;
+  &#34;genus&#34; =&gt; &#34;Mus&#34;
+  &#34;least concern&#34; =&gt; &#34;IUCN&#34;
+  &#34;vernacular&#34; =&gt; &#34;House mouse&#34;
+  &#34;IUCN&#34; =&gt; &#34;least concern&#34;
+  &#34;class&#34; =&gt; &#34;Mammalia&#34;
+  &#34;kingdom&#34; =&gt; &#34;Animalia&#34;
+  &#34;species&#34; =&gt; &#34;musculus&#34;
+  &#34;phylum&#34; =&gt; &#34;Chordata&#34;
+  &#34;authority&#34; =&gt; &#34;L. 1758&#34;
+  &#34;order&#34; =&gt; &#34;Rodentia&#34;
+</code></pre><p>Note that this function does <em>not</em> throw an exception if we try to delete a
+key that does not exist. If we want to delete a key but keep track of its
+value, the right function to use is <code>pop!</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>mus_iucn_status</span> <span class=o>=</span> <span class=n>pop!</span><span class=p>(</span><span class=n>mus_musculus</span><span class=p>,</span> <span class=s>&#34;IUCN&#34;</span><span class=p>,</span> <span class=nb>nothing</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;least concern&#34;
+</code></pre><p>This will remove the key from the dictionary, but save the value to a
+variable. The third argument specifies what should be returned if the key
+doesn&rsquo;t exist, in order to avoid an exception:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>pop!</span><span class=p>(</span><span class=n>mus_musculus</span><span class=p>,</span> <span class=s>&#34;IUCN&#34;</span><span class=p>,</span> <span class=nb>nothing</span><span class=p>)</span>
+</span></span></code></pre></div><p>In summary, pairs and dictionaries are extremely useful data structures when
+there is a need to associate a value with a more memorable name. They have a
+lot of uses when, for example, storing the parameters of a model, or reading
+<a href=https://en.wikipedia.org/wiki/JSON>JSON</a> files.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-data_structures,module-dictionaries,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/02_data_structures/03_dictionaries.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/data-structures/dictionaries-and-pairs/%0a%0a%f0%9f%93%a6%20section-data_structures%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-dictionaries" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

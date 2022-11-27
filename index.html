@@ -1,0 +1,442 @@
+<!doctype html><html><head>
+<meta name=generator content="Hugo 0.93.3">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Welcome! · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Welcome!</h1><p><strong>One specific challenge, when writing code as a scientist, is that we care <em>a
+lot</em> about getting the <em>right</em> answer; but of course, the <em>right</em> answer is
+not always obvious. So we should be very careful with the code we write. A
+piece of code that crashes is annoying; but a piece of code that runs, and
+give you the wrong answer can compromise your science and your career. This
+guide will help you adopt practices that make it less likely to introduce
+mistakes in your code, and more likely to catch them. Hopefully, this will let
+all of us write code we can trust more.</strong></p><p>Good principles in scientific computing can help you write code that is easier
+to maintain, easier to reproduce, and easier to debug. But it can be difficult
+to find an introduction to get you started. The goal of this project is to
+provide reproducible documents you can use to get started on the most important
+points. You can use these lessons on your own, or as a group.</p><div class=main-links>
+<span>
+<i class="fa-solid fa-question"></i>
+<a href=about title="About the project">About the project</a>
+</span>
+<span>
+<i class="fa-solid fa-screwdriver-wrench"></i>
+<a href=howto title="How to use this material">How to use this material</a>
+</span>
+<span>
+<i class="fa-solid fa-book"></i>
+<a href=readinglist title="Suggested readings">Suggested readings</a>
+</span>
+<span>
+<i class="fa-brands fa-discord"></i>
+<a href=https://discord.gg/Ak2pK3yG9M target=_blank title="Join the Discord channel">Join the Discord channel</a>
+</span>
+</div><p>This material has been designed according to three core ideas:</p><p>First, <strong>each module is short</strong>, and introduces a <em>single</em> concept. In many
+places, you will notice advice redirecting you to the documentation. The
+<a href=https://docs.julialang.org/en/v1/><em>Julia</em> manual</a> is extremely thorough, and
+the point of this material is to show &ldquo;how things work&rdquo; (as opposed to going
+into all of the different ways they can be made to work).</p><p>Second, <strong>this material is <em>not</em> about showcasing different packages</strong>. There
+are some situations where we will need to go into the details of <em>e.g.</em>
+<span class=package><span class=pkgname><a href=https://juliapackages.com/p/Makie target=_blank>Makie</a></span></span> for plotting, but it is expected that you will, again, read the
+documentation for the packages that are loaded. Every time a package is
+mentioned, you can click on its name to be redirected to the <a href=https://juliapackages.com/>Julia Packages
+page</a>; packages with no documentation on the hub (like <em>e.g.</em> <span class="package no-hub"><span class=pkgname>Base</span></span>)
+have a different styling. The material relies most of the time only on
+packages from <em>Julia</em>&rsquo;s standard library.</p><p>Finally, <strong>no error messages</strong>. This is an important design concept. Although
+error messages happen in the daily practice of programming, the point of this
+material is to anticipate and handle exceptions gracefully.</p><section class=modules>
+<h3 class=newsection>Getting Started</h3><div class=blurb>
+<p>These modules offer a very high-level overview of how to setup a project,
+organize your work, and install <em>Julia</em>. They do not require any familiarity
+with programming, and are mostly concerned about making sure that you can plan a
+computing project ahead of time. Note that installation instructions are not
+covered until late into the module (by design!).</p></div><div class=cards>
+<div class=card>
+<div class="title status-release">
+<span class=index>00/00</span> <a href=https://sciencecomputing.io/introduction/preparing-a-project/>Preparing a project</a>
+</div><div class=summary>
+<p>In this module, before we write any code, we will start thinking about what a
+project is, how we can set one up on our computer, and why this might help
+defeat coder&rsquo;s block.</p></div></div><div class=card>
+<div class="title status-beta">
+<span class=index>00/01</span> <a href=https://sciencecomputing.io/introduction/flowcharts/>Flowcharts</a>
+</div><div class=summary>
+<p>One of the most powerful tool to plan a programming task is to draw a
+flowchart. In simple terms, a flowchart will let you map the different steps
+that the program will have to follow, and see what is required for each of
+them. To illustrate, we will use a flowchart not of a program, but of a
+pancake recipe.</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>00/02</span> <a href=https://sciencecomputing.io/introduction/pseudo-code/>Pseudo-code</a>
+</div><div class=summary>
+<p>To facilitate the transition between diagram and code, one important step is
+to write <em>pseudo-code</em>, <em>i.e.</em> text that looks reasonably like code, but is
+not. This pseudo-code will not help the computer think about our problem,
+but it might help <em>us</em> think about the problem in ways that will make the
+actual programming easier.</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>00/03</span> <a href=https://sciencecomputing.io/introduction/installing-julia/>Installing Julia</a>
+</div><div class=summary>
+<p>In this module, we will see how we can install <em>Julia</em>, setup a default
+version, and go through some of the usual tools involved in setting up a good
+<em>Julia</em> development environment. We will not deal with the installation of
+<em>packages</em> quite yet, as this will be done with its own module.</p></div></div><div class=card>
+<div class="title status-beta">
+<span class=index>00/04</span> <a href=https://sciencecomputing.io/introduction/environment-and-projects/>Environment and projects</a>
+</div><div class=summary>
+<p>In this previous module, we did not load a single package: everything we
+wanted to do was provided by <em>Julia</em> &ldquo;out of the box&rdquo;. In most applications,
+we will need to get functionalities from other packages, and this is where
+<em>Julia</em>&rsquo;s package manager shines.</p></div></div></div><h3 class=newsection>Fundamentals</h3><div class=blurb>
+<p>The goal of these modules is to increase your familiarity with some of the most
+fundamental notions: how to think like a computer, in values that are either
+<code>true</code> or <code>false</code>, and what types are (and why they matter!).</p></div><div class=cards>
+<div class=card>
+<div class="title status-rc">
+<span class=index>01/00</span> <a href=https://sciencecomputing.io/fundamentals/introduction-to-boolean-values/>Introduction to Boolean values</a>
+</div><div class=summary>
+<p>In this module, we will get acquainted with one of the most important type of
+variables: Boolean values. They represent values that are either <code>true</code> or
+<code>false</code>, which is a key element in a number of problems.</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>01/01</span> <a href=https://sciencecomputing.io/fundamentals/short-circuit-boolean-operations/>Short-circuit Boolean operations</a>
+</div><div class=summary>
+<p>In the <a href=https://sciencecomputing.io/fundamentals/introduction-to-boolean-values/>previous module</a>, we have introduce important notions about
+Boolean values. In this module, we will expand upon this knowledge in ways
+that will enable us to be more expressive with the code we write.</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>01/02</span> <a href=https://sciencecomputing.io/fundamentals/the-ternary-operator/>The ternary operator</a>
+</div><div class=summary>
+<p>In this module, we will look at the &ldquo;ternary operator&rdquo;, a very efficient
+shortcut to perform a logical test in a single line. This is a construct we
+will use quite a lot to express both possible outcomes of a conditional expression using
+a single line!</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>01/03</span> <a href=https://sciencecomputing.io/fundamentals/types/>Types</a>
+</div><div class=summary>
+<p>In this module, we will look at one of the most important concept in <em>Julia</em>:
+types. Types are, to be really imprecise, the way a programming language
+thinks about a value. A lot of problems arise from the fact that programming
+languages are very opinionated.</p></div></div></div><h3 class=newsection>Data Structures</h3><div class=blurb>
+<p>In these modules, we will take a little tour of some of the most important ways
+to represent data; in particular, we will see how they can be used, when they
+should be used, and how they interact.</p></div><div class=cards>
+<div class=card>
+<div class="title status-rc">
+<span class=index>02/00</span> <a href=https://sciencecomputing.io/data-structures/an-introduction-to-arrays/>An introduction to arrays</a>
+</div><div class=summary>
+<p>A <em>lot</em> of scientific computing eventually boils down to accessing things in
+structures that look like vectors or matrices. In this module, we will examine
+the basic syntax to create, interact with, and transpose these structures. This is
+one of the most foundational module in the class, as we will be using an
+absurd quantity of vectors and matrices moving forward.</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>02/01</span> <a href=https://sciencecomputing.io/data-structures/indexing-slicing-and-all-that/>Indexing, slicing, and all that</a>
+</div><div class=summary>
+<p>In the previous module, we have introduced the notion of <code>Array</code>s, and
+experimented with the shape of vectors and matrices. In this module, we will
+continue our exploration of these objects, and see how we can modify and
+access the information they store.</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>02/02</span> <a href=https://sciencecomputing.io/data-structures/dictionaries-and-pairs/>Dictionaries and pairs</a>
+</div><div class=summary>
+<p>In this module, we will explore two very useful data structures: dictionaries,
+which serve as &ldquo;key-value&rdquo; stores, and pairs, which serve as (essentially) the
+same thing but smaller.</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>02/03</span> <a href=https://sciencecomputing.io/data-structures/tuples-named-tuples-and-sets/>Tuples, named tuples, and sets</a>
+</div><div class=summary>
+<p>In this module, we will explore data structures that look a lot like arrays,
+but have subtly different use cases: tuples, named tuples, and sets. Knowing
+when to use arrays and when to use others data structure can really make a
+difference in your programming!s</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>02/04</span> <a href=https://sciencecomputing.io/data-structures/strings-symbols-and-text/>Strings, symbols, and text</a>
+</div><div class=summary>
+<p>In this module, we will look at string and characters, <em>i.e.</em> representations
+of text. These objects are really interesting in <em>Julia</em> because not only do
+they store information, they can store a little bit of computation as well.
+The point of this module is to go through the basics of what strings are, and
+we will revisit advanced operations in later sections.</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>02/05</span> <a href=https://sciencecomputing.io/data-structures/building-your-own-types/>Building your own types</a>
+</div><div class=summary>
+<p>In this module, we will <em>briefly</em> see how we can define our own types (<em>aka</em>
+<code>struct</code>), and give them a hierarchy. We will barely scratch the surface of
+what can be done with custom types, as the real fun will take place in the
+modules on <a href=https://sciencecomputing.io/functions/understanding-dispatch/>dispatch</a> and <a href=https://sciencecomputing.io/advanced-topics/overloading/>overloading</a> (don&rsquo;t read
+them yet!).</p></div></div></div><h3 class=newsection>The Flow</h3><div class=blurb>
+<p>The point of this module is to understand how we can direct the flow of
+execution. This covers iteration, loops, advanced loops, and the ways in which
+we can handle (and react to) errors arising during execution. These modules will
+give you to most important building block towards building complex programs.</p></div><div class=cards>
+<div class=card>
+<div class="title status-rc">
+<span class=index>03/00</span> <a href=https://sciencecomputing.io/flow/a-gentle-introduction-to-for-loops/>A gentle introduction to for loops</a>
+</div><div class=summary>
+<p>Oh no. Oh no no no. This is <em>not</em> a fun module. This will not be pleasant. But
+this will, very much, be necessary and incredibly empowering. Sit down, buckle
+up, we&rsquo;re about to see what loops do.</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>03/01</span> <a href=https://sciencecomputing.io/flow/advanced-iteration/>Advanced iteration</a>
+</div><div class=summary>
+<p>In this module, we will see how we <em>actually</em> iterate over objects in <em>Julia</em>.
+Although the content of the previous module is very important, as it forms the
+basis of all ways to iterate, there are a number of functions that greatly
+facilitate our task. We finish this module by simulating a simple
+host-parasitoid model.</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>03/02</span> <a href=https://sciencecomputing.io/flow/iteration-in-action/>Iteration in action!</a>
+</div><div class=summary>
+<p>In this module, we will start integrating skills from the previous modules,
+both about iteration and about data structures, indexing, slicing, etc. We
+will simulate the temporal dynamics of two populations, one of hosts and one
+of parasitoids, using a simple time-discrete model.</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>03/03</span> <a href=https://sciencecomputing.io/flow/the-while-statement/>The while statement</a>
+</div><div class=summary>
+<p>In this module, we will see how we can use the <code>while</code> construct to make a
+series of instructions repeat until a condition is met, and how to deal with
+common caveats that can arise when using a <code>while</code> loop.</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>03/04</span> <a href=https://sciencecomputing.io/flow/exiting-loops/>Exiting loops</a>
+</div><div class=summary>
+<p>In the previous two modules, we have written loops that terminate when a
+condition is met (<code>while</code>), or when the collection has been iterated over
+entirely (<code>for</code>). In some cases, we may want to fine-tune the behavior of our
+iteration. In these cases, we can use some special keywords to jump out of the
+loop entirely, or skip some steps.</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>03/05</span> <a href=https://sciencecomputing.io/flow/error-handling-with-try/>Error handling with try</a>
+</div><div class=summary>
+<p>In previous modules, we have used a <code>try</code>/<code>catch</code> statement. In this module,
+we will go into some detail about what it means, and how to use them to write
+code that handles errors gracefully.</p></div></div></div><h3 class=newsection>Basic Functions Usage</h3><div class=blurb>
+<p><em>Julia</em> is a language that <em>loves</em> dealing with functions. In this section, we
+will have a look at the various ways to declare them, but also take a deep dive
+in the dispatch system, and finally examine how we can create our own functions
+as we go.</p></div><div class=cards>
+<div class=card>
+<div class="title status-rc">
+<span class=index>04/00</span> <a href=https://sciencecomputing.io/functions/declaring-functions/>Declaring functions</a>
+</div><div class=summary>
+<p>Everything should be a function. Everything. Especially in <em>Julia</em>, for
+performance related reasons that are far beyond the scope of this material. So
+one of the first, most significant piece of knowledge to acquire is: how do I
+declare a function?</p></div></div><div class=card>
+<div class="title status-release">
+<span class=index>04/01</span> <a href=https://sciencecomputing.io/functions/understanding-dispatch/>Understanding dispatch</a>
+</div><div class=summary>
+<p>The point of this module is to understand <em>dispatch</em>, which is to say, the way
+the correct method is called based on the arguments; we will also see how to
+use it to write the least possible amount of code!</p></div></div><div class=card>
+<div class="title status-beta">
+<span class=index>04/02</span> <a href=https://sciencecomputing.io/functions/multiple-dispatch-in-practice/>Multiple dispatch in practice</a>
+</div><div class=summary>
+<p>In this module, we will expand on the previous content (understanding
+<em>dispatch</em>) to get familiar with a central design paradigm of <em>Julia</em>:
+multiple dispatch. We will do so by writing code to simulate the growth of a
+population in space.</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>04/03</span> <a href=https://sciencecomputing.io/functions/returning-functions/>Returning functions</a>
+</div><div class=summary>
+<p>In this module, we will learn how we can write functions that return other
+functions. Because this seems a little weird at first, we will also discuss
+situations in which this is a useful design pattern, and see how this approach
+can be used together with Julia&rsquo;s powerful dispatch system.</p></div></div><div class=card>
+<div class="title status-beta">
+<span class=index>04/04</span> <a href=https://sciencecomputing.io/functions/broadcasting-and-the-dot-notation/>Broadcasting and the dot notation</a>
+</div><div class=summary>
+<p>In some of the previous modules, we have used a notation that looked like
+<code>function.(arguments)</code>, or <code>x .+ y</code>. In this module, we will talk about what
+the <code>.</code> notation does, and more broadly, what <em>broadcasting</em> is.</p></div></div><div class=card>
+<div class="title status-beta">
+<span class=index>04/05</span> <a href=https://sciencecomputing.io/functions/keyword-arguments-and-splatting/>Keyword arguments and splatting</a>
+</div><div class=summary>
+<p>In the previous modules, we have defined functions that used <em>positional</em>
+arguments, some with default values, some without. In this module, we will
+look at keyword arguments and splatting, to build functions that we can
+control a bit more.</p></div></div><div class=card>
+<div class="title status-beta">
+<span class=index>04/06</span> <a href=https://sciencecomputing.io/functions/documenting-functions/>Documenting functions</a>
+</div><div class=summary>
+<p>In this module, we will look at what is probably the most important part of writing
+a function: writing its documentation. By the end of this module, you will be able to
+write a docstring for your function that is accessible through <em>Julia</em>&rsquo;s help mode.</p></div></div></div><h3 class=newsection>Advanced Functions Usage</h3><div class=blurb>
+<p><em>Julia</em> is a language that <em>loves</em> dealing with functions. In this section, we
+will have a look at the various ways to declare them, but also take a deep dive
+in the dispatch system, and finally examine how we can create our own functions
+as we go.</p></div><div class=cards>
+<div class=card>
+<div class="title status-rc">
+<span class=index>05/00</span> <a href=https://sciencecomputing.io/advanced-functions/mutating-functions/>Mutating functions</a>
+</div><div class=summary>
+<p>In this module, we will see how <em>Julia</em> deals with collections when they are
+passed as arguments to a function, why this can be terrifying when coming from
+other languages that are less concerned with economy of memory, and how we can
+use this behavior to write more efficient code.</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>05/01</span> <a href=https://sciencecomputing.io/advanced-functions/dispatch-on-element-types/>Dispatch on element types</a>
+</div><div class=summary>
+<p>In this lesson, we will see how we can dispatch on parametric types, in order
+to have a fine-grained control on what method is used for different
+types of data collections. This is a core design pattern in <em>Julia</em>, and we will
+illustrate it by building some functions related to measuring the distances between
+points.</p></div></div><div class=card>
+<div class="title status-alpha">
+<span class=index>05/02</span> <a href=https://sciencecomputing.io/advanced-functions/testing-functions/>Testing functions</a>
+</div><div class=summary>
+<p>In this module, we will explore the <code>Test</code> package, which allows to
+programmatically test the behavior of a function. We will see how testing can
+bring us closer to being confident in our code.</p></div></div><div class=card>
+<div class="title status-beta">
+<span class=index>05/03</span> <a href=https://sciencecomputing.io/advanced-functions/recursion/>Recursion</a>
+</div><div class=summary>
+<p>What is recursion, if not recursion persevering? In this module, we will see
+how to call functions recursively, and discuss when this is appropriate in
+real life.</p></div></div><div class=card>
+<div class="title status-alpha">
+<span class=index>05/04</span> <a href=https://sciencecomputing.io/advanced-functions/type-stability/>Type stability</a>
+</div><div class=summary>
+<p>In this module, we will talk about <em>type stability</em>, and see how we can
+annotate the functions in <em>Julia</em> to be explicit about what type they return.</p></div></div></div><h3 class=newsection>Advanced Topics</h3><div class=blurb>
+<p>This section contains modules that cover more advanced topics, that will let you
+write code that is more and more expressive, more and more safe to run, and more
+and more efficient. Picking up these skills will be important to follow along
+with the applied examples in the next section.</p></div><div class=cards>
+<div class=card>
+<div class="title status-rc">
+<span class=index>06/00</span> <a href=https://sciencecomputing.io/advanced-topics/map-filter-accumulate-reduce/>Map, Filter, Accumulate, Reduce</a>
+</div><div class=summary>
+<p>In a lot of applications, we want to apply some operation to all elements in a
+collection, and then aggregate these elements together in a grand unified
+answer. In this module, we will have a look at the map-filter-reduce strategy,
+as well as the accumulate operation.</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>06/01</span> <a href=https://sciencecomputing.io/advanced-topics/finding-things-in-arrays/>Finding things in arrays</a>
+</div><div class=summary>
+<p>In this module, we will see how to locate interesting values in collections,
+and how to extract and test the existence of some of these values. This is
+important knowledge in order to build more advanced programs, and we will put
+it in action in the following section.</p></div></div><div class=card>
+<div class="title status-beta">
+<span class=index>06/02</span> <a href=https://sciencecomputing.io/advanced-topics/overloading/>Overloading</a>
+</div><div class=summary>
+<p>Overloading is a <em>very</em> powerful mechanism, through which we can add methods
+to existing functions to make them work with our own types. In this module, we
+will discuss how to overload existing functions, and how to use this approach
+in practice.</p></div></div><div class=card>
+<div class="title status-alpha">
+<span class=index>06/03</span> <a href=https://sciencecomputing.io/advanced-topics/growing-arrays/>Growing arrays</a>
+</div><div class=summary>
+</div></div><div class=card>
+<div class="title status-alpha">
+<span class=index>06/04</span> <a href=https://sciencecomputing.io/advanced-topics/advanced-string-manipulation/>Advanced string manipulation</a>
+</div><div class=summary>
+</div></div><div class=card>
+<div class="title status-alpha">
+<span class=index>06/05</span> <a href=https://sciencecomputing.io/advanced-topics/list-comprehensions/>List comprehensions</a>
+</div><div class=summary>
+</div></div></div><h3 class=newsection>Files</h3><div class=blurb>
+<p>The goal of these modules is to develop proficiency in working with files. We
+will see how to handle the path, create and delete directories, download files,
+and open common data formats like delimited files, CSV, and JSON.</p></div><div class=cards>
+<div class=card>
+<div class="title status-rc">
+<span class=index>07/00</span> <a href=https://sciencecomputing.io/files/the-path/>The Path</a>
+</div><div class=summary>
+<p>One of the main obstacle to reproductible projects is issues with describing
+where files are. In this module, we will talk about the path, and how to refer
+to locations in a way that will work on any computer.</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>07/01</span> <a href=https://sciencecomputing.io/files/downloading-files/>Downloading files</a>
+</div><div class=summary>
+<p>In this module, we will see how <em>Julia</em> allows downloading files from the
+internet, and how we can decide where to store them. This is a common task
+when getting external data, and will be the basis of a number of advanced
+training modules in the final section of this material.</p></div></div><div class=card>
+<div class="title status-beta">
+<span class=index>07/02</span> <a href=https://sciencecomputing.io/files/working-with-delimited-files/>Working with delimited files</a>
+</div><div class=summary>
+<p>A lot of files we use in scientific computing are very simple, and organized
+as tables. There are a lot of packages in <em>Julia</em> to handle these files,
+including the full-featured <span class=package><span class=pkgname><a href=https://juliapackages.com/p/DataFrames target=_blank>DataFrames</a></span></span> and <span class=package><span class=pkgname><a href=https://juliapackages.com/p/DataFramesMeta target=_blank>DataFramesMeta</a></span></span>. But in this
+module, we will focus on the standard library package <span class="package no-hub"><span class=pkgname>DelimitedFiles</span></span>,
+which allows to store files where fields are separated by a specified
+character.</p></div></div><div class=card>
+<div class="title status-beta">
+<span class=index>07/03</span> <a href=https://sciencecomputing.io/files/the-json-format/>The JSON format</a>
+</div><div class=summary>
+<p>The JSON format is really interesting to store highly structured information.
+In this module, we will see how it maps naturally on the <code>Dict</code> data
+structure, how to use it to load and save data, and how to print the contents
+of a JSON file. As an illustration, we will look at the time series of
+vaccination against COVID-19 in New Zealand.</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>07/04</span> <a href=https://sciencecomputing.io/files/consuming-data-from-apis/>Consuming data from APIs</a>
+</div><div class=summary>
+<p>Not all data come from static files. In a large number of scientific
+applications, we need to collect data from websites, often using a <a href=https://www.redhat.com/en/topics/api/what-is-a-rest-api>RESTful
+API</a>. In this module, we will use a very simple example to show how we
+can collect data about postal codes, get them as a JSON file, and process
+them.</p></div></div></div><h3 class=newsection>Applications</h3><div class=blurb>
+<p>In this section, we will go through longer modules involving real data, in order
+to apply the various skills we picked up from the previous sections. These are
+the modules you should read last, as even though they do not introduce new
+material, they will require to have some command over the concepts from multiple
+previous modules.</p></div><div class=cards>
+<div class=card>
+<div class="title status-rc">
+<span class=index>08/00</span> <a href=https://sciencecomputing.io/applications/linear-regression-using-gradient-descent/>Linear regression using gradient descent</a>
+</div><div class=summary>
+<p>In this module, we will use the gradient descent algorithm to perform a linear
+regression, to estimate the brain mass of an animal if we know its body mass.
+This will draw on concepts from a number of previous modules, while also
+presenting an example of how core programming skills can be applied for
+research.</p></div></div><div class=card>
+<div class="title status-beta">
+<span class=index>08/01</span> <a href=https://sciencecomputing.io/applications/naive-bayes-classifier/>Naive Bayes Classifier</a>
+</div><div class=summary>
+<p>Naive Bayes Classifiers are formidable because they can learn so much about a
+dataset based on relatively scarce information. In this module, we will build
+one from scratch, using (mostly) methods from <em>Julia</em>&rsquo;s standard library.</p></div></div><div class=card>
+<div class="title status-alpha">
+<span class=index>08/02</span> <a href=https://sciencecomputing.io/applications/runge-kutta-for-numerical-integration/>Runge-Kutta for numerical integration</a>
+</div><div class=summary>
+</div></div><div class=card>
+<div class="title status-alpha">
+<span class=index>08/03</span> <a href=https://sciencecomputing.io/applications/building-our-own-graph-library/>Building our own graph library</a>
+</div><div class=summary>
+<p>In this module,</p></div></div><div class=card>
+<div class="title status-beta">
+<span class=index>08/04</span> <a href=https://sciencecomputing.io/applications/the-forest-fire-model/>The forest-fire model</a>
+</div><div class=summary>
+<p>In this module, we will have a look at indexing in order to simulate the
+behavior of a forest when trees can catch on fire, be planted, and regrow.
+This is a common example in complex system studies, and produces very visually
+pleasing structures in space! As a treat, we will spend a little more time
+learning about how <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Makie target=_blank>Makie</a></span></span> works.</p></div></div><div class=card>
+<div class="title status-rc">
+<span class=index>08/05</span> <a href=https://sciencecomputing.io/applications/the-travelling-salesperson-problem/>The travelling salesperson problem</a>
+</div><div class=summary>
+<p>In this module, we will look at a way to start working on the travelling salesperson
+problem. This is mostly an excuse to play with simulated annealing, which is a really cool
+optimisation algorithm.</p></div></div></div></section></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

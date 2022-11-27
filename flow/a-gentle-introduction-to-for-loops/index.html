@@ -1,0 +1,105 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>A gentle introduction to for loops · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>A gentle introduction to for loops</h1><article>
+<p>Oh no. Oh no no no. This is <em>not</em> a fun module. This will not be pleasant. But
+this will, very much, be necessary and incredibly empowering. Sit down, buckle
+up, we&rsquo;re about to see what loops do.</p><p>Iteration is one of the most central, most useful, most confusing concepts
+there is. But without it, there is little we can do that is useful or fun. The
+one and only redeeming feature of iteration is that if you understand its most
+basic example, you have actually understood all of the more complicated ways
+to iterate. The point of this module is to introduce the way <em>Julia</em> thinks
+about iteration, and to show as many examples as possible.</p><p>Let us start with the simplest possible loop:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=k>in</span> <span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;The value of i is </span><span class=si>$</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=s>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: The value of i is 1
+[ Info: The value of i is 2
+[ Info: The value of i is 3
+</code></pre><p>That&rsquo;s it. That&rsquo;s all there is to know about iteration, but in order to move
+forward we need to study it; we need to study it like a kōan.</p><p>Broken down into its most fundamental components, this loop (the structure
+that begins at <code>for</code> and ends at <code>end</code>) is simple.</p><p>It has an opening statement: <code>for</code>. This means that we will repeat an action
+<em>for</em> multiple things. These multiple things are given on the first line:</p><pre tabindex=0><code>i in [1, 2, 3]
+</code></pre><p>But what does it means? This means that <code>i</code> will take all of the values in
+<code>[1, 2, 3]</code> <em>in turn</em>. Let&rsquo;s verbally expand this: <code>i</code> will be 1, then <code>i</code>
+will be 2, then <code>i</code> will be 3. But not everywhere! No, <code>i</code> will only have
+these values <em>inside</em> the loop. So <code>i</code> has no value, unless it takes one
+<em>inside</em> the loop.</p><p>And so we need to go deeper: inside the loop. The inside of the loop is
+everything under the first line, and above the last line. If it sounds
+obvious, great. But it is important to emphasize this, as this is the space in
+which <code>i</code> <em>exists</em>, in the sense that this is the space where it has a value.</p><p>Currently, the inside of our loop has a single instruction: we show a string
+that has the value of <code>i</code> using interpolation as we have seen in a previous
+module. But we can have a loop that is arbitratily complex:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=k>in</span> <span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>i</span> <span class=o>==</span> <span class=mi>2</span>
+</span></span><span class=line><span class=cl>        <span class=nd>@info</span> <span class=s>&#34;The value of i is 2&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>        <span class=nd>@info</span> <span class=s>&#34;The value of i isn&#39;t 2 (it&#39;s </span><span class=si>$</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=s>)&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: The value of i isn&#39;t 2 (it&#39;s 1)
+[ Info: The value of i is 2
+[ Info: The value of i isn&#39;t 2 (it&#39;s 3)
+</code></pre><p>We have no asked for a full <code>if</code>/<code>else</code> statement within our loop. This result
+in a more complex output, but also increases what we call the <a href=https://en.wikipedia.org/wiki/Cyclomatic_complexity>cyclomatic
+complexity</a> of our program &mdash; there are more &ldquo;branches&rdquo; we can
+explore. Think of a program as a &ldquo;chose your own adventure&rdquo; type book: we now
+have a lot more possible endings.</p><div class="callout opinion">A very crude yet surprisingly effective way to check the complexity
+of your code, is to look how far from the left margin your lines are starting.
+If they are very far away, it is time to take things out of loops or
+<code>if</code>/<code>else</code> statements and to write functions. We will explore how to write
+functions in the next section.</div><p>We can put <em>whatever</em> we want in a loop. Even, of course, another loop!</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=k>in</span> <span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;i = </span><span class=si>$</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=s>&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>j</span> <span class=k>in</span> <span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>        <span class=nd>@info</span> <span class=s>&#34;  j = </span><span class=si>$</span><span class=p>(</span><span class=n>j</span><span class=p>)</span><span class=s>  →  i×j = </span><span class=si>$</span><span class=p>(</span><span class=n>i</span><span class=o>*</span><span class=n>j</span><span class=p>)</span><span class=s>&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: i = 1
+[ Info:   j = 1  →  i×j = 1
+[ Info:   j = 2  →  i×j = 2
+[ Info:   j = 3  →  i×j = 3
+[ Info: i = 2
+[ Info:   j = 1  →  i×j = 2
+[ Info:   j = 2  →  i×j = 4
+[ Info:   j = 3  →  i×j = 6
+[ Info: i = 3
+[ Info:   j = 1  →  i×j = 3
+[ Info:   j = 2  →  i×j = 6
+[ Info:   j = 3  →  i×j = 9
+</code></pre><p>Notice that the value of <code>i</code> exists within its own loop, but also within the
+loop on <code>j</code>, because <code>j</code>&rsquo;s loop exists within <code>i</code>&rsquo;s. Where variables are
+usable is called scoping, and understanding scoping is something done through
+avid reading of the documentation. For now, it is safer to assume that the
+variables are not accessible outside their loop.</p><div class="callout information">Sometimes it pays to be able to access variables outside of their
+loop, or to modify variables external to the loop in the loop itself. In one
+of the next modules, we will show an example of how to do it, using the
+<code>global</code> annotation.</div><p>Not only are the variables not accessibles, they are not <em>defined</em>. Using a
+<code>try</code> statement (it captures error, and we will take a deep dive into it very
+soon), we can verify this:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>try</span>
+</span></span><span class=line><span class=cl>    <span class=n>j</span>
+</span></span><span class=line><span class=cl><span class=k>catch</span> <span class=n>error</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=n>error</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: UndefVarError(:j)
+</code></pre><p>The existence of <code>j</code> (and of <code>i</code>, as well) is limited to the inside of its
+loop.</p><p>But what are loops good for? Now that we have established what loops are, the
+next module will deal with very powerful ways to iterate over objects, which
+is one of the most important things to do.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-the_flow,module-introduction_for,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/03_the_flow/01_introduction_for.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/flow/a-gentle-introduction-to-for-loops/%0a%0a%f0%9f%93%a6%20section-the_flow%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-introduction_for" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

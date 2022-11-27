@@ -1,0 +1,72 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Pseudo-code · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Pseudo-code</h1><article>
+<p>To facilitate the transition between diagram and code, one important step is
+to write <em>pseudo-code</em>, <em>i.e.</em> text that looks reasonably like code, but is
+not. This pseudo-code will not help the computer think about our problem,
+but it might help <em>us</em> think about the problem in ways that will make the
+actual programming easier.</p><div class="callout opinion">Pseudo-code is mostly useful when it comes to working on a single
+function. The overall structure of the project can be done as a flowchart, and
+then each function can be written as pseudo-code. This is, in fact, a really
+good exercise to try with your own projects.</div><p>Let us try with an example - we want to sort numbers. We will write
+pseudo-code for a very, <em>very</em> inefficient algorithm:</p><pre tabindex=0><code>let X be a list of numbers
+let Y be an empty list of numbers
+
+as long as X still has elements in it
+    let x be the minimum of X
+    add x to Y
+    remove x from X
+
+return Y
+</code></pre><p>This is, essentially, what <em>pseudo-code</em> is: a way to explain in your own words
+what the function should do. This can be translated line-by-line into code, but
+this is rarely a good idea. The best way to represent an idea with code is rarely
+the same as the best way to represent it as pseudo-code.</p><p>Yet there are important lessons in this piece of pseudo-code. First, we know that we will
+need two <em>variables</em> (<code>X</code> and <code>Y</code>), a way to find <code>x</code> which is going to be the smallest
+value in <code>X</code>, and ways to add and remove elements from lists. Although this is not a
+full program yet, this is helpful to guide our search for information in, <em>e.g.</em>,
+<em>Julia</em>&rsquo;s documentation! We will also need to perform a series of steps <code>as long as</code>
+some condition is satisfied, which means that we will have to think about iteration and
+conditionals and all that.</p><p>The purpose of this material is to give you the basic bits of information to write this
+function, and much more!</p><p>To give you a little taste, we can write the <em>Julia</em> code:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>X</span> <span class=o>=</span> <span class=n>rand</span><span class=p>(</span><span class=mi>1</span><span class=o>:</span><span class=mi>5</span><span class=p>,</span> <span class=mi>12</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>Y</span> <span class=o>=</span> <span class=n>empty</span><span class=p>(</span><span class=n>X</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>while</span> <span class=o>!</span><span class=p>(</span><span class=n>isempty</span><span class=p>(</span><span class=n>X</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=n>x</span><span class=p>,</span> <span class=n>i</span> <span class=o>=</span> <span class=n>findmin</span><span class=p>(</span><span class=n>X</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>push!</span><span class=p>(</span><span class=n>Y</span><span class=p>,</span> <span class=n>x</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>deleteat!</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=n>i</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>Y</span><span class=o>&#39;</span>
+</span></span></code></pre></div><pre tabindex=0><code>1×12 adjoint(::Vector{Int64}) with eltype Int64:
+ 1  2  2  3  3  4  4  4  4  4  5  5
+</code></pre><div class="callout information">At this point, it is <em>absolutely</em> normal to not understand the code. Especially if
+you have little programming experience! After completing the first two or three sections
+of this material, you should be able to revisit it and understand what is going on, and
+even suggest an improvement to it! This will take time, and we will go through all the
+steps.</div><p>Pseudo-code is also useful to reason about the structure of the program you
+are about to start writing. A good example is when you do not know which functions
+to use (or write!) yet, or whether your functions are appropriately sized; if the
+pseudo-code is getting too long, it is a good sign that you may start thinking
+about smaller functions, and break down your problem into further (smaller) pieces.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-getting_started,module-pseudo_code,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/00_getting_started/03_pseudo_code.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/introduction/pseudo-code/%0a%0a%f0%9f%93%a6%20section-getting_started%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-pseudo_code" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

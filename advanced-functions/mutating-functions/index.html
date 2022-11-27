@@ -1,0 +1,210 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Mutating functions · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Mutating functions</h1><article>
+<p>In this module, we will see how <em>Julia</em> deals with collections when they are
+passed as arguments to a function, why this can be terrifying when coming from
+other languages that are less concerned with economy of memory, and how we can
+use this behavior to write more efficient code.</p><p>Let&rsquo;s wrap the numbers from one to 25 in a matrix:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>A</span> <span class=o>=</span> <span class=n>reshape</span><span class=p>(</span><span class=n>collect</span><span class=p>(</span><span class=mi>1</span><span class=o>:</span><span class=mi>25</span><span class=p>),</span> <span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=mi>5</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>5×5 Matrix{Int64}:
+ 1   6  11  16  21
+ 2   7  12  17  22
+ 3   8  13  18  23
+ 4   9  14  19  24
+ 5  10  15  20  25
+</code></pre><p>And now, let&rsquo;s double them:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=mi>2</span><span class=n>A</span>
+</span></span></code></pre></div><pre tabindex=0><code>5×5 Matrix{Int64}:
+  2  12  22  32  42
+  4  14  24  34  44
+  6  16  26  36  46
+  8  18  28  38  48
+ 10  20  30  40  50
+</code></pre><p>Very well. Now let&rsquo;s do this within a function:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>twice</span><span class=p>(</span><span class=n>M</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>i</span> <span class=k>in</span> <span class=n>eachindex</span><span class=p>(</span><span class=n>M</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>M</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=mi>2</span><span class=n>M</span><span class=p>[</span><span class=n>i</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>M</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>twice (generic function with 1 method)
+</code></pre><p>We can call this function on <code>A</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>twice</span><span class=p>(</span><span class=n>A</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>5×5 Matrix{Int64}:
+  2  12  22  32  42
+  4  14  24  34  44
+  6  16  26  36  46
+  8  18  28  38  48
+ 10  20  30  40  50
+</code></pre><p>And let&rsquo;s have a look at <code>A</code> again:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>A</span>
+</span></span></code></pre></div><pre tabindex=0><code>5×5 Matrix{Int64}:
+  2  12  22  32  42
+  4  14  24  34  44
+  6  16  26  36  46
+  8  18  28  38  48
+ 10  20  30  40  50
+</code></pre><div class="callout danger">Yeah. You see how that can be a problem, right? <code>A</code> has been changed
+because we passed it through the <code>twice</code> function. This is super dangerous.
+But also really useful. With great power, and all that.</div><p>So what is going on?</p><p>When you pass a collection to a <em>Julia</em> function, you do not pass a <em>copy</em> of
+this object. You pass the <em>location</em> of this collection in memory, for the
+function to work with. It might make sense if you know <em>C</em>, and no sense if
+you know <em>R</em>, but this is what <em>Julia</em> does, and the net benefit is:
+regardless of the size of the array you work on, it &ldquo;costs&rdquo; the same memory
+footprint to send it to a function.</p><p>For this reason, it is very easy (in fact, it is the default) for <em>Julia</em> functions
+to perform <em>mutations</em> on their arguments.
+By <em>convention</em>, this behavior is indicated by a <code>!</code> at the end of the
+function name. Think of it as the language going <em>Hey, listen!</em>, and asking
+you to pay attention.</p><p>So let&rsquo;s start again, with a collection of values, and we will get a matrix
+with the remainder of their integer division by any other integer:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>A</span> <span class=o>=</span> <span class=n>reshape</span><span class=p>(</span><span class=n>collect</span><span class=p>(</span><span class=mi>1</span><span class=o>:</span><span class=mi>25</span><span class=p>),</span> <span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=mi>5</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>5×5 Matrix{Int64}:
+ 1   6  11  16  21
+ 2   7  12  17  22
+ 3   8  13  18  23
+ 4   9  14  19  24
+ 5  10  15  20  25
+</code></pre><p>The mutating function will have a <code>!</code> at the end of its name:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>remainder!</span><span class=p>(</span><span class=n>X</span><span class=o>::</span><span class=kt>Matrix</span><span class=p>{</span><span class=kt>T</span><span class=p>},</span> <span class=n>d</span><span class=o>::</span><span class=kt>T</span><span class=p>)</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>Integer</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>i</span> <span class=k>in</span> <span class=n>eachindex</span><span class=p>(</span><span class=n>X</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>X</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>X</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>%</span> <span class=n>d</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>X</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>remainder! (generic function with 1 method)
+</code></pre><div class="callout information">Note that we use <code>eachindex</code> to move through the matrix linearly, as we discussed
+in the module on iteration. We would get the same behavior iterating over rows and columns
+explicitly, but this notation is more concise, and therefore more readable and &ldquo;better&rdquo;.</div><p>This function will <em>overwrite</em> its argument <code>X</code>. How do we avoid this? We cannot. It is
+a consequence of functions receiving the memory location of collections, as opposed to
+a copy of the collection. But wait! This is our solution! If we do not want the function
+to modify our original collection, we can point it towards a <em>copy</em> of this collection!</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>remainder</span><span class=p>(</span><span class=n>X</span><span class=o>::</span><span class=kt>Matrix</span><span class=p>{</span><span class=kt>T</span><span class=p>},</span> <span class=n>d</span><span class=o>::</span><span class=kt>T</span><span class=p>)</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>Integer</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=n>Y</span> <span class=o>=</span> <span class=n>copy</span><span class=p>(</span><span class=n>X</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>remainder!</span><span class=p>(</span><span class=n>Y</span><span class=p>,</span> <span class=n>d</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>Y</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>remainder (generic function with 1 method)
+</code></pre><p>This function does <em>not</em> end with a <code>!</code>: this is because it is <em>not</em> modifying
+its first argument. Instead, we create a <em>copy</em> of this argument. This is when
+we re-use the function that changes its argument, to modify the copy, which we
+then return. This forms the basis of a very powerful (and common) design pattern in
+<em>Julia</em>: write a function <code>foo!</code>, then write a function <code>foo</code> who copies its first
+argument and calls <code>foo!</code> on the copy.</p><p>We can call our new function:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>remainder</span><span class=p>(</span><span class=n>A</span><span class=p>,</span> <span class=mi>3</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>5×5 Matrix{Int64}:
+ 1  0  2  1  0
+ 2  1  0  2  1
+ 0  2  1  0  2
+ 1  0  2  1  0
+ 2  1  0  2  1
+</code></pre><p>We can check that <code>A</code> has not been affected:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>A</span>
+</span></span></code></pre></div><pre tabindex=0><code>5×5 Matrix{Int64}:
+ 1   6  11  16  21
+ 2   7  12  17  22
+ 3   8  13  18  23
+ 4   9  14  19  24
+ 5  10  15  20  25
+</code></pre><p>Success!</p><div class="callout information">There is a little subtelty here related to dispatch. Our <code>remainder</code>
+and <code>remainder!</code> are different <em>functions</em>, even though they belong to the
+same &ldquo;family&rdquo;. This may be important if you look at the methods for
+<code>remainder</code>, as it will not list the methods for <code>remainder!</code>.</div><p>And now, here is how we turn this into a very powerful way to be efficient
+about memory management. We will write another method for <code>remainder!</code> that
+over-writes, not its original argument, but an arbitrary array:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>Z</span> <span class=o>=</span> <span class=n>similar</span><span class=p>(</span><span class=n>A</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>5×5 Matrix{Int64}:
+ 139717375034448  139718667886960  139718667887280  139718667887600  139718667886768
+ 139718667886704  139718667887024  139718667887344  139718667887664  139717375034432
+ 139718667886832  139718667887088  139718667887408  139718667887728  139718667887088
+ 139717375034432  139718667887152  139718667887472  139718667887792  139718667887280
+ 139718667886896  139718667887216  139718667887536  139718667887856  139718667887472
+</code></pre><div class="callout information">The <code>similar</code> function will create an object that is <em>similar</em> to its argument in
+the sense that it will have the same shape and type, but the value inside this object are
+not predictible.</div><p>This might be a placeholder array we will use to store results temporarily.
+For example, when we perform thousands of iterations, we might not need to
+re-allocate the memory every time: in this case, it is beneficial to
+over-write the same memory locations over and over again.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>remainder!</span><span class=p>(</span><span class=n>x</span><span class=o>::</span><span class=kt>Matrix</span><span class=p>{</span><span class=kt>T</span><span class=p>},</span> <span class=n>X</span><span class=o>::</span><span class=kt>Matrix</span><span class=p>{</span><span class=kt>T</span><span class=p>},</span> <span class=n>d</span><span class=o>::</span><span class=kt>T</span><span class=p>)</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>Integer</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>i</span> <span class=k>in</span> <span class=n>eachindex</span><span class=p>(</span><span class=n>X</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>x</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>X</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>%</span> <span class=n>d</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>x</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>remainder! (generic function with 2 methods)
+</code></pre><p>The way to call this function is:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>remainder!</span><span class=p>(</span><span class=n>Z</span><span class=p>,</span> <span class=n>A</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>5×5 Matrix{Int64}:
+ 1  0  1  0  1
+ 0  1  0  1  0
+ 1  0  1  0  1
+ 0  1  0  1  0
+ 1  0  1  0  1
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>remainder!</span><span class=p>(</span><span class=n>Z</span><span class=p>,</span> <span class=n>A</span><span class=p>,</span> <span class=mi>3</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>5×5 Matrix{Int64}:
+ 1  0  2  1  0
+ 2  1  0  2  1
+ 0  2  1  0  2
+ 1  0  2  1  0
+ 2  1  0  2  1
+</code></pre><p>But wait! The new version of <code>remainder!</code> we wrote is <em>suspiciously</em> similar
+to the earliest version of <code>remainder!</code>. In fact, with the exception of a
+single change, they are the same function. It is therefore time to revisit our
+initial <code>remainder!</code> function:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>remainder!</span><span class=p>(</span><span class=n>X</span><span class=o>::</span><span class=kt>Matrix</span><span class=p>{</span><span class=kt>T</span><span class=p>},</span> <span class=n>d</span><span class=o>::</span><span class=kt>T</span><span class=p>)</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>Integer</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>remainder!</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=n>X</span><span class=p>,</span> <span class=n>d</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>remainder! (generic function with 2 methods)
+</code></pre><p>See, writing <em>read from X and write in Z</em> and <em>read from X and write in X</em> is
+essentially the same thing, because we are giving <em>Julia</em> memory locations.
+And because <code>remainder!</code> is a function with different methods, the dispatch
+system is now working for us.</p><div class="callout warning">In practice, we would take great care to ensure that the dimensions
+of the various objects are compatible, but this has been omitted for the sake
+of brevity. This can be done with <code>@assert</code>, or more explicitly with checks
+and the throwing of exceptions.</div><p>So let&rsquo;s summarize, and write our little remainder &ldquo;library&rdquo;, from the most
+basal to the most abstract function:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>remainder!</span><span class=p>(</span><span class=n>x</span><span class=o>::</span><span class=kt>Matrix</span><span class=p>{</span><span class=kt>T</span><span class=p>},</span> <span class=n>X</span><span class=o>::</span><span class=kt>Matrix</span><span class=p>{</span><span class=kt>T</span><span class=p>},</span> <span class=n>d</span><span class=o>::</span><span class=kt>T</span><span class=p>)</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>Integer</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>i</span> <span class=k>in</span> <span class=n>eachindex</span><span class=p>(</span><span class=n>X</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>x</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>X</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>%</span> <span class=n>d</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>x</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>function</span> <span class=n>remainder!</span><span class=p>(</span><span class=n>X</span><span class=o>::</span><span class=kt>Matrix</span><span class=p>{</span><span class=kt>T</span><span class=p>},</span> <span class=n>d</span><span class=o>::</span><span class=kt>T</span><span class=p>)</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>Integer</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>remainder!</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=n>X</span><span class=p>,</span> <span class=n>d</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>function</span> <span class=n>remainder</span><span class=p>(</span><span class=n>X</span><span class=o>::</span><span class=kt>Matrix</span><span class=p>{</span><span class=kt>T</span><span class=p>},</span> <span class=n>d</span><span class=o>::</span><span class=kt>T</span><span class=p>)</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>Integer</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=n>Y</span> <span class=o>=</span> <span class=n>copy</span><span class=p>(</span><span class=n>X</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>remainder!</span><span class=p>(</span><span class=n>Y</span><span class=p>,</span> <span class=n>d</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>Y</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>remainder (generic function with 1 method)
+</code></pre><p>What happens when we do the following?</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>remainder</span><span class=p>(</span><span class=n>A</span><span class=p>,</span> <span class=mi>3</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>5×5 Matrix{Int64}:
+ 1  0  2  1  0
+ 2  1  0  2  1
+ 0  2  1  0  2
+ 1  0  2  1  0
+ 2  1  0  2  1
+</code></pre><p>We start by calling <code>remainder</code>, which makes a copy of the first argument,
+then calls <code>remainder!</code> (using a single argument); this then calls
+<code>remainder!</code> using the two arguments, and gives us the result <em>without</em>
+modifying <code>A</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>A</span>
+</span></span></code></pre></div><pre tabindex=0><code>5×5 Matrix{Int64}:
+ 1   6  11  16  21
+ 2   7  12  17  22
+ 3   8  13  18  23
+ 4   9  14  19  24
+ 5  10  15  20  25
+</code></pre><p>Let&rsquo;s take a step back. Working with this design pattern is very useful when
+we sometimes have to overwrite some memory. In other cases, we only care about
+getting an object returned. Or we <em>definitely</em> want to overwrite the object we
+pass as an argument. To accomodate these use-cases, writing functions with and
+without <code>!</code>, and that operate on themselves or similar objects, give us the
+flexibility we need, and is a very Julian code design.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-advanced_functions_usage,module-mutating_functions,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/05_advanced_functions_usage/01_mutating_functions.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/advanced-functions/mutating-functions/%0a%0a%f0%9f%93%a6%20section-advanced_functions_usage%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-mutating_functions" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

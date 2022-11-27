@@ -1,0 +1,84 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>The while statement · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>The while statement</h1><article>
+<p>In this module, we will see how we can use the <code>while</code> construct to make a
+series of instructions repeat until a condition is met, and how to deal with
+common caveats that can arise when using a <code>while</code> loop.</p><p>By opposition to a <code>for</code> loop, as we have seen in the previous module, the
+number of times a <code>while</code> loop will happen is not limited by the length of a
+collection. It is, instead, decided by an &ldquo;exit condition&rdquo;, <em>i.e.</em> a condition
+that when met will stop the loop.</p><div class="callout danger">Note that <code>while</code> loops only terminate when some condition is met.
+If the condition cannot be met, the loop can run on forever. One common
+strategy is to implement a counter with a maximum number of iterations, for
+example, and to use it to <code>break</code> out of the loop.</div><p>Let&rsquo;s start with an example - because we will generate randon numbers, we will
+set the seed for this simulation:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>import</span> <span class=n>Random</span>
+</span></span><span class=line><span class=cl><span class=n>Random</span><span class=o>.</span><span class=n>seed!</span><span class=p>(</span><span class=mi>123456</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Random.TaskLocalRNG()
+</code></pre><p>The problem we want to solve is as follows: we need to generate two vectors of
+random numbers, <code>x</code> and <code>y</code>, that have a correlation between 0.6 and 0.8. This
+is, for example, a way to generate a small benchmark data point. The
+correlation function (<code>cor</code>) is in <code>Statistics</code>, which we can import:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>import</span> <span class=n>Statistics</span>
+</span></span></code></pre></div><p>We can generate an initial pair of vectors:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>x</span><span class=p>,</span> <span class=n>y</span> <span class=o>=</span> <span class=n>rand</span><span class=p>(</span><span class=mi>10</span><span class=p>),</span> <span class=n>rand</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>([0.818848036562839, 0.7569411211154605, 0.411988190027885, 0.7311410378692782, 0.7058500642518956, 0.2601665001465642, 0.49949519818145727, 0.814418633506866, 0.8244361286587295, 0.3285196755147558], [0.62403405150908, 0.9536642053285284, 0.9097066946836926, 0.22190067739742647, 0.3099769213040334, 0.06946766908635915, 0.1811435621082308, 0.34647299403713616, 0.8340072221968884, 0.5016414526444922])
+</code></pre><div class="callout information">This notation is a shortcut, in which Julia will match the first
+variable on the left hand side (<code>x</code>) with the first expression on the right
+hand side (<code>rand(10)</code>). This is the same thing as writing <code>x = rand(10)</code> and
+<code>y = rand(10)</code> on two separate lines, but is a little more concise, and also
+maintains both variables on the same line.</div><p>Their correlation can be calculated using the <code>cor</code> function from
+<code>Statistics</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>Statistics</span><span class=o>.</span><span class=n>cor</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>0.2942146605288864
+</code></pre><p>What we now need to do is, in plain English, keep generating vectors <code>x</code> and
+<code>y</code> <em>until</em> the condition is met. We can also decide to maintain <code>x</code> and only
+change <code>y</code>, or to replace elements of <code>x</code> or <code>y</code> one by one, and many other
+alternatives, but for now we will use a brute-force approach to this problem.</p><p>In <em>Julia</em>, this is expressed as</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>while</span> <span class=o>!</span><span class=p>(</span><span class=mf>0.6</span> <span class=o>≤</span> <span class=n>Statistics</span><span class=o>.</span><span class=n>cor</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>)</span> <span class=o>≤</span> <span class=mf>0.8</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>global</span> <span class=n>x</span><span class=p>,</span> <span class=n>y</span>
+</span></span><span class=line><span class=cl>    <span class=n>x</span><span class=p>,</span> <span class=n>y</span> <span class=o>=</span> <span class=n>rand</span><span class=p>(</span><span class=mi>10</span><span class=p>),</span> <span class=n>rand</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><p>There are a few things to unpack here.</p><p>First, we use the <code>while not condition</code> notation, which allows us to write the
+comparison in a way that is consistent with the way we would write it down on
+paper. Recall from the module on Boolean operations that <code>!true</code> is <code>false</code>,
+and the other way around.</p><p>Second, we use <code>global x,y</code> because <code>x</code> and <code>y</code> are defined outside of the
+loop, and we are working outside of a function. If we removed this line, this
+code will never stop running! This is a very important point, due to the way
+Julia handles <em>scoping</em> (which is explained at length in the manual!).</p><p>We can now check that the correlation is within our interval:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>Statistics</span><span class=o>.</span><span class=n>cor</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>0.6100870666348821
+</code></pre><p>There are a number of ways we can make this loop better. First, we can
+implement a counter. If we are particularly unlucky, we might never get a pair
+of vectors that satisfy our condition, and so we would like to return before
+the heat death of the universe.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>number_of_attempts</span><span class=p>,</span> <span class=n>maximum_attempts</span> <span class=o>=</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>100</span>
+</span></span><span class=line><span class=cl><span class=n>x</span><span class=p>,</span> <span class=n>y</span> <span class=o>=</span> <span class=n>rand</span><span class=p>(</span><span class=mi>10</span><span class=p>),</span> <span class=n>rand</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>([0.36850897354521706, 0.6586750244395302, 0.9349083496911273, 0.8201161126583437, 0.6037240677016869, 0.10908496089321651, 0.6560953753740482, 0.21528666443303623, 0.5490543075166564, 0.9058123803649349], [0.4813500034560717, 0.5517201159119057, 0.7637497598284502, 0.09763678764867922, 0.12093972916243012, 0.3850911924551602, 0.0047226757508409545, 0.2481914009302686, 0.8058781549711377, 0.5561236670383914])
+</code></pre><p>We can now tweak our loop so that it has a second part to its return
+condition: we need to have done fewer attempts than the allowed maximum.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>while</span> <span class=p>(</span><span class=o>!</span><span class=p>(</span><span class=mf>0.6</span> <span class=o>≤</span> <span class=n>Statistics</span><span class=o>.</span><span class=n>cor</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>)</span> <span class=o>≤</span> <span class=mf>0.8</span><span class=p>))</span> <span class=o>&amp;</span> <span class=p>(</span><span class=n>number_of_attempts</span> <span class=o>&lt;</span> <span class=n>maximum_attempts</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>global</span> <span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>,</span> <span class=n>number_of_attempts</span>
+</span></span><span class=line><span class=cl>    <span class=n>x</span><span class=p>,</span> <span class=n>y</span> <span class=o>=</span> <span class=n>rand</span><span class=p>(</span><span class=mi>10</span><span class=p>),</span> <span class=n>rand</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>number_of_attempts</span> <span class=o>+=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><div class="callout information">There is a much nicer notation to exit a loop than simply adding
+elements to the return condition. It is covered in a later module.</div><p>We can now write down the number of attempts it took, and the score we got:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=s>&#34;&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s>Pair (x,y) found in </span><span class=si>$</span><span class=p>(</span><span class=n>number_of_attempts</span><span class=p>)</span><span class=s> attempts
+</span></span></span><span class=line><span class=cl><span class=s>Correlation: </span><span class=si>$</span><span class=p>(</span><span class=n>round</span><span class=p>(</span><span class=n>Statistics</span><span class=o>.</span><span class=n>cor</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>);</span> <span class=n>digits</span><span class=o>=</span><span class=mi>3</span><span class=p>))</span><span class=s>
+</span></span></span><span class=line><span class=cl><span class=s>&#34;&#34;&#34;</span> <span class=o>|&gt;</span> <span class=n>println</span>
+</span></span></code></pre></div><pre tabindex=0><code>Pair (x,y) found in 31 attempts
+Correlation: 0.631
+</code></pre></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-the_flow,module-while,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/03_the_flow/04_while.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/flow/the-while-statement/%0a%0a%f0%9f%93%a6%20section-the_flow%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-while" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

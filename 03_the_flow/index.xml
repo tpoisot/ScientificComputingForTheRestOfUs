@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title/><link>https://sciencecomputing.io/03_the_flow/</link><description>Recent content on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://sciencecomputing.io/03_the_flow/index.xml" rel="self" type="application/rss+xml"/><item><title>A gentle introduction to for loops</title><link>https://sciencecomputing.io/flow/a-gentle-introduction-to-for-loops/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/flow/a-gentle-introduction-to-for-loops/</guid><description>&lt;p>Oh no. Oh no no no. This is &lt;em>not&lt;/em> a fun module. This will not be pleasant. But
+this will, very much, be necessary and incredibly empowering. Sit down, buckle
+up, we&amp;rsquo;re about to see what loops do.&lt;/p></description></item><item><title>Advanced iteration</title><link>https://sciencecomputing.io/flow/advanced-iteration/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/flow/advanced-iteration/</guid><description>&lt;p>In this module, we will see how we &lt;em>actually&lt;/em> iterate over objects in &lt;em>Julia&lt;/em>.
+Although the content of the previous module is very important, as it forms the
+basis of all ways to iterate, there are a number of functions that greatly
+facilitate our task. We finish this module by simulating a simple
+host-parasitoid model.&lt;/p></description></item><item><title>Error handling with try</title><link>https://sciencecomputing.io/flow/error-handling-with-try/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/flow/error-handling-with-try/</guid><description>&lt;p>In previous modules, we have used a &lt;code>try&lt;/code>/&lt;code>catch&lt;/code> statement. In this module,
+we will go into some detail about what it means, and how to use them to write
+code that handles errors gracefully.&lt;/p></description></item><item><title>Exiting loops</title><link>https://sciencecomputing.io/flow/exiting-loops/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/flow/exiting-loops/</guid><description>&lt;p>In the previous two modules, we have written loops that terminate when a
+condition is met (&lt;code>while&lt;/code>), or when the collection has been iterated over
+entirely (&lt;code>for&lt;/code>). In some cases, we may want to fine-tune the behavior of our
+iteration. In these cases, we can use some special keywords to jump out of the
+loop entirely, or skip some steps.&lt;/p></description></item><item><title>Iteration in action!</title><link>https://sciencecomputing.io/flow/iteration-in-action/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/flow/iteration-in-action/</guid><description>&lt;p>In this module, we will start integrating skills from the previous modules,
+both about iteration and about data structures, indexing, slicing, etc. We
+will simulate the temporal dynamics of two populations, one of hosts and one
+of parasitoids, using a simple time-discrete model.&lt;/p></description></item><item><title>The while statement</title><link>https://sciencecomputing.io/flow/the-while-statement/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/flow/the-while-statement/</guid><description>&lt;p>In this module, we will see how we can use the &lt;code>while&lt;/code> construct to make a
+series of instructions repeat until a condition is met, and how to deal with
+common caveats that can arise when using a &lt;code>while&lt;/code> loop.&lt;/p></description></item></channel></rss>

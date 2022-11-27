@@ -1,0 +1,107 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Working with delimited files · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Working with delimited files</h1><article>
+<p>A lot of files we use in scientific computing are very simple, and organized
+as tables. There are a lot of packages in <em>Julia</em> to handle these files,
+including the full-featured <span class=package><span class=pkgname><a href=https://juliapackages.com/p/DataFrames target=_blank>DataFrames</a></span></span> and <span class=package><span class=pkgname><a href=https://juliapackages.com/p/DataFramesMeta target=_blank>DataFramesMeta</a></span></span>. But in this
+module, we will focus on the standard library package <span class="package no-hub"><span class=pkgname>DelimitedFiles</span></span>,
+which allows to store files where fields are separated by a specified
+character.</p><p>In order to demonstrate how <span class="package no-hub"><span class=pkgname>DelimitedFiles</span></span> works, we will come up with a
+simple example of something we might want to save: the Singular Value
+Decomposition of a matrix. In order to have access to SVD, we will load the
+<span class=package><span class=pkgname><a href=https://juliapackages.com/p/LinearAlgebra target=_blank>LinearAlgebra</a></span></span> package.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>import</span> <span class=n>LinearAlgebra</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>A</span> <span class=o>=</span> <span class=n>round</span><span class=o>.</span><span class=p>(</span><span class=n>rand</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=mi>5</span><span class=p>);</span> <span class=n>digits</span> <span class=o>=</span> <span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>U</span><span class=p>,</span> <span class=n>Σ</span><span class=p>,</span> <span class=n>V</span> <span class=o>=</span> <span class=n>LinearAlgebra</span><span class=o>.</span><span class=n>svd</span><span class=p>(</span><span class=n>A</span><span class=p>);</span>
+</span></span></code></pre></div><p>We have three pieces of data here: the $\mathbf{U}$ and $\mathbf{V}^\intercal$
+matrices, and the vector of eigenvalues $\mathbf{\Sigma}$. If we save these
+three pieces of information, we can reproduce our matrix $\mathbf{A}$.</p><p>In order to start saving the data, we need access to functionalities within
+<span class="package no-hub"><span class=pkgname>DelimitedFiles</span></span>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>using</span> <span class=n>DelimitedFiles</span>
+</span></span></code></pre></div><p>Specifically, we need to use the <code>writedlm</code> function. Before we continue,
+let&rsquo;s make sure we put our matrices in the same place:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>destination</span> <span class=o>=</span> <span class=n>tempname</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>mkdir</span><span class=p>(</span><span class=n>destination</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;/tmp/jl_WLyZQHYxA7&#34;
+</code></pre><p>We can save, for example, the matrix <code>U</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>writedlm</span><span class=p>(</span><span class=n>joinpath</span><span class=p>(</span><span class=n>destination</span><span class=p>,</span> <span class=s>&#34;U.mat&#34;</span><span class=p>),</span> <span class=n>U</span><span class=p>)</span>
+</span></span></code></pre></div><p>Checking that it has been written is easy, as we can can simply read the
+content of the <code>destination</code> directory:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>readdir</span><span class=p>(</span><span class=n>destination</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>1-element Vector{String}:
+ &#34;U.mat&#34;
+</code></pre><p>Perfect! One thing that we <em>can</em> tweak with <code>writedlm</code> is the separator, which
+is <code>\t</code> (a tabulation) by default. We can change this to turn <code>U.mat</code> into a
+<code>csv</code> file:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>writedlm</span><span class=p>(</span><span class=n>joinpath</span><span class=p>(</span><span class=n>destination</span><span class=p>,</span> <span class=s>&#34;U.mat&#34;</span><span class=p>),</span> <span class=n>U</span><span class=p>,</span> <span class=sc>&#39;;&#39;</span><span class=p>)</span>
+</span></span></code></pre></div><p>Note that the separator is given as a <em>character</em>, not as a string! That&rsquo;s
+right, no one can stop you from writing the following line:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>writedlm</span><span class=p>(</span><span class=n>joinpath</span><span class=p>(</span><span class=n>destination</span><span class=p>,</span> <span class=s>&#34;U.mat&#34;</span><span class=p>),</span> <span class=n>U</span><span class=p>,</span> <span class=sc>&#39;🙂&#39;</span><span class=p>)</span>
+</span></span></code></pre></div><div class="callout warning">Someone, preferably yourself, <em>should definitely</em> stop you from
+writing this line.</div><p>Let&rsquo;s reset the <code>U.mat</code> file to something sensible (tab-separated):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>writedlm</span><span class=p>(</span><span class=n>joinpath</span><span class=p>(</span><span class=n>destination</span><span class=p>,</span> <span class=s>&#34;U.mat&#34;</span><span class=p>),</span> <span class=n>U</span><span class=p>)</span>
+</span></span></code></pre></div><p>We can now write the <code>V</code> matrix. In addition to the form we have seen here,
+there is another way to call <code>writedlm</code>, from within an <code>open</code>/<code>end</code>
+statement:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>open</span><span class=p>(</span><span class=n>joinpath</span><span class=p>(</span><span class=n>destination</span><span class=p>,</span> <span class=s>&#34;V.mat&#34;</span><span class=p>),</span> <span class=s>&#34;w&#34;</span><span class=p>)</span> <span class=k>do</span> <span class=n>io</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>writedlm</span><span class=p>(</span><span class=n>io</span><span class=p>,</span> <span class=n>V</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><p>Why would we <em>ever</em> pick the more verbose, more complex way? Well, it&rsquo;s
+because of the <code>"w"</code> character. It stands for <em>write</em>, and is a way to specify
+what <em>Julia</em> is allowed to do with the file. For now, it can <em>only</em> write in
+it. Alternative permissions are <code>"r"</code> (read only), <code>"r+"</code> (read and write),
+<code>"w+"</code> (write and read), &ldquo;<code>"a"</code> (append to the file), and <code>"a+"</code> (essentially
+all of the above).</p><div class="callout information">This is <em>very</em> useful when you couple this with a <em>lock</em>, as is
+detailed in the documentation for <code>open</code>, as it can prevent multiple threads
+or parallel processes from inadvertently over-writing one another. Although we
+will not go into this topic for this material, this is an important piece of
+information to keep in mind when you start dealing with distributed computing.</div><p>We can similarly check that the file has been correctly written:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>readdir</span><span class=p>(</span><span class=n>destination</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>2-element Vector{String}:
+ &#34;U.mat&#34;
+ &#34;V.mat&#34;
+</code></pre><p>Let&rsquo;s write the array of eigenvalues now:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>writedlm</span><span class=p>(</span><span class=n>joinpath</span><span class=p>(</span><span class=n>destination</span><span class=p>,</span> <span class=s>&#34;eigenvalues.vec&#34;</span><span class=p>),</span> <span class=n>Σ</span><span class=p>)</span>
+</span></span></code></pre></div><p>All done. And now, we are going to run things in reverse, and read these files
+to re-assemble our original matrix. But we will apply a little twist! The
+<code>readdlm</code> function (like <code>writedlm</code>) allows specifying the type of the data to
+read. This is a good idea if you want to save on memory and load, for example,
+data as <code>Float16</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>u</span> <span class=o>=</span> <span class=n>readdlm</span><span class=p>(</span><span class=n>joinpath</span><span class=p>(</span><span class=n>destination</span><span class=p>,</span> <span class=s>&#34;U.mat&#34;</span><span class=p>),</span> <span class=kt>Float16</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>v</span> <span class=o>=</span> <span class=n>readdlm</span><span class=p>(</span><span class=n>joinpath</span><span class=p>(</span><span class=n>destination</span><span class=p>,</span> <span class=s>&#34;V.mat&#34;</span><span class=p>),</span> <span class=kt>Float16</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>σ</span> <span class=o>=</span> <span class=n>readdlm</span><span class=p>(</span><span class=n>joinpath</span><span class=p>(</span><span class=n>destination</span><span class=p>,</span> <span class=s>&#34;eigenvalues.vec&#34;</span><span class=p>),</span> <span class=kt>Float16</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>typeof</span><span class=p>(</span><span class=n>σ</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Matrix{Float16} (alias for Array{Float16, 2})
+</code></pre><p>Notice that the type of <code>σ</code> is <code>Matrix{Float16}</code>, whereas the type of <code>Σ</code> was
+<code>Vector{Float64}</code>. This is because, by default, <code>readdlm</code> assumes that things
+are matrices, and therefore will return matrices. Thankfully this is easy to
+correct:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>σ</span> <span class=o>=</span> <span class=n>reshape</span><span class=p>(</span><span class=n>σ</span><span class=p>,</span> <span class=n>length</span><span class=p>(</span><span class=n>σ</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>5-element Vector{Float16}:
+ 2.742
+ 1.123
+ 0.778
+ 0.389
+ 0.03854
+</code></pre><div class="callout warning">This assumption that things are a matrix is likely to cause issues
+depending on how you dispatch on arguments, or on the type of operations you
+apply. As always, check the output of functions and ensure that the computer
+representation and the mathematical representation match!</div><p>And there we go. We have used <span class="package no-hub"><span class=pkgname>DelimitedFiles</span></span> to store tabular data using a
+custom separator, loaded these data back with a floating point precision, and
+corrected a little reshape incident. We can finally check that the
+decomposition/recomposition worked:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>B</span> <span class=o>=</span> <span class=n>u</span> <span class=o>*</span> <span class=n>LinearAlgebra</span><span class=o>.</span><span class=n>Diagonal</span><span class=p>(</span><span class=n>σ</span><span class=p>)</span> <span class=o>*</span> <span class=n>v</span><span class=o>&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>B</span> <span class=o>≈</span> <span class=n>A</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>This concludes the module on <span class="package no-hub"><span class=pkgname>DelimitedFiles</span></span>. At a later point in this
+material, we will use <span class=package><span class=pkgname><a href=https://juliapackages.com/p/CSV target=_blank>CSV</a></span></span> to read more structured data, but in a broad
+variety of situations, having access to simple features will get you a long
+way.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-files,module-delimited_files,status-beta,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/07_files/03_delimited_files.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/files/working-with-delimited-files/%0a%0a%f0%9f%93%a6%20section-files%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-delimited_files" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

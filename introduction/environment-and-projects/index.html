@@ -1,0 +1,241 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Environment and projects · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Environment and projects</h1><article>
+<p>In this previous module, we did not load a single package: everything we
+wanted to do was provided by <em>Julia</em> &ldquo;out of the box&rdquo;. In most applications,
+we will need to get functionalities from other packages, and this is where
+<em>Julia</em>&rsquo;s package manager shines.</p><p>There are two families of packages &ndash; some are part of the <em>standard library</em>,
+also known as <span class="package no-hub"><span class=pkgname>Base</span></span>, which is <a href=https://docs.julialang.org/en/v1/>documented</a> in the manual; others
+are developped by members of the community. Together, these packages form the
+broad &ldquo;<em>Julia</em> ecosystem&rdquo;.</p><div class="callout warning">This module is usually delivered as an interactive demo. It doesn&rsquo;t
+work quite as well as text, but the documentation is still largely enough to
+get you up to speed. Again, reading the documentation is a core way to build
+up your skills.</div><p>The <em>Julia</em> package manager (also known as <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Pkg target=_blank>Pkg</a></span></span>) is a complex but <a href=https://pkgdocs.julialang.org/v1/>really
+well documented</a> beast. For this reason, this module is primarily meant
+to point you towards the documentation, for everything related to <em>installing</em>
+and <em>updating</em> packages.</p><p>Nevertheless, there is one fundamental concept that is worth saying very
+explicitely: <strong>never work in the default environment</strong>. In most cases, this
+means that you will navigate to your working folder, and call <em>Julia</em> using</p><pre tabindex=0><code>julia --project
+</code></pre><p>Alternatively, after starting <em>Julia</em>, you can drop to the <code>Pkg</code> mode of the
+REPL by pressing <code>]</code>, and calling the <code>activate</code> command. Most of the time,
+this will be done as <code>activate .</code>, which means &ldquo;activate an environment in the
+current directory&rdquo;.</p><div class="callout information">The <code>.</code> notation is a shortcut to mean <em>here</em>, <code>..</code> means &ldquo;the folder
+immediately above here&rdquo;, and <code>~</code> means &ldquo;home&rdquo;. In the vast majority of cases,
+we will navigate our fileystem using <em>Julia</em>&rsquo;s pathing utilities.</div><p>Of course, because <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Pkg target=_blank>Pkg</a></span></span> is a package, it can be called programmatically,
+<em>i.e.</em> as part of a script:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>import</span> <span class=n>Pkg</span>
+</span></span></code></pre></div><p>It offers the same commands as the package mode from the REPL; for example, we
+can activate an environemnt in a temporary directory with a nifty little
+trick:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>Pkg</span><span class=o>.</span><span class=n>activate</span><span class=p>(</span><span class=n>mkpath</span><span class=p>(</span><span class=n>tempname</span><span class=p>()))</span>
+</span></span></code></pre></div><pre tabindex=0><code>  Activating new project at `/tmp/jl_L45WnEhuXi`
+</code></pre><p>This draws on concepts we will see (much) later, during the module on working
+with files and paths.</p><p>We can query the status of this environment:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>Pkg</span><span class=o>.</span><span class=n>status</span><span class=p>()</span>
+</span></span></code></pre></div><pre tabindex=0><code>Status `/tmp/jl_L45WnEhuXi/Project.toml` (empty project)
+</code></pre><p>This project is currently <em>empty</em>, meaning that we have not added
+<em>dependencies</em> (<em>i.e.</em> packages we will use). Let&rsquo;s fix this, by installing
+the <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Distributions target=_blank>Distributions</a></span></span> package:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>Pkg</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=s>&#34;Distributions&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>    Updating registry at `~/.julia/registries/General`
+    Updating git-repo `https://github.com/JuliaRegistries/General.git`
+   Resolving package versions...
+    Updating `/tmp/jl_L45WnEhuXi/Project.toml`
+  [31c24e10] + Distributions v0.25.79
+    Updating `/tmp/jl_L45WnEhuXi/Manifest.toml`
+  [49dc2e85] + Calculus v0.5.1
+  [d360d2e6] + ChainRulesCore v1.15.6
+  [9e997f8a] + ChangesOfVariables v0.1.4
+  [34da2185] + Compat v4.4.0
+  [9a962f9c] + DataAPI v1.13.0
+  [864edb3b] + DataStructures v0.18.13
+  [b429d917] + DensityInterface v0.4.0
+  [31c24e10] + Distributions v0.25.79
+  [ffbed154] + DocStringExtensions v0.9.2
+  [fa6b7ba4] + DualNumbers v0.6.8
+  [1a297f60] + FillArrays v0.13.5
+  [34004b35] + HypergeometricFunctions v0.3.11
+  [3587e190] + InverseFunctions v0.1.8
+  [92d709cd] + IrrationalConstants v0.1.1
+  [692b3bcd] + JLLWrappers v1.4.1
+  [2ab3a3ac] + LogExpFunctions v0.3.19
+  [e1d29d7a] + Missings v1.0.2
+  [77ba4419] + NaNMath v1.0.1
+  [bac558e1] + OrderedCollections v1.4.1
+  [90014a1f] + PDMats v0.11.16
+  [21216c6a] + Preferences v1.3.0
+  [1fd47b50] + QuadGK v2.6.0
+  [189a3867] + Reexport v1.2.2
+  [79098fc4] + Rmath v0.7.0
+  [a2af1166] + SortingAlgorithms v1.1.0
+  [276daf66] + SpecialFunctions v2.1.7
+  [82ae8749] + StatsAPI v1.5.0
+  [2913bbd2] + StatsBase v0.33.21
+  [4c63d2b9] + StatsFuns v1.0.1
+  [efe28fd5] + OpenSpecFun_jll v0.5.5+0
+  [f50d1b31] + Rmath_jll v0.3.0+0
+  [0dad84c5] + ArgTools v1.1.1
+  [56f22d72] + Artifacts
+  [2a0f44e3] + Base64
+  [ade2ca70] + Dates
+  [f43a241f] + Downloads v1.6.0
+  [7b1f6079] + FileWatching
+  [b77e0a4c] + InteractiveUtils
+  [b27032c2] + LibCURL v0.6.3
+  [76f85450] + LibGit2
+  [8f399da3] + Libdl
+  [37e2e46d] + LinearAlgebra
+  [56ddb016] + Logging
+  [d6f4376e] + Markdown
+  [ca575930] + NetworkOptions v1.2.0
+  [44cfe95a] + Pkg v1.8.0
+  [de0858da] + Printf
+  [3fa0cd96] + REPL
+  [9a3f8284] + Random
+  [ea8e919c] + SHA v0.7.0
+  [9e88b42a] + Serialization
+  [6462fe0b] + Sockets
+  [2f01184e] + SparseArrays
+  [10745b16] + Statistics
+  [4607b0f0] + SuiteSparse
+  [fa267f1f] + TOML v1.0.0
+  [a4e569a6] + Tar v1.10.1
+  [8dfed614] + Test
+  [cf7118a7] + UUIDs
+  [4ec0a83e] + Unicode
+  [e66e0078] + CompilerSupportLibraries_jll v0.5.2+0
+  [deac9b47] + LibCURL_jll v7.84.0+0
+  [29816b5a] + LibSSH2_jll v1.10.2+0
+  [c8ffd9c3] + MbedTLS_jll v2.28.0+0
+  [14a3606d] + MozillaCACerts_jll v2022.2.1
+  [4536629a] + OpenBLAS_jll v0.3.20+0
+  [05823500] + OpenLibm_jll v0.8.1+0
+  [83775a58] + Zlib_jll v1.2.12+3
+  [8e850b90] + libblastrampoline_jll v5.1.1+0
+  [8e850ede] + nghttp2_jll v1.48.0+0
+  [3f19e933] + p7zip_jll v17.4.0+0
+</code></pre><p>Note that the package manager informs us on the specific dependencies of the
+package we want to install. This management of the network of dependencies is
+largely invisible to the user, but is reported at install (and removal) time.</p><p>We can check that it has been installed:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>Pkg</span><span class=o>.</span><span class=n>status</span><span class=p>()</span>
+</span></span></code></pre></div><pre tabindex=0><code>Status `/tmp/jl_L45WnEhuXi/Project.toml`
+  [31c24e10] Distributions v0.25.79
+</code></pre><div class="callout information">The reason we can do <code>import Pkg</code> without <em>installing</em> <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Pkg target=_blank>Pkg</a></span></span> first
+is that <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Pkg target=_blank>Pkg</a></span></span> is a part of the standard library, and comes bundled with
+<em>Julia</em>. It is, in fact, one of the most central pieces of the language.</div><p>We can now use the <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Distributions target=_blank>Distributions</a></span></span> package:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>using</span> <span class=n>Distributions</span>
+</span></span><span class=line><span class=cl><span class=n>Normal</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Distributions.Normal{Float64}(μ=0.0, σ=0.2)
+</code></pre><p>In some cases, we may want to <em>remove</em> an existing package from our
+environment, because we have found an alternative solution. It is good
+practice to <em>only</em> keep the dependencies you actually need and use.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>Pkg</span><span class=o>.</span><span class=n>rm</span><span class=p>(</span><span class=s>&#34;Distributions&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>Pkg</span><span class=o>.</span><span class=n>status</span><span class=p>(</span><span class=s>&#34;Distributions&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>    Updating `/tmp/jl_L45WnEhuXi/Project.toml`
+  [31c24e10] - Distributions v0.25.79
+    Updating `/tmp/jl_L45WnEhuXi/Manifest.toml`
+  [49dc2e85] - Calculus v0.5.1
+  [d360d2e6] - ChainRulesCore v1.15.6
+  [9e997f8a] - ChangesOfVariables v0.1.4
+  [34da2185] - Compat v4.4.0
+  [9a962f9c] - DataAPI v1.13.0
+  [864edb3b] - DataStructures v0.18.13
+  [b429d917] - DensityInterface v0.4.0
+  [31c24e10] - Distributions v0.25.79
+  [ffbed154] - DocStringExtensions v0.9.2
+  [fa6b7ba4] - DualNumbers v0.6.8
+  [1a297f60] - FillArrays v0.13.5
+  [34004b35] - HypergeometricFunctions v0.3.11
+  [3587e190] - InverseFunctions v0.1.8
+  [92d709cd] - IrrationalConstants v0.1.1
+  [692b3bcd] - JLLWrappers v1.4.1
+  [2ab3a3ac] - LogExpFunctions v0.3.19
+  [e1d29d7a] - Missings v1.0.2
+  [77ba4419] - NaNMath v1.0.1
+  [bac558e1] - OrderedCollections v1.4.1
+  [90014a1f] - PDMats v0.11.16
+  [21216c6a] - Preferences v1.3.0
+  [1fd47b50] - QuadGK v2.6.0
+  [189a3867] - Reexport v1.2.2
+  [79098fc4] - Rmath v0.7.0
+  [a2af1166] - SortingAlgorithms v1.1.0
+  [276daf66] - SpecialFunctions v2.1.7
+  [82ae8749] - StatsAPI v1.5.0
+  [2913bbd2] - StatsBase v0.33.21
+  [4c63d2b9] - StatsFuns v1.0.1
+  [efe28fd5] - OpenSpecFun_jll v0.5.5+0
+  [f50d1b31] - Rmath_jll v0.3.0+0
+  [0dad84c5] - ArgTools v1.1.1
+  [56f22d72] - Artifacts
+  [2a0f44e3] - Base64
+  [ade2ca70] - Dates
+  [f43a241f] - Downloads v1.6.0
+  [7b1f6079] - FileWatching
+  [b77e0a4c] - InteractiveUtils
+  [b27032c2] - LibCURL v0.6.3
+  [76f85450] - LibGit2
+  [8f399da3] - Libdl
+  [37e2e46d] - LinearAlgebra
+  [56ddb016] - Logging
+  [d6f4376e] - Markdown
+  [ca575930] - NetworkOptions v1.2.0
+  [44cfe95a] - Pkg v1.8.0
+  [de0858da] - Printf
+  [3fa0cd96] - REPL
+  [9a3f8284] - Random
+  [ea8e919c] - SHA v0.7.0
+  [9e88b42a] - Serialization
+  [6462fe0b] - Sockets
+  [2f01184e] - SparseArrays
+  [10745b16] - Statistics
+  [4607b0f0] - SuiteSparse
+  [fa267f1f] - TOML v1.0.0
+  [a4e569a6] - Tar v1.10.1
+  [8dfed614] - Test
+  [cf7118a7] - UUIDs
+  [4ec0a83e] - Unicode
+  [e66e0078] - CompilerSupportLibraries_jll v0.5.2+0
+  [deac9b47] - LibCURL_jll v7.84.0+0
+  [29816b5a] - LibSSH2_jll v1.10.2+0
+  [c8ffd9c3] - MbedTLS_jll v2.28.0+0
+  [14a3606d] - MozillaCACerts_jll v2022.2.1
+  [4536629a] - OpenBLAS_jll v0.3.20+0
+  [05823500] - OpenLibm_jll v0.8.1+0
+  [83775a58] - Zlib_jll v1.2.12+3
+  [8e850b90] - libblastrampoline_jll v5.1.1+0
+  [8e850ede] - nghttp2_jll v1.48.0+0
+  [3f19e933] - p7zip_jll v17.4.0+0
+[ Info: We haven&#39;t cleaned this depot up for a bit, running Pkg.gc()...
+      Active manifest files: 2 found
+      Active artifact files: 57 found
+      Active scratchspaces: 0 found
+     Deleted no artifacts, repos, packages or scratchspaces
+Status `/tmp/jl_L45WnEhuXi/Project.toml` (empty project)
+</code></pre><div class="callout information">The package manager <em>would</em> report the dependencies that have been
+removed, but we silenced this by adding <code>;</code> at the end of the line. This works
+for all commands, and is a great way to prevent some output from taking up too
+much space.</div><p>Another thing that the package manager can do is <em>garbage collection</em>, <em>i.e.</em>
+cleaning the versions and environments that are not used anymore:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>Pkg</span><span class=o>.</span><span class=n>gc</span><span class=p>()</span>
+</span></span></code></pre></div><pre tabindex=0><code>      Active manifest files: 2 found
+      Active artifact files: 57 found
+      Active scratchspaces: 0 found
+     Deleted no artifacts, repos, packages or scratchspaces
+</code></pre><p>This will look through all the environments <em>Julia</em> knows about, and reclaim
+disk space by removing versions of packages that are not used anymore, or
+dependencies of projects that have not been used for a long time.</p><p>There is a lot more that you can achieve using the package manager, including
+<em>creating</em> your own packages. Reading the documentation is key here, and will
+make maintaining your projects far more efficient.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-getting_started,module-environment,status-beta,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/00_getting_started/05_environment.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/introduction/environment-and-projects/%0a%0a%f0%9f%93%a6%20section-getting_started%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-environment" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

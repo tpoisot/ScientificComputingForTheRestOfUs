@@ -1,0 +1,148 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Understanding dispatch · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Understanding dispatch</h1><article>
+<p>The point of this module is to understand <em>dispatch</em>, which is to say, the way
+the correct method is called based on the arguments; we will also see how to
+use it to write the least possible amount of code!</p><p>In order to illustrate some fundamental mechanisms, we will build a
+rock/paper/scissors game, with a twist: it will rely <em>entirely</em> on types and
+dispatch &ndash; there will be no <code>if</code>, and most of the functions will very likely
+be one-liners with almost no code at all.</p><p>The first thing we will declare is an <em>abstract</em> type. Abstract types are
+documented in the <em>Julia</em> manual (we know you don&rsquo;t want to, but you still
+have to read it), and are essentially a way to group types that share some
+form of kinship.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>abstract type</span> <span class=kt>Strategy</span> <span class=k>end</span>
+</span></span></code></pre></div><p>Based on this, we can define a series of possible moves, which are <em>sub-types</em>
+of <code>Strategy</code>. These types are not abstract, and called <em>concrete</em>, because we
+can actually create them:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>struct</span> <span class=kt>Rock</span> <span class=o>&lt;:</span> <span class=kt>Strategy</span> <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>struct</span> <span class=kt>Paper</span> <span class=o>&lt;:</span> <span class=kt>Strategy</span> <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>struct</span> <span class=kt>Scissors</span> <span class=o>&lt;:</span> <span class=kt>Strategy</span> <span class=k>end</span>
+</span></span></code></pre></div><p>Let&rsquo;s have a look at these types. First, what is the type of <code>Rock</code>?</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>typeof</span><span class=p>(</span><span class=n>Rock</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>DataType
+</code></pre><p>This shows that <code>Rock</code> is indeed a type (a <code>DataType</code>, specifically). We can
+further check that it is a sub-type of <code>Strategy</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=kt>Rock</span> <span class=o>&lt;:</span> <span class=kt>Strategy</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>The <code>&lt;:</code> operator is an interesting one &ndash; it reads as &ldquo;is a subtype of&rdquo;, and
+is going to be very helpful to limit which methods are called. Finally, we can
+check that we are able to <em>create</em> objects of the type <code>Rock</code>, using the
+<code>Rock()</code> method (or constructor):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>typeof</span><span class=p>(</span><span class=n>Rock</span><span class=p>())</span>
+</span></span></code></pre></div><pre tabindex=0><code>Main.var&#34;##337&#34;.Rock
+</code></pre><p>Let&rsquo;s finally check that an instance of <code>Rock</code> is indeed a <code>Rock</code>, but is also
+a <code>Strategy</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>isa</span><span class=p>(</span><span class=n>Rock</span><span class=p>(),</span> <span class=n>Rock</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>isa</span><span class=p>(</span><span class=n>Rock</span><span class=p>(),</span> <span class=n>Strategy</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>There is an <em>infix</em> version of <code>isa</code>, so we can use it with</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>Rock</span><span class=p>()</span> <span class=k>isa</span> <span class=n>Strategy</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>Surprisingly, this is enough to build our rock/papers/scissors game. We will
+build the most basic components: a function called <code>move</code>, which is going to
+take two arguments (the <code>Strategy</code> for each player), and returning the score
+of each player in a tuple.</p><p>To keep things simple, we will start with the situation in which both players
+use the same strategy. We can think about this situation as the following
+question: &ldquo;what are the types of the arguments corresponding to two identical
+strategies?&rdquo;. The two arguments will have the same type (<code>T</code>), and this type
+is a <code>Strategy</code> (<code>T &lt;: Strategy</code>).</p><p>We can write the function this way:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>move</span><span class=p>(</span><span class=o>::</span><span class=kt>T</span><span class=p>,</span> <span class=o>::</span><span class=kt>T</span><span class=p>)</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span><span class=o>&lt;:</span><span class=kt>Strategy</span><span class=p>}</span> <span class=o>=</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>move (generic function with 1 method)
+</code></pre><p><strong>Wait</strong>! Where are the arguments names? Well, they are not here because we do
+not <em>need</em> them. All the information is given by the types, and so instead of
+writing <code>p1::T, p2::T</code>, we can omit the names of the arguments. It&rsquo;s nice,
+because it is very concise.</p><p>But let&rsquo;s scroll back a little bit: when we declared the function, the output
+we got from <em>Julia</em> was</p><pre tabindex=0><code>move (generic function with 1 method)
+</code></pre><p>Understanding the difference between a <em>function</em> and a <em>method</em> is going to
+be crucial moving forward. A <em>function</em> is the <em>name</em> of a family of methods.
+For example, the <code>sin</code> function has many methods:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>sin</span>
+</span></span></code></pre></div><pre tabindex=0><code>sin (generic function with 17 methods)
+</code></pre><p>You may list them with <code>methods(sin)</code> and see for yourself why there are many
+different ones. If you don&rsquo;t want to do this, the summarized version is: each
+<em>method</em> is the most optimized code given the <em>type</em> of the arguments given to
+the <em>function</em>. <strong>This is dispatch</strong>.</p><p>Now that we have established what dispatch is, let&rsquo;s run a little bit of code:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>move</span><span class=p>(</span><span class=n>Rock</span><span class=p>(),</span> <span class=n>Rock</span><span class=p>())</span>
+</span></span></code></pre></div><pre tabindex=0><code>(0, 0)
+</code></pre><p>Note that we use <code>Rock()</code>, not <code>Rock</code>, and calling <code>typeof()</code> on both versions
+should clear up why.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>move</span><span class=p>(</span><span class=n>Paper</span><span class=p>(),</span> <span class=n>Paper</span><span class=p>())</span>
+</span></span></code></pre></div><pre tabindex=0><code>(0, 0)
+</code></pre><p>At this point, it is time to try something that will not work, because we have
+not written a method for it. As we are about to (potentially) fail, we might
+as so do it <em>gracefully</em>, and use a <code>try</code>/<code>catch</code> block. What we are going to
+attempt is to play a move of paper against rock. First, let&rsquo;s ensure it does
+not work:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>try</span>
+</span></span><span class=line><span class=cl>    <span class=n>move</span><span class=p>(</span><span class=n>Paper</span><span class=p>(),</span> <span class=n>Rock</span><span class=p>())</span>
+</span></span><span class=line><span class=cl><span class=k>catch</span> <span class=n>error</span>
+</span></span><span class=line><span class=cl>    <span class=n>msg</span> <span class=o>=</span> <span class=s>&#34;&#34;&#34;There was a </span><span class=si>$</span><span class=p>(</span><span class=n>typeof</span><span class=p>(</span><span class=n>error</span><span class=p>))</span><span class=s>:
+</span></span></span><span class=line><span class=cl><span class=s>    </span><span class=si>$</span><span class=p>(</span><span class=n>error</span><span class=p>)</span><span class=s>
+</span></span></span><span class=line><span class=cl><span class=s>    &#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=n>print</span><span class=p>(</span><span class=n>msg</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>There was a MethodError:
+MethodError(Main.var&#34;##337&#34;.move, (Main.var&#34;##337&#34;.Paper(), Main.var&#34;##337&#34;.Rock()), 0x0000000000007fc4)
+</code></pre><p>Succes! We had a <code>MethodError</code> (note that in <em>Julia</em>, even errors have types,
+so you can handle different errors differently). Why didn&rsquo;t it work? Well, we
+do not have a method that would be dispatched to when the arguments are of
+types, respectively, <code>Paper</code> and <code>Rock</code>. Thankfully, writing one is easy:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>move</span><span class=p>(</span><span class=o>::</span><span class=kt>Paper</span><span class=p>,</span> <span class=o>::</span><span class=kt>Rock</span><span class=p>)</span> <span class=o>=</span> <span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=mi>0</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>move (generic function with 2 methods)
+</code></pre><p>Note that <code>move</code> is <em>still</em> a <code>generic function</code>, but it has two <em>methods</em>. We
+can try the move again:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>move</span><span class=p>(</span><span class=n>Paper</span><span class=p>(),</span> <span class=n>Rock</span><span class=p>())</span>
+</span></span></code></pre></div><pre tabindex=0><code>(1, 0)
+</code></pre><p>In order to complete the game, we will add two other moves:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>move</span><span class=p>(</span><span class=o>::</span><span class=kt>Scissors</span><span class=p>,</span> <span class=o>::</span><span class=kt>Paper</span><span class=p>)</span> <span class=o>=</span> <span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>move</span><span class=p>(</span><span class=o>::</span><span class=kt>Rock</span><span class=p>,</span> <span class=o>::</span><span class=kt>Scissors</span><span class=p>)</span> <span class=o>=</span> <span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>move (generic function with 4 methods)
+</code></pre><p>This will take care of the cases where <em>player 1</em> wins. Note that we are still
+not using any argument name, as we care only about the types. But what if
+<em>player 2</em> were to win? We could define a method for <code>move(::Rock, ::Paper)</code>,
+and then two additional methods for the other combinations, but there is a
+more efficient way!</p><p>Dispatch (in <em>Julia</em>) goes from most specific to least specific. In fact, if
+you use the <code>methods</code> function on a function, it will list the methods in
+order of specificity:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>methods</span><span class=p>(</span><span class=n>move</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code># 4 methods for generic function &#34;move&#34;:
+[1] move(::Main.var&#34;##337&#34;.Paper, ::Main.var&#34;##337&#34;.Rock) in Main.var&#34;##337&#34; at /home/runner/work/ScientificComputingForTheRestOfUs/ScientificComputingForTheRestOfUs/dist/content/04_basic_functions_usage/02_dispatch.md:1
+[2] move(::Main.var&#34;##337&#34;.Scissors, ::Main.var&#34;##337&#34;.Paper) in Main.var&#34;##337&#34; at /home/runner/work/ScientificComputingForTheRestOfUs/ScientificComputingForTheRestOfUs/dist/content/04_basic_functions_usage/02_dispatch.md:1
+[3] move(::Main.var&#34;##337&#34;.Rock, ::Main.var&#34;##337&#34;.Scissors) in Main.var&#34;##337&#34; at /home/runner/work/ScientificComputingForTheRestOfUs/ScientificComputingForTheRestOfUs/dist/content/04_basic_functions_usage/02_dispatch.md:2
+[4] move(::T, ::T) where T&lt;:Main.var&#34;##337&#34;.Strategy in Main.var&#34;##337&#34; at /home/runner/work/ScientificComputingForTheRestOfUs/ScientificComputingForTheRestOfUs/dist/content/04_basic_functions_usage/02_dispatch.md:1
+</code></pre><p>The problem we want to solve becomes, in plain English, &ldquo;the move has two
+types for which we do not have a specialized method, but who are not the same
+type, and then return the result in the correct order&rdquo;. In plain <em>Julia</em>, this
+becomes:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>move</span><span class=p>(</span><span class=n>p1</span><span class=o>::</span><span class=kt>S1</span><span class=p>,</span> <span class=n>p2</span><span class=o>::</span><span class=kt>S2</span><span class=p>)</span> <span class=k>where</span> <span class=p>{</span><span class=kt>S1</span> <span class=o>&lt;:</span> <span class=kt>Strategy</span><span class=p>,</span> <span class=kt>S2</span> <span class=o>&lt;:</span> <span class=kt>Strategy</span><span class=p>}</span> <span class=o>=</span> <span class=n>reverse</span><span class=p>(</span><span class=n>move</span><span class=p>(</span><span class=n>p2</span><span class=p>,</span> <span class=n>p1</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>move (generic function with 5 methods)
+</code></pre><p>Why will it work? If you look at the updated output of <code>methods</code>, you will see
+that this method has a <em>lower</em> specificity than the specialized methods, or
+the method with the same types: it will only be dispatched to as a last
+resort!</p><p>Let&rsquo;s now check that our program works:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>valid_moves</span> <span class=o>=</span> <span class=p>[</span><span class=n>Rock</span><span class=p>(),</span> <span class=n>Paper</span><span class=p>(),</span> <span class=n>Scissors</span><span class=p>()]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>player1</span> <span class=k>in</span> <span class=n>valid_moves</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>player2</span> <span class=k>in</span> <span class=n>valid_moves</span>
+</span></span><span class=line><span class=cl>        <span class=n>println</span><span class=p>(</span><span class=s>&#34;</span><span class=si>$</span><span class=p>(</span><span class=n>player1</span><span class=p>)</span><span class=s> </span><span class=se>\t</span><span class=s> </span><span class=si>$</span><span class=p>(</span><span class=n>player2</span><span class=p>)</span><span class=se>\t</span><span class=s>→</span><span class=se>\t</span><span class=si>$</span><span class=p>(</span><span class=n>move</span><span class=p>(</span><span class=n>player1</span><span class=p>,</span> <span class=n>player2</span><span class=p>))</span><span class=s>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>Main.var&#34;##337&#34;.Rock() 	 Main.var&#34;##337&#34;.Rock()	→	(0, 0)
+Main.var&#34;##337&#34;.Rock() 	 Main.var&#34;##337&#34;.Paper()	→	(0, 1)
+Main.var&#34;##337&#34;.Rock() 	 Main.var&#34;##337&#34;.Scissors()	→	(1, 0)
+Main.var&#34;##337&#34;.Paper() 	 Main.var&#34;##337&#34;.Rock()	→	(1, 0)
+Main.var&#34;##337&#34;.Paper() 	 Main.var&#34;##337&#34;.Paper()	→	(0, 0)
+Main.var&#34;##337&#34;.Paper() 	 Main.var&#34;##337&#34;.Scissors()	→	(0, 1)
+Main.var&#34;##337&#34;.Scissors() 	 Main.var&#34;##337&#34;.Rock()	→	(0, 1)
+Main.var&#34;##337&#34;.Scissors() 	 Main.var&#34;##337&#34;.Paper()	→	(1, 0)
+Main.var&#34;##337&#34;.Scissors() 	 Main.var&#34;##337&#34;.Scissors()	→	(0, 0)
+</code></pre><p>This is, in a nutshell, why understanding dispatch is very useful. Our
+rock/paper/scissors game fits in nine lines of code: four for the types
+definitions, and five for the methods to dispatch correctly. A useful thought
+experiment would be to think about the code it would take to write code with
+the same output, but using only <code>if</code> statements: it would be longer, and
+arguably harder to maintain.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-basic_functions_usage,module-dispatch,status-release,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/04_basic_functions_usage/02_dispatch.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/functions/understanding-dispatch/%0a%0a%f0%9f%93%a6%20section-basic_functions_usage%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-dispatch" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

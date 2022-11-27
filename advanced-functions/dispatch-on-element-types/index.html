@@ -1,0 +1,95 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Dispatch on element types · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Dispatch on element types</h1><article>
+<p>In this lesson, we will see how we can dispatch on parametric types, in order
+to have a fine-grained control on what method is used for different
+types of data collections. This is a core design pattern in <em>Julia</em>, and we will
+illustrate it by building some functions related to measuring the distances between
+points.</p><p>In the previous modules, we have learned that (i) collections have a type, that is often
+a parameter of the type of the elements they contain, and (ii) methods are dispatched
+based on the type of their arguments. From this, we can build functions that are
+specialized to the content of a collection:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>whatsinthebox</span><span class=p>(</span><span class=n>x</span><span class=o>::</span><span class=kt>Array</span><span class=p>{</span><span class=kt>T</span><span class=p>,</span> <span class=kt>N</span><span class=p>})</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span><span class=p>,</span> <span class=kt>N</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=s>&#34;This collection has </span><span class=si>$</span><span class=p>(</span><span class=n>N</span><span class=p>)</span><span class=s> dimension</span><span class=si>$</span><span class=p>(</span><span class=n>N</span><span class=o>&gt;</span><span class=mi>1</span> <span class=o>?</span> <span class=s>&#34;s&#34;</span> <span class=o>:</span> <span class=s>&#34;&#34;</span><span class=p>)</span><span class=s> and stores </span><span class=si>$</span><span class=p>(</span><span class=n>T</span><span class=p>)</span><span class=s> elements&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>whatsinthebox (generic function with 1 method)
+</code></pre><p>Let us first see whether this function works, and then we will take a bit of time to
+explain what is going on.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>whatsinthebox</span><span class=p>(</span><span class=n>rand</span><span class=p>(</span><span class=kt>Float64</span><span class=p>,</span> <span class=mi>4</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;This collection has 1 dimension and stores Float64 elements&#34;
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>whatsinthebox</span><span class=p>(</span><span class=n>rand</span><span class=p>(</span><span class=kt>Float64</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>3</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;This collection has 2 dimensions and stores Float64 elements&#34;
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>whatsinthebox</span><span class=p>(</span><span class=n>rand</span><span class=p>(</span><span class=kt>Float64</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>5</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;This collection has 3 dimensions and stores Float64 elements&#34;
+</code></pre><p>The part of this function signature that makes all of this happens is the <code>where</code>
+statement: it states that the type of the argument is <code>Array{T, N}</code>, but that we care
+about <code>T</code> and <code>N</code> (essentially). But we can do something more interesting with this,
+because we can add <em>conditions</em> to the types of <code>T</code> and <code>N</code>.</p><p>There is a simple example we can build here, related to pairwise distances. Assuming we
+have a number of points, represented by a vector of numbers giving their position in some
+space, we might want to calculate the distance between each consecutive points. This is,
+in fact, the basis for the travelling salesperson problem!</p><p>But the nature of how the information is represented should give use some type of clue as
+to what the proper distance function is. For example, integer positions might represent
+intersections between streets (and so we care about the taxicab, Manhattan, snake,
+city-block, &mldr; distance); floating point positions are likely to represent the position
+on a plane, and the Euclidean distance is enough.</p><p>Let us generate a matrix giving the series of successive positions in a 3d space:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>M</span> <span class=o>=</span> <span class=n>rand</span><span class=p>(</span><span class=kt>Float64</span><span class=p>,</span> <span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=mi>8</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>3×8 Matrix{Float64}:
+ 0.338215  0.679947   0.263012  0.628435   0.43042   0.164686  0.0533581  0.591579
+ 0.885371  0.0830048  0.522814  0.275868   0.689552  0.904851  0.447327   0.843082
+ 0.837546  0.69336    0.192953  0.0730323  0.870689  0.570043  0.425416   0.705621
+</code></pre><p>And let us also generate a matrix giving the positions in a 3d space made of street
+intersections:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>P</span> <span class=o>=</span> <span class=n>rand</span><span class=p>(</span><span class=mi>1</span><span class=o>:</span><span class=mi>10</span><span class=p>,</span> <span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=mi>8</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>3×8 Matrix{Int64}:
+ 4  1  3  5  2   6   9   9
+ 6  1  8  7  7   9  10   9
+ 2  6  5  2  6  10  10  10
+</code></pre><p>Perfect! Now, what would a distance function for such data look like? It would take two
+arrays of numbers as arguments, and return a number of the same type.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>distance</span><span class=p>(</span><span class=n>p1</span><span class=o>::</span><span class=kt>Vector</span><span class=p>{</span><span class=kt>T</span><span class=p>},</span> <span class=n>p2</span><span class=o>::</span><span class=kt>Vector</span><span class=p>{</span><span class=kt>T</span><span class=p>})</span><span class=o>::</span><span class=kt>T</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>Real</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>sqrt</span><span class=p>(</span><span class=n>sum</span><span class=p>((</span><span class=n>p1</span> <span class=o>.-</span> <span class=n>p2</span><span class=p>)</span><span class=o>.^</span><span class=p>(</span><span class=mf>2.0</span><span class=p>)))</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>distance (generic function with 1 method)
+</code></pre><p>We can try this on the matrix of continuous positions:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>distance</span><span class=p>(</span><span class=n>M</span><span class=p>[</span><span class=o>:</span><span class=p>,</span><span class=mi>1</span><span class=p>],</span> <span class=n>M</span><span class=p>[</span><span class=o>:</span><span class=p>,</span><span class=mi>2</span><span class=p>])</span>
+</span></span></code></pre></div><pre tabindex=0><code>0.8839466377114678
+</code></pre><p>This would <em>not</em> work on the matrix of discrete positions. The first reason is that this
+is not the distance measure we care about (but the code has no way to know about that),
+and the second reason is that the return point would <em>not</em> be an integer! And so, we need
+to define a method for distance that would specifically return the taxicab distance:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>distance</span><span class=p>(</span><span class=n>p1</span><span class=o>::</span><span class=kt>Vector</span><span class=p>{</span><span class=kt>T</span><span class=p>},</span> <span class=n>p2</span><span class=o>::</span><span class=kt>Vector</span><span class=p>{</span><span class=kt>T</span><span class=p>})</span><span class=o>::</span><span class=kt>T</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>Integer</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>sum</span><span class=p>(</span><span class=n>abs</span><span class=o>.</span><span class=p>(</span><span class=n>p1</span> <span class=o>.-</span> <span class=n>p2</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>distance (generic function with 2 methods)
+</code></pre><p>If we call this function on vectors from the matrix with discrete positions:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>distance</span><span class=p>(</span><span class=n>P</span><span class=p>[</span><span class=o>:</span><span class=p>,</span><span class=mi>1</span><span class=p>],</span> <span class=n>P</span><span class=p>[</span><span class=o>:</span><span class=p>,</span><span class=mi>2</span><span class=p>])</span>
+</span></span></code></pre></div><pre tabindex=0><code>12
+</code></pre><p>Now that we have defined this function, we can wrap everything up to return the total
+travel length corresponding to an array of successive positions:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>travel</span><span class=p>(</span><span class=n>m</span><span class=o>::</span><span class=kt>Array</span><span class=p>{</span><span class=kt>T</span><span class=p>,</span> <span class=kt>N</span><span class=p>})</span><span class=o>::</span><span class=kt>T</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>Number</span><span class=p>,</span> <span class=kt>N</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=n>travel_length</span> <span class=o>=</span> <span class=n>zero</span><span class=p>(</span><span class=n>T</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>i</span> <span class=k>in</span> <span class=n>axes</span><span class=p>(</span><span class=n>m</span><span class=p>,</span> <span class=mi>2</span><span class=p>)[</span><span class=mi>2</span><span class=o>:</span><span class=k>end</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>        <span class=n>travel_length</span> <span class=o>+=</span> <span class=n>distance</span><span class=p>(</span><span class=n>m</span><span class=p>[</span><span class=o>:</span><span class=p>,(</span><span class=n>i</span><span class=o>-</span><span class=mi>1</span><span class=p>)],</span> <span class=n>m</span><span class=p>[</span><span class=o>:</span><span class=p>,</span><span class=n>i</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>travel_length</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>travel (generic function with 1 method)
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>travel</span><span class=p>(</span><span class=n>M</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>4.7194205313209325
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>travel</span><span class=p>(</span><span class=n>P</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>50
+</code></pre><p>And there we have it! This module is scratching the surface of what is possible when
+dispatching on parametric types. We will make use of these capacities in the later
+modules.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-advanced_functions_usage,module-element_dispatch,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/05_advanced_functions_usage/02_element_dispatch.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/advanced-functions/dispatch-on-element-types/%0a%0a%f0%9f%93%a6%20section-advanced_functions_usage%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-element_dispatch" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

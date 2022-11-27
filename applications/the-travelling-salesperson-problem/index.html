@@ -1,0 +1,195 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>The travelling salesperson problem · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>The travelling salesperson problem</h1><article>
+<p>In this module, we will look at a way to start working on the travelling salesperson
+problem. This is mostly an excuse to play with simulated annealing, which is a really cool
+optimisation algorithm.</p><p>The travelling salesperson problem is a rather famous problem in optimisation, which is
+often stated as follows: &ldquo;given a list of cities represented by their coordinates, what is
+the shortest possible route that visits all of these cities exactly once, and returns to
+its origin?&rdquo;.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>using</span> <span class=n>CairoMakie</span>
+</span></span><span class=line><span class=cl><span class=n>CairoMakie</span><span class=o>.</span><span class=n>activate!</span><span class=p>(;</span> <span class=n>px_per_unit</span> <span class=o>=</span> <span class=mi>2</span><span class=p>)</span> <span class=c># This ensures high-res figures</span>
+</span></span></code></pre></div><p>As this problem involves some stochasticity, we will set a seed for our random number
+generator, using the <span class="package no-hub"><span class=pkgname>Random</span></span> package from the standard library:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>import</span> <span class=n>Random</span>
+</span></span><span class=line><span class=cl><span class=n>Random</span><span class=o>.</span><span class=n>seed!</span><span class=p>(</span><span class=mi>12345678</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Random.TaskLocalRNG()
+</code></pre><p>There is a <em>lot</em> of information in this statement, and we will need to translate it into
+code. But we can work on these elements one at a time. First, there is a list of cities,
+and these cities are represented by their coordinates. We can set a few limits here: first
+the world exists in two dimensions; second, there are 50 cities to visit. We will arrange
+these cities on a circle, with some small perturbations:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>angles</span> <span class=o>=</span> <span class=n>rand</span><span class=p>(</span><span class=mi>50</span><span class=p>)</span> <span class=o>.*</span> <span class=mi>2</span><span class=nb>π</span>
+</span></span><span class=line><span class=cl><span class=n>radii</span> <span class=o>=</span> <span class=n>sqrt</span><span class=o>.</span><span class=p>(</span><span class=mf>8.0</span> <span class=o>.+</span> <span class=n>rand</span><span class=p>(</span><span class=n>length</span><span class=p>(</span><span class=n>angles</span><span class=p>))</span> <span class=o>.*</span> <span class=mf>2.0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>x</span> <span class=o>=</span> <span class=n>cos</span><span class=o>.</span><span class=p>(</span><span class=n>angles</span><span class=p>)</span> <span class=o>.*</span> <span class=n>radii</span>
+</span></span><span class=line><span class=cl><span class=n>y</span> <span class=o>=</span> <span class=n>sin</span><span class=o>.</span><span class=p>(</span><span class=n>angles</span><span class=p>)</span> <span class=o>.*</span> <span class=n>radii</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>cities</span> <span class=o>=</span> <span class=n>permutedims</span><span class=p>(</span><span class=n>hcat</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>cities</span><span class=p>[</span><span class=o>:</span><span class=p>,</span> <span class=mi>1</span><span class=o>:</span><span class=mi>5</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>2×5 Matrix{Float64}:
+  2.91931   -0.494452  -0.770191   2.4027   -2.68794
+ -0.982319  -3.07068    2.88993   -1.86142  -1.62203
+</code></pre><div class="callout domain">We use the square root transform of the radius to have points defined uniformly
+within a ribbon. This is a small detail, but it&rsquo;s worth keeping in mind if you want to
+generate points that are uniformly distributed within a circle.</div><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>scatter</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=n>cities</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>color</span> <span class=o>=</span> <span class=ss>:black</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>axis</span> <span class=o>=</span> <span class=p>(;</span> <span class=n>aspect</span> <span class=o>=</span> <span class=n>AxisAspect</span><span class=p>(</span><span class=mf>1.0</span><span class=p>)),</span>
+</span></span><span class=line><span class=cl>    <span class=n>figure</span> <span class=o>=</span> <span class=p>(;</span> <span class=n>backgroundcolor</span> <span class=o>=</span> <span class=ss>:transparent</span><span class=p>),</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span></code></pre></div><p><img src=/plots/06_travelling_problem-11.png alt></p><p>The next information given by the statement of the problem is that we care about the
+distances between these cities, and so we can pre-calculate these distances, assuming that
+the Euclidean distance is suitable here.</p><p>We need to fill our matrix - this is going to be made easier by the fact that the distance
+is symmetric, but this is not a requirement here. We will use the <code>foo</code>/<code>foo!</code> design
+pattern to write two functions to perform this operation.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>distancematrix!</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=n>D</span><span class=o>::</span><span class=kt>Matrix</span><span class=p>{</span><span class=kt>T1</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=n>cities</span><span class=o>::</span><span class=kt>Matrix</span><span class=p>{</span><span class=kt>T2</span><span class=p>},</span>
+</span></span><span class=line><span class=cl><span class=p>)</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T1</span> <span class=o>&lt;:</span> <span class=kt>AbstractFloat</span><span class=p>,</span> <span class=kt>T2</span> <span class=o>&lt;:</span> <span class=kt>AbstractFloat</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>i</span> <span class=k>in</span> <span class=n>axes</span><span class=p>(</span><span class=n>cities</span><span class=p>,</span> <span class=mi>2</span><span class=p>)[</span><span class=mi>1</span><span class=o>:</span><span class=p>(</span><span class=k>end</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)],</span> <span class=n>j</span> <span class=k>in</span> <span class=n>axes</span><span class=p>(</span><span class=n>cities</span><span class=p>,</span> <span class=mi>2</span><span class=p>)[(</span><span class=n>i</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span><span class=o>:</span><span class=k>end</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>        <span class=n>D</span><span class=p>[</span><span class=n>i</span><span class=p>,</span> <span class=n>j</span><span class=p>]</span> <span class=o>=</span> <span class=n>D</span><span class=p>[</span><span class=n>j</span><span class=p>,</span> <span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>sqrt</span><span class=p>(</span><span class=n>sum</span><span class=p>((</span><span class=n>cities</span><span class=p>[</span><span class=o>:</span><span class=p>,</span> <span class=n>i</span><span class=p>]</span> <span class=o>.-</span> <span class=n>cities</span><span class=p>[</span><span class=o>:</span><span class=p>,</span> <span class=n>j</span><span class=p>])</span> <span class=o>.^</span> <span class=mf>2.0</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>D</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>distancematrix! (generic function with 1 method)
+</code></pre><div class="callout opinion">We are using different floating point precisions here because the distance
+matrix might be large, and because we don&rsquo;t really care about getting a lot of precision.
+By default, we will use <code>Float16</code>.</div><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>distancematrix</span><span class=p>(</span><span class=n>cities</span><span class=o>::</span><span class=kt>Matrix</span><span class=p>{</span><span class=kt>T</span><span class=p>};</span> <span class=n>dtype</span><span class=o>::</span><span class=kt>Type</span> <span class=o>=</span> <span class=kt>Float16</span><span class=p>)</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>Number</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=n>D</span> <span class=o>=</span> <span class=n>zeros</span><span class=p>(</span><span class=n>dtype</span><span class=p>,</span> <span class=n>size</span><span class=p>(</span><span class=n>cities</span><span class=p>,</span> <span class=mi>2</span><span class=p>),</span> <span class=n>size</span><span class=p>(</span><span class=n>cities</span><span class=p>,</span> <span class=mi>2</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>distancematrix!</span><span class=p>(</span><span class=n>D</span><span class=p>,</span> <span class=n>cities</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>distancematrix (generic function with 1 method)
+</code></pre><p>With these two functions, we can generate our distance matrix:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>D</span> <span class=o>=</span> <span class=n>distancematrix</span><span class=p>(</span><span class=n>cities</span><span class=p>;</span> <span class=n>dtype</span> <span class=o>=</span> <span class=kt>Float16</span><span class=p>);</span>
+</span></span></code></pre></div><p>The third element of the problem is that we have a &ldquo;route&rdquo;, which is the order in which we
+visit cities. Each city is visited only once (so we know how many stops there are), and
+the salesperson returns to the origin city.</p><div class="callout domain">We do not really care about which city is the origin city, since by the end, we
+will have a loop. We can simply pick whichever arbitrary city we want as the point of
+origin after the fact.</div><p>The easiest way to represent a route is therefore to have a series of indices,
+representing the order in which we visit the cities. In the absence of a know initial
+solution, we will simply visit the cities in order:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>route</span> <span class=o>=</span> <span class=n>collect</span><span class=p>(</span><span class=n>axes</span><span class=p>(</span><span class=n>cities</span><span class=p>,</span> <span class=mi>2</span><span class=p>));</span>
+</span></span></code></pre></div><p>We can plot this route to see what it would look like:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>scatter</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=n>cities</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>color</span> <span class=o>=</span> <span class=ss>:black</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>axis</span> <span class=o>=</span> <span class=p>(;</span> <span class=n>aspect</span> <span class=o>=</span> <span class=n>AxisAspect</span><span class=p>(</span><span class=mf>1.0</span><span class=p>)),</span>
+</span></span><span class=line><span class=cl>    <span class=n>figure</span> <span class=o>=</span> <span class=p>(;</span> <span class=n>backgroundcolor</span> <span class=o>=</span> <span class=ss>:transparent</span><span class=p>),</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>lines!</span><span class=p>(</span><span class=n>cities</span><span class=p>[</span><span class=o>:</span><span class=p>,</span> <span class=n>route</span><span class=p>];</span> <span class=n>color</span> <span class=o>=</span> <span class=ss>:black</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>current_figure</span><span class=p>()</span>
+</span></span></code></pre></div><p><img src=/plots/06_travelling_problem-24.png alt></p><p>What is the total travel distance of this route? In order to know this, we only need to
+read the pairwise distances between adjacent cities in the route, and add the return step
+at the end. This is feasible with a list comprehension, as we need to read the distance
+between step $i$ and step $i-1$ of the route, which are mapped to two different cities:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>routedistance</span><span class=p>(</span><span class=n>route</span><span class=p>,</span> <span class=n>D</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>pairwise_distances</span> <span class=o>=</span> <span class=p>[</span><span class=n>D</span><span class=p>[</span><span class=n>route</span><span class=p>[</span><span class=n>i</span> <span class=o>-</span> <span class=mi>1</span><span class=p>],</span> <span class=n>route</span><span class=p>[</span><span class=n>i</span><span class=p>]]</span> <span class=k>for</span> <span class=n>i</span> <span class=k>in</span> <span class=n>axes</span><span class=p>(</span><span class=n>route</span><span class=p>,</span> <span class=mi>1</span><span class=p>)[</span><span class=mi>2</span><span class=o>:</span><span class=k>end</span><span class=p>]]</span>
+</span></span><span class=line><span class=cl>    <span class=n>return_home</span> <span class=o>=</span> <span class=n>D</span><span class=p>[</span><span class=n>route</span><span class=p>[</span><span class=k>end</span><span class=p>],</span> <span class=n>route</span><span class=p>[</span><span class=k>begin</span><span class=p>]]</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>sum</span><span class=p>(</span><span class=n>pairwise_distances</span><span class=p>)</span> <span class=o>+</span> <span class=n>return_home</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>routedistance (generic function with 1 method)
+</code></pre><p>We know that our distance matrix is not going to change, so in the spirit of being very
+lazy, we can add a method to <code>routedistance</code> that returns a function based on distance
+matrix:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>routedistance</span><span class=p>(</span><span class=n>D</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=p>(</span><span class=n>route</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=n>routedistance</span><span class=p>(</span><span class=n>route</span><span class=p>,</span> <span class=n>D</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>routedistance (generic function with 2 methods)
+</code></pre><p>We can use this function to write our distance calculator:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>RD</span> <span class=o>=</span> <span class=n>routedistance</span><span class=p>(</span><span class=n>D</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>#4 (generic function with 1 method)
+</code></pre><p>With this function, we can calculate our current best distance ($d_0$):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>δ₀</span> <span class=o>=</span> <span class=n>RD</span><span class=p>(</span><span class=n>route</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Float16(202.6)
+</code></pre><p>Problem solved! Now what we need to do is find a way to decrease this distance, which
+would represent a shortest path. We could brute-force our way through the solution, but
+this would take a lot of time. Instead, we are going to rely on simulated annealing to
+optimize the problem for us, in a way that is going to be able to jump over local minima.</p><p>In simulated annealing, we have an <em>energy budget</em>, which is exhausted in a time-dependent
+way, which can be exponential, inverse-log, or geometric (the function we will implement
+here). The energy budget serves to calculate the probability of accepting a bad move, <em>i.e.</em> a move
+that would make the route <em>longer</em>.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>energy</span><span class=p>(</span><span class=n>T₀</span><span class=p>,</span> <span class=n>λ</span><span class=p>,</span> <span class=n>t</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>T₀</span> <span class=o>*</span> <span class=p>(</span><span class=n>λ</span><span class=o>^</span><span class=n>t</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>energy (generic function with 1 method)
+</code></pre><p>Accepting a <em>bad</em> move is based on a probability, which is given by the exponential of
+minus the cost of the move divided by the energy. The cost of the move, in turn, is
+defined as the differentce between the route length and the best route length so far:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>move_probability</span><span class=p>(</span><span class=n>δᵢ</span><span class=p>,</span> <span class=n>δ₀</span><span class=p>,</span> <span class=n>ε</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>exp</span><span class=p>(</span><span class=o>-</span><span class=p>(</span><span class=n>δᵢ</span> <span class=o>-</span> <span class=n>δ₀</span><span class=p>)</span> <span class=o>/</span> <span class=n>ε</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>move_probability (generic function with 1 method)
+</code></pre><p>The best distance, initially, is given by <code>δ₀</code>. We need to define what a <em>move</em> is. There
+are a few different ways, but the simplest one is probably to switch the order in which we
+visit two cities. We can pick to positions in the route with:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>switch</span> <span class=o>=</span> <span class=n>rand</span><span class=p>(</span><span class=n>eachindex</span><span class=p>(</span><span class=n>route</span><span class=p>),</span> <span class=mi>2</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>2-element Vector{Int64}:
+  4
+ 44
+</code></pre><p>This corresponds to two cities:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>route</span><span class=p>[</span><span class=n>switch</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>2-element Vector{Int64}:
+  4
+ 44
+</code></pre><p>We can now flip them by changing the route <em>in place</em>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>route</span><span class=p>[</span><span class=n>switch</span><span class=p>]</span> <span class=o>=</span> <span class=n>route</span><span class=p>[</span><span class=n>reverse</span><span class=p>(</span><span class=n>switch</span><span class=p>)]</span>
+</span></span></code></pre></div><pre tabindex=0><code>2-element Vector{Int64}:
+ 44
+  4
+</code></pre><p>And we now have all of the ingredients to build our simulated annealing optimisation of the
+travelling salesperson problem! All we need to do is run it a long enough time. The secret
+in simulated annealing is to use a long run time with a very gradual cooling schedule.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>best_distance</span> <span class=o>=</span> <span class=n>zeros</span><span class=p>(</span><span class=kt>Float64</span><span class=p>,</span> <span class=mi>200_000</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>best_distance</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=n>δ₀</span>
+</span></span></code></pre></div><pre tabindex=0><code>Float16(202.6)
+</code></pre><p>We now have everything we need to run the algorithm. If a move is good, we will always
+accept it, and if it is bad, we will accept it with a probability dependent on the current
+energy of the system. We need to decide on a value for <code>T₀</code> and <code>λ</code>, which require some
+manual tweaking. As a good heuristic, starting with an initial temperature equal to twice
+the best solution often &ldquo;just works&rdquo;, and a value of the decay parameter very close to
+unity ensures that the cooling is very gradual.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>T₀</span><span class=p>,</span> <span class=n>λ</span> <span class=o>=</span> <span class=mi>2</span><span class=n>δ₀</span><span class=p>,</span> <span class=mf>0.9999</span>
+</span></span></code></pre></div><pre tabindex=0><code>(Float16(405.2), 0.9999)
+</code></pre><p>We can now run everything. This problem is very simple, so this will only take a few
+seconds. We will use <code>@elapsed</code> in front of the loop, to se how many seconds it actually
+took:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=nd>@elapsed</span> <span class=k>for</span> <span class=n>i</span> <span class=k>in</span> <span class=n>axes</span><span class=p>(</span><span class=n>best_distance</span><span class=p>,</span> <span class=mi>1</span><span class=p>)[</span><span class=mi>2</span><span class=o>:</span><span class=k>end</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=k>local</span> <span class=n>switch</span>
+</span></span><span class=line><span class=cl>    <span class=n>switch</span> <span class=o>=</span> <span class=n>rand</span><span class=p>(</span><span class=n>eachindex</span><span class=p>(</span><span class=n>route</span><span class=p>),</span> <span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>route</span><span class=p>[</span><span class=n>switch</span><span class=p>]</span> <span class=o>=</span> <span class=n>route</span><span class=p>[</span><span class=n>reverse</span><span class=p>(</span><span class=n>switch</span><span class=p>)]</span>
+</span></span><span class=line><span class=cl>    <span class=n>δᵢ</span> <span class=o>=</span> <span class=n>RD</span><span class=p>(</span><span class=n>route</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>δᵢ</span> <span class=o>&lt;</span> <span class=n>best_distance</span><span class=p>[</span><span class=n>i</span> <span class=o>-</span> <span class=mi>1</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>        <span class=n>best_distance</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>δᵢ</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>rand</span><span class=p>()</span> <span class=o>&lt;=</span> <span class=n>move_probability</span><span class=p>(</span><span class=n>δᵢ</span><span class=p>,</span> <span class=n>best_distance</span><span class=p>[</span><span class=n>i</span> <span class=o>-</span> <span class=mi>1</span><span class=p>],</span> <span class=n>energy</span><span class=p>(</span><span class=n>T₀</span><span class=p>,</span> <span class=n>λ</span><span class=p>,</span> <span class=n>i</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>            <span class=n>best_distance</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>δᵢ</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span>
+</span></span><span class=line><span class=cl>            <span class=n>route</span><span class=p>[</span><span class=n>switch</span><span class=p>]</span> <span class=o>=</span> <span class=n>route</span><span class=p>[</span><span class=n>reverse</span><span class=p>(</span><span class=n>switch</span><span class=p>)]</span>
+</span></span><span class=line><span class=cl>            <span class=n>best_distance</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>best_distance</span><span class=p>[</span><span class=n>i</span> <span class=o>-</span> <span class=mi>1</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>0.418439641
+</code></pre><p>After all the iterations are done, we can have a look at the new solution:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>scatter</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=n>cities</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>color</span> <span class=o>=</span> <span class=ss>:black</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>axis</span> <span class=o>=</span> <span class=p>(;</span> <span class=n>aspect</span> <span class=o>=</span> <span class=n>AxisAspect</span><span class=p>(</span><span class=mf>1.0</span><span class=p>)),</span>
+</span></span><span class=line><span class=cl>    <span class=n>figure</span> <span class=o>=</span> <span class=p>(;</span> <span class=n>backgroundcolor</span> <span class=o>=</span> <span class=ss>:transparent</span><span class=p>),</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>lines!</span><span class=p>(</span><span class=n>cities</span><span class=p>[</span><span class=o>:</span><span class=p>,</span> <span class=n>route</span><span class=p>];</span> <span class=n>color</span> <span class=o>=</span> <span class=ss>:black</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>current_figure</span><span class=p>()</span>
+</span></span></code></pre></div><p><img src=/plots/06_travelling_problem-51.png alt></p><p>We can also check that the solution has been getting better over time, by looking at the
+distance:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>lines</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=n>log</span><span class=o>.</span><span class=p>(</span><span class=n>best_distance</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>axis</span> <span class=o>=</span> <span class=p>(;</span> <span class=n>xlabel</span> <span class=o>=</span> <span class=s>&#34;Step&#34;</span><span class=p>,</span> <span class=n>ylabel</span> <span class=o>=</span> <span class=s>&#34;Route distance (log)&#34;</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>    <span class=n>figure</span> <span class=o>=</span> <span class=p>(;</span> <span class=n>backgroundcolor</span> <span class=o>=</span> <span class=ss>:transparent</span><span class=p>),</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span></code></pre></div><p><img src=/plots/06_travelling_problem-53.png alt></p><p>This works rather well!</p><div class="callout opinion">If we&rsquo;re being fully honest? We tried different seeds for the random number
+generator until finding one that gave the &ldquo;perfect&rdquo; result. Sorry.</div><p>An interesting observation is that the shortest distance had not changed for a large
+number of iterations. This is because the energy in the system was very close to 0, and so
+even a barely bad move had no chance of being accepted. A possible refinement of this
+algorithm would be to keep track of the number of steps since there was last an
+improvement, and fix a point at which we stop.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-applications,module-travelling_problem,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/08_applications/06_travelling_problem.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/applications/the-travelling-salesperson-problem/%0a%0a%f0%9f%93%a6%20section-applications%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-travelling_problem" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

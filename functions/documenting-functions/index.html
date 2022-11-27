@@ -1,0 +1,91 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Documenting functions · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Documenting functions</h1><article>
+<p>In this module, we will look at what is probably the most important part of writing
+a function: writing its documentation. By the end of this module, you will be able to
+write a docstring for your function that is accessible through <em>Julia</em>&rsquo;s help mode.</p><p>Documenting functions is <em>essential</em>. It will help you recall what they do and how to use
+them, and without documentation, your code might as well not exist. <em>Julia</em> offers ways to
+see the documentation for functions (type <code>?</code> at the REPL), and ways to develop manuals
+for your code (see <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Documenter target=_blank>Documenter</a></span></span> and <span class=package><span class=pkgname><a href=https://juliapackages.com/p/DocumenterTools target=_blank>DocumenterTools</a></span></span>).</p><div class="callout opinion">There are different levels of documentation. Good code is its own
+documentation. Good comments convey the purpose of the code, and are a good way to keep
+track of insights about how it actually works. Good docstrings remove the ambiguities
+about how to use a function and what it does. Good vignettes and example show how to
+actually work with these functions. Each of these things (with the exception of examples
+if you are not building a large package), when neglected, makes users less likely to use
+your code well, or at all.</div><p>Defining the docstring (<em>i.e.</em> a text that serves as an explanation for the function) is
+done by adding a special long-form string, which uses <code>"""</code> as the delimiters, on the
+lines immediately before the function declaration. The first line of this docstring is by
+convention the signature of the function.</p><p>We can write a very simple example, using a function called <code>twice</code>, which returns twice
+its input. This is not terribly interesting, but we can document this function in details:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=s>&#34;&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s>    twice(x::T) where {T &lt;: Real}
+</span></span></span><span class=line><span class=cl><span class=s>
+</span></span></span><span class=line><span class=cl><span class=s>The function `twice` will return, for an input `x` which is a `Real` number, the result of the x+x operation.
+</span></span></span><span class=line><span class=cl><span class=s>
+</span></span></span><span class=line><span class=cl><span class=s>**Example**:
+</span></span></span><span class=line><span class=cl><span class=s>
+</span></span></span><span class=line><span class=cl><span class=s>```julia-repl
+</span></span></span><span class=line><span class=cl><span class=s>julia&gt; twice(2)
+</span></span></span><span class=line><span class=cl><span class=s>4
+</span></span></span><span class=line><span class=cl><span class=s>```
+</span></span></span><span class=line><span class=cl><span class=s>&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>function</span> <span class=n>twice</span><span class=p>(</span><span class=n>x</span><span class=o>::</span><span class=kt>T</span><span class=p>)</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>Real</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>x</span> <span class=o>+</span> <span class=n>x</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>Main.var&#34;##342&#34;.twice
+</code></pre><p>Note that the content of the docstring is in the markdown language - we can have a lot of
+markup, including tables, bullet points, numbered lists, code blocks, etc&mldr; In fact, if
+we print the documentation entry for this function, it will show up (depending on your
+environment) as a formatted string:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=nd>@doc</span> <span class=n>twice</span>
+</span></span></code></pre></div><pre tabindex=0><code>twice(x::T) where {T &lt;: Real}
+</code></pre><p>The function <code>twice</code> will return, for an input <code>x</code> which is a <code>Real</code> number, the result of the x+x operation.</p><p><strong>Example</strong>:</p><pre tabindex=0><code class=language-julia-repl data-lang=julia-repl>julia&gt; twice(2)
+4
+</code></pre><p>When we add a new method, we can document it as well. This is because documentation
+entries for a function are collected together:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=s>&#34;&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s>    twice(::Type{R}, x::T) where {R &lt;: Real, T &lt;: Real}
+</span></span></span><span class=line><span class=cl><span class=s>
+</span></span></span><span class=line><span class=cl><span class=s>The function `twice` will return, for an input `x` which is a `Real` number, the result of the x+x operation. The result will be converted to the type `R` given as the first argument, which must also be a real number.
+</span></span></span><span class=line><span class=cl><span class=s>
+</span></span></span><span class=line><span class=cl><span class=s>**Example**:
+</span></span></span><span class=line><span class=cl><span class=s>
+</span></span></span><span class=line><span class=cl><span class=s>```julia-repl
+</span></span></span><span class=line><span class=cl><span class=s>julia&gt; twice(Float32, 2)
+</span></span></span><span class=line><span class=cl><span class=s>4.0f0
+</span></span></span><span class=line><span class=cl><span class=s>```
+</span></span></span><span class=line><span class=cl><span class=s>&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>function</span> <span class=n>twice</span><span class=p>(</span><span class=o>::</span><span class=kt>Type</span><span class=p>{</span><span class=kt>R</span><span class=p>},</span> <span class=n>x</span><span class=o>::</span><span class=kt>T</span><span class=p>)</span> <span class=k>where</span> <span class=p>{</span><span class=kt>R</span> <span class=o>&lt;:</span> <span class=kt>Real</span><span class=p>,</span> <span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>Real</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>convert</span><span class=p>(</span><span class=n>R</span><span class=p>,</span> <span class=n>x</span> <span class=o>+</span> <span class=n>x</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>Main.var&#34;##342&#34;.twice
+</code></pre><p>If we now ask for the documentation of <code>twice</code>, we will be able to see two entries:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=nd>@doc</span> <span class=n>twice</span>
+</span></span></code></pre></div><pre tabindex=0><code>twice(x::T) where {T &lt;: Real}
+</code></pre><p>The function <code>twice</code> will return, for an input <code>x</code> which is a <code>Real</code> number, the result of the x+x operation.</p><p><strong>Example</strong>:</p><pre tabindex=0><code class=language-julia-repl data-lang=julia-repl>julia&gt; twice(2)
+4
+</code></pre><pre tabindex=0><code>twice(::Type{R}, x::T) where {R &lt;: Real, T &lt;: Real}
+</code></pre><p>The function <code>twice</code> will return, for an input <code>x</code> which is a <code>Real</code> number, the result of the x+x operation. The result will be converted to the type <code>R</code> given as the first argument, which must also be a real number.</p><p><strong>Example</strong>:</p><pre tabindex=0><code class=language-julia-repl data-lang=julia-repl>julia&gt; twice(Float32, 2)
+4.0f0
+</code></pre><p>The functions in this material almost never have a docstring, which is justified by the
+fact that they actually do: it is the text around them that explains how they are built.
+In short, we care more about building the function than about using it, and this very
+special use-case means that we can justify not having a documentation. In actual research
+work, functions <em>must</em> be documented.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-basic_functions_usage,module-documenting_functions,status-beta,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/04_basic_functions_usage/06_documenting_functions.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/functions/documenting-functions/%0a%0a%f0%9f%93%a6%20section-basic_functions_usage%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-documenting_functions" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

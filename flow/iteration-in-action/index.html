@@ -1,0 +1,93 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Iteration in action! · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Iteration in action!</h1><article>
+<p>In this module, we will start integrating skills from the previous modules,
+both about iteration and about data structures, indexing, slicing, etc. We
+will simulate the temporal dynamics of two populations, one of hosts and one
+of parasitoids, using a simple time-discrete model.</p><p>The Nicholson-Bailey model of host-parasitoid dynamics is a discrete time
+model where the population size of the host at the next timestep is $H_{t+1} =
+kH_te^{-aP_t}$, and the population of the parasitoid at the next timestep is
+$P_{t+1} = cH_t(1-e^{-aP_t})$. In this model, $k$ is the reproductive rate of
+the host, $c$ is the number of eggs laid in a host, and $a$ is a measure of
+how actively the parasitoid is looking for its host.</p><div class="callout domain">This model will not lead to coexistence unless it is spatialized,
+which is a little more difficult as a programming exercise. Furthermore, it
+only produces interesting results for $k>1$.</div><p>We can easily represent our model as a matrix, with one row for each
+population, and one column for each timestep:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>timeseries</span> <span class=o>=</span> <span class=n>zeros</span><span class=p>(</span><span class=kt>Float64</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>36</span><span class=p>);</span>
+</span></span></code></pre></div><p>We can also store our parameters in a <code>NamedTuple</code> - this will make it easier
+to access them in the loop:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>parameters</span> <span class=o>=</span> <span class=p>(</span><span class=n>k</span> <span class=o>=</span> <span class=mf>1.5</span><span class=p>,</span> <span class=n>c</span> <span class=o>=</span> <span class=mf>1.2</span><span class=p>,</span> <span class=n>a</span> <span class=o>=</span> <span class=mf>1.02</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>(k = 1.5, c = 1.2, a = 1.02)
+</code></pre><p>We need to set our initial populations to something that is not 0! This is
+very important, as $(0,0)$ is an equilibrium of the model for which neither
+population grows.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>timeseries</span><span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>],</span> <span class=n>timeseries</span><span class=p>[</span><span class=mi>2</span><span class=p>,</span> <span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>(1.0, 1.0)
+</code></pre><p>And now, we can start iterating:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>for</span> <span class=n>t</span> <span class=k>in</span> <span class=n>axes</span><span class=p>(</span><span class=n>timeseries</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>t</span> <span class=o>&gt;</span> <span class=mi>1</span> <span class=c># We have fixed the initial population</span>
+</span></span><span class=line><span class=cl>        <span class=n>H</span><span class=p>,</span> <span class=n>P</span> <span class=o>=</span> <span class=n>timeseries</span><span class=p>[</span><span class=o>:</span><span class=p>,</span> <span class=n>t</span> <span class=o>-</span> <span class=mi>1</span><span class=p>]</span> <span class=c># Notice the slice!</span>
+</span></span><span class=line><span class=cl>        <span class=n>timeseries</span><span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=n>t</span><span class=p>]</span> <span class=o>=</span> <span class=n>parameters</span><span class=o>.</span><span class=n>k</span> <span class=o>*</span> <span class=n>H</span> <span class=o>*</span> <span class=n>exp</span><span class=p>(</span><span class=o>-</span><span class=n>parameters</span><span class=o>.</span><span class=n>a</span> <span class=o>*</span> <span class=n>P</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>timeseries</span><span class=p>[</span><span class=mi>2</span><span class=p>,</span> <span class=n>t</span><span class=p>]</span> <span class=o>=</span> <span class=n>parameters</span><span class=o>.</span><span class=n>c</span> <span class=o>*</span> <span class=n>H</span> <span class=o>*</span> <span class=p>(</span><span class=mf>1.0</span> <span class=o>-</span> <span class=n>exp</span><span class=p>(</span><span class=o>-</span><span class=n>parameters</span><span class=o>.</span><span class=n>a</span> <span class=o>*</span> <span class=n>P</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><p>We can plot the output of this simulation. This is a lot of <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Makie target=_blank>Makie</a></span></span> code,
+specifically using the <span class=package><span class=pkgname><a href=https://juliapackages.com/p/CairoMakie target=_blank>CairoMakie</a></span></span> package as we do not need advanced GPU
+support. This is not <em>really</em> important, but <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Makie target=_blank>Makie</a></span></span> is an excellent
+plotting package and especially pleasant to work with when using complex
+layout.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>using</span> <span class=n>CairoMakie</span>
+</span></span><span class=line><span class=cl><span class=n>CairoMakie</span><span class=o>.</span><span class=n>activate!</span><span class=p>(;</span> <span class=n>px_per_unit</span> <span class=o>=</span> <span class=mi>2</span><span class=p>)</span> <span class=c># This ensures high-res figures</span>
+</span></span></code></pre></div><p>The code to generate the figure is as follows:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>figure</span> <span class=o>=</span> <span class=n>Figure</span><span class=p>(;</span> <span class=n>resolution</span> <span class=o>=</span> <span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>600</span><span class=p>),</span> <span class=n>fontsize</span> <span class=o>=</span> <span class=mi>20</span><span class=p>,</span> <span class=n>backgroundcolor</span> <span class=o>=</span> <span class=ss>:transparent</span><span class=p>)</span>
+</span></span></code></pre></div><p><img src=/plots/03_iteration_model-17.png alt></p><p>The first step is to define an axis, with a scale and labels, and to add a
+<code>scatterline</code> to it:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>mainplot</span> <span class=o>=</span> <span class=n>Axis</span><span class=p>(</span><span class=n>figure</span><span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=o>:</span><span class=mi>2</span><span class=p>];</span> <span class=n>ylabel</span> <span class=o>=</span> <span class=s>&#34;Population size&#34;</span><span class=p>,</span> <span class=n>yscale</span> <span class=o>=</span> <span class=n>log10</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>scatterlines!</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=n>mainplot</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>axes</span><span class=p>(</span><span class=n>timeseries</span><span class=p>,</span> <span class=mi>2</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>    <span class=n>timeseries</span><span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=o>:</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>    <span class=n>label</span> <span class=o>=</span> <span class=s>&#34;Hosts&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>scatterlines!</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=n>mainplot</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>axes</span><span class=p>(</span><span class=n>timeseries</span><span class=p>,</span> <span class=mi>2</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>    <span class=n>timeseries</span><span class=p>[</span><span class=mi>2</span><span class=p>,</span> <span class=o>:</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>    <span class=n>label</span> <span class=o>=</span> <span class=s>&#34;Parasitoids&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>current_figure</span><span class=p>()</span>
+</span></span></code></pre></div><p><img src=/plots/03_iteration_model-19.png alt></p><p>We will add a second axis for the phase plot, and then add the points
+corresponding to the timeseries:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>subplot</span> <span class=o>=</span> <span class=n>Axis</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=n>figure</span><span class=p>[</span><span class=mi>2</span><span class=p>,</span> <span class=mi>1</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>    <span class=n>xlabel</span> <span class=o>=</span> <span class=s>&#34;Host&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>ylabel</span> <span class=o>=</span> <span class=s>&#34;Parasitoid&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>xscale</span> <span class=o>=</span> <span class=n>log10</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>yscale</span> <span class=o>=</span> <span class=n>log10</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>scatterlines!</span><span class=p>(</span><span class=n>subplot</span><span class=p>,</span> <span class=n>timeseries</span><span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=o>:</span><span class=p>],</span> <span class=n>timeseries</span><span class=p>[</span><span class=mi>2</span><span class=p>,</span> <span class=o>:</span><span class=p>];</span> <span class=n>color</span> <span class=o>=</span> <span class=ss>:black</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>current_figure</span><span class=p>()</span>
+</span></span></code></pre></div><p><img src=/plots/03_iteration_model-21.png alt></p><p>Finally, we can add the legend to the side of the phase plane:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>legend</span> <span class=o>=</span> <span class=n>Legend</span><span class=p>(</span><span class=n>figure</span><span class=p>[</span><span class=mi>2</span><span class=p>,</span> <span class=mi>2</span><span class=p>],</span> <span class=n>mainplot</span><span class=p>;</span> <span class=n>framevisible</span> <span class=o>=</span> <span class=nb>false</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>legend</span><span class=o>.</span><span class=n>tellheight</span> <span class=o>=</span> <span class=nb>false</span>
+</span></span><span class=line><span class=cl><span class=n>legend</span><span class=o>.</span><span class=n>tellwidth</span> <span class=o>=</span> <span class=nb>true</span>
+</span></span><span class=line><span class=cl><span class=n>current_figure</span><span class=p>()</span>
+</span></span></code></pre></div><p><img src=/plots/03_iteration_model-23.png alt></p><p>This wraps the module on iteration. In the next modules, we will go through
+additional structures to control the flow of our programs.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-the_flow,module-iteration_model,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/03_the_flow/03_iteration_model.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/flow/iteration-in-action/%0a%0a%f0%9f%93%a6%20section-the_flow%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-iteration_model" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

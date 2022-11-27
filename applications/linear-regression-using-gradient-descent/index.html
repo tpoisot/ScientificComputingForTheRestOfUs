@@ -1,0 +1,188 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Linear regression using gradient descent · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Linear regression using gradient descent</h1><article>
+<p>In this module, we will use the gradient descent algorithm to perform a linear
+regression, to estimate the brain mass of an animal if we know its body mass.
+This will draw on concepts from a number of previous modules, while also
+presenting an example of how core programming skills can be applied for
+research.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>using</span> <span class=n>Distributions</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=n>CairoMakie</span>
+</span></span><span class=line><span class=cl><span class=n>CairoMakie</span><span class=o>.</span><span class=n>activate!</span><span class=p>(;</span> <span class=n>px_per_unit</span> <span class=o>=</span> <span class=mi>2</span><span class=p>)</span> <span class=c># This ensures high-res figures</span>
+</span></span></code></pre></div><p>Here is a broad overview of the task we want to accomplish. The
+<a href=https://animaltraits.org/>AnimalTraits</a> database provides curated information about metabolic
+rates of several species of animals. There is a linear relationship between
+the log of body mass and the log of brain size (both expressed in kg). In this
+module, we will estimate the parameters of this relationship using linear
+regression for birds.</p><div class="callout reference">Marie E. Herberstein <em>et al.</em> (2022). &ldquo;AnimalTraits - a curated animal trait database for body mass, metabolic rate and brain size&rdquo;; <em>Scientific Data</em> 9(1)
+<a href=https://doi.org/10.1038/s41597-022-01364-9><code>10.1038/s41597-022-01364-9</code></a></div><p>We will first download, then load, the data &ndash; we use the <code>CSV.File</code> approach
+here, which is great for structured data, and accepts a lot of different
+options to only read the required columns (see <code>?CSV.File</code> for more!). <span class=package><span class=pkgname><a href=https://juliapackages.com/p/CSV target=_blank>CSV</a></span></span> has plenty
+of additional features, and works really well with <em>e.g.</em> <span class=package><span class=pkgname><a href=https://juliapackages.com/p/DataFrames target=_blank>DataFrames</a></span></span>.</p><p>We will limit the output to the first three rows:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>import</span> <span class=n>CSV</span>
+</span></span><span class=line><span class=cl><span class=n>data_url</span> <span class=o>=</span> <span class=s>&#34;https://zenodo.org/record/6468938/files/observations.csv?download=1&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>data_file</span> <span class=o>=</span> <span class=n>download</span><span class=p>(</span><span class=n>data_url</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>traits</span> <span class=o>=</span> <span class=n>CSV</span><span class=o>.</span><span class=n>File</span><span class=p>(</span><span class=n>data_file</span><span class=p>;</span> <span class=n>delim</span> <span class=o>=</span> <span class=s>&#34;,&#34;</span><span class=p>,</span> <span class=n>select</span> <span class=o>=</span> <span class=p>[</span><span class=s>&#34;class&#34;</span><span class=p>,</span> <span class=s>&#34;body mass&#34;</span><span class=p>,</span> <span class=s>&#34;brain size&#34;</span><span class=p>])</span>
+</span></span><span class=line><span class=cl><span class=n>traits</span><span class=p>[</span><span class=mi>1</span><span class=o>:</span><span class=mi>3</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>3-element Vector{CSV.Row}:
+ CSV.Row:
+ :class                 &#34;Amphibia&#34;
+ Symbol(&#34;body mass&#34;)   0.01315
+ Symbol(&#34;brain size&#34;)  4.225844e-5
+ CSV.Row:
+ :class                 &#34;Amphibia&#34;
+ Symbol(&#34;body mass&#34;)   0.0001
+ Symbol(&#34;brain size&#34;)  2.25848e-6
+ CSV.Row:
+ :class                 &#34;Amphibia&#34;
+ Symbol(&#34;body mass&#34;)   0.0003
+ Symbol(&#34;brain size&#34;)  4.43408e-6
+</code></pre><p>Because some species have missing values, we can use a combination of <code>filter</code>
+and <code>any</code> to remove them:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>traits</span> <span class=o>=</span> <span class=n>filter</span><span class=p>(</span><span class=n>v</span> <span class=o>-&gt;</span> <span class=n>all</span><span class=p>(</span><span class=o>.!</span><span class=n>ismissing</span><span class=o>.</span><span class=p>(</span><span class=n>v</span><span class=p>)),</span> <span class=n>traits</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>traits</span> <span class=o>=</span> <span class=n>filter</span><span class=p>(</span><span class=n>v</span> <span class=o>-&gt;</span> <span class=n>v</span><span class=o>.</span><span class=n>class</span> <span class=o>==</span> <span class=s>&#34;Aves&#34;</span><span class=p>,</span> <span class=n>traits</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>traits</span><span class=p>[</span><span class=mi>1</span><span class=o>:</span><span class=mi>3</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>3-element Vector{CSV.Row}:
+ CSV.Row:
+ :class                  &#34;Aves&#34;
+ Symbol(&#34;body mass&#34;)   43.85
+ Symbol(&#34;brain size&#34;)   0.0376586
+ CSV.Row:
+ :class                  &#34;Aves&#34;
+ Symbol(&#34;body mass&#34;)   36.5
+ Symbol(&#34;brain size&#34;)   0.02991968
+ CSV.Row:
+ :class                 &#34;Aves&#34;
+ Symbol(&#34;body mass&#34;)   2.3
+ Symbol(&#34;brain size&#34;)  0.00588448
+</code></pre><p>We will now extract our vectors $x$ (body mass, the predictor) and $y$ (body
+mass, the response), and pass them through the <code>log10</code> function to have a
+linear relationship:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>X</span> <span class=o>=</span> <span class=n>log10</span><span class=o>.</span><span class=p>([</span><span class=n>trait</span><span class=p>[</span><span class=kt>Symbol</span><span class=p>(</span><span class=s>&#34;body mass&#34;</span><span class=p>)]</span> <span class=k>for</span> <span class=n>trait</span> <span class=k>in</span> <span class=n>traits</span><span class=p>]);</span>
+</span></span><span class=line><span class=cl><span class=n>Y</span> <span class=o>=</span> <span class=n>log10</span><span class=o>.</span><span class=p>([</span><span class=n>trait</span><span class=p>[</span><span class=kt>Symbol</span><span class=p>(</span><span class=s>&#34;brain size&#34;</span><span class=p>)]</span> <span class=k>for</span> <span class=n>trait</span> <span class=k>in</span> <span class=n>traits</span><span class=p>]);</span>
+</span></span></code></pre></div><div class="callout domain">There is maybe a more elegant way to handle the log-log relationship, by
+questionning whether a base 10 is the right one, given the way body mass and brain size
+scale. The question of scaling in biology is not relevant here, and we will get good
+enough results with a <code>log10</code> transform.</div><p>It is <em>always</em> a good idea to look at the data before attempting any
+modelling, so we can use the <span class=package><span class=pkgname><a href=https://juliapackages.com/p/CairoMakie target=_blank>CairoMakie</a></span></span> package to do so:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>figure</span> <span class=o>=</span> <span class=n>Figure</span><span class=p>(;</span> <span class=n>resolution</span> <span class=o>=</span> <span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>600</span><span class=p>),</span> <span class=n>fontsize</span> <span class=o>=</span> <span class=mi>20</span><span class=p>,</span> <span class=n>backgroundcolor</span> <span class=o>=</span> <span class=ss>:transparent</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>scplot</span> <span class=o>=</span> <span class=n>Axis</span><span class=p>(</span><span class=n>figure</span><span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>];</span> <span class=n>xlabel</span> <span class=o>=</span> <span class=s>&#34;Body mass (log; kg)&#34;</span><span class=p>,</span> <span class=n>ylabel</span> <span class=o>=</span> <span class=s>&#34;Brain mass (log; kg)&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>scatter!</span><span class=p>(</span><span class=n>scplot</span><span class=p>,</span> <span class=n>X</span><span class=p>,</span> <span class=n>Y</span><span class=p>;</span> <span class=n>color</span> <span class=o>=</span> <span class=ss>:darkgrey</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>current_figure</span><span class=p>()</span>
+</span></span></code></pre></div><p><img src=/plots/01_linear_regression-17.png alt></p><div class="callout information">There are multiple plotting packages in <em>Julia</em>, including <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Plots target=_blank>Plots</a></span></span>,
+<span class=package><span class=pkgname><a href=https://juliapackages.com/p/Makie target=_blank>Makie</a></span></span>, <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Gadfly target=_blank>Gadfly</a></span></span>, <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Winston target=_blank>Winston</a></span></span>, and probably a few others. We like
+<span class=package><span class=pkgname><a href=https://juliapackages.com/p/Makie target=_blank>Makie</a></span></span> for complex layouts and fine-grained controls.</div><p>After checking that the relationship between $Y$ and $X$ looks suitably
+linear, we can start thinking about the optimization algorithm. Optimization
+requires a target, otherwise known as a loss function. We will use the mean
+squared error estimator, which as its name suggests, compare the actual values
+to the predictions, and returns the sum of their differences squared, divided
+by the number of elements (to make the score dimensionless with regards to
+sample size).</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>ℒ</span><span class=p>(</span><span class=n>Y</span><span class=p>,</span> <span class=n>Ŷ</span><span class=p>)</span> <span class=o>=</span> <span class=n>sum</span><span class=p>((</span><span class=n>Y</span> <span class=o>.-</span> <span class=n>Ŷ</span><span class=p>)</span> <span class=o>.^</span> <span class=mf>2.0</span><span class=p>)</span> <span class=o>/</span> <span class=n>length</span><span class=p>(</span><span class=n>Y</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>ℒ (generic function with 1 method)
+</code></pre><div class="callout warning">The purpose of this module is not to give an in-depth treatment of
+gradient descent applied to linear regression. There are dozens of online
+resources already doing this. If you feel like you need to know more about the
+underlying theory, now is a good time to pause your reading and have a look at
+these resources.</div><p>We can measure the loss that we would get based on no slope and an intercept equal to the
+average of $y$:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>using</span> <span class=n>Statistics</span>
+</span></span><span class=line><span class=cl><span class=n>m₀</span><span class=p>,</span> <span class=n>b₀</span> <span class=o>=</span> <span class=mf>0.0</span><span class=p>,</span> <span class=n>mean</span><span class=p>(</span><span class=n>Y</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>Ŷ₀</span> <span class=o>=</span> <span class=n>m₀</span> <span class=o>.*</span> <span class=n>X</span> <span class=o>.+</span> <span class=n>b₀</span>
+</span></span><span class=line><span class=cl><span class=n>ℒ</span><span class=p>(</span><span class=n>Y</span><span class=p>,</span> <span class=n>Ŷ₀</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>0.20123658885902382
+</code></pre><p>It&rsquo;s not very good! We can get visual confirmation of the poor fit by adding a
+line to our plot:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>lines!</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=n>scplot</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=p>[</span><span class=n>minimum</span><span class=p>(</span><span class=n>X</span><span class=p>),</span> <span class=n>maximum</span><span class=p>(</span><span class=n>X</span><span class=p>)],</span>
+</span></span><span class=line><span class=cl>    <span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=n>m₀</span> <span class=o>.*</span> <span class=n>x</span> <span class=o>.+</span> <span class=n>b₀</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>color</span> <span class=o>=</span> <span class=ss>:black</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>linestyle</span> <span class=o>=</span> <span class=ss>:dash</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>current_figure</span><span class=p>()</span>
+</span></span></code></pre></div><p><img src=/plots/01_linear_regression-25.png alt></p><p>How do we fix this? The gradient descent algorithm works by mapping the loss
+value $L$ to the parameters values. Specifically, the <em>gradient</em> is given by</p><p>$$
+\nabla f = \begin{bmatrix}
+\frac{\partial L}{\partial m} &&
+\frac{\partial L}{\partial b}
+\end{bmatrix}^\intercal
+$$</p><p>The value of $\partial L/\partial m$ is the partial derivative of the loss
+function with regards to $m$, and can be calculated from the definition of the
+loss function. In <em>Julia</em>, there are a number of autodiff packages like
+<span class=package><span class=pkgname><a href=https://juliapackages.com/p/Zygote target=_blank>Zygote</a></span></span> who make this task a lot easier, but for the purpose of this
+example, it is a good idea to see what we can build out of the base language.</p><p>After some calculations, we can get the two components of the gradient. We
+will express them as functions:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>∂m</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=n>Y</span><span class=p>,</span> <span class=n>Ŷ</span><span class=p>)</span> <span class=o>=</span> <span class=o>-</span><span class=p>(</span><span class=mi>2</span> <span class=o>/</span> <span class=n>length</span><span class=p>(</span><span class=n>X</span><span class=p>))</span> <span class=o>*</span> <span class=n>sum</span><span class=p>(</span><span class=n>X</span> <span class=o>.*</span> <span class=p>(</span><span class=n>Y</span> <span class=o>.-</span> <span class=n>Ŷ</span><span class=p>));</span>
+</span></span><span class=line><span class=cl><span class=n>∂c</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=n>Y</span><span class=p>,</span> <span class=n>Ŷ</span><span class=p>)</span> <span class=o>=</span> <span class=o>-</span><span class=p>(</span><span class=mi>2</span> <span class=o>/</span> <span class=n>length</span><span class=p>(</span><span class=n>X</span><span class=p>))</span> <span class=o>*</span> <span class=n>sum</span><span class=p>(</span><span class=n>Y</span> <span class=o>.-</span> <span class=n>Ŷ</span><span class=p>);</span>
+</span></span></code></pre></div><p>We can finally wrap these two function within a single function expressing the
+gradient $\nabla f$:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>∇f</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=n>Y</span><span class=p>,</span> <span class=n>Ŷ</span><span class=p>)</span> <span class=o>=</span> <span class=p>[</span><span class=n>∂m</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=n>Y</span><span class=p>,</span> <span class=n>Ŷ</span><span class=p>),</span> <span class=n>∂c</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=n>Y</span><span class=p>,</span> <span class=n>Ŷ</span><span class=p>)]</span>
+</span></span></code></pre></div><pre tabindex=0><code>∇f (generic function with 1 method)
+</code></pre><p>In gradient descent, the update scheme for the parameters is very simple; at
+each iteration, we transform $m$ and $b$ by substracting the values in the
+gradient. In other words, $\mathbf{p} = \mathbf{p} - \nabla f$, where
+$\mathbf{p}$ is a column vector storing the parameters.</p><p>What is the gradient like at our initial (very bad estimate)? We can call the
+<code>∇f</code> function to get the answer:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>∇f</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=n>Y</span><span class=p>,</span> <span class=n>Ŷ₀</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>2-element Vector{Float64}:
+ -0.6265421588393548
+ -1.7985266595487714e-15
+</code></pre><p>These look like very large values. There are two reasons for this. The first
+is that our initial guess is, as we have seen from the figure, very bad.
+Therefore, we expect to move quite far away from the parameter values. The
+second reason (far more important here) is that we are being a little
+over-eager in our learning. The risk with learning too much is that we can
+move so far away that we will miss the correct value, by jumping straight over
+it.</p><p>In order to solve this problem, we will add a <em>learning rate</em> $\eta$, which is
+a small value (much smaller than 1) by which we will multiply the gradient, so
+that our update scheme becomes $\mathbf{p} = \mathbf{p} - \eta\times \nabla f$:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>η</span> <span class=o>=</span> <span class=mf>1e-3</span><span class=p>;</span>
+</span></span></code></pre></div><p>We can now check that our move is much smaller in magnitude:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>η</span> <span class=o>.*</span> <span class=n>∇f</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=n>Y</span><span class=p>,</span> <span class=n>Ŷ₀</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>2-element Vector{Float64}:
+ -0.0006265421588393549
+ -1.7985266595487716e-18
+</code></pre><p>Excellent! With these elements, we are ready to start solving our problem. We
+can generate an initial solution at random:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>𝐩</span> <span class=o>=</span> <span class=n>rand</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>2-element Vector{Float64}:
+ 0.8123352258345882
+ 0.2415581580177376
+</code></pre><p>And now, we very simply iterate over a set number of epochs (both the number
+of epochs and the learning rate are <em>hyperparameters</em> of the model), updating
+the values of $\mathbf{p}$ as we go along:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>epochs</span> <span class=o>=</span> <span class=mi>10_000</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=k>in</span> <span class=mi>1</span><span class=o>:</span><span class=n>epochs</span>
+</span></span><span class=line><span class=cl>    <span class=n>𝐩</span> <span class=o>.-=</span> <span class=n>η</span> <span class=o>.*</span> <span class=n>∇f</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=n>Y</span><span class=p>,</span> <span class=n>𝐩</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>.*</span> <span class=n>X</span> <span class=o>.+</span> <span class=n>𝐩</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><p>After the training epochs are done, we can get a look at the result (note that
+we use a ternary expression to decide how to report the sign of the
+elevation). We mostly care about the value of the loss function, and the value
+of the parameters:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=s>&#34;&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s>Best model: ŷ ≈ </span><span class=si>$</span><span class=p>(</span><span class=n>round</span><span class=p>(</span><span class=n>𝐩</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span> <span class=n>digits</span><span class=o>=</span><span class=mi>2</span><span class=p>))</span><span class=s>x </span><span class=si>$</span><span class=p>(</span><span class=n>𝐩</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=o>&lt;</span><span class=mi>0</span> <span class=o>?</span> <span class=s>&#34;&#34;</span> <span class=o>:</span> <span class=s>&#34;+&#34;</span><span class=p>)</span><span class=s> </span><span class=si>$</span><span class=p>(</span><span class=n>round</span><span class=p>(</span><span class=n>𝐩</span><span class=p>[</span><span class=mi>2</span><span class=p>];</span> <span class=n>digits</span><span class=o>=</span><span class=mi>2</span><span class=p>))</span><span class=s>
+</span></span></span><span class=line><span class=cl><span class=s>Loss: ℒ ≈ </span><span class=si>$</span><span class=p>(</span><span class=n>round</span><span class=p>(</span><span class=n>ℒ</span><span class=p>(</span><span class=n>𝐩</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>.*</span> <span class=n>X</span> <span class=o>.+</span> <span class=n>𝐩</span><span class=p>[</span><span class=mi>2</span><span class=p>],</span> <span class=n>Y</span><span class=p>);</span> <span class=n>digits</span><span class=o>=</span><span class=mi>4</span><span class=p>))</span><span class=s>
+</span></span></span><span class=line><span class=cl><span class=s>&#34;&#34;&#34;</span> <span class=o>|&gt;</span> <span class=n>println</span>
+</span></span></code></pre></div><pre tabindex=0><code>Best model: ŷ ≈ 0.58x  -2.13
+Loss: ℒ ≈ 0.0232
+</code></pre><p>As always, visualisation provides a good sanity check of these results, and
+our line should now be much closer to the cloud of points:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>lines!</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=n>scplot</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=p>[</span><span class=n>minimum</span><span class=p>(</span><span class=n>X</span><span class=p>),</span> <span class=n>maximum</span><span class=p>(</span><span class=n>X</span><span class=p>)],</span>
+</span></span><span class=line><span class=cl>    <span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=n>𝐩</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>.*</span> <span class=n>x</span> <span class=o>.+</span> <span class=n>𝐩</span><span class=p>[</span><span class=mi>2</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>    <span class=n>color</span> <span class=o>=</span> <span class=ss>:tomato</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>current_figure</span><span class=p>()</span>
+</span></span></code></pre></div><p><img src=/plots/01_linear_regression-48.png alt></p><p>One noteworthy thing about this example is that building our own (admittedly
+not very general, and not very efficient) gradient descent optimizer was
+possible in a very small number of lines of code, and using only functions
+from <em>Julia</em>&rsquo;s standard library. There are a lot of packages dedicated to
+performing this task extremely efficiently; but this example shows how we can
+easily get to a working solution, which is interesting both for experimenting
+with new approaches, and for learning new skills.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-applications,module-linear_regression,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/08_applications/01_linear_regression.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/applications/linear-regression-using-gradient-descent/%0a%0a%f0%9f%93%a6%20section-applications%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-linear_regression" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

@@ -1,0 +1,132 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>The JSON format · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>The JSON format</h1><article>
+<p>The JSON format is really interesting to store highly structured information.
+In this module, we will see how it maps naturally on the <code>Dict</code> data
+structure, how to use it to load and save data, and how to print the contents
+of a JSON file. As an illustration, we will look at the time series of
+vaccination against COVID-19 in New Zealand.</p><p>In <em>Julia</em>, the <span class=package><span class=pkgname><a href=https://juliapackages.com/p/JSON target=_blank>JSON</a></span></span> package handles all of the JSON related tasks.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>import</span> <span class=n>Downloads</span>
+</span></span><span class=line><span class=cl><span class=k>import</span> <span class=n>JSON</span>
+</span></span></code></pre></div><p>To illustrate how <span class=package><span class=pkgname><a href=https://juliapackages.com/p/JSON target=_blank>JSON</a></span></span> works (and brush up on our <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Downloads target=_blank>Downloads</a></span></span> skills!),
+we will download the <a href=https://github.com/owid/covid-19-data>COVID-19 vaccination data</a> from the <em>Our World In
+Data</em> project. They are openly available on GitHub:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>vax_url</span> <span class=o>=</span> <span class=s>&#34;https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/vaccinations.json&#34;</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/vaccinations.json&#34;
+</code></pre><p>We can now add this callback to our <code>download</code> function:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>vax_data</span> <span class=o>=</span> <span class=n>Downloads</span><span class=o>.</span><span class=n>download</span><span class=p>(</span><span class=n>vax_url</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;/tmp/jl_bOhuNYDWhk&#34;
+</code></pre><p>In order to read this file, we can use the <code>parsefile</code> function. Note that the
+file is <em>really large</em> (it has one entry for every tracked locality, a mix of
+countries and continents).</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>vax</span> <span class=o>=</span> <span class=n>JSON</span><span class=o>.</span><span class=n>parsefile</span><span class=p>(</span><span class=n>vax_data</span><span class=p>);</span>
+</span></span></code></pre></div><p>We can get a look at the type of data:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>eltype</span><span class=p>(</span><span class=n>vax</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Any
+</code></pre><p>JSON stores a combination of arrays and dictionary, which are usually nested
+within one another. In order to make our problem more tractable, let&rsquo;s focus
+on the vaccination data for New Zealand:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>nz_vax</span> <span class=o>=</span> <span class=n>only</span><span class=p>(</span><span class=n>filter</span><span class=p>(</span><span class=n>x</span> <span class=o>-&gt;</span> <span class=n>x</span><span class=p>[</span><span class=s>&#34;iso_code&#34;</span><span class=p>]</span> <span class=o>==</span> <span class=s>&#34;NZL&#34;</span><span class=p>,</span> <span class=n>vax</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>collect</span><span class=p>(</span><span class=n>keys</span><span class=p>(</span><span class=n>nz_vax</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>3-element Vector{String}:
+ &#34;iso_code&#34;
+ &#34;data&#34;
+ &#34;country&#34;
+</code></pre><p>The <code>"data"</code> entry in the dictionary stores <em>daily</em> information on vaccination
+&ndash; let&rsquo;s zoom in on the first day:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>nz_vax</span><span class=p>[</span><span class=s>&#34;data&#34;</span><span class=p>][</span><span class=mi>1</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>Dict{String, Any} with 5 entries:
+  &#34;total_vaccinations_per_hundred&#34; =&gt; 0.0
+  &#34;total_vaccinations&#34; =&gt; 1
+  &#34;people_vaccinated&#34; =&gt; 1
+  &#34;people_vaccinated_per_hundred&#34; =&gt; 0.0
+  &#34;date&#34; =&gt; &#34;2021-02-14&#34;
+</code></pre><p>Based on this, we might want to extract the date and number of vaccinated
+people per hundred. One particularity of JSON is that it does not store
+information about the types, as evidences by the fact that our dictionary is a
+<code>Dict{String, Any}</code>. So maybe a more tractable format is to get a dictionary
+with an initial timepoint (day of the first vaccination), then an array of
+days elapsed since (using <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Dates target=_blank>Dates</a></span></span>), and an array of numbers representing the
+percentage of vaccinated people. This could, for example, be used to compare
+the time it took for different countries to reach different portions of
+vaccination coverage.</p><p>We will create empty arrays (after a preliminary inspection of the dataset,
+not all days have the correct key we are looking for):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>import</span> <span class=n>Dates</span>
+</span></span><span class=line><span class=cl><span class=n>dates</span> <span class=o>=</span> <span class=n>Dates</span><span class=o>.</span><span class=n>Date</span><span class=p>[]</span>
+</span></span><span class=line><span class=cl><span class=n>coverage</span> <span class=o>=</span> <span class=kt>Float64</span><span class=p>[]</span>
+</span></span></code></pre></div><pre tabindex=0><code>Float64[]
+</code></pre><p>And we can now iterate over the JSON structure, apply the correct type as we
+go, and grow the array as we have done in a previous module:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>for</span> <span class=n>day</span> <span class=k>in</span> <span class=n>nz_vax</span><span class=p>[</span><span class=s>&#34;data&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>haskey</span><span class=p>(</span><span class=n>day</span><span class=p>,</span> <span class=s>&#34;people_vaccinated_per_hundred&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>push!</span><span class=p>(</span><span class=n>dates</span><span class=p>,</span> <span class=n>Dates</span><span class=o>.</span><span class=n>Date</span><span class=p>(</span><span class=n>day</span><span class=p>[</span><span class=s>&#34;date&#34;</span><span class=p>]))</span>
+</span></span><span class=line><span class=cl>        <span class=n>push!</span><span class=p>(</span><span class=n>coverage</span><span class=p>,</span> <span class=n>day</span><span class=p>[</span><span class=s>&#34;people_vaccinated_per_hundred&#34;</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><p>Let&rsquo;s get the initial time:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>day_0</span> <span class=o>=</span> <span class=n>dates</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>2021-02-14
+</code></pre><p>And the number of days elapsed since:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>days_elapsed</span> <span class=o>=</span> <span class=p>[</span><span class=n>Dates</span><span class=o>.</span><span class=n>value</span><span class=p>(</span><span class=n>day</span> <span class=o>-</span> <span class=n>day_0</span><span class=p>)</span> <span class=k>for</span> <span class=n>day</span> <span class=k>in</span> <span class=n>dates</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>days_elapsed</span><span class=p>[</span><span class=mi>1</span><span class=o>:</span><span class=mi>5</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>5-element Vector{Int64}:
+ 0
+ 1
+ 3
+ 5
+ 6
+</code></pre><p>We can finally plot these data:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>using</span> <span class=n>CairoMakie</span>
+</span></span><span class=line><span class=cl><span class=n>CairoMakie</span><span class=o>.</span><span class=n>activate!</span><span class=p>(;</span> <span class=n>px_per_unit</span> <span class=o>=</span> <span class=mi>2</span><span class=p>)</span> <span class=c># This ensures high-res figures</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>figure</span> <span class=o>=</span> <span class=n>Figure</span><span class=p>(;</span> <span class=n>resolution</span> <span class=o>=</span> <span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>600</span><span class=p>),</span> <span class=n>fontsize</span> <span class=o>=</span> <span class=mi>20</span><span class=p>,</span> <span class=n>backgroundcolor</span> <span class=o>=</span> <span class=ss>:transparent</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>scplot</span> <span class=o>=</span> <span class=n>Axis</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=n>figure</span><span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>    <span class=n>xlabel</span> <span class=o>=</span> <span class=s>&#34;Day since first vaccination&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>ylabel</span> <span class=o>=</span> <span class=s>&#34;People vaccinated (per hundred)&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>lines!</span><span class=p>(</span><span class=n>scplot</span><span class=p>,</span> <span class=n>days_elapsed</span><span class=p>,</span> <span class=n>coverage</span><span class=p>;</span> <span class=n>color</span> <span class=o>=</span> <span class=ss>:teal</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>figure</span>
+</span></span></code></pre></div><p><img src=/plots/04_json-30.png alt></p><p>But now &ndash; how do we keep this data for future analysis? We can store them in
+a JSON file! In order to make this possible, we can create a dictionary:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>subset_nz_vax</span> <span class=o>=</span> <span class=kt>Dict</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=s>&#34;day0&#34;</span> <span class=o>=&gt;</span> <span class=n>day_0</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s>&#34;timeseries&#34;</span> <span class=o>=&gt;</span> <span class=n>days_elapsed</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s>&#34;percent_vaccinated&#34;</span> <span class=o>=&gt;</span> <span class=n>coverage</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>collect</span><span class=p>(</span><span class=n>keys</span><span class=p>(</span><span class=n>subset_nz_vax</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>3-element Vector{String}:
+ &#34;day0&#34;
+ &#34;percent_vaccinated&#34;
+ &#34;timeseries&#34;
+</code></pre><div class="callout information">Again, this is going to be a fairly long object, as we are storing a
+timeseries with a lot of entries. But it does not really matter, as we are now
+going to put it in a JSON file for future use:</div><p>Saving a <em>Julia</em> object to a JSON file requires to create a file (we are using
+a temporary file here, but in practice we would put the file for data
+processing in a location within our project), and then write into this file.
+This is a fairly standard way of doing the open/write/close loop, that is used
+by most packages writing files to disk.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>json_output</span> <span class=o>=</span> <span class=n>tempname</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>open</span><span class=p>(</span><span class=n>json_output</span><span class=p>,</span> <span class=s>&#34;w&#34;</span><span class=p>)</span> <span class=k>do</span> <span class=n>json_file</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>JSON</span><span class=o>.</span><span class=n>print</span><span class=p>(</span><span class=n>json_file</span><span class=p>,</span> <span class=n>subset_nz_vax</span><span class=p>,</span> <span class=mi>4</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><p>In order to check that our dataset has been correctly written, we can have a
+look at the first ten rows of the JSON file:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>readlines</span><span class=p>(</span><span class=n>json_output</span><span class=p>)[</span><span class=mi>1</span><span class=o>:</span><span class=mi>5</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>5-element Vector{String}:
+ &#34;{&#34;
+ &#34;    \&#34;day0\&#34;: \&#34;2021-02-14\&#34;,&#34;
+ &#34;    \&#34;percent_vaccinated\&#34;: [&#34;
+ &#34;        0.0,&#34;
+ &#34;        0.0,&#34;
+</code></pre><p>In summary, the <span class=package><span class=pkgname><a href=https://juliapackages.com/p/JSON target=_blank>JSON</a></span></span> package allows to read data in the structured JSON
+format, and to write them in the same format. A very common usage loop is to:</p><ol>
+<li>Get data from an online location</li><li>Parse these data as <em>Julia</em> objects ready to be used in an actual analysis</li><li>Save the formatted data for re-use, while keeping the structure</li></ol><p>In short, JSON is very interesting as something in between tabular formats and
+full databases. In the next section, we will see that many web services
+&ldquo;speak&rdquo; JSON as their native language, allowing to use it to interact with
+remote data.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-files,module-json,status-beta,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/07_files/04_json.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/files/the-json-format/%0a%0a%f0%9f%93%a6%20section-files%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-json" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

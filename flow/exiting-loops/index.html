@@ -1,0 +1,116 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Exiting loops · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Exiting loops</h1><article>
+<p>In the previous two modules, we have written loops that terminate when a
+condition is met (<code>while</code>), or when the collection has been iterated over
+entirely (<code>for</code>). In some cases, we may want to fine-tune the behavior of our
+iteration. In these cases, we can use some special keywords to jump out of the
+loop entirely, or skip some steps.</p><p>Let&rsquo;s say that we want to generate sequences of mRNA that look legit enough to
+fool a very naïve program, which is a good thing because we will use a very
+naïve program to generate them. Specifically, we want sequences that will have
+an <em>AUG</em> codon at the start, end with one of ochre (<em>UAA</em>), amber (<em>UAG</em>), or
+opal (<em>UGA</em>), located at some multiple number of three bases after the start
+codon. To make things a little more fun, we can also get sequences that are
+only between 40 and 50 bases long.</p><p>An example of such a sequence is (minus the length requirement):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>seq</span> <span class=o>=</span> <span class=s>&#34;AUGUGAGAGUAA&#34;</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;AUGUGAGAGUAA&#34;
+</code></pre><p>Assuming that our RNA sequence is going to be represented as a string, we can
+check its &ldquo;validity&rdquo; with a series of simple tests. First, that the length of
+the sequence is a multiple of three:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>iszero</span><span class=p>(</span><span class=n>length</span><span class=p>(</span><span class=n>seq</span><span class=p>)</span> <span class=o>%</span> <span class=mi>3</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>Then that the first three positions are a start codon:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>isequal</span><span class=p>(</span><span class=s>&#34;AUG&#34;</span><span class=p>)(</span><span class=n>seq</span><span class=p>[</span><span class=mi>1</span><span class=o>:</span><span class=mi>3</span><span class=p>])</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>Finally, that the last three positions are a stop codon:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>seq</span><span class=p>[(</span><span class=k>end</span> <span class=o>-</span> <span class=mi>2</span><span class=p>)</span><span class=o>:</span><span class=k>end</span><span class=p>]</span> <span class=k>in</span> <span class=p>[</span><span class=s>&#34;UAA&#34;</span><span class=p>,</span> <span class=s>&#34;UAG&#34;</span><span class=p>,</span> <span class=s>&#34;UGA&#34;</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>We can now start <em>generating</em> sequences like this at random. Our strategy in
+this module will be to start from a giant sequence:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>rnd_seq</span> <span class=o>=</span> <span class=kt>String</span><span class=p>(</span><span class=n>rand</span><span class=p>(</span><span class=s>&#34;AUGC&#34;</span><span class=p>,</span> <span class=mi>10_000</span><span class=p>));</span>
+</span></span><span class=line><span class=cl><span class=n>rnd_seq</span><span class=p>[</span><span class=mi>1</span><span class=o>:</span><span class=mi>10</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>&#34;CGCUAUACCA&#34;
+</code></pre><p>We will then look for possible initiations sites (using the <code>findall</code>
+function), then for all of the possible sites we found, we can look for all
+possible stop positions, then check that the sequence has a length between 40
+and 50 which is also a multiple of three. And because we presumably want to
+repeat this process a lot, we want to do as few iterations as possible. This
+is where <code>continue</code> and <code>break</code> will be very useful.</p><p>In order to use <code>continue</code> and <code>break</code> efficiently, it helps to have a sense
+of when we need to skip to the next possible solution, and a sense of when we
+can stop the iteration entirely. Let&rsquo;s therefore setup a quick example. We can
+find the first start codon:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>start_position</span> <span class=o>=</span> <span class=n>findfirst</span><span class=p>(</span><span class=s>&#34;AUG&#34;</span><span class=p>,</span> <span class=n>rnd_seq</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>30:32
+</code></pre><p>The codon position is represented as a range (you can check with <code>typeof</code>),
+specifically a <code>UnitRange</code>. We can therefore get the position where it starts
+with</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>start_position</span><span class=p>[</span><span class=k>begin</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>30
+</code></pre><p>We can look for the next <em>UGA</em> stop codon after this position (this is mostly
+an unsubtle way to get you to look at the documentation for <code>findnext</code>, as we
+will use <code>findall</code> to brute-force our way through the actual problem):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>stop_position</span> <span class=o>=</span> <span class=n>findnext</span><span class=p>(</span><span class=s>&#34;UGA&#34;</span><span class=p>,</span> <span class=n>rnd_seq</span><span class=p>,</span> <span class=n>start_position</span><span class=p>[</span><span class=k>end</span><span class=p>])</span>
+</span></span></code></pre></div><pre tabindex=0><code>76:78
+</code></pre><p>Again, this is expressed as a range, and so the sequence will stop at</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>stop_position</span><span class=p>[</span><span class=k>end</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>78
+</code></pre><p>Its <em>length</em> is therefore</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>stop_position</span><span class=p>[</span><span class=k>end</span><span class=p>]</span> <span class=o>-</span> <span class=n>start_position</span><span class=p>[</span><span class=k>begin</span><span class=p>]</span> <span class=o>+</span> <span class=mi>1</span>
+</span></span></code></pre></div><pre tabindex=0><code>49
+</code></pre><p>When do we want to skip an iteration? A first criteria is that, assuming we do
+not call <code>findnext</code>, the stop codon starts <em>before</em> the start codon &ndash; this is
+when we call <code>continue</code> to move on, as nothing about this sequence will be
+useful (the sequence would in fact be empty). Using the short-circuit notation
+to avoid writing a full <code>if</code> statement, we can express this as the following
+one-liner (it is not going to work outside of a loop, as <code>continue</code> has no
+effect):</p><pre tabindex=0><code>(stop_position[begin] &gt; start_position[end]) || continue
+</code></pre><p>Similarly, we want to skip ahead if the sequence length is not a multiple of
+three:</p><pre tabindex=0><code>iszero(seq_length % 3) || continue
+</code></pre><p>Only when the sequence length is between 40 and 50 do we want to save the
+sequence, and exit (<code>break</code>) out of the loop:</p><pre tabindex=0><code>if 40 &lt;= seq_length &lt;= 50
+    tmp_seq = rnd_seq[start_position[begin]:stop_position[end]]
+    break
+end
+</code></pre><p>With this information, we can build an actual loop. We are decidedly not being
+fancy here, by using <code>findall</code> to get all instances of both start and stop
+codons, and essentially hoping that the random sequence is long enough that we
+will find a subset of it with the correct properties:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>seq_found</span> <span class=o>=</span> <span class=nb>false</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>start_position</span> <span class=k>in</span> <span class=n>findall</span><span class=p>(</span><span class=s>&#34;AUG&#34;</span><span class=p>,</span> <span class=n>rnd_seq</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>global</span> <span class=n>seq_found</span>
+</span></span><span class=line><span class=cl>    <span class=k>global</span> <span class=n>tmp_seq</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>stop_codon</span> <span class=k>in</span> <span class=p>[</span><span class=s>&#34;UAA&#34;</span><span class=p>,</span> <span class=s>&#34;UAG&#34;</span><span class=p>,</span> <span class=s>&#34;UGA&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>stop_position</span> <span class=k>in</span> <span class=n>findall</span><span class=p>(</span><span class=n>stop_codon</span><span class=p>,</span> <span class=n>rnd_seq</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=p>(</span><span class=n>stop_position</span><span class=p>[</span><span class=k>begin</span><span class=p>]</span> <span class=o>&gt;</span> <span class=n>start_position</span><span class=p>[</span><span class=k>end</span><span class=p>])</span> <span class=o>||</span> <span class=k>continue</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=n>seq_length</span> <span class=o>=</span> <span class=n>stop_position</span><span class=p>[</span><span class=k>end</span><span class=p>]</span> <span class=o>-</span> <span class=n>start_position</span><span class=p>[</span><span class=k>begin</span><span class=p>]</span> <span class=o>+</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=n>iszero</span><span class=p>(</span><span class=n>seq_length</span> <span class=o>%</span> <span class=mi>3</span><span class=p>)</span> <span class=o>||</span> <span class=k>continue</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=mi>40</span> <span class=o>&lt;=</span> <span class=n>seq_length</span> <span class=o>&lt;=</span> <span class=mi>50</span>
+</span></span><span class=line><span class=cl>                <span class=n>seq_found</span> <span class=o>=</span> <span class=nb>true</span>
+</span></span><span class=line><span class=cl>                <span class=n>tmp_seq</span> <span class=o>=</span> <span class=n>rnd_seq</span><span class=p>[</span><span class=n>start_position</span><span class=p>[</span><span class=k>begin</span><span class=p>]</span><span class=o>:</span><span class=n>stop_position</span><span class=p>[</span><span class=k>end</span><span class=p>]]</span>
+</span></span><span class=line><span class=cl>                <span class=k>break</span>
+</span></span><span class=line><span class=cl>            <span class=k>end</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>seq_found</span> <span class=o>&amp;&amp;</span> <span class=k>break</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>seq_found</span> <span class=o>&amp;&amp;</span> <span class=k>break</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=s>&#34;Found a sequence of length </span><span class=si>$</span><span class=p>(</span><span class=n>length</span><span class=p>(</span><span class=n>tmp_seq</span><span class=p>))</span><span class=s>:</span><span class=se>\n</span><span class=si>$</span><span class=p>(</span><span class=n>tmp_seq</span><span class=p>)</span><span class=s>&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Found a sequence of length 42:
+AUGUCAGUGCUGCUCGUACGUAGCUUCCCACUUGUACGGUGA
+</code></pre></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-the_flow,module-exiting_loops,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/03_the_flow/05_exiting_loops.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/flow/exiting-loops/%0a%0a%f0%9f%93%a6%20section-the_flow%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-exiting_loops" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

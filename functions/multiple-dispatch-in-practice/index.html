@@ -1,0 +1,112 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Multiple dispatch in practice · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Multiple dispatch in practice</h1><article>
+<p>In this module, we will expand on the previous content (understanding
+<em>dispatch</em>) to get familiar with a central design paradigm of <em>Julia</em>:
+multiple dispatch. We will do so by writing code to simulate the growth of a
+population in space.</p><div class="callout information">The difference between dispatch and multiple dispatch is, essentially,
+that under multiple dispatch (what <em>Julia</em> does), the methods that gets called
+is a function of all of the types of the arguments in the signature. The
+practical consequence is that in <em>Julia</em>, types matter. A lot.</div><p>To start our simulations, we will create an abstract type to store organisms:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>abstract type</span> <span class=kt>Organism</span> <span class=k>end</span>
+</span></span></code></pre></div><p>We will specifically focus on two types of organisms: <code>Rabbits</code> and <code>Foxes</code>.
+These will be defined by a population size, which is an integer.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>Base</span><span class=o>.</span><span class=nd>@kwdef</span> <span class=k>mutable struct</span> <span class=kt>Rabbit</span> <span class=o>&lt;:</span> <span class=kt>Organism</span>
+</span></span><span class=line><span class=cl>    <span class=n>population</span><span class=o>::</span><span class=kt>Integer</span> <span class=o>=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>Main.var&#34;##338&#34;.Rabbit
+</code></pre><p>Note that we have prefaced the declaration of our <code>struct</code> with <code>Base.@kwdef</code>.
+This is a strange little macro, which is very useful, and also very
+undocumented. What it does is let us put default values in the fields, and
+call them by their names:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>🐰</span> <span class=o>=</span> <span class=n>Rabbit</span><span class=p>(;</span> <span class=n>population</span> <span class=o>=</span> <span class=mi>4</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Main.var&#34;##338&#34;.Rabbit(4)
+</code></pre><p>We can do the same work for foxes:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>Base</span><span class=o>.</span><span class=nd>@kwdef</span> <span class=k>mutable struct</span> <span class=kt>Fox</span> <span class=o>&lt;:</span> <span class=kt>Organism</span>
+</span></span><span class=line><span class=cl>    <span class=n>population</span><span class=o>::</span><span class=kt>Integer</span> <span class=o>=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>Main.var&#34;##338&#34;.Fox
+</code></pre><div class="callout opinion">Notice how the types are almost the same? We could solve this
+problem in a dozen different ways, including making <code>Organism</code> a concrete
+parametric type, or using metaprogramming to write the <code>struct</code> definitions
+for us. Do not hesitate to look for these keywords in the <em>Julia</em> manual when
+you have mastered the content of this module; for now, explicit and verbose is
+better than fancy and concise.</div><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>🦊</span> <span class=o>=</span> <span class=n>Fox</span><span class=p>()</span>
+</span></span></code></pre></div><pre tabindex=0><code>Main.var&#34;##338&#34;.Fox(1)
+</code></pre><p>Even if we do not specify a value for <code>population</code>, it will take the default
+value. Also, yes, emojis are valid variable names. And function names. And
+it&rsquo;s a curse and a blessing.</p><p>What we will do is write a function called <code>sight</code>, which will establish a set
+of rules for what happens when an organism sees another organism.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>sight!</span><span class=p>(</span><span class=n>fox</span><span class=o>::</span><span class=kt>Fox</span><span class=p>,</span> <span class=n>rabbit</span><span class=o>::</span><span class=kt>Rabbit</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>iszero</span><span class=p>(</span><span class=n>rabbit</span><span class=o>.</span><span class=n>population</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>fox</span><span class=o>.</span><span class=n>population</span> <span class=o>-=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>        <span class=n>fox</span><span class=o>.</span><span class=n>population</span> <span class=o>+=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>        <span class=n>rabbit</span><span class=o>.</span><span class=n>population</span> <span class=o>-=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>sight! (generic function with 1 method)
+</code></pre><div class="callout information">The <code>!</code> at the end of the <code>sight</code> function means nothing in terms of
+the language, but is part of the social contract of using <em>Julia</em>, and
+signifies that the function will <em>mutate</em> (this means &ldquo;change&rdquo;) its arguments.
+It is an exclamation mark because mutation is a side-effect, and there are
+situations where we care about side-effects and so-called <em>pure</em> functions a
+lot, and we will revisit mutating functions in the next section.</div><p>We can try to apply this function now:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>sight!</span><span class=p>(</span><span class=n>🦊</span><span class=p>,</span> <span class=n>🐰</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>3
+</code></pre><p>Because the fox has sighted the rabbit first, the rabbit population loses one
+individual, and the fox population grows by one.</p><div class="callout domain">This is, and we cannot emphasize this enough, not how <em>any</em> of this
+works.</div><p>Let&rsquo;s check the status of our populations:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>🦊</span><span class=p>,</span> <span class=n>🐰</span>
+</span></span></code></pre></div><pre tabindex=0><code>(Main.var&#34;##338&#34;.Fox(2), Main.var&#34;##338&#34;.Rabbit(3))
+</code></pre><p>So far, so good. How do we add more complexity to this? Well, let&rsquo;s add a
+version of <code>sight!</code> that accounts for the fact that foxes are hunting during
+sunset, at night, and very early in the morning. Let&rsquo;s say that they hunt from
+9pm to 5am. To represent this, we will load the <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Dates target=_blank>Dates</a></span></span> package from the
+standard library:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>using</span> <span class=n>Dates</span>
+</span></span></code></pre></div><p>It is going to let us do a little bit of interesting date arithmetic, and its
+documentation is worth reading a couple times over if you have the misfortune
+of needing to manipulate dates and times. Specifically, the thing we want to
+express is that foxes are hunting between 9pm yesterday and 5am today, which
+are respectively</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>Hour</span><span class=p>(</span><span class=mi>21</span><span class=p>)</span> <span class=o>-</span> <span class=n>Day</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>-1 day, 21 hours
+</code></pre><p>and</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>Hour</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>5 hours
+</code></pre><p>We can check that this is covering the correct timespan of 8 hours:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>Hour</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span> <span class=o>-</span> <span class=p>(</span><span class=n>Hour</span><span class=p>(</span><span class=mi>21</span><span class=p>)</span> <span class=o>-</span> <span class=n>Day</span><span class=p>(</span><span class=mi>1</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>1 day, -16 hours
+</code></pre><p>Now, to add this to a method for <code>sight!</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>sight!</span><span class=p>(</span><span class=n>fox</span><span class=o>::</span><span class=kt>Fox</span><span class=p>,</span> <span class=n>rabbit</span><span class=o>::</span><span class=kt>Rabbit</span><span class=p>,</span> <span class=n>time</span><span class=o>::</span><span class=kt>DateTime</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>Hour</span><span class=p>(</span><span class=mi>21</span><span class=p>)</span> <span class=o>-</span> <span class=n>Day</span><span class=p>(</span><span class=mi>1</span><span class=p>))</span> <span class=o>&lt;=</span> <span class=n>Hour</span><span class=p>(</span><span class=n>time</span><span class=p>)</span> <span class=o>&lt;=</span> <span class=n>Hour</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>sight!</span><span class=p>(</span><span class=n>fox</span><span class=p>,</span> <span class=n>rabbit</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>        <span class=nd>@info</span> <span class=s>&#34;Foxes are currently closed for business&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>sight! (generic function with 2 methods)
+</code></pre><p>Let&rsquo;s try this at different moments &ndash; for example, at 4:58pm on the first day
+of August, 2018:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>sight!</span><span class=p>(</span><span class=n>🦊</span><span class=p>,</span> <span class=n>🐰</span><span class=p>,</span> <span class=n>DateTime</span><span class=p>(</span><span class=mi>2018</span><span class=p>,</span> <span class=mi>8</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>16</span><span class=p>,</span> <span class=mi>58</span><span class=p>,</span> <span class=mi>00</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: Foxes are currently closed for business
+</code></pre><p>We can check that the population size has not changed:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>🦊</span><span class=p>,</span> <span class=n>🐰</span>
+</span></span></code></pre></div><pre tabindex=0><code>(Main.var&#34;##338&#34;.Fox(2), Main.var&#34;##338&#34;.Rabbit(3))
+</code></pre><p>Alternatively, if the same encounter happens a bit later:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>sight!</span><span class=p>(</span><span class=n>🦊</span><span class=p>,</span> <span class=n>🐰</span><span class=p>,</span> <span class=n>DateTime</span><span class=p>(</span><span class=mi>2018</span><span class=p>,</span> <span class=mi>8</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>01</span><span class=p>,</span> <span class=mi>35</span><span class=p>,</span> <span class=mi>21</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>🦊</span><span class=p>,</span> <span class=n>🐰</span>
+</span></span></code></pre></div><pre tabindex=0><code>(Main.var&#34;##338&#34;.Fox(3), Main.var&#34;##338&#34;.Rabbit(2))
+</code></pre><p>This is an illustration of the things we can do when dispatching on the types
+of multiple arguments. In the next modules, this will become standard
+practice, and so it is worth spending a bit of time trying to experiment with
+the concepts here. For example, we have not defined a situation in which the
+rabbit is the one sighting the fox first &ndash; this is a good example to
+implement yourself!</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-basic_functions_usage,module-multiple_dispatch,status-beta,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/04_basic_functions_usage/03_multiple_dispatch.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/functions/multiple-dispatch-in-practice/%0a%0a%f0%9f%93%a6%20section-basic_functions_usage%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-multiple_dispatch" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

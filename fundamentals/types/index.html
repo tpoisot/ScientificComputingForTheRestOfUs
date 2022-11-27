@@ -1,0 +1,167 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Types · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Types</h1><article>
+<p>In this module, we will look at one of the most important concept in <em>Julia</em>:
+types. Types are, to be really imprecise, the way a programming language
+thinks about a value. A lot of problems arise from the fact that programming
+languages are very opinionated.</p><p>Let&rsquo;s think about $2$, a real number that exists somewhere on the numbers
+line, roughly two steps to the right of 0:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=mf>2.0</span>
+</span></span></code></pre></div><pre tabindex=0><code>2.0
+</code></pre><p>We can also think about $2$, a real number that exists somewhere on the
+numbers line, exactly two steps to the right of 0:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=mi>2</span>
+</span></span></code></pre></div><pre tabindex=0><code>2
+</code></pre><p>These are different numbers. Well, not really. Not mathematically anyways,
+since as we expect:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=mf>2.0</span> <span class=o>==</span> <span class=mi>2</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>So $2.0$ and $2$ are equal, but they&rsquo;re actually not equal-equal. They&rsquo;re
+equal-ish:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=mf>2.0</span> <span class=o>===</span> <span class=mi>2</span>
+</span></span></code></pre></div><pre tabindex=0><code>false
+</code></pre><p>In the previous modules, we have discussed <code>==</code> as an equality comparison
+operator. This new operator, <code>===</code> (the <code>=</code> symbol repeated <em>three</em> times) is a &ldquo;distinguishability&rdquo; operator. What
+does this means? It lets us know that there exists a program able to
+make a difference between <code>2</code> and <code>2.0</code>. The reason why such a program exists is types.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>typeof</span><span class=p>(</span><span class=mf>2.0</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Float64
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>typeof</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Int64
+</code></pre><p>The construct <code>2.0</code> is a floating point number using 64 bits of memory; <code>2</code> is an integer using 64 bits of memory. These are very different
+objects: there is nothing existing between <code>2</code> and <code>3</code> (the two nearest
+integers), but there&rsquo;s an infinite number of things between <code>2.0</code> and <code>3.0</code>.</p><div class="callout warning">The last point is not actually quite true. Because bits are finite
+resource, there is a finite number of steps between <code>2.0</code> and <code>3.0</code>, but we
+assume that it is large enough that we can cross our fingers and hope for the
+best. Larger representations of floating point numbers are available.</div><p>Why do types matter so much? In a sense, it is because they give the compiler
+(or the interpreter) some valuable information as to what it should expect. A
+feature of <em>Julia</em> is that we can annotate every variable (even non <code>const</code>)
+with a type, which will ensure that this variable will <em>never</em> store data from
+a different type.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>two</span><span class=o>::</span><span class=kt>Float64</span> <span class=o>=</span> <span class=mf>2.0</span>
+</span></span></code></pre></div><pre tabindex=0><code>2.0
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>typeof</span><span class=p>(</span><span class=n>two</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Float64
+</code></pre><div class="callout opinion">The best practice is still to have be variables declared outside of
+functions be constants (<em>i.e.</em> <code>const a = 2.0</code>), because it gives more
+guarantees to the compiler and produces more efficient code. In a learning
+context, it does make things easier to not write everything within functions,
+and in this case annotating variables with a type provides some degree of
+protection as well as (maybe, modest) performance improvements.</div><p>Why does this matter? The answer is simple &ndash; as much as we like to think of
+2.0+1 and 2.0+1.0 as the same operation, they are very different <em>to a
+computer</em>. Specifically, although they write almost the same, they turn out to
+be transformed to different code. In <em>Julia</em>, we can use the <code>@code_llvm</code>
+macro, from <span class="package no-hub"><span class=pkgname>InteractiveUtils</span></span>, to look at the way the code we write is
+transformed into compiler instructions. This sounds like a lot of information
+(and it is, although when optimizing code it is often required to use these
+macros), but this will nicely illustrate the possible issue.</p><p>Let&rsquo;s start with the naive 2.0+1:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>import</span> <span class=n>InteractiveUtils</span>
+</span></span><span class=line><span class=cl><span class=n>InteractiveUtils</span><span class=o>.</span><span class=nd>@code_llvm</span> <span class=n>two</span> <span class=o>+</span> <span class=mi>1</span>
+</span></span></code></pre></div><pre tabindex=0><code>;  @ promotion.jl:388 within `+`
+define double @&#34;julia_+_3552&#34;(double %0, i64 signext %1) #0 {
+top:
+; ┌ @ promotion.jl:359 within `promote`
+; │┌ @ promotion.jl:336 within `_promote`
+; ││┌ @ number.jl:7 within `convert`
+; │││┌ @ float.jl:146 within `Float64`
+      %2 = sitofp i64 %1 to double
+; └└└└
+;  @ promotion.jl:388 within `+` @ float.jl:383
+  %3 = fadd double %2, %0
+;  @ promotion.jl:388 within `+`
+  ret double %3
+}
+</code></pre><p>As you see, there are a lot of lines about <em>promotion</em>, which is to say, about
+representing a variable as another type. What happens if we use 2.0+1.0 (note
+that we can generate a one of the correct type using the <code>one</code> function):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>InteractiveUtils</span><span class=o>.</span><span class=nd>@code_llvm</span> <span class=n>two</span> <span class=o>+</span> <span class=n>one</span><span class=p>(</span><span class=n>two</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>;  @ float.jl:383 within `+`
+define double @&#34;julia_+_3554&#34;(double %0, double %1) #0 {
+top:
+  %2 = fadd double %0, %1
+  ret double %2
+}
+</code></pre><p>The code is much smaller, and notably has <em>no promotion</em>. We have gained some
+valuable execution time by using two variables with correct types. Another
+useful macro is <code>@code_warntype</code>. For example, this will show the promotion
+step:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>InteractiveUtils</span><span class=o>.</span><span class=nd>@code_warntype</span> <span class=mi>2</span> <span class=o>+</span> <span class=mf>1.0</span>
+</span></span></code></pre></div><pre tabindex=0><code>MethodInstance for +(::Int64, ::Float64)
+  from +(x::Number, y::Number) in Base at promotion.jl:388
+Arguments
+  #self#::Core.Const(+)
+  x::Int64
+  y::Float64
+Body::Float64
+1 ─ %1 = Base.promote(x, y)::Tuple{Float64, Float64}
+│   %2 = Core._apply_iterate(Base.iterate, Base.:+, %1)::Float64
+└──      return %2
+</code></pre><p>But the correctly typed version will simply show the addition:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>InteractiveUtils</span><span class=o>.</span><span class=nd>@code_warntype</span> <span class=mf>2.0</span> <span class=o>+</span> <span class=mf>1.0</span>
+</span></span></code></pre></div><pre tabindex=0><code>MethodInstance for +(::Float64, ::Float64)
+  from +(x::T, y::T) where T&lt;:Union{Float16, Float32, Float64} in Base at float.jl:383
+Static Parameters
+  T = Float64
+Arguments
+  #self#::Core.Const(+)
+  x::Float64
+  y::Float64
+Body::Float64
+1 ─ %1 = Base.add_float(x, y)::Float64
+└──      return %1
+</code></pre><p>Recall that when we created the variable <code>two</code>, we <em>annotated</em> it with the
+type <code>Float64</code>. This is, in a way, a good protection against over-writing this
+variable with a value that has a different type.</p><p>We can experiment with over-writing <code>two</code> &ndash; in order to do so safely, we will
+use a <code>try</code> block, which we will look at in a few more modules. For now, just
+trust us.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>try</span>
+</span></span><span class=line><span class=cl>    <span class=n>two</span> <span class=o>=</span> <span class=mi>2</span>
+</span></span><span class=line><span class=cl><span class=k>catch</span> <span class=n>err</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@warn</span> <span class=s>&#34;I cannot perform this operation&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>else</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;The variable two is now </span><span class=si>$</span><span class=p>(</span><span class=n>two</span><span class=p>)</span><span class=s>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>┌ Warning: Assignment to `two` in soft scope is ambiguous because a global variable by the same name exists: `two` will be treated as a new local. Disambiguate by using `local two` to suppress this warning or `global two` to assign to the existing global variable.
+└ @ ~/work/ScientificComputingForTheRestOfUs/ScientificComputingForTheRestOfUs/dist/content/01_fundamentals/06_types.md:2
+[ Info: The variable two is now 2.0
+</code></pre><p>Why is this working? Well, let&rsquo;s have a look at the type of <code>two</code> now:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>typeof</span><span class=p>(</span><span class=n>two</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Float64
+</code></pre><p>Because it is possible to turn <code>2</code> into <code>2.0</code>, <em>Julia</em> will do it here, and
+the type annotation (<code>two</code> must be a <code>Float64</code>) is still satisfied.
+Transforming a variable into another type is something we can do manually (and
+in fact, have to do fairly frequently). For example, we might want to be very
+cheap (efficient) with memory, and represent <code>2.0</code> as an unsigned integer on 8
+bits:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>convert</span><span class=p>(</span><span class=kt>UInt8</span><span class=p>,</span> <span class=n>two</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>0x02
+</code></pre><p>But what if instead of 2, we try to store $2i+0$ (a complex number) in our
+original variable?</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>try</span>
+</span></span><span class=line><span class=cl>    <span class=k>global</span> <span class=n>two</span> <span class=o>=</span> <span class=mi>2</span><span class=nb>im</span> <span class=o>+</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl><span class=k>catch</span> <span class=n>err</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@warn</span> <span class=s>&#34;I cannot perform this operation&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>else</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;The variable two is now </span><span class=si>$</span><span class=p>(</span><span class=n>two</span><span class=p>)</span><span class=s>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>┌ Warning: I cannot perform this operation
+└ @ Main.var&#34;##322&#34; ~/work/ScientificComputingForTheRestOfUs/ScientificComputingForTheRestOfUs/dist/content/01_fundamentals/06_types.md:4
+</code></pre><p>This time, the assignment is failing because there is no automatic way to turn
+a complex number into a floating point number. Therefore, storing $2i+0$ in
+<code>two</code> would break the requirement that <code>two</code> is of the <code>Float64</code> type!</p><div class="callout warning">We are using <code>global two</code> to refer to the variable <code>two</code>, because the scoping
+rules (<em>i.e.</em> which part of the code are allowed to access which variables) say that,
+<em>outside of a function</em>, variables in a loop or a <code>try</code> block belong to this structure.
+This works differently within a function, where the variables defined within the function
+are accessible everywhere within this function.</div><p>Understanding types, which comes through a lot of practice, is key to
+accessing some of <em>Julia</em>&rsquo;s most interesting features, notably the dispatch
+system. In the following modules, we will introduce a lot more types, and see
+how they are organized in types hierarchies, and how we can use this
+information to refine the behavior of our functions. Remember that you can always inspect
+the type of a variable using <code>typeof</code>.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-fundamentals,module-types,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/01_fundamentals/06_types.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/fundamentals/types/%0a%0a%f0%9f%93%a6%20section-fundamentals%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-types" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

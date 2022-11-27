@@ -1,0 +1,90 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Introduction to Boolean values · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Introduction to Boolean values</h1><article>
+<p>In this module, we will get acquainted with one of the most important type of
+variables: Boolean values. They represent values that are either <code>true</code> or
+<code>false</code>, which is a key element in a number of problems.</p><p>Computer are <em>really</em> good at handling true/false statements. In fact, deep
+down, this is pretty much everything they know how to do. And so, getting
+familiar with the logic of Boolean values is extremely important. The good
+thing is that there are only two such values:</p><p>The first is <code>true</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=nb>true</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>The second is <code>false</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=nb>false</span>
+</span></span></code></pre></div><pre tabindex=0><code>false
+</code></pre><p>Why are they so important? The main reason is that we can use them to build
+&ldquo;branching paths&rdquo; in our code, for example to perform different actions based
+on whether a condition is satisfied or not. This is usually done with an <code>if</code>
+block, like so:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>if</span> <span class=p>(</span><span class=nb>true</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;true&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: true
+</code></pre><p>The part of the code in parenthesis is <em>set</em> to <code>true</code> here, but in practice,
+this would be the outcome of some sort of test or comparison. For example:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=mi>2</span> <span class=o>&lt;</span> <span class=mi>3</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>Indeed, many functions return <code>true</code> or <code>false</code> when they perform a
+comparison, or look for a match, or generally bring a categorical answer to a
+question.</p><p>The <code>if</code> blocks can have an <code>else</code> statement, which is executed only if the
+condition for the block is <code>false</code>. We can see it in action this way:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>if</span> <span class=p>(</span><span class=nb>false</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;true&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>else</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;false&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: false
+</code></pre><p>Because the test we do in the <code>if</code> block gives a result of <code>false</code>, <em>Julia</em>
+will run the content of the <code>else</code> block. This is useful to decide what to do
+based on a condition! For example, we may want to do something different based
+on whether a random number is smaller than a threshold:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>if</span> <span class=n>rand</span><span class=p>()</span> <span class=o>&lt;</span> <span class=mf>0.5</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;x &lt; .5&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>else</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;x ≤ .5&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: x ≤ .5
+</code></pre><p>The beauty of Boolean values is that they can be combined, because they obey
+some arithmetic rules, for example:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=nb>true</span> <span class=o>+</span> <span class=nb>true</span>
+</span></span></code></pre></div><pre tabindex=0><code>2
+</code></pre><p>Why? In brief, because <code>true</code> is given a value of <code>1</code>, and <code>false</code> a value of
+<code>0</code>. This is a good thing (we can build some semi-clever shortcuts around this
+property), but in practice we use specific operators for Boolean values: <code>!</code>,
+<code>|</code> and <code>&</code>.</p><p>The <em>not</em> operation (<code>!</code>) is the easiest to grasp: in front of a Boolean
+value, it returns the other:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=o>!</span><span class=nb>true</span>
+</span></span></code></pre></div><pre tabindex=0><code>false
+</code></pre><div class="callout opinion">The <em>not</em> operation can, <em>in some contexts only</em>, be noted with
+<code>~</code>. One of the ways we use <code>~</code> is to differentiate between the result of some
+mathematical operation (<code>!</code>), or some condition on <em>e.g.</em> the existence of a
+path (<code>~</code>). This is purely a notation convention, and it is entirely
+appropriate to forget about the existence of <code>~</code>.</div><p>The next operation is <em>or</em> (<code>|</code>), which is <code>true</code> if at least one of the values is
+true:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=nb>true</span> <span class=o>|</span> <span class=nb>false</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><div class="callout information">We encourage you to experiment with other combinations of values for
+each operator, and to notably change the order (<em>i.e.</em> <code>true | false</code> <em>v.</em>
+<code>false | true</code>).</div><p>The last operation is <em>and</em> (<code>&</code>), which is <code>true</code> if <em>both</em> of the values are
+true:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=nb>true</span> <span class=o>&amp;</span> <span class=nb>false</span>
+</span></span></code></pre></div><pre tabindex=0><code>false
+</code></pre><p>Compare to:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=nb>true</span> <span class=o>&amp;</span> <span class=nb>true</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>We can nest these operations within parentheses. For example, the following
+statement is valid:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=nb>true</span> <span class=o>&amp;</span> <span class=o>!</span><span class=p>(</span><span class=nb>true</span> <span class=o>|</span> <span class=nb>false</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>false
+</code></pre><p>This evaluates as <code>false</code> because the <em>interior</em> of the parenthesis is <code>true</code>,
+so the <em>not</em> operation returns <code>false</code>, and then <code>true & false</code> is <code>false</code>.</p><p>There is a lot more we can achieve with Boolean values, which we will cover in
+part in the next modules.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-fundamentals,module-booleans,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/01_fundamentals/03_booleans.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/fundamentals/introduction-to-boolean-values/%0a%0a%f0%9f%93%a6%20section-fundamentals%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-booleans" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

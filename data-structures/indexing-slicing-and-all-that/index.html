@@ -1,0 +1,174 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Indexing, slicing, and all that · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Indexing, slicing, and all that</h1><article>
+<p>In the previous module, we have introduced the notion of <code>Array</code>s, and
+experimented with the shape of vectors and matrices. In this module, we will
+continue our exploration of these objects, and see how we can modify and
+access the information they store.</p><p>In order to facilitate our work, we will create a simple matrix, which will be
+full of ones:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>A</span> <span class=o>=</span> <span class=n>ones</span><span class=p>(</span><span class=kt>Float64</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>7</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>4×7 Matrix{Float64}:
+ 1.0  1.0  1.0  1.0  1.0  1.0  1.0
+ 1.0  1.0  1.0  1.0  1.0  1.0  1.0
+ 1.0  1.0  1.0  1.0  1.0  1.0  1.0
+ 1.0  1.0  1.0  1.0  1.0  1.0  1.0
+</code></pre><div class="callout information">The <code>ones</code> and <code>zeros</code> functions are extremely useful to initialize
+objects of a given size and type, and we strongly recommend you check out
+their documentation.</div><p>One fairly important question is, in what order are these elements stored in
+the matrix? We can start looking at the first indexing approach, also known as
+<em>linear</em> indexing:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=kt>LinearIndices</span><span class=p>(</span><span class=n>A</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>4×7 LinearIndices{2, Tuple{Base.OneTo{Int64}, Base.OneTo{Int64}}}:
+ 1  5   9  13  17  21  25
+ 2  6  10  14  18  22  26
+ 3  7  11  15  19  23  27
+ 4  8  12  16  20  24  28
+</code></pre><p>The first element is at the top-left of the matrix, elements are stored
+alongside columns, and the final element is at the bottom-right.</p><p>This may seem a little awkward as we think of matrices as having two
+dimensions, but it is perfectly appropriate to ask for &ldquo;the ninth value in
+<code>A</code>&rdquo;:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>A</span><span class=p>[</span><span class=mi>9</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>1.0
+</code></pre><p>It&rsquo;s one. Of course it&rsquo;s one, because we generated a matrix that is filled
+with ones. So let&rsquo;s change this value:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>A</span><span class=p>[</span><span class=mi>9</span><span class=p>]</span> <span class=o>=</span> <span class=mf>9.0</span>
+</span></span></code></pre></div><pre tabindex=0><code>9.0
+</code></pre><p>What is going one behind the scenes is in fact a call to two different
+methods. We can get values out of a structure with <code>getindex</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>getindex</span><span class=p>(</span><span class=n>A</span><span class=p>,</span> <span class=mi>9</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>9.0
+</code></pre><p>We can write values in a structure with <code>setindex!</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>setindex!</span><span class=p>(</span><span class=n>A</span><span class=p>,</span> <span class=mf>2.0</span><span class=p>,</span> <span class=mi>9</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>4×7 Matrix{Float64}:
+ 1.0  1.0  2.0  1.0  1.0  1.0  1.0
+ 1.0  1.0  1.0  1.0  1.0  1.0  1.0
+ 1.0  1.0  1.0  1.0  1.0  1.0  1.0
+ 1.0  1.0  1.0  1.0  1.0  1.0  1.0
+</code></pre><div class="callout information">The <code>setindex!</code> function ends with an exclamation mark to let you know
+that it will mutate its first argument. This is not a feature of the language
+(adding <code>!</code> to a function name does not change anything), but a very strongly
+adhered to social contract. Much later, we will see how we use this design
+pattern in practice.</div><p>There is a second way to access the coordinates of an array:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>collect</span><span class=p>(</span><span class=kt>CartesianIndices</span><span class=p>(</span><span class=n>A</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>4×7 Matrix{CartesianIndex{2}}:
+ CartesianIndex(1, 1)  CartesianIndex(1, 2)  CartesianIndex(1, 3)  CartesianIndex(1, 4)  CartesianIndex(1, 5)  CartesianIndex(1, 6)  CartesianIndex(1, 7)
+ CartesianIndex(2, 1)  CartesianIndex(2, 2)  CartesianIndex(2, 3)  CartesianIndex(2, 4)  CartesianIndex(2, 5)  CartesianIndex(2, 6)  CartesianIndex(2, 7)
+ CartesianIndex(3, 1)  CartesianIndex(3, 2)  CartesianIndex(3, 3)  CartesianIndex(3, 4)  CartesianIndex(3, 5)  CartesianIndex(3, 6)  CartesianIndex(3, 7)
+ CartesianIndex(4, 1)  CartesianIndex(4, 2)  CartesianIndex(4, 3)  CartesianIndex(4, 4)  CartesianIndex(4, 5)  CartesianIndex(4, 6)  CartesianIndex(4, 7)
+</code></pre><p>This is a type of indexing we are more familiar with, as each entry is
+specified by a (row,column) pair of values. Notice that this is a matrix with
+the same shape as the <code>A</code> matrix, so we can check what the coordinates of the
+ninth position are:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=kt>CartesianIndices</span><span class=p>(</span><span class=n>A</span><span class=p>)[</span><span class=mi>9</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>CartesianIndex(1, 3)
+</code></pre><p>Line 1, row 3 &ndash; what can we do with a <code>CartesianIndex</code>? Well, we can get
+information out of matrix:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>A</span><span class=p>[</span><span class=kt>CartesianIndex</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>3</span><span class=p>)]</span>
+</span></span></code></pre></div><pre tabindex=0><code>2.0
+</code></pre><p>Wait a minute, you say, this sounds very complicated. Why can&rsquo;t I write
+<code>A[1,3]</code>?</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>A</span><span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>2.0
+</code></pre><p>You can. You can also use it to modify a value!</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>A</span><span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span> <span class=o>=</span> <span class=mf>4.0</span>
+</span></span><span class=line><span class=cl><span class=n>A</span>
+</span></span></code></pre></div><pre tabindex=0><code>4×7 Matrix{Float64}:
+ 1.0  1.0  4.0  1.0  1.0  1.0  1.0
+ 1.0  1.0  1.0  1.0  1.0  1.0  1.0
+ 1.0  1.0  1.0  1.0  1.0  1.0  1.0
+ 1.0  1.0  1.0  1.0  1.0  1.0  1.0
+</code></pre><div class="callout opinion">These different ways to access/write information in an array all
+have their uses. For now, it is enough that you remember that it is possible
+to access information using the position you want by increasing dimension
+(rows, then columns, then &mldr;). But at some point, we will have to leverage
+some unique functions of Cartesian indexing, so you can put a mental pin in
+this.</div><p>Let&rsquo;s now come up with a slightly more interesting matrix:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>B</span> <span class=o>=</span> <span class=n>reshape</span><span class=p>(</span><span class=mi>1</span><span class=o>:</span><span class=mi>30</span><span class=p>,</span> <span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=mi>6</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>5×6 reshape(::UnitRange{Int64}, 5, 6) with eltype Int64:
+ 1   6  11  16  21  26
+ 2   7  12  17  22  27
+ 3   8  13  18  23  28
+ 4   9  14  19  24  29
+ 5  10  15  20  25  30
+</code></pre><p>We can extract the third row of this matrix with:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>B</span><span class=p>[</span><span class=mi>3</span><span class=p>,</span> <span class=o>:</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>6-element Vector{Int64}:
+  3
+  8
+ 13
+ 18
+ 23
+ 28
+</code></pre><p>We can get the fourth column with:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>B</span><span class=p>[</span><span class=o>:</span><span class=p>,</span> <span class=mi>4</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>5-element Vector{Int64}:
+ 16
+ 17
+ 18
+ 19
+ 20
+</code></pre><p>We can even get the entire matrix with:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>B</span><span class=p>[</span><span class=o>:</span><span class=p>,</span> <span class=o>:</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>5×6 Matrix{Int64}:
+ 1   6  11  16  21  26
+ 2   7  12  17  22  27
+ 3   8  13  18  23  28
+ 4   9  14  19  24  29
+ 5  10  15  20  25  30
+</code></pre><p>This seems useless, but not really. What we have just introduced is a
+mechanism called <em>slicing</em>, in which we give a range of values that we want.
+It just so happens that <code>:</code> in this context is a shortcut for <code>begin:end</code>.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>B</span><span class=p>[</span><span class=n>begin</span><span class=o>:</span><span class=n>end</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>5-element Vector{Int64}:
+ 11
+ 12
+ 13
+ 14
+ 15
+</code></pre><p>As our <code>B[:,:]</code> example shows, we can actually use two ranges:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>B</span><span class=p>[</span><span class=mi>1</span><span class=o>:</span><span class=mi>2</span><span class=p>,</span> <span class=mi>1</span><span class=o>:</span><span class=mi>2</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>2×2 Matrix{Int64}:
+ 1  6
+ 2  7
+</code></pre><p>We can also use ranges that are defined <em>relative</em> to the start or the end of
+the array alongside this dimension:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>B</span><span class=p>[(</span><span class=k>begin</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span><span class=o>:</span><span class=p>(</span><span class=k>end</span> <span class=o>-</span> <span class=mi>1</span><span class=p>),</span> <span class=k>begin</span><span class=o>:</span><span class=p>(</span><span class=k>end</span> <span class=o>-</span> <span class=mi>2</span><span class=p>)]</span>
+</span></span></code></pre></div><pre tabindex=0><code>3×4 Matrix{Int64}:
+ 2  7  12  17
+ 3  8  13  18
+ 4  9  14  19
+</code></pre><p>This is a very interesting way to access elements, and it also works with
+vectors:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>u</span> <span class=o>=</span> <span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>5</span><span class=p>,</span> <span class=mi>6</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>u</span><span class=p>[(</span><span class=k>begin</span> <span class=o>+</span> <span class=mi>2</span><span class=p>)</span><span class=o>:</span><span class=p>(</span><span class=k>end</span> <span class=o>-</span> <span class=mi>2</span><span class=p>)]</span>
+</span></span></code></pre></div><pre tabindex=0><code>2-element Vector{Int64}:
+ 3
+ 4
+</code></pre><div class="callout information">In fact, it works with arrays of <em>any</em> dimensions, as you need to
+specificy one range for each dimension. You can try with an array <code>X = reshape(Array(1:27), (3,3,3))</code>, to get <code>X[1:2,:,2:3]</code>.</div><p>A final piece of information to know before moving forward is that we can use
+slices to rapidly change a lot of values in an array. Let&rsquo;s imagine a
+stochastic block matrix where we have two blocks of 5×5 with probability
+values, and the rest of the matrix is 0:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>SBM</span> <span class=o>=</span> <span class=n>round</span><span class=o>.</span><span class=p>(</span><span class=n>rand</span><span class=p>(</span><span class=kt>Float64</span><span class=p>,</span> <span class=mi>10</span><span class=p>,</span> <span class=mi>10</span><span class=p>);</span> <span class=n>digits</span> <span class=o>=</span> <span class=mi>1</span><span class=p>);</span>
+</span></span></code></pre></div><p>We can slice our way through this matrix to replace the parts that we want to
+set to 0:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>SBM</span><span class=p>[</span><span class=mi>6</span><span class=o>:</span><span class=k>end</span><span class=p>,</span> <span class=k>begin</span><span class=o>:</span><span class=mi>5</span><span class=p>]</span> <span class=o>.=</span> <span class=mf>0.0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=n>SBM</span><span class=p>[</span><span class=k>begin</span><span class=o>:</span><span class=mi>5</span><span class=p>,</span> <span class=mi>6</span><span class=o>:</span><span class=k>end</span><span class=p>]</span> <span class=o>.=</span> <span class=mf>0.0</span><span class=p>;</span>
+</span></span></code></pre></div><div class="callout information">We use <code>.=</code> to replace multiple values at once. This is a specific bit
+of <em>Julia</em> notation that we will take a deep dive into in a later module. For
+now, keep in mind that <code>.=</code> will replace more than one thing.</div><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>SBM</span>
+</span></span></code></pre></div><pre tabindex=0><code>10×10 Matrix{Float64}:
+ 0.1  0.5  0.8  0.9  0.7  0.0  0.0  0.0  0.0  0.0
+ 0.4  0.9  0.1  0.7  0.4  0.0  0.0  0.0  0.0  0.0
+ 0.8  1.0  0.4  0.8  0.5  0.0  0.0  0.0  0.0  0.0
+ 0.7  0.7  0.1  0.5  0.7  0.0  0.0  0.0  0.0  0.0
+ 0.1  0.9  0.0  0.6  0.4  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.7  0.8  0.3  0.2  0.9
+ 0.0  0.0  0.0  0.0  0.0  0.1  0.7  0.5  0.3  0.8
+ 0.0  0.0  0.0  0.0  0.0  0.1  0.3  0.8  0.2  0.4
+ 0.0  0.0  0.0  0.0  0.0  0.6  0.1  0.1  0.4  0.5
+ 0.0  0.0  0.0  0.0  0.0  0.6  0.0  0.8  0.9  0.1
+</code></pre><p>At the end of this module, we have covered the ways we can index positions in
+an array, and how we can use slices to access multiple rows/columns at once,
+and if need be over-write them. This is a strong foundation to start building
+more ambitious code, as we will start to do in the next section!</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-data_structures,module-indexing,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/02_data_structures/02_indexing.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/data-structures/indexing-slicing-and-all-that/%0a%0a%f0%9f%93%a6%20section-data_structures%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-indexing" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

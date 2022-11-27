@@ -1,0 +1,72 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Recursion · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Recursion</h1><article>
+<p>What is recursion, if not recursion persevering? In this module, we will see
+how to call functions recursively, and discuss when this is appropriate in
+real life.</p><p>A very important type of sequences in molecular biology are palyndromic
+sequences, where reading them on one strand gives a sequence that is
+complementary to the sequence we get when reading it on the other strand. For
+example, the <em>EcoR1</em> restriction site has a sequence of GAATTC on the 5&rsquo; to 3'
+strand, and its complement is CTTAAG on the 3&rsquo; to 5&rsquo; strand.</p><p>Can we write a function to check whether a sequence is a palyndrome?
+Absolutely! And we will do so using recursion. But what is recursion? In a few
+words, it is the process of a function calling itself until some stopping
+condition has been met. For example, our function can check that the first
+basis on the 5&rsquo; to 3&rsquo; strand is the same as the last basis on the 3&rsquo; to 5'
+strand, and then do the second and second to last, until the sequence has been
+exhausted or a mismatch found.</p><p>Using recursion, we can write this function without using a loop!</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>palyndrome</span><span class=p>(</span><span class=n>seq5</span><span class=p>,</span> <span class=n>seq3</span><span class=p>,</span> <span class=n>index</span> <span class=o>=</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>index</span> <span class=o>&gt;</span> <span class=n>length</span><span class=p>(</span><span class=n>seq5</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=nb>true</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;Checking position </span><span class=si>$</span><span class=p>(</span><span class=n>index</span><span class=p>)</span><span class=s>&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>seq5</span><span class=p>[</span><span class=n>index</span><span class=p>]</span> <span class=o>==</span> <span class=n>seq3</span><span class=p>[</span><span class=k>end</span> <span class=o>-</span> <span class=n>index</span> <span class=o>+</span> <span class=mi>1</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>palyndrome</span><span class=p>(</span><span class=n>seq5</span><span class=p>,</span> <span class=n>seq3</span><span class=p>,</span> <span class=n>index</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=nb>false</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>palyndrome (generic function with 2 methods)
+</code></pre><p>First, let&rsquo;s ensure that this function works:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>palyndrome</span><span class=p>(</span><span class=s>&#34;GAATTC&#34;</span><span class=p>,</span> <span class=s>&#34;CTTAAG&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>palyndrome</span><span class=p>(</span><span class=s>&#34;GATTTC&#34;</span><span class=p>,</span> <span class=s>&#34;CTAAAG&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>false
+</code></pre><p>Now, let&rsquo;s take a little dive into what happens internally. We start by
+checking the stop condition (this is counter-intuitive, but it be like that
+sometimes). If we have met the stop conditions, <em>i.e.</em> if we have read the
+sequence across all sites, then we know it is a palyndrome and we return
+<code>true</code>.</p><div class="callout opinion">The <code>end-index+1</code> index in the comparison has a <code>+1</code> because
+<em>Julia</em> indexes from 1, not 0, and this makes a lot of people angry, because
+programmers are actively looking for reasons to be angry sometimes. Just voice
+on opinion about the tabulations versus spaces, and you&rsquo;ll see what we mean.</div><p>If we have not yet reached the end of the sequence, we perform the comparison.
+If the two bases are different, the sequence is <em>not</em> a palyndrome, and we
+return <code>false</code>; but if the two bases match, we call the function <em>again</em>, this
+time with the next index value.</p><div class="callout warning">As with <code>while</code> loops, recursion will stop whenever recursion will
+stop whenever recursion will stop whenev&mldr; sorry what we were going to say
+is: you need to ensure that the stop condition can be reached.</div><p>There are a few reasons to use recursion as opposed to loops. In some cases
+(like looking up inside folders, or looking up values in binary trees), this
+is a much more efficient way to work. Recursion can work with distributed
+computing as well, by starting different calls to the function on multiple
+threads or machines.</p><p>But this is not to say that recursion has not issues - it can perform worse
+than iteration in a substantial amount of cases, and is generally requiring
+that you think about problems in a different way. In any case, it is an
+important tool to have in your programming toolbox!</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-advanced_functions_usage,module-recursion,status-beta,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/05_advanced_functions_usage/04_recursion.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/advanced-functions/recursion/%0a%0a%f0%9f%93%a6%20section-advanced_functions_usage%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-recursion" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

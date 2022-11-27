@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title/><link>https://sciencecomputing.io/02_data_structures/</link><description>Recent content on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://sciencecomputing.io/02_data_structures/index.xml" rel="self" type="application/rss+xml"/><item><title>An introduction to arrays</title><link>https://sciencecomputing.io/data-structures/an-introduction-to-arrays/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/data-structures/an-introduction-to-arrays/</guid><description>&lt;p>A &lt;em>lot&lt;/em> of scientific computing eventually boils down to accessing things in
+structures that look like vectors or matrices. In this module, we will examine
+the basic syntax to create, interact with, and transpose these structures. This is
+one of the most foundational module in the class, as we will be using an
+absurd quantity of vectors and matrices moving forward.&lt;/p></description></item><item><title>Building your own types</title><link>https://sciencecomputing.io/data-structures/building-your-own-types/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/data-structures/building-your-own-types/</guid><description>&lt;p>In this module, we will &lt;em>briefly&lt;/em> see how we can define our own types (&lt;em>aka&lt;/em>
+&lt;code>struct&lt;/code>), and give them a hierarchy. We will barely scratch the surface of
+what can be done with custom types, as the real fun will take place in the
+modules on &lt;a href="https://sciencecomputing.io/functions/understanding-dispatch/">dispatch&lt;/a> and &lt;a href="https://sciencecomputing.io/advanced-topics/overloading/">overloading&lt;/a> (don&amp;rsquo;t read
+them yet!).&lt;/p></description></item><item><title>Dictionaries and pairs</title><link>https://sciencecomputing.io/data-structures/dictionaries-and-pairs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/data-structures/dictionaries-and-pairs/</guid><description>&lt;p>In this module, we will explore two very useful data structures: dictionaries,
+which serve as &amp;ldquo;key-value&amp;rdquo; stores, and pairs, which serve as (essentially) the
+same thing but smaller.&lt;/p></description></item><item><title>Indexing, slicing, and all that</title><link>https://sciencecomputing.io/data-structures/indexing-slicing-and-all-that/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/data-structures/indexing-slicing-and-all-that/</guid><description>&lt;p>In the previous module, we have introduced the notion of &lt;code>Array&lt;/code>s, and
+experimented with the shape of vectors and matrices. In this module, we will
+continue our exploration of these objects, and see how we can modify and
+access the information they store.&lt;/p></description></item><item><title>Strings, symbols, and text</title><link>https://sciencecomputing.io/data-structures/strings-symbols-and-text/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/data-structures/strings-symbols-and-text/</guid><description>&lt;p>In this module, we will look at string and characters, &lt;em>i.e.&lt;/em> representations
+of text. These objects are really interesting in &lt;em>Julia&lt;/em> because not only do
+they store information, they can store a little bit of computation as well.
+The point of this module is to go through the basics of what strings are, and
+we will revisit advanced operations in later sections.&lt;/p></description></item><item><title>Tuples, named tuples, and sets</title><link>https://sciencecomputing.io/data-structures/tuples-named-tuples-and-sets/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sciencecomputing.io/data-structures/tuples-named-tuples-and-sets/</guid><description>&lt;p>In this module, we will explore data structures that look a lot like arrays,
+but have subtly different use cases: tuples, named tuples, and sets. Knowing
+when to use arrays and when to use others data structure can really make a
+difference in your programming!s&lt;/p></description></item></channel></rss>

@@ -1,0 +1,103 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Declaring functions · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Declaring functions</h1><article>
+<p>Everything should be a function. Everything. Especially in <em>Julia</em>, for
+performance related reasons that are far beyond the scope of this material. So
+one of the first, most significant piece of knowledge to acquire is: how do I
+declare a function?</p><p>Let us start with a function that says (or rather, <code>print</code>, as we call it)
+<code>"Hello"</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>hello</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>print</span><span class=p>(</span><span class=s>&#34;Hello&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>hello (generic function with 1 method)
+</code></pre><p>This is a <code>generic function</code> with <code>1 method</code>, and for now we will ignore this
+information (and get back to it only when discussing dispatch in the next
+module). We can call our function by using its name:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>hello</span><span class=p>()</span>
+</span></span></code></pre></div><pre tabindex=0><code>Hello
+</code></pre><p>Note that we use the parentheses (<code>()</code>) to make a difference between <em>talking
+about the function</em> (<code>hello</code>) and <em>executing the function</em> (<code>hello()</code>). There
+is nothing within the parentheses (yet), but without them, this would not
+work.</p><p>Let&rsquo;s get something out of the way immediately. We do not need to write
+<code>function</code> and <code>end</code>, as we can simply get the same effect with a one-liner
+function:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>hello_oneline</span><span class=p>()</span> <span class=o>=</span> <span class=n>print</span><span class=p>(</span><span class=s>&#34;Hello&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>hello_oneline</span><span class=p>()</span>
+</span></span></code></pre></div><pre tabindex=0><code>Hello
+</code></pre><p>This is, at times, a little more convenient. For example, we can define the
+logit and logistic functions on one line (each!):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>logistic</span><span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=o>=</span> <span class=mf>1.0</span> <span class=o>/</span> <span class=p>(</span><span class=mf>1.0</span> <span class=o>+</span> <span class=n>exp</span><span class=p>(</span><span class=o>-</span><span class=n>x</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>logistic (generic function with 1 method)
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>logit</span><span class=p>(</span><span class=n>p</span><span class=p>)</span> <span class=o>=</span> <span class=n>log</span><span class=p>(</span><span class=n>p</span> <span class=o>/</span> <span class=p>(</span><span class=mf>1.0</span> <span class=o>-</span> <span class=n>p</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>logit (generic function with 1 method)
+</code></pre><p>Hey there&rsquo;s something new! We have added <code>x</code> (and <code>p</code>) in the declaration of
+the function. What are these?</p><p>They are called <em>arguments</em>. The arguments of a function (and their type!) are
+called its <em>signature</em> (there is a second part to the signature of a function,
+and we will get to it much, much later). Arguments are used to provide information about
+the outside world to a function.</p><p>We can have many arguments to a function. For example, we can have a function
+called <code>linear</code>, with three arguments <code>x</code>, <code>m</code>, and <code>b</code>, which would return
+$mx+b$.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>linear</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>m</span><span class=p>,</span> <span class=n>b</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>m</span> <span class=o>*</span> <span class=n>x</span> <span class=o>+</span> <span class=n>b</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>linear (generic function with 1 method)
+</code></pre><p>We can check that it works, maybe by testing different values of <code>x</code>, with the
+equation $0.2x+1.4$:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>for</span> <span class=n>x</span> <span class=k>in</span> <span class=mf>0.0</span><span class=o>:</span><span class=mf>0.1</span><span class=o>:</span><span class=mf>0.5</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=n>linear</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>,</span> <span class=mf>1.4</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: 1.4
+[ Info: 1.42
+[ Info: 1.44
+[ Info: 1.46
+[ Info: 1.48
+[ Info: 1.5
+</code></pre><p>But how do we know that <code>m</code> is <code>0.2</code> and <code>b</code> is <code>1.4</code>? Well, these arguments
+are what we call <em>positional arguments</em>; they are read in the order where they
+are declared in the function signature.</p><div class="callout warning">The downside of positional arguments is that, of course, you need
+to pass them to the function in the right order, as specified by the
+signature. Thankfully, most decent text editors will provide you with information about
+the signature as you type the name of the function, so you do not need to have a complete
+mental model of your entire code every time you want to write something.</div><p>One thing that the function cannot do yet is deal with us giving it no
+arguments. We can fix this by giving default values to some arguments. Note
+how we also change the name of the arguments to make it far more obvious what
+the function will do:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>linear</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>slope</span><span class=p>,</span> <span class=n>intercept</span> <span class=o>=</span> <span class=mf>0.0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>slope</span> <span class=o>*</span> <span class=n>x</span> <span class=o>+</span> <span class=n>intercept</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>linear (generic function with 2 methods)
+</code></pre><div class="callout opinion">Using descriptive variable names is a <em>Good Thing</em>. Most text
+editors will auto-complete, but most importantly, it makes the code readable
+by humans. You will spend a lot of time dealing with your code, and it makes sense to have
+names that help you figure out what the <em>purpose</em> of the code is.</div><p>One small (or, well, actually, gigantic) caveat with default values for
+positional arguments is that you <em>cannot</em> mix and match the order: the
+arguments with default values <em>must</em> come last.</p><p>There is another way to declare a function, and we will make ample use of it
+in the next modules &ndash; we can declare an <em>anonymous</em> function using a notation
+very close to the standard mathematical notation of declaring a function. For
+example:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>f</span> <span class=o>=</span> <span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=n>x</span><span class=o>^</span><span class=mi>2</span>
+</span></span></code></pre></div><pre tabindex=0><code>#1 (generic function with 1 method)
+</code></pre><p>The <code>-></code> symbol is called a <em>coding ligature</em>, and they are all the rage in programming
+fonts. In practice, this is simply the characters <code>-</code> <code>></code>, but replaced with a nice little
+arrow. Font ligatures notwisthanding, this notations makes <code>f</code> a function returning the square of its argument:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>f</span><span class=p>(</span><span class=mf>2.0</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>4.0
+</code></pre><div class="callout information">Anonymous functions are more difficult to debug, optimize, and
+generally deal with than &ldquo;proper&rdquo; functions. That being said, they are very
+useful when you need a function somewhere, but do not feel like writing one
+for a single operation. We will make ample use of the when looking for stuff in things (or
+is it the other way around?).</div><p>In this module, we went through the different ways to declare a function. In
+the following module, we will go in a lot of details into the dispatch
+mechanism, which is central to <em>Julia</em>&rsquo;s philosophy.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-basic_functions_usage,module-declaring,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/04_basic_functions_usage/01_declaring.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/functions/declaring-functions/%0a%0a%f0%9f%93%a6%20section-basic_functions_usage%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-declaring" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

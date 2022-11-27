@@ -1,0 +1,102 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Preparing a project · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Preparing a project</h1><article>
+<p>In this module, before we write any code, we will start thinking about what a
+project is, how we can set one up on our computer, and why this might help
+defeat coder&rsquo;s block.</p><p>If your working environment looks anything like mine, the first thing you may
+see on a new project will look like this:</p><pre tabindex=0><code>[tpoisot@fedora ~]$ julia
+               _
+   _       _ _(_)_     |  Documentation: https://docs.julialang.org
+  (_)     | (_) (_)    |
+   _ _   _| |_  __ _   |  Type &#34;?&#34; for help, &#34;]?&#34; for Pkg help.
+  | | | | | | |/ _` |  |
+  | | |_| | | | (_| |  |  Version 1.8.0 (2022-08-17)
+ _/ |\__&#39;_|_|_|\__&#39;_|  |  Official https://julialang.org/ release
+|__/                   |
+
+julia&gt;
+</code></pre><p>This is highly intimidating. The cursor blinks expectantly, and you might not
+have a single clue what to type. Good. Because before we do anything, we need
+to think about project organisation.</p><p>Facing an empty text editor or a blinking REPL (it stands for Read/Execute/Print
+Loop, and this the place where you type things) prompt at the beginning of a
+programming task is like facing an empty page at the beginning of a writing
+project. To make it easier to work through, one really good (but also really
+uncommon) approach is to walk away from the computer. Instead of trying to write
+code, we will first try to articulate the structure of our project - and not
+jumping to our keyboard works really well for this.</p><p>Here is a productivity tip: work in such a way that you do not need to think
+about the non-important parts of your project. For us, this means having a
+standard layout for any project, and using it consistently. We will suggest one
+such layout below, but this is not the only one. There are an infinity of them,
+and the one that <em>works</em> is the one that works <em>for you</em>.</p><p>Still, there are some good guidelines to follow.</p><p>First, a project is a folder, everything in the project belongs to the folder,
+and everything outside the folder cannot belong to the project. This is
+important because it maximizes the chances that you can copy your project to
+another computer, and have it &ldquo;just work&rdquo;. Of course in real life, things
+seldom &ldquo;just work&rdquo;, and this is why we should pay extra care to the practices
+that maximise the chances of it being the case.</p><div class="callout information">This is not necessarily true if your project involves remote
+computing, or very large amounts of data. But then again, if you work in such
+a way, we expect that you will have read the documentation, and sought proper
+training.</div><p>Second, file paths are not your friends. By far the biggest obstacle to
+reproducibility is the difference in ways to tell the computer <em>where files
+are</em>. We encourage to use <em>relative paths</em>, relative specifically to the
+folder in which your project lives. We will talk more about dealing with
+directories and paths and files in the <a href=https://sciencecomputing.io/files/the-path/>path</a> module.</p><p>Third, and final principle, similar things should be grouped together. In other
+words, it will be easier to navigate our project if there is a folder called
+<code>data</code> and it contains data, a folder called <code>figures</code> and it contains figures,
+and a folder called <code>code</code> which contains code. The name and variety of these
+folders is left up to you.</p><p>With this in mind, here is a possible template for a project.</p><pre tabindex=0><code>.
+├── .git                    # We use version control, always!
+│   └── ...
+├── artifacts               # Outputs that are not figures go here
+│   └── summary.csv
+├── code                    # Code that creates something goes here
+│   ├── figure01.jl
+│   └── simulations.jl
+├── data                    # Raw data goes here
+│   └── BCI.data
+├── lib                     # Useful functions go here
+│   ├── environmentaldata.jl
+│   └── model.jl
+├── LICENSE                 # We use a license, always!
+├── README.md               # Also mandatory: a README
+├── Project.toml
+├── Manifest.toml
+└── text                    # This folder can store notes and documents
+    └── notes.md
+</code></pre><p>There are a few files here on which it is worth spending a little more time.
+Their names are presented below as links, to the resource that we think is the
+most informative. It is, indeed, a very good idea to read the content of these
+links as well.</p><p>The <a href=https://mozilla.github.io/open-leadership-training-series/articles/opening-your-project/write-a-great-project-readme/>README</a> is a standard file for all projects, which gives
+information about the project, how to run it, the dependencies, who is in
+charge, <em>etc</em>. Writing a good README is a difficult task, but this is going to
+be the point of entry in your project. Show it some love.</p><p><a href=https://choosealicense.com/>LICENSE</a> is the text of a license, which gives information about
+intellectual property and your own liability regarding the use of your
+project. Picking FOSS (Free and Open Source Software) licenses is recommended,
+and there are a lot of the to accomodate different use cases. The <a href=https://choosealicense.com/>choose a
+license</a> website is a very good place to get started.</p><p>Finally, and these are language-specific, the <a href=https://julialang.github.io/Pkg.jl/v1/><em>Julia</em> package manager</a>
+will create files to track the dependencies of your project; <code>Project.toml</code>
+(which can be distributed alongside your project), and <code>Manifest.toml</code>, which
+is a machine-specific file with a <em>lot</em> of information. Check out the
+documentation.</p><div class="callout information">We will spend more time with the <em>Julia</em> package manager soon. It is a
+slightly unusual piece of software when coming from <em>e.g.</em> <em>R</em> or <em>Python</em>,
+but it is very powerful and makes reproducibility much, much easier.</div></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-getting_started,module-setup,status-release,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/00_getting_started/01_setup.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/introduction/preparing-a-project/%0a%0a%f0%9f%93%a6%20section-getting_started%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-setup" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

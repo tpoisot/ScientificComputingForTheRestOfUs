@@ -1,0 +1,178 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Finding things in arrays · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Finding things in arrays</h1><article>
+<p>In this module, we will see how to locate interesting values in collections,
+and how to extract and test the existence of some of these values. This is
+important knowledge in order to build more advanced programs, and we will put
+it in action in the following section.</p><p>During the module on indexing, we thought about getting the first and last
+position of an array using <code>begin</code> and <code>end</code>. <em>Julia</em> offers a <code>first</code> and a
+<code>last</code> function to do just this:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>first</span><span class=p>(</span><span class=mi>1</span><span class=o>:</span><span class=mi>3</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>1
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>last</span><span class=p>(</span><span class=mi>1</span><span class=o>:</span><span class=mi>3</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>3
+</code></pre><p>These functions are extremely useful when, for example, we are interesting in
+the starting or ending position of a collection. But what if we want to do
+more advanced, condition-based finding of elements?</p><p>Before we do this, let&rsquo;s ask a very important question: given a test we can
+apply to each element (<em>i.e.</em> a function taking an element of the collection
+and returning a Boolean), how many elements satisfy it? This is usually done
+with the <code>count</code> function:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>count</span><span class=p>(</span><span class=n>isodd</span><span class=p>,</span> <span class=mi>1</span><span class=o>:</span><span class=mi>5</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>3
+</code></pre><p>This gives us the number of odd numbers between 1 and 5. This is an important
+information because, when we want to find elements according to a condition,
+there is always a chance that no element will match this condition! For
+example, we can count the number of elements larger than 10 in between 1 and
+5:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>count</span><span class=p>(</span><span class=n>x</span> <span class=o>-&gt;</span> <span class=n>x</span> <span class=o>&gt;</span> <span class=mi>10</span><span class=p>,</span> <span class=mi>1</span><span class=o>:</span><span class=mi>5</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>0
+</code></pre><p>We can use <code>count</code> to decide whether we should start moving forward with a
+search. But how, exactly, do searches work?</p><p>It&rsquo;s complicated. Or rather, it&rsquo;s very specialized, and there are a number of
+ways <em>Julia</em> handles searches, depending on what you are actually after. Let&rsquo;s
+say you have a random matrix, and want to know where the largest value is:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>max_value</span><span class=p>,</span> <span class=n>position_max</span> <span class=o>=</span> <span class=n>findmax</span><span class=p>(</span><span class=n>rand</span><span class=p>(</span><span class=mi>10</span><span class=p>,</span> <span class=mi>10</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>(0.9979916740878391, CartesianIndex(7, 8))
+</code></pre><p>This similarly works for the smallest value; we can also apply this to a data
+structure with more than two dimensions:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>min_value</span><span class=p>,</span> <span class=n>position_min</span> <span class=o>=</span> <span class=n>findmin</span><span class=p>(</span><span class=n>rand</span><span class=p>(</span><span class=mi>10</span><span class=p>,</span> <span class=mi>10</span><span class=p>,</span> <span class=mi>10</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>(0.0001962598276030736, CartesianIndex(5, 8, 4))
+</code></pre><p>Note that the <code>position_min</code> output is now a <code>CartesianIndex</code> with <em>three</em>
+dimensions, because we are looking inside a random <em>cube</em>. By contrast,
+working on a vector will return the linear index of the matched position:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>findmax</span><span class=p>(</span><span class=n>rand</span><span class=p>(</span><span class=mi>10</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>(0.894871108577834, 4)
+</code></pre><p>There are more general functions we can use to search for anything in a
+collection. For example, let&rsquo;s create a random data cube:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>R</span> <span class=o>=</span> <span class=n>rand</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>3×3×3 Array{Float64, 3}:
+[:, :, 1] =
+ 0.708069    0.630992  0.597271
+ 0.00650731  0.408212  0.518882
+ 0.900203    0.961816  0.389972
+
+[:, :, 2] =
+ 0.895605  0.944267  0.808891
+ 0.742029  0.68305   0.081053
+ 0.067657  0.530833  0.137727
+
+[:, :, 3] =
+ 0.695847  0.689044  0.434225
+ 0.849726  0.511163  0.350809
+ 0.566887  0.217144  0.971294
+</code></pre><p>We might want to know where the numbers between 0.5 and 0.6 are located:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>findall</span><span class=p>(</span><span class=n>x</span> <span class=o>-&gt;</span> <span class=mf>0.5</span> <span class=o>&lt;=</span> <span class=n>x</span> <span class=o>&lt;=</span> <span class=mf>0.6</span><span class=p>,</span> <span class=n>R</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>5-element Vector{CartesianIndex{3}}:
+ CartesianIndex(1, 3, 1)
+ CartesianIndex(2, 3, 1)
+ CartesianIndex(3, 2, 2)
+ CartesianIndex(3, 1, 3)
+ CartesianIndex(2, 2, 3)
+</code></pre><p>This is a vector of <code>CartesianIndex</code>, with the correct number of dimensions.
+There are two noteworthy variants to <code>findall</code>: <code>findfirst</code> and <code>findlast</code>.
+They return, respectively, the first and last position matching the condition:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>findfirst</span><span class=p>(</span><span class=n>x</span> <span class=o>-&gt;</span> <span class=mf>0.5</span> <span class=o>&lt;=</span> <span class=n>x</span> <span class=o>&lt;=</span> <span class=mf>0.6</span><span class=p>,</span> <span class=n>R</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>CartesianIndex(1, 3, 1)
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>findlast</span><span class=p>(</span><span class=n>x</span> <span class=o>-&gt;</span> <span class=mf>0.5</span> <span class=o>&lt;=</span> <span class=n>x</span> <span class=o>&lt;=</span> <span class=mf>0.6</span><span class=p>,</span> <span class=n>R</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>CartesianIndex(2, 2, 3)
+</code></pre><p>We can fine-tune the behavior of a search a lot more, using the <code>findnext</code> and
+<code>findprev</code> function. For example, let&rsquo;s say that we have a time series, and
+want to skip the first 10 values:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>ts</span> <span class=o>=</span> <span class=n>rand</span><span class=p>(</span><span class=mi>200</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>findnext</span><span class=p>(</span><span class=n>x</span> <span class=o>-&gt;</span> <span class=mf>0.5</span> <span class=o>&lt;=</span> <span class=n>x</span> <span class=o>&lt;=</span> <span class=mf>0.6</span><span class=p>,</span> <span class=n>ts</span><span class=p>,</span> <span class=mi>10</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>15
+</code></pre><p>Or we can look for a matching value immediately <em>before</em> this point:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>findprev</span><span class=p>(</span><span class=n>x</span> <span class=o>-&gt;</span> <span class=mf>0.5</span> <span class=o>&lt;=</span> <span class=n>x</span> <span class=o>&lt;=</span> <span class=mf>0.6</span><span class=p>,</span> <span class=n>ts</span><span class=p>,</span> <span class=mi>10</span><span class=p>)</span>
+</span></span></code></pre></div><p>Usng <code>findprev</code> and <code>findnext</code> can let you be very efficient about iteration
+based on criteria, simply by replacing the index of the match in your next
+call to <code>findprev</code>/<code>findnext</code>. This is useful when you do not want to collect
+all of the values. For example, we may want to be interested in getting all of
+the values between 0.5 and 0.6 after then tenth position, but have <em>at least</em>
+10 timepoints between each value we collect.</p><p>If there is no more entries left in the collection, <code>findnext</code> (and
+<code>findprev</code>) will return <code>nothing</code>, which makes it easy to break out of the
+loop (as we have seen in a previous module):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>position</span> <span class=o>=</span> <span class=n>findnext</span><span class=p>(</span><span class=n>x</span> <span class=o>-&gt;</span> <span class=mf>0.5</span> <span class=o>&lt;=</span> <span class=n>x</span> <span class=o>&lt;=</span> <span class=mf>0.6</span><span class=p>,</span> <span class=n>ts</span><span class=p>,</span> <span class=mi>10</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nd>@info</span> <span class=n>position</span>
+</span></span><span class=line><span class=cl><span class=k>while</span> <span class=o>~</span><span class=n>isnothing</span><span class=p>(</span><span class=n>findnext</span><span class=p>(</span><span class=n>x</span> <span class=o>-&gt;</span> <span class=mf>0.5</span> <span class=o>&lt;=</span> <span class=n>x</span> <span class=o>&lt;=</span> <span class=mf>0.6</span><span class=p>,</span> <span class=n>ts</span><span class=p>,</span> <span class=n>position</span> <span class=o>+</span> <span class=mi>10</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=k>global</span> <span class=n>position</span>
+</span></span><span class=line><span class=cl>    <span class=n>position</span> <span class=o>=</span> <span class=n>findnext</span><span class=p>(</span><span class=n>x</span> <span class=o>-&gt;</span> <span class=mf>0.5</span> <span class=o>&lt;=</span> <span class=n>x</span> <span class=o>&lt;=</span> <span class=mf>0.6</span><span class=p>,</span> <span class=n>ts</span><span class=p>,</span> <span class=n>position</span> <span class=o>+</span> <span class=mi>10</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=n>position</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: 15
+[ Info: 26
+[ Info: 63
+[ Info: 98
+[ Info: 120
+[ Info: 131
+[ Info: 155
+[ Info: 173
+[ Info: 185
+[ Info: 198
+</code></pre><p>But wait&mldr; Things have been going a little bit too well so far, and we have
+avoided the situation where we still haven&rsquo;t found what we&rsquo;re looking for. So
+let&rsquo;s create a situation where there is no match:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>findall</span><span class=p>(</span><span class=n>x</span> <span class=o>-&gt;</span> <span class=n>x</span> <span class=o>&gt;=</span> <span class=mi>10</span><span class=p>,</span> <span class=mi>1</span><span class=o>:</span><span class=mi>5</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Int64[]
+</code></pre><p>This collection is <em>empty</em>, and we can test it with <code>isempty</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>isempty</span><span class=p>(</span><span class=n>findall</span><span class=p>(</span><span class=n>x</span> <span class=o>-&gt;</span> <span class=n>x</span> <span class=o>&gt;=</span> <span class=mi>10</span><span class=p>,</span> <span class=mi>1</span><span class=o>:</span><span class=mi>5</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>This is usually something we can use to decide to break out of a loop, or
+maybe throw an exception. Note that this is equivalent to using:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>iszero</span><span class=p>(</span><span class=n>count</span><span class=p>(</span><span class=n>x</span> <span class=o>-&gt;</span> <span class=n>x</span> <span class=o>&gt;=</span> <span class=mi>10</span><span class=p>,</span> <span class=mi>1</span><span class=o>:</span><span class=mi>5</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>There are sometimes more than a single idiomatic way to express an idea.</p><p>Another series of related features is the ability to manipulate the output of
+these functions (or indeed, of any array, but this is most closely related to
+working on the output of searches).</p><p>The first functions are <code>something</code> and <code>coalesce</code> &ndash; in essence, they return the
+first value that is not <code>nothing</code> or not <code>missing</code>.</p><div class="callout opinion">We think that <em>Julia</em>&rsquo;s insistence of making a difference between
+<code>nothing</code>, <code>missing</code>, and <code>NaN</code> is one of the language&rsquo;s best features,
+especially for data analysis.</div><p>Let&rsquo;s see them in action - we will create a mock array with some <code>nothing</code> and
+some numbers:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>series</span> <span class=o>=</span> <span class=p>[</span><span class=nb>nothing</span> <span class=mi>3</span> <span class=mi>4</span> <span class=nb>nothing</span> <span class=mi>5</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>1×5 Matrix{Union{Nothing, Int64}}:
+ nothing  3  4  nothing  5
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>something</span><span class=p>(</span><span class=n>series</span><span class=o>...</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>3
+</code></pre><div class="callout warning">These functions <em>must</em> be called on a splatted collection; if not,
+they will simply return the collection, because it isn&rsquo;t <code>nothing</code> or
+<code>missing</code>.</div><p>If we call <code>coalesce</code>, we will get <code>nothing</code> as a result, because <code>coalesce</code> will look for
+the first <em>non-nothing</em> value:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>coalesce</span><span class=p>(</span><span class=n>series</span><span class=o>...</span><span class=p>)</span>
+</span></span></code></pre></div><p>If we change the series to have a <code>missing</code> element, we can see how <code>something</code> and
+<code>coalesce</code> differ:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>series</span> <span class=o>=</span> <span class=p>[</span><span class=nb>missing</span> <span class=mi>3</span> <span class=mi>4</span> <span class=nb>nothing</span> <span class=mi>5</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>coalesce</span><span class=p>(</span><span class=n>series</span><span class=o>...</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>3
+</code></pre><p>In brief, <code>something</code> and <code>coalesce</code> are extremely useful when you can
+anticipate that your collection may have some <code>missing</code> or <code>nothing</code> values,
+but still want to get a result out of it.</p><p>Sometimes, we need a little more control, namely when we know that we should
+only get a single result. For example, we can write our own <code>findmax</code>
+function:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>series</span> <span class=o>=</span> <span class=n>rand</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>findall</span><span class=p>(</span><span class=n>x</span> <span class=o>-&gt;</span> <span class=n>x</span> <span class=o>==</span> <span class=n>maximum</span><span class=p>(</span><span class=n>series</span><span class=p>),</span> <span class=n>series</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>1-element Vector{Int64}:
+ 3
+</code></pre><p>How do we get this value out of the vector?</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>only</span><span class=p>(</span><span class=n>findall</span><span class=p>(</span><span class=n>x</span> <span class=o>-&gt;</span> <span class=n>x</span> <span class=o>==</span> <span class=n>maximum</span><span class=p>(</span><span class=n>series</span><span class=p>),</span> <span class=n>series</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>3
+</code></pre><p>Why use <code>only</code> and not <code>first</code> here? The answer is: <code>only</code> will throw an
+exception if there are not exactly one single element in the collection on
+which it is called!</p><p>Before we take this module to a close, there are two additional functions
+worth knowing about:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>any</span><span class=p>([</span><span class=nb>true</span> <span class=nb>false</span> <span class=nb>true</span><span class=p>])</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>any</span><span class=p>([</span><span class=nb>false</span> <span class=nb>false</span> <span class=nb>false</span><span class=p>])</span>
+</span></span></code></pre></div><pre tabindex=0><code>false
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>all</span><span class=p>([</span><span class=nb>true</span> <span class=nb>false</span> <span class=nb>true</span><span class=p>])</span>
+</span></span></code></pre></div><pre tabindex=0><code>false
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>all</span><span class=p>([</span><span class=nb>true</span> <span class=nb>true</span> <span class=nb>true</span><span class=p>])</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><p>The <code>any</code> function will return <code>true</code> if at least one of the elements is
+<code>true</code>, and <code>all</code> will check that <em>all</em> elements are <code>true</code>. By remembering
+our Boolean operations <em>and</em> the way <code>reduce</code> works, we can think of these
+functions as</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=n>reduce</span><span class=p>(</span><span class=o>|</span><span class=p>,</span> <span class=n>x</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>#29 (generic function with 1 method)
+</code></pre><p>for <code>any</code>, and</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=n>reduce</span><span class=p>(</span><span class=o>&amp;</span><span class=p>,</span> <span class=n>x</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>#31 (generic function with 1 method)
+</code></pre><p>for <code>all</code>.</p><p>The concepts introduced in this module are very helpful to design code that
+look for specific information in a flexible way. This will help be more
+efficient, by writing less code, and combining a few simple ingredients to
+safely get to the information we need.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-advanced_topics,module-finding,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/06_advanced_topics/02_finding.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/advanced-topics/finding-things-in-arrays/%0a%0a%f0%9f%93%a6%20section-advanced_topics%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-finding" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

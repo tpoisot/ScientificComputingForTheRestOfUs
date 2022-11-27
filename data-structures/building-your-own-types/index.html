@@ -1,0 +1,124 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Building your own types · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Building your own types</h1><article>
+<p>In this module, we will <em>briefly</em> see how we can define our own types (<em>aka</em>
+<code>struct</code>), and give them a hierarchy. We will barely scratch the surface of
+what can be done with custom types, as the real fun will take place in the
+modules on <a href=https://sciencecomputing.io/functions/understanding-dispatch/>dispatch</a> and <a href=https://sciencecomputing.io/advanced-topics/overloading/>overloading</a> (don&rsquo;t read
+them yet!).</p><p>In order to demonstrate how useful it is to build our own types, we will build
+a very simple system to store the values of model parameters. This is actually
+a fairly common design pattern: we express models as their own types, with
+parameter values stored as <em>fields</em>, and then write the correct methods to
+handle these types.</p><p>In order to give some consistency to our own types, we will create an
+<em>abstract</em> type; an abstract type is not something that we represent an object
+directly, but it can collect other types. For example, <code>Real</code> is the abstract
+supertype for all real numbers; it is nested within <code>Number</code>, which is the
+abstract supertype for all numbers. We can use this to specificy a hierarchy
+between types:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=kt>Float64</span> <span class=o>&lt;:</span> <span class=kt>AbstractFloat</span> <span class=o>&lt;:</span> <span class=kt>Real</span> <span class=o>&lt;:</span> <span class=kt>Number</span>
+</span></span></code></pre></div><pre tabindex=0><code>true
+</code></pre><div class="callout information">The <code>&lt;:</code> operator means &ldquo;is a subtype of, and we will use it <em>a lot</em>.</div><p>We can define an <code>AbstractModelParameter</code> supertype in the following way:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>abstract type</span> <span class=kt>AbstractModelParameter</span> <span class=k>end</span>
+</span></span></code></pre></div><p>Note that it has no content, as it only exists as a sort of placeholder to
+which various concrete types will be added.</p><p>We can start building a type to represent, for example, the exponent in an
+exponential decay process, $x_t = x_0\text{exp}\left(-\lambda t\right)$:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>struct</span> <span class=kt>ExponentialDecay</span><span class=p>{</span><span class=kt>T</span><span class=p>}</span> <span class=o>&lt;:</span> <span class=kt>AbstractModelParameter</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>Real</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=n>λ</span><span class=o>::</span><span class=kt>T</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><p>Note that our type is defined as <code>ExponentialDecay{T}</code>, for which we specify
+that <code>T</code> must be a <code>Real</code> number (so no complex exponents!). Within the
+definition of the type fields, we further say that <code>λ</code> is a single scalar of
+the type <code>T</code>.</p><div class="callout information">This is called a <em>parametric</em> types, and parametric types are equally
+powerful and tricky; in other words, at the end of this module, have a look at
+the section on types in the <em>Julia</em> manual.</div><p>We can use this new type with, for example:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>expmodel</span> <span class=o>=</span> <span class=n>ExponentialDecay</span><span class=p>(</span><span class=mf>1.2</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Main.var&#34;##329&#34;.ExponentialDecay{Float64}(1.2)
+</code></pre><p>Note that because the type of <code>1.2</code> is <code>Float64</code>, the type we have created is
+<code>ExponentialDecay{Float64}</code>. The <code>fieldnames</code> function is very helpful to
+investigate the names of the fields:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>fieldnames</span><span class=p>(</span><span class=n>typeof</span><span class=p>(</span><span class=n>expmodel</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>(:λ,)
+</code></pre><p>Similarly, <code>fieldtypes</code> will give us the type of each field:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>fieldtypes</span><span class=p>(</span><span class=n>typeof</span><span class=p>(</span><span class=n>expmodel</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>(Float64,)
+</code></pre><p>In order to define our <code>expmodel</code> variable, we had to pass the arguments in
+order; this is fine with a single (or a few) arguments, but for more complex
+types, it may be a good thing to have the option to use keywords. Thankfully,
+the <code>Base.@kwdef</code> macro can allow this:</p><p>We can for example define the parameters of a logistic model, where we want to
+set a default value:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>Base</span><span class=o>.</span><span class=nd>@kwdef</span> <span class=k>struct</span> <span class=kt>LogisticModel</span><span class=p>{</span><span class=kt>T</span><span class=p>}</span> <span class=o>&lt;:</span> <span class=kt>AbstractModelParameter</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>Real</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=n>r</span><span class=o>::</span><span class=kt>T</span> <span class=o>=</span> <span class=mf>0.1</span>
+</span></span><span class=line><span class=cl>    <span class=n>K</span><span class=o>::</span><span class=kt>T</span> <span class=o>=</span> <span class=mf>1.0</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><p>If we call this constructor (a constructor is the function that creates a
+variable of a given type, this is superbly documented in <em>Julia</em>&rsquo;s manual), we
+get the default values:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>LogisticModel</span><span class=p>()</span>
+</span></span></code></pre></div><pre tabindex=0><code>Main.var&#34;##329&#34;.LogisticModel{Float64}(0.1, 1.0)
+</code></pre><p>We can still use the usual interface of passing arguments in the order where
+they exist in the <code>struct</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>LogisticModel</span><span class=p>(</span><span class=mf>0.2</span><span class=p>,</span> <span class=mf>1.2</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Main.var&#34;##329&#34;.LogisticModel{Float64}(0.2, 1.2)
+</code></pre><p>But now, we can also change the values we need, by using them as keywords:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>LogisticModel</span><span class=p>(;</span> <span class=n>K</span> <span class=o>=</span> <span class=mf>2.0</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Main.var&#34;##329&#34;.LogisticModel{Float64}(0.1, 2.0)
+</code></pre><p>If we want to inspect the values of a specific field, there are a few options.
+We can access them directly:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>expmodel</span><span class=o>.</span><span class=n>λ</span>
+</span></span></code></pre></div><pre tabindex=0><code>1.2
+</code></pre><p>Or, we can access them in a much safer way:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>getfield</span><span class=p>(</span><span class=n>expmodel</span><span class=p>,</span> <span class=ss>:λ</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>1.2
+</code></pre><div class="callout opinion">The two approaches are roughly equivalent, and we usually go for
+<code>type.field</code> for user-facing code, although <code>getfield(type, :field)</code> is
+probably cleaner for low-level code.</div><p>The types we have defined so far are <em>immutable</em>, which is to say they do not
+allow users to change their values. In order to make field mutable, we can
+annotate the declaration with <code>mutable</code>, like so:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>Base</span><span class=o>.</span><span class=nd>@kwdef</span> <span class=k>mutable struct</span> <span class=kt>StochasticModel</span><span class=p>{</span><span class=kt>T</span><span class=p>,</span> <span class=kt>M</span><span class=p>}</span> <span class=o>&lt;:</span>
+</span></span><span class=line><span class=cl>                           <span class=kt>AbstractModelParameter</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>Number</span><span class=p>,</span> <span class=kt>M</span> <span class=o>&lt;:</span> <span class=kt>AbstractModelParameter</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=n>noise</span><span class=o>::</span><span class=kt>T</span> <span class=o>=</span> <span class=mf>0.01</span>
+</span></span><span class=line><span class=cl>    <span class=n>model</span><span class=o>::</span><span class=kt>M</span> <span class=o>=</span> <span class=n>LogisticModel</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><p>The <code>StochasticModel</code> can have its values changed! Let&rsquo;s create one without
+giving any values:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>smod</span> <span class=o>=</span> <span class=n>StochasticModel</span><span class=p>()</span>
+</span></span></code></pre></div><pre tabindex=0><code>Main.var&#34;##329&#34;.StochasticModel{Float64, Main.var&#34;##329&#34;.LogisticModel{Float64}}(0.01, Main.var&#34;##329&#34;.LogisticModel{Float64}(0.1, 1.0))
+</code></pre><p>This is a fairly dense output, but it is worth nothing that the types and
+default values for <code>LogisticModel</code> have been correctly identified.</p><p>With this mutable type, we can change the amount of noise we apply to our
+model. There are, again, two ways to do this.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>smod</span><span class=o>.</span><span class=n>noise</span> <span class=o>=</span> <span class=mf>2.0</span>
+</span></span></code></pre></div><pre tabindex=0><code>2.0
+</code></pre><p>The alternative way is to use <code>setfield!</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>setfield!</span><span class=p>(</span><span class=n>smod</span><span class=p>,</span> <span class=ss>:noise</span><span class=p>,</span> <span class=mf>3.0</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>3.0
+</code></pre><div class="callout information">The same disclaimer as with <code>getfield</code> applies. Note that <code>setfield!</code>
+follows the convention of ending with a <code>!</code> because it modifies its first
+argument.</div><p>But what if we do <em>not</em> want all of the fields to be modified? For example, we
+can change the amount of noise over time, but keep the model the same. In
+order to do so, we can annotate some fields with <code>const</code>, meaning that they
+will not be mutable:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>mutable struct</span> <span class=kt>ProtectedStochasticModel</span><span class=p>{</span><span class=kt>T</span><span class=p>,</span> <span class=kt>M</span><span class=p>}</span> <span class=o>&lt;:</span>
+</span></span><span class=line><span class=cl>               <span class=kt>AbstractModelParameter</span> <span class=k>where</span> <span class=p>{</span><span class=kt>T</span> <span class=o>&lt;:</span> <span class=kt>Number</span><span class=p>,</span> <span class=kt>M</span> <span class=o>&lt;:</span> <span class=kt>AbstractModelParameter</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=n>noise</span><span class=o>::</span><span class=kt>T</span>
+</span></span><span class=line><span class=cl>    <span class=k>const</span> <span class=n>model</span><span class=o>::</span><span class=kt>M</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><p>We can create such a type:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>psm</span> <span class=o>=</span> <span class=n>ProtectedStochasticModel</span><span class=p>(</span><span class=mf>0.001</span><span class=p>,</span> <span class=n>LogisticModel</span><span class=p>())</span>
+</span></span></code></pre></div><pre tabindex=0><code>Main.var&#34;##329&#34;.ProtectedStochasticModel{Float64, Main.var&#34;##329&#34;.LogisticModel{Float64}}(0.001, Main.var&#34;##329&#34;.LogisticModel{Float64}(0.1, 1.0))
+</code></pre><p>Note that we can change the value of the <code>:noise</code> field:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>setfield!</span><span class=p>(</span><span class=n>psm</span><span class=p>,</span> <span class=ss>:noise</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>0.1
+</code></pre><p>But if we try to change the model, we do expect an error &ndash; this is because we
+have specified that this part of the <code>struct</code> is constant, and therefore
+<em>Julia</em> will not modify it:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>try</span>
+</span></span><span class=line><span class=cl>    <span class=n>setfield!</span><span class=p>(</span><span class=n>psm</span><span class=p>,</span> <span class=ss>:model</span><span class=p>,</span> <span class=n>ExponentialDecay</span><span class=p>(</span><span class=mf>0.2</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=k>catch</span> <span class=n>error</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@warn</span> <span class=s>&#34;It is impossible to change the model field of a protected model!&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>┌ Warning: It is impossible to change the model field of a protected model!
+└ @ Main.var&#34;##329&#34; ~/work/ScientificComputingForTheRestOfUs/ScientificComputingForTheRestOfUs/dist/content/02_data_structures/06_struct.md:4
+</code></pre><p>Building your own types, parametric or not, unlocks some of <em>Julia</em>&rsquo;s most
+advanced features. We will revisit the importance of the type system in
+subsequent modules</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-data_structures,module-struct,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/02_data_structures/06_struct.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/data-structures/building-your-own-types/%0a%0a%f0%9f%93%a6%20section-data_structures%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-struct" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

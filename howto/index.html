@@ -1,0 +1,82 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>How to use this material · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>How to use this material</h1><article>
+<p>The best way to read this material is to keep a terminal running <em>Julia</em> open,
+and <strong>type</strong> the code. It is tempting to copy and paste, but typing the code
+actually matters. The sections (and modules within them) are presented in
+chronological order, and whenever possible (most of the time) introduce one
+concept at a time. Every so often, an illustration or example will start to
+re-use previous knowledge, and this gets more common in the later sections.
+The content is definitely designed to be read from beginning to end!</p><p>The lessons have a release cycle, and the current position of the modules in
+this cycle is indicated next to their title in the main page (and their node on the
+timeline for each module is also color-coded). The cycle has four steps. &ldquo;Building&rdquo; means
+that the lesson is not ready to be used at all. We are working on it. &ldquo;Writing&rdquo; means that
+there is some information, but it can change at any time, or be updated and overhauled, or
+that the content is ready but has not been used for actual training yet.
+&ldquo;Testing&rdquo; means that the lesson is ready to be used, and will receive updates based on the
+experience of actually teaching it. Finally, &ldquo;Released&rdquo; is the most mature step in the
+cycle, and means that after sufficiently many uses of the lesson, it is not expected to
+change in significant ways. Lessons labelled as released or in testing are meant to be
+usable in a self-directed learning way, although the later will need some clarifications.
+Almost all &ldquo;in testing&rdquo; lessons have been used for actual training, but will only move up
+to the &ldquo;released&rdquo; stage when we are ready to stop tinkering with them.</p><p>A very good
+way to contribute is to look at modules awaiting testing and give feedback
+(using <a href=https://discord.gg/Ak2pK3yG9M>Discord</a> or <a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues>GitHub issues</a>), or to check out modules
+in development and jumping into adding content!</p><p>Whenever a package is discussed, it will be presented in a little box, like
+<em>e.g.</em> <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Distributions target=_blank>Distributions</a></span></span>. Clicking on this link will open a new window with
+the Julia packages documentation hub, which will hopefully provide you with an
+incentive to checkout what the packages do!</p><p>You will notice that there are very few comments in the material. This is
+because the text surrounding the code <em>are</em> the comments. The modules are
+actual <em>Julia</em> scripts, executed using the <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Literate target=_blank>Literate</a></span></span> package. This ensure
+that whatever you see on screen is the result of an actual code execution.
+Furthermore, there is no hidden code!</p><p>Snippets of code that are <em>important</em> are presented this way (and their
+output, when not silenced, is immediately below them):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=p>[</span><span class=n>rand</span><span class=p>()</span> <span class=k>for</span> <span class=n>i</span> <span class=k>in</span> <span class=mi>1</span><span class=o>:</span><span class=mi>5</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>5-element Vector{Float64}:
+ 0.21471633048957484
+ 0.46333316215785325
+ 0.2601041048115109
+ 0.6396345614392719
+ 0.7285488714975501
+</code></pre><p>Bits of code of lower importance (pseudocode or code you are not meant to
+type), are presented this way:</p><pre tabindex=0><code class=language-raw data-lang=raw>for each_element in vector
+  function(each_element)
+end
+</code></pre><p>Throughout the lessons, we have added some asides &ndash; they are ranked in order
+of importance. The first are &ldquo;informations&rdquo;:</p><div class="callout information">All that should matter in the choice of tools, language, environment,
+is that it lets you become productive, and solve the problem you want to
+solve.</div><p>&ldquo;Opinions&rdquo; are points we would like to raise for the reader&rsquo;s consideration,
+and can be ignored. Example:</p><div class="callout opinion">People who think it&rsquo;s OK to criticize others based on their choice
+of language, OS, text editor, etc, should go home and think about what they
+did.</div><p>&ldquo;Warnings&rdquo; are points that can be important, but not necessarily as a novice.
+It is worth keeping a mental note of them, especially in the long term.
+Example:</p><div class="callout warning">Any time you are about to comment on people&rsquo;s choice of tools, ask
+yourself whether this is really necessary, and the answer is usually &ldquo;no&rdquo;. The
+Good Tool is the one that works for its user.</div><p>&ldquo;Dangers&rdquo; are really important points, that can prove especially dangerous or
+risky to everyone. They are worth reading a few times over. Example:</p><div class="callout danger">This toxic behaviour is driving brilliant people away, and should
+never be tolerated. Disliking Windows has not made anyone edgy or cool since
+1998.</div><p>More rarely, there will be a few &ldquo;Big Brain Time&rdquo; callouts, meant to
+contextualize the code with do with some mentions of domain knowledge.</p><div class="callout domain">It&rsquo;s big brain time!</div><p>If you want to contribute, there are a number of ways to do so! Before you
+start, please have a look at our <a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/master/CODE_OF_CONDUCT.md>Code of Conduct</a>. It boils down to <em>be
+nice and respectful</em> &ndash; no contribution, no matter how amazing it may be,
+justifies or excuses bad behaviour. For the actual details on how to
+contribute, head over to the <a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/CONTRIBUTING.md>guidelines</a>.</p></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

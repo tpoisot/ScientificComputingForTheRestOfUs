@@ -1,0 +1,141 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Advanced iteration · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Advanced iteration</h1><article>
+<p>In this module, we will see how we <em>actually</em> iterate over objects in <em>Julia</em>.
+Although the content of the previous module is very important, as it forms the
+basis of all ways to iterate, there are a number of functions that greatly
+facilitate our task. We finish this module by simulating a simple
+host-parasitoid model.</p><p>What are the numbers between 12 and 17? We can represent this as a <code>UnitRange</code>
+(a memory efficient way to store sequences):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>our_seq</span> <span class=o>=</span> <span class=mi>12</span><span class=o>:</span><span class=mi>17</span>
+</span></span></code></pre></div><pre tabindex=0><code>12:17
+</code></pre><p>After reading the module on indexing, we could get the second entry in this
+sequence with</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>our_seq</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span>
+</span></span></code></pre></div><pre tabindex=0><code>13
+</code></pre><p>But of course, performing any operation on <em>all</em> numbers in the sequence would
+be a little time-consuming. Therefore, we will iterate.</p><p>It would be very tempting to iterate from the first index (<code>1</code>) to the last
+index of the sequence (its <code>length</code>). <em>Julia</em> discourages this, because
+<code>length</code> is not really meant to help with iteration. And luckily, there is a
+much, much better</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=k>in</span> <span class=n>eachindex</span><span class=p>(</span><span class=n>our_seq</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=n>our_seq</span><span class=p>[</span><span class=n>i</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: 12
+[ Info: 13
+[ Info: 14
+[ Info: 15
+[ Info: 16
+[ Info: 17
+</code></pre><p>What is this mysterious <code>eachindex</code>?</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>eachindex</span><span class=p>(</span><span class=n>our_seq</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Base.OneTo(6)
+</code></pre><p>In short, it is an object that <em>Julia</em> prepares for us, that makes iteration
+safe. But there is an even better way to iterate. Let&rsquo;s assume that we have a
+sequence of evenly spaced numbers:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>our_other_seq</span> <span class=o>=</span> <span class=kt>LinRange</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mi>6</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>6-element LinRange{Float64, Int64}:
+ 0.0,0.2,0.4,0.6,0.8,1.0
+</code></pre><p>We can iterate on these values to take, for example, their square, this way:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=k>in</span> <span class=n>eachindex</span><span class=p>(</span><span class=n>our_other_seq</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;i = </span><span class=si>$</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=s>   (xᵢ)² = </span><span class=si>$</span><span class=p>(</span><span class=n>our_other_seq</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>^</span><span class=mf>2.0</span><span class=p>)</span><span class=s>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: i = 1   (xᵢ)² = 0.0
+[ Info: i = 2   (xᵢ)² = 0.04000000000000001
+[ Info: i = 3   (xᵢ)² = 0.16000000000000003
+[ Info: i = 4   (xᵢ)² = 0.36
+[ Info: i = 5   (xᵢ)² = 0.6400000000000001
+[ Info: i = 6   (xᵢ)² = 1.0
+</code></pre><div class="callout warning">Ah, yes. About this. <code>0.2^2.0</code> is <em>not</em> <code>0.04</code>. There is a reason for
+this, and it is: <a href=https://en.wikipedia.org/wiki/Round-off_error>computers are not very good with
+numbers</a>. It&rsquo;s OK, neither are
+we; hopefully it&rsquo;ll sort itself out (<a href=https://slate.com/technology/2019/10/round-floor-software-errors-stock-market-battlefield.html>it
+won&rsquo;t</a>).</div><p>But there is a more efficient way to iterate:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>for</span> <span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>x</span><span class=p>)</span> <span class=k>in</span> <span class=n>enumerate</span><span class=p>(</span><span class=n>our_other_seq</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;i = </span><span class=si>$</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=s>   (xᵢ)² = </span><span class=si>$</span><span class=p>(</span><span class=n>x</span><span class=o>^</span><span class=mf>2.0</span><span class=p>)</span><span class=s>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: i = 1   (xᵢ)² = 0.0
+[ Info: i = 2   (xᵢ)² = 0.04000000000000001
+[ Info: i = 3   (xᵢ)² = 0.16000000000000003
+[ Info: i = 4   (xᵢ)² = 0.36
+[ Info: i = 5   (xᵢ)² = 0.6400000000000001
+[ Info: i = 6   (xᵢ)² = 1.0
+</code></pre><p>The <code>enumerate</code> function is making things a little more complex because our
+mental model of <code>for</code>, <code>variable</code>, <code>values</code> is a little bit invalidated now.
+This is because it returns not one value but two: the position in the object
+we are iterating over, and the <em>value</em> at this position. This is a little
+confusing, so let&rsquo;s open-up the <code>enumerate</code> function:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>collect</span><span class=p>(</span><span class=n>enumerate</span><span class=p>(</span><span class=n>our_other_seq</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>6-element Vector{Tuple{Int64, Float64}}:
+ (1, 0.0)
+ (2, 0.2)
+ (3, 0.4)
+ (4, 0.6)
+ (5, 0.8)
+ (6, 1.0)
+</code></pre><p>This is something we know! It&rsquo;s a tuple! It&rsquo;s tuples in a vector! And we know
+from the module on tuples that they can be used to store values until we are
+ready to use them, and so this is what <code>enumerate</code> does: it stores together
+the position and the value.</p><p>But what about arrays with higher dimensions? The same logic applies. Let&rsquo;s
+create a little matrix, and see how we can iterate over it:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>A</span> <span class=o>=</span> <span class=n>reshape</span><span class=p>(</span><span class=kt>Array</span><span class=p>(</span><span class=mi>7</span><span class=o>:</span><span class=mi>12</span><span class=p>),</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>2×3 Matrix{Int64}:
+ 7   9  11
+ 8  10  12
+</code></pre><p>Let&rsquo;s start to get a sense of the output of <code>eachindex</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>collect</span><span class=p>(</span><span class=n>enumerate</span><span class=p>(</span><span class=n>A</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>2×3 Matrix{Tuple{Int64, Int64}}:
+ (1, 7)  (3, 9)   (5, 11)
+ (2, 8)  (4, 10)  (6, 12)
+</code></pre><p>This is very similar to the output we got for a vector, with the exception
+that the shape of the enumerated elements matches the shape of the matrix.
+Will it be an issue? Is there something we need to do? No.</p><p>Recall from the module on indexing that we can index a matrix linearly, so we
+don&rsquo;t need to change the way we work:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>for</span> <span class=p>(</span><span class=n>pos</span><span class=p>,</span> <span class=n>val</span><span class=p>)</span> <span class=k>in</span> <span class=n>enumerate</span><span class=p>(</span><span class=n>A</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=s>&#34;A[</span><span class=si>$</span><span class=p>(</span><span class=n>pos</span><span class=p>)</span><span class=s>] = </span><span class=si>$</span><span class=p>(</span><span class=n>val</span><span class=p>)</span><span class=s>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: A[1] = 7
+[ Info: A[2] = 8
+[ Info: A[3] = 9
+[ Info: A[4] = 10
+[ Info: A[5] = 11
+[ Info: A[6] = 12
+</code></pre><p>But what if we wanted to use the fact that matrices have rows and columns? In
+this case, we can use the <code>axes</code> function:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>axes</span><span class=p>(</span><span class=n>A</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>(Base.OneTo(2), Base.OneTo(3))
+</code></pre><p>When called on an array, it will return a tuple of iterators (<code>OneTo</code> is a
+weird object, but essentially, <code>OneTo(3)</code> will return the numbers from 1 to
+3), one for each dimension. The <code>axes</code> function has additional methods where
+we specify the arguments, so we can write, for example:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>for</span> <span class=n>row</span> <span class=k>in</span> <span class=n>axes</span><span class=p>(</span><span class=n>A</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>col</span> <span class=k>in</span> <span class=n>axes</span><span class=p>(</span><span class=n>A</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nd>@info</span> <span class=s>&#34;A[</span><span class=si>$</span><span class=p>(</span><span class=n>row</span><span class=p>)</span><span class=s>,</span><span class=si>$</span><span class=p>(</span><span class=n>col</span><span class=p>)</span><span class=s>] = </span><span class=si>$</span><span class=p>(</span><span class=n>A</span><span class=p>[</span><span class=n>row</span><span class=p>,</span><span class=n>col</span><span class=p>])</span><span class=s>&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: A[1,1] = 7
+[ Info: A[1,2] = 9
+[ Info: A[1,3] = 11
+[ Info: A[2,1] = 8
+[ Info: A[2,2] = 10
+[ Info: A[2,3] = 12
+</code></pre><p>But wait! This is two loops, one nested in the other. There has got to be an
+easier way to write this. When we are are dealing with nested loops, we can
+declare all of them on the same line:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>for</span> <span class=n>row</span> <span class=k>in</span> <span class=n>axes</span><span class=p>(</span><span class=n>A</span><span class=p>,</span> <span class=mi>1</span><span class=p>),</span> <span class=n>col</span> <span class=k>in</span> <span class=n>axes</span><span class=p>(</span><span class=n>A</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@info</span> <span class=n>row</span><span class=p>,</span> <span class=n>col</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>[ Info: (1, 1)
+[ Info: (1, 2)
+[ Info: (1, 3)
+[ Info: (2, 1)
+[ Info: (2, 2)
+[ Info: (2, 3)
+</code></pre></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-the_flow,module-iteration,status-rc,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/03_the_flow/02_iteration.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/flow/advanced-iteration/%0a%0a%f0%9f%93%a6%20section-the_flow%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-iteration" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

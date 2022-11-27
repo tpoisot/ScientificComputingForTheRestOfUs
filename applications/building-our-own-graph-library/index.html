@@ -1,0 +1,65 @@
+<!doctype html><html><head>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<link href=/fonts/fontawesome/css/fontawesome.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/brands.css rel=stylesheet>
+<link href=/fonts/fontawesome/css/solid.css rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script>mermaid.initialize({startOnLoad:!0,theme:"neutral",curve:"linear"})</script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css integrity=sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC crossorigin=anonymous>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js integrity=sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script>
+<link rel=stylesheet href=https://sciencecomputing.io/index.818233115a5ddaf75da6d0ea23b08181cba7bdd5657dda146098a1d667db9950.css>
+<title>Building our own graph library · Scientific computing</title></head><body><header>
+<div id=reading-bar><div id=reading-bar-inner></div></div><img class=logo src=/logo.svg>
+<h1><a href=/>Scientific computing</a></h1><h2>(for the rest of us)</h2></header><main>
+<h1>Building our own graph library</h1><article>
+<p>In this module,</p><p>Let&rsquo;s define a simple parametric type for a graph:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>mutable struct</span> <span class=kt>Graph</span><span class=p>{</span><span class=kt>V</span><span class=p>,</span> <span class=kt>E</span> <span class=o>&lt;:</span> <span class=kt>Real</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=n>edges</span><span class=o>::</span><span class=kt>Vector</span><span class=p>{</span><span class=kt>Tuple</span><span class=p>{</span><span class=kt>V</span><span class=p>,</span> <span class=kt>V</span><span class=p>}}</span>
+</span></span><span class=line><span class=cl>    <span class=n>weights</span><span class=o>::</span><span class=kt>Vector</span><span class=p>{</span><span class=kt>E</span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><p>In defining a <code>Graph</code> type, we have also defined a constructor for this graph:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>diamond</span> <span class=o>=</span> <span class=n>Graph</span><span class=p>([(</span><span class=ss>:a</span><span class=p>,</span> <span class=ss>:b</span><span class=p>),</span> <span class=p>(</span><span class=ss>:a</span><span class=p>,</span> <span class=ss>:c</span><span class=p>),</span> <span class=p>(</span><span class=ss>:b</span><span class=p>,</span> <span class=ss>:d</span><span class=p>),</span> <span class=p>(</span><span class=ss>:c</span><span class=p>,</span> <span class=ss>:d</span><span class=p>)],</span> <span class=p>[</span><span class=nb>true</span><span class=p>,</span> <span class=nb>true</span><span class=p>,</span> <span class=nb>true</span><span class=p>,</span> <span class=nb>true</span><span class=p>])</span>
+</span></span></code></pre></div><pre tabindex=0><code>Main.var&#34;##362&#34;.Graph{Symbol, Bool}([(:a, :b), (:a, :c), (:b, :d), (:c, :d)], Bool[1, 1, 1, 1])
+</code></pre><p>We may be interested in making it display a little more nicely, by overloading <code>show</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>Base</span><span class=o>.</span><span class=n>show</span><span class=p>(</span><span class=n>io</span><span class=o>::</span><span class=kt>IO</span><span class=p>,</span> <span class=n>g</span><span class=o>::</span><span class=kt>Graph</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>print</span><span class=p>(</span><span class=n>io</span><span class=p>,</span> <span class=s>&#34;A graph with </span><span class=si>$</span><span class=p>(</span><span class=n>length</span><span class=p>(</span><span class=n>g</span><span class=o>.</span><span class=n>edges</span><span class=p>))</span><span class=s> </span><span class=si>$</span><span class=p>(</span><span class=n>eltype</span><span class=p>(</span><span class=n>g</span><span class=o>.</span><span class=n>weights</span><span class=p>))</span><span class=s> edges&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><p>The <code>show</code> method is what is called when we type in the name of a variable, and we can
+decide what to print as a return:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>diamond</span>
+</span></span></code></pre></div><pre tabindex=0><code>A graph with 4 Bool edges
+</code></pre><p>We can now define a graph generator based on the Erdős–Rényi model &ndash; the
+function to do so is a good encapsulation of concepts from the previous
+modules, notably conditionals, the creation of <code>struct</code>, and list
+comprehensions. We will use the <span class=package><span class=pkgname><a href=https://juliapackages.com/p/Combinatorics target=_blank>Combinatorics</a></span></span> package to iterate over
+nodes combinations.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>using</span> <span class=n>Combinatorics</span>
+</span></span></code></pre></div><div class="callout domain">The Erdős–Rényi model assumes that all edges have the same
+probability of being connected, and has an interesting critical transition at
+$p = 1/(n-1)$ where $n$ is the number of nodes. Go read some graph theory if
+you feel like it, it&rsquo;s really cool.</div><p>But generating a random graph is, in a sense, using the generator to do what we want. And
+so we will get a little crafty here, and define a type that represents an <em>algorithm</em>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>abstract type</span> <span class=kt>AbstractGraphGenerator</span> <span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>struct</span> <span class=kt>ErdosRenyi</span> <span class=o>&lt;:</span> <span class=kt>AbstractGraphGenerator</span>
+</span></span><span class=line><span class=cl>    <span class=n>n</span><span class=o>::</span><span class=kt>Integer</span>
+</span></span><span class=line><span class=cl>    <span class=n>p</span><span class=o>::</span><span class=kt>AbstractFloat</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><p>We can now create an ER generator by giving it <code>n</code> (the number of nodes) and <code>p</code>, the
+probability of a connection between two nodes.</p><p>Are we closer to solving our problem? Yes! We can overload the generator for <code>Graph</code> in
+a new way, that accepts a single argument: an instance of <code>ErdosRenyi</code>.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=k>function</span> <span class=n>Graph</span><span class=p>(</span><span class=n>er</span><span class=o>::</span><span class=kt>ErdosRenyi</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>vertices</span> <span class=o>=</span> <span class=n>collect</span><span class=p>(</span><span class=mi>1</span><span class=o>:</span><span class=p>(</span><span class=n>er</span><span class=o>.</span><span class=n>n</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=nd>@assert</span> <span class=n>zero</span><span class=p>(</span><span class=n>er</span><span class=o>.</span><span class=n>p</span><span class=p>)</span> <span class=o>&lt;=</span> <span class=n>er</span><span class=o>.</span><span class=n>p</span> <span class=o>&lt;=</span> <span class=n>one</span><span class=p>(</span><span class=n>er</span><span class=o>.</span><span class=n>p</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>edges</span> <span class=o>=</span> <span class=p>[</span><span class=n>tuple</span><span class=p>(</span><span class=n>pair</span><span class=o>...</span><span class=p>)</span> <span class=k>for</span> <span class=n>pair</span> <span class=k>in</span> <span class=n>combinations</span><span class=p>(</span><span class=n>vertices</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span> <span class=k>if</span> <span class=n>rand</span><span class=p>()</span> <span class=o>&lt;=</span> <span class=n>er</span><span class=o>.</span><span class=n>p</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>Graph</span><span class=p>(</span><span class=n>edges</span><span class=p>,</span> <span class=n>fill</span><span class=p>(</span><span class=nb>true</span><span class=p>,</span> <span class=n>length</span><span class=p>(</span><span class=n>edges</span><span class=p>)))</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></div><pre tabindex=0><code>Main.var&#34;##362&#34;.Graph
+</code></pre><p>We can now create a graph, and check its type:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>G</span> <span class=o>=</span> <span class=n>Graph</span><span class=p>(</span><span class=n>ErdosRenyi</span><span class=p>(</span><span class=mi>10</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>))</span>
+</span></span></code></pre></div><pre tabindex=0><code>A graph with 7 Bool edges
+</code></pre><div class=highlight><pre tabindex=0 class=chroma><code class=language-julia data-lang=julia><span class=line><span class=cl><span class=n>typeof</span><span class=p>(</span><span class=n>G</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>Main.var&#34;##362&#34;.Graph{Int64, Bool}
+</code></pre></article></main><footer>
+<div class=wrapper>
+<a href=/about/>About this project</a>
+<a href=https://github.com/tpoisot/ScientificComputingForTheRestOfUs target=_blank>See the project on GitHub</a>
+<a href="https://github.com/tpoisot/ScientificComputingForTheRestOfUs/issues/new?labels=section-applications,module-graphs,status-alpha,feedback&assignees=@tpoisot&title=ADD%20A%20DESCRIPTIVE%20TITLE&body=%20**Description%20of%20your%20problem/comments**%0a%0a%0a%0a---%0a*Do%20not%20edit%20below%20this%20point*%0a%0a[%f0%9f%92%bb%20SOURCE][src]%0a%0a[src]:%20https://github.com/tpoisot/ScientificComputingForTheRestOfUs/blob/main/content/08_applications/04_graphs.jl%0a%0a[%f0%9f%93%94%20PAGE][prm]%0a%0a[prm]:%20https://sciencecomputing.io/applications/building-our-own-graph-library/%0a%0a%f0%9f%93%a6%20section-applications%0a%0a%f0%9f%8f%b7%ef%b8%8f%20module-graphs" target=_blank>Provide feedback on this module</a>
+<a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC-BY 4.0 (Timothée Poisot)</a>
+</div></footer></body><script>const readingBarInner=document.querySelector("#reading-bar-inner");document.addEventListener("scroll",function(){let e=(document.body.scrollTop||document.documentElement.scrollTop)/(document.documentElement.scrollHeight-document.documentElement.clientHeight)*100;readingBarInner.style.setProperty("width",e+"%")})</script>
+</html>

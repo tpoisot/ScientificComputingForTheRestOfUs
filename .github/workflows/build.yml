@@ -32,7 +32,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: echo "::set-output name=count::Current word count is $(wc -w `find dist/content/ -type f` | tail -n 1 | cut -d' ' -f2)"
       - name: "Comment on wordcount"
-        uses: thollander/actions-comment-pull-request@v1
+        uses: thollander/actions-comment-pull-request@v2
         if: github.event_name == 'pull_request'
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

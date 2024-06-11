@@ -1,6 +1,6 @@
 # ---
 # title: Introduction to Boolean values
-# status: rc
+# status: release
 # ---
 
 # In this module, we will get acquainted with one of the most important type of

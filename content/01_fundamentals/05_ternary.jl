@@ -1,6 +1,6 @@
 # ---
 # title: The ternary operator
-# status: rc
+# status: release
 # ---
 
 # In this module, we will look at the "ternary operator", a very efficient

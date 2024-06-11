@@ -1,6 +1,6 @@
 # ---
 # title: A gentle introduction to for loops
-# status: rc
+# status: release
 # ---
 
 # Oh no. Oh no no no. This is *not* a fun module. This will not be pleasant. But

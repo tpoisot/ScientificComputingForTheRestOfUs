@@ -1,6 +1,6 @@
 # ---
 # title: Advanced iteration
-# status: rc
+# status: release
 # ---
 
 # In this module, we will see how we *actually* iterate over objects in *Julia*.

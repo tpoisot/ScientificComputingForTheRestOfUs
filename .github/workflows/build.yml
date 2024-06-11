@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout action"
-        uses: actions/checkout@v1.0.0
+        uses: actions/checkout@v3.3.0
       - name: "Setup julia"
         uses: julia-actions/setup-julia@v1
         with:
@@ -35,7 +35,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           message: ${{ steps.word-count.outputs.count }}
       - name: Upload results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         continue-on-error: true
         with:
           name: built-project
@@ -46,14 +46,14 @@ jobs:
     name: "Make the website"
     steps:
       - name: "Checkout action"
-        uses: actions/checkout@v1.0.0
+        uses: actions/checkout@v3.3.0
       - name: "Setup hugo"
         uses: peaceiris/actions-hugo@v2
         with:
           hugo-version: "0.127.0"
           extended: true
       - name: Download built lessons
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: built-project
           path: dist

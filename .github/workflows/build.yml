@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        julia: [1.8]
+        julia: [1.10]
     steps:
       - name: "Checkout action"
         uses: actions/checkout@v1.0.0
@@ -53,7 +53,7 @@ jobs:
       - name: "Setup hugo"
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: "0.93.3"
+          hugo-version: "0.127.0"
           extended: true
       - name: Download built lessons
         uses: actions/download-artifact@v2

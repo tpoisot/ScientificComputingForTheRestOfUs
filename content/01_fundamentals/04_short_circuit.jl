@@ -1,6 +1,6 @@
 # ---
 # title: Short-circuit Boolean operations
-# status: rc
+# status: release
 # ---
 
 # In the [previous module][bool], we have introduce important notions about
@@ -63,7 +63,7 @@ true && "Hi!"
 # same line, we can specify a check and an action. One of our favorite ways to
 # use it is to check if a path exists, and if not create it:
 
-ispath("foo") || mkdir("foo")
+ispath("foo") || mkpath("foo")
 
 # Let's be clean and remove this path, but only if it exists:s
 

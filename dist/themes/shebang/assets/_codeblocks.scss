@@ -17,6 +17,8 @@ code {
 }
 
 pre {
+    padding-top: 10px;
+    padding-bottom: 10px;
     line-height: normal;
     font-stretch: normal;
     white-space: pre-wrap;
@@ -26,7 +28,7 @@ pre {
         color: $color_output;
         font-size: 90%;
         font-stretch: normal;
-        line-height: 120%;
+        line-height: 180%;
     }
 }
 

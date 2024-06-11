@@ -9,16 +9,13 @@ jobs:
   build:
     name: "Build the material"
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        julia: [1.8]
     steps:
       - name: "Checkout action"
-        uses: actions/checkout@v1.0.0
+        uses: actions/checkout@v3.3.0
       - name: "Setup julia"
         uses: julia-actions/setup-julia@v1
         with:
-          version: ${{ matrix.julia }}
+          version: '1.10'
       - name: "Build the core packages"
         uses: julia-actions/julia-buildpkg@v1
         env: 
@@ -38,7 +35,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           message: ${{ steps.word-count.outputs.count }}
       - name: Upload results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         continue-on-error: true
         with:
           name: built-project
@@ -49,14 +46,14 @@ jobs:
     name: "Make the website"
     steps:
       - name: "Checkout action"
-        uses: actions/checkout@v1.0.0
+        uses: actions/checkout@v3.3.0
       - name: "Setup hugo"
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: "0.93.3"
+          hugo-version: "0.127.0"
           extended: true
       - name: Download built lessons
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: built-project
           path: dist

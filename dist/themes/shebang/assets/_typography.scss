@@ -1,11 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Recursive:slnt,wght,CASL,CRSV,MONO@-15..0,300..1000,0..1,0..1,0..1&display=swap'); 
 
 body {
-    font-family: 'Barlow', sans-serif;
-    font-size: 14pt;
-    line-height: 24pt;
-    font-weight: 400;
+    font-family: 'Recursive', sans-serif;
+    font-variation-settings: "MONO" 0, "CASL" 0, "wght" 400, "slnt" 0, "CRSV" 0.5;
+    font-size: 12pt;
+    line-height: 23pt;
 }
 
 b,
@@ -13,29 +12,27 @@ strong {
     font-weight: 500;
 }
 
-.title, h1, h2, h3, h4, h5, h6 {
-    font-family: 'Barlow Semi Condensed', sans-serif;
+.title, h1, h2, h3, h4, h5, h6 {    
+    font-variation-settings: "CASL" 0.4, "wght" 520;
 }
 
-em,
-i {
-    font-style: italic;
+em, i {
+    font-variation-settings: "slnt" 0.13;
 }
 
-code,
-.highlight, .pkgname {
-    font-family: 'Iosevka Custom Web', monospace;
-    font-weight: 400;
-    font-size: 14pt;
+code {
+    font-family: 'Recursive', sans-serif;
+    font-variation-settings: "MONO" 1, "CASL" 0.3;
 }
 
 .pkgname{
     font-weight: inherit;
     font-stretch: normal;
+    font-variation-settings: "MONO" 0.5, "CASL" 0.8, "wght" 420;
 }
 
 article {
     p:first-child {
-        font-weight: 700;
+        font-variation-settings: "CASL" 0.35, "wght" 620;
     }
 }

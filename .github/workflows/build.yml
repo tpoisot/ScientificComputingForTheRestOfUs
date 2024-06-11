@@ -9,16 +9,13 @@ jobs:
   build:
     name: "Build the material"
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        julia: [1.10]
     steps:
       - name: "Checkout action"
         uses: actions/checkout@v1.0.0
       - name: "Setup julia"
         uses: julia-actions/setup-julia@v1
         with:
-          version: ${{ matrix.julia }}
+          version: '1.10'
       - name: "Build the core packages"
         uses: julia-actions/julia-buildpkg@v1
         env: 

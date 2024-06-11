@@ -1,9 +1,26 @@
+@mixin callout-block-before {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 400;
+    color: white;
+    position: relative;
+    left: -32px;
+    top: -8px;
+    border-radius: 22px;
+    margin-right: -22px;
+    font-size: 14px;
+    line-height: 22px;
+    text-align: center;
+    width: 22px;
+    display: inline-block;
+}
+
 .callout {
     padding: 0px 20px;
     padding-bottom: 0px;
     margin: 40px 0px;
     color: $color_meta;
     font-size: 95%;
+    font-variation-settings: "CASL" 0.6, "wght" 380;
     code {
         font-size: inherit;
         font-stretch: normal;
@@ -13,20 +30,8 @@
 .warning {
     border-left: 2px solid $color_warning;
     &:before {
-        font-family: "Font Awesome 6 Free";
-        font-weight: 400;
+        @include callout-block-before();
         content: "\f071";
-        color: white;
-        position: relative;
-        left: -32px;
-        top: -8px;
-        border-radius: 22px;
-        margin-right: -22px;
-        font-size: 14px;
-        line-height: 22px;
-        text-align: center;
-        width: 22px;
-        display: inline-block;
         background-color: $color_warning;
     }
 }
@@ -34,20 +39,8 @@
 .information {
     border-left: 2px solid $color_information;
     &:before {
-        font-family: "Font Awesome 6 Free";
-        font-weight: 400;
+        @include callout-block-before();
         content: "\f14e";
-        color: white;
-        position: relative;
-        left: -32px;
-        top: -8px;
-        border-radius: 22px;
-        margin-right: -22px;
-        font-size: 14px;
-        line-height: 22px;
-        text-align: center;
-        width: 22px;
-        display: inline-block;
         background-color: $color_information;
     }
 }
@@ -55,20 +48,8 @@
 .opinion {
     border-left: 2px solid $color_opinion;
     &:before {
-        font-family: "Font Awesome 6 Free";
-        font-weight: 400;
+        @include callout-block-before();
         content: "\f4ad";
-        color: white;
-        position: relative;
-        left: -32px;
-        top: -8px;
-        border-radius: 22px;
-        margin-right: -22px;
-        font-size: 14px;
-        line-height: 22px;
-        text-align: center;
-        width: 22px;
-        display: inline-block;
         background-color: $color_opinion;
     }
 }
@@ -76,20 +57,8 @@
 .danger {
     border-left: 2px solid $color_danger;
     &:before {
-        font-family: "Font Awesome 6 Free";
-        font-weight: 400;
+        @include callout-block-before();
         content: "\f0e7";
-        color: white;
-        position: relative;
-        left: -32px;
-        top: -8px;
-        border-radius: 22px;
-        margin-right: -22px;
-        font-size: 14px;
-        line-height: 22px;
-        text-align: center;
-        width: 22px;
-        display: inline-block;
         background-color: $color_danger;
     }
 }
@@ -97,20 +66,8 @@
 .domain {
     border-left: 2px solid $color_theme;
     &:before {
-        font-family: "Font Awesome 6 Free";
-        font-weight: 400;
+        @include callout-block-before();
         content: "\f5dc";
-        color: white;
-        position: relative;
-        left: -32px;
-        top: -8px;
-        border-radius: 22px;
-        margin-right: -22px;
-        font-size: 14px;
-        line-height: 22px;
-        text-align: center;
-        width: 22px;
-        display: inline-block;
         background-color: $color_theme;
     }
 }
@@ -118,20 +75,8 @@
 .reference {
     border-left: 2px solid $color_reference;
     &:before {
-        font-family: "Font Awesome 6 Free";
-        font-weight: 400;
+        @include callout-block-before();
         content: "\f5da";
-        color: white;
-        position: relative;
-        left: -32px;
-        top: -8px;
-        border-radius: 22px;
-        margin-right: -22px;
-        font-size: 14px;
-        line-height: 22px;
-        text-align: center;
-        width: 22px;
-        display: inline-block;
         background-color: $color_reference;
     }
 }

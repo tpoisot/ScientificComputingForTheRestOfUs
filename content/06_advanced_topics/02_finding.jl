@@ -1,6 +1,6 @@
 # ---
 # title: Finding things in arrays
-# status: rc
+# status: release
 # ---
 
 # In this module, we will see how to locate interesting values in collections,

@@ -1,6 +1,6 @@
 # ---
 # title: Mutating functions
-# status: rc
+# status: release
 # ---
 
 # In this module, we will see how *Julia* deals with collections when they are

@@ -1,6 +1,6 @@
 # ---
 # title: The forest-fire model
-# status: beta
+# status: release
 # ---
 
 # In this module, we will have a look at indexing in order to simulate the
